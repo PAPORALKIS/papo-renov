@@ -79,4 +79,8 @@ window.addEventListener('resize', () => {
   renderer.setSize(width, height);
   if (width < 768) {
     camera.position.set(0, 0, 18);
-  } else if (width < 1024) {
+  } else if (width < 1024) 
+        console.error("Erreur de chargement des images :", error);
+
+    });
+  
