@@ -5,10 +5,12 @@ document.addEventListener("DOMContentLoaded", () => {
   const closeBtn = document.getElementById('lightbox-close');
 
   window.addEventListener('openLightbox', e => {
+  if (e.detail && e.detail.src) {
     lightboxImg.src = e.detail.src;
-    lightboxDesc.innerHTML = e.detail.description;
+    lightboxDesc.innerHTML = e.detail.description || '';
     lightbox.style.display = 'flex';
-  });
+  }
+});
 
   closeBtn.addEventListener('click', closeLightbox);
   lightbox.addEventListener('click', (e) => {
