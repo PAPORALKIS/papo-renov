@@ -80,4 +80,3 @@ window.addEventListener('resize', () => {
   if (width < 768) {
     camera.position.set(0, 0, 18);
   } else if (width < 1024) {
-0
