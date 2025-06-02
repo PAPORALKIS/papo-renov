@@ -71,16 +71,19 @@ function animate() {
 animate();
 
 // Gestion du redimensionnement
+
 window.addEventListener('resize', () => {
   const width = window.innerWidth;
   const height = window.innerHeight - navHeight;
   camera.aspect = width / height;
   camera.updateProjectionMatrix();
   renderer.setSize(width, height);
+
   if (width < 768) {
     camera.position.set(0, 0, 18);
-  } else if (width < 1024) 
-        console.error("Erreur de chargement des images :", error);
-
-    });
-  
+  } else if (width < 1024) {
+    camera.position.set(0, 0, 22);
+  } else {
+    camera.position.set(0, 0, 25);
+  }
+});
