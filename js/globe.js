@@ -5,7 +5,6 @@ const camera = new THREE.PerspectiveCamera(75, container.clientWidth / container
 const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
 const navHeight = 60;
 renderer.setSize(container.clientWidth, container.clientHeight - navHeight);
-const navHeight = 60;
 renderer.setSize(container.clientWidth, container.clientHeight - navHeight);
 renderer.setSize(container.clientWidth, container.clientHeight);
 renderer.setPixelRatio(window.devicePixelRatio);
