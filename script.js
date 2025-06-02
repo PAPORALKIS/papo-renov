@@ -182,6 +182,10 @@ imagesData.forEach((imgData) => {
     plane.position.set(0, 0, 0);
     scene.add(plane);
     planes.push({ mesh: plane, data: imgData });
+    });
+       });
+
+
 
 function loadAllTextures(imagesData) {
   const loader = new THREE.TextureLoader();
@@ -274,15 +278,5 @@ window.addEventListener('resize', () => {
   } else {
     camera.position.set(0, 0, 30);
   }
-});
 
-// Animation
-function animate() {
-  requestAnimationFrame(animate);
-  controls.update();
-  renderer.render(scene, camera);
-}
-
-// ✅ Lancement initial
-animate();
-window.dispatchEvent(new Event('resize'));
+})'
