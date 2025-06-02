@@ -138,15 +138,25 @@ function updatePositions() {
   camera.position.set(0, 0, radius + 4);
 }
 
+let texturesLoaded = 0;
+
 imagesData.forEach((imgData) => {
   loader.load(imgData.url, (texture) => {
-    const material = new THREE.MeshBasicMaterial({ map: texture, side: THREE.DoubleSide, transparent: true });
+    const material = new THREE.MeshBasicMaterial({
+      map: texture,
+      side: THREE.DoubleSide,
+      transparent: true,
+    });
     const geometry = new THREE.PlaneGeometry(getResponsivePlaneSize(), getResponsivePlaneSize());
     const plane = new THREE.Mesh(geometry, material);
     plane.position.set(0, 0, 0);
     scene.add(plane);
     planes.push({ mesh: plane, data: imgData });
-    updatePositions();
+
+    texturesLoaded++;
+    if (texturesLoaded === imagesData.length) {
+      updatePositions(); // appel unique à la fin du chargement
+    }
   });
 });
 
