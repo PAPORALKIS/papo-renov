@@ -119,6 +119,10 @@ controls.enableDamping     = true;
 controls.autoRotate        = true;
 controls.autoRotateSpeed   = 2.0;
 controls.enableZoom        = true;
+controls.enablePan = false;                 // désactive le déplacement latéral  
+controls.mouseButtons.RIGHT = undefined;    // ignore complètement le bouton droit  
+renderer.domElement.addEventListener('contextmenu', e => e.preventDefault()); // bloque le menu contextuel
+
 // La distance exacte de la caméra sera ajustée plus tard
 camera.position.set(0, 0, 80);
 
