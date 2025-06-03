@@ -37,7 +37,7 @@ function getResponsivePlaneSize () {
 function updateCameraDistance (radius) {
   const fov      = THREE.MathUtils.degToRad(camera.fov);
   const distance = radius / Math.tan(fov / 2) * 1.5; // 10 % de marge visuelle
-  camera.position.set(0, 0, 50);
+  camera.position.set(0, 0, 30);
   return distance; // utile si on veut ré‑utiliser la valeur
 }
 
