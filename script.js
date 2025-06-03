@@ -45,7 +45,7 @@ function getAdaptiveRadius (numImages) {
 function getResponsivePlaneSize () {
   const width = window.innerWidth;
   // 1.2 → mobile, 2.8 → grand écran
-  return THREE.MathUtils.clamp(width / 400, 1.2, 4.0);
+  return THREE.MathUtils.clamp(width / 400, 1.2, 5.0);
 }
 
 function getNonOverlappingPlaneSize (numImages, radius) {
