@@ -1,47 +1,69 @@
+// globe.js – version conservant la structure d’origine
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
+// ------------------------
+//  Constantes & Réglages
+// ------------------------
+const COVER = 0.30; // % de surface de sphère que l’on veut réellement couvrir
+
+// ------------------------
+//  Fonctions « responsive »
+// ------------------------
 function getResponsiveRadius () {
   // on part du côté le plus petit de la fenêtre
   const minDim = Math.min(window.innerWidth, window.innerHeight);
-
-  /*  On convertit ce côté en un rayon “naturel” :
-      - 3 ≈ rayon minimal (smartphone en mode portrait)
-      - 10 ≈ rayon maximal (très grand écran)
-      Le facteur 120 est empirique ; change-le si tu trouves que
-      le globe est encore trop petit ou trop grand.               */
+  // Rayon minimal (3) → smartphone  |  Rayon max (10) → très grand écran
   return THREE.MathUtils.clamp(minDim / 120, 3, 10);
 }
 
-
-function getAdaptiveRadius(numImages) {
-  let base = getResponsiveRadius();
-  return base + Math.log2(numImages + 1);
+function getAdaptiveRadius (numImages) {
+  /**
+   * Surface sphère 4πR² ≈ (nbImages × taillePlan²) / COVER
+   * → R ≈ taillePlan × √(nbImages / (4πCOVER))
+   */
+  const planeSize = getResponsivePlaneSize();
+  const radius    = planeSize * Math.sqrt(numImages / (4 * Math.PI * COVER));
+  // bornes de sécurité
+  return THREE.MathUtils.clamp(radius, 3, 12);
 }
 
-function getResponsivePlaneSize() {
+function getResponsivePlaneSize () {
   const width = window.innerWidth;
-  // 1.2 → sur mobile, 2.8 → grand écran
+  // 1.2 → mobile, 2.8 → grand écran
   return THREE.MathUtils.clamp(width / 400, 1.2, 2.8);
 }
 
-function generatePointsOnSphere(numPoints, radius) {
-  const points = [];
-  const offset = 2 / numPoints;
+function updateCameraDistance (radius) {
+  const fov      = THREE.MathUtils.degToRad(camera.fov);
+  const distance = radius / Math.tan(fov / 2) * 1.1; // 10 % de marge visuelle
+  camera.position.set(0, 0, distance);
+  return distance; // utile si on veut ré‑utiliser la valeur
+}
+
+// ------------------------
+//  Génération des points uniformes sur la sphère
+// ------------------------
+function generatePointsOnSphere (numPoints, radius) {
+  const points   = [];
+  const offset   = 2 / numPoints;
   const increment = Math.PI * (3 - Math.sqrt(5));
   for (let i = 0; i < numPoints; i++) {
-    const y = ((i * offset) - 1) + (offset / 2);
-    const r = Math.sqrt(1 - y * y);
+    const y   = ((i * offset) - 1) + (offset / 2);
+    const r   = Math.sqrt(1 - y * y);
     const phi = i * increment;
-    const x = Math.cos(phi) * r;
-    const z = Math.sin(phi) * r;
+    const x   = Math.cos(phi) * r;
+    const z   = Math.sin(phi) * r;
     points.push(new THREE.Vector3(x * radius, y * radius, z * radius));
   }
   return points;
 }
 
-const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
+// ------------------------
+//  Scène, caméra, renderer
+// ------------------------
+const scene    = new THREE.Scene();
+const camera   = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
 const renderer = new THREE.WebGLRenderer({ antialias: true });
 renderer.setSize(window.innerWidth, window.innerHeight);
 renderer.setPixelRatio(window.devicePixelRatio);
@@ -49,17 +71,21 @@ renderer.setClearColor(0x0a0f2c);
 document.getElementById('container').appendChild(renderer.domElement);
 
 const controls = new OrbitControls(camera, renderer.domElement);
-controls.enableDamping = true;
-controls.autoRotate = true;
-controls.autoRotateSpeed = 2.0;
-controls.enableZoom = true;
+controls.enableDamping     = true;
+controls.autoRotate        = true;
+controls.autoRotateSpeed   = 2.0;
+controls.enableZoom        = true;
+// La distance exacte de la caméra sera ajustée plus tard
 camera.position.set(0, 0, 80);
 
 scene.add(new THREE.AmbientLight(0xffffff, 1));
 
-const loader = new THREE.TextureLoader();
+// ------------------------
+//  Chargement des images
+// ------------------------
+const loader    = new THREE.TextureLoader();
 const raycaster = new THREE.Raycaster();
-const mouse = new THREE.Vector2();
+const mouse     = new THREE.Vector2();
 
 const imagesData = [
   { url: '../img/CHBR0.jpg', text: 'Image 0 - Description', group: 'A' },
@@ -97,26 +123,30 @@ const imagesData = [
 ];
 
 const planes = [];
-let spherePoints = [];
+let   spherePoints = [];
 
-function updatePositions() {
-  const radius = getAdaptiveRadius(planes.length);
+// ------------------------
+//  Placement / mise à jour des plans
+// ------------------------
+function updatePositions () {
+  const radius    = getAdaptiveRadius(planes.length);
   const planeSize = getResponsivePlaneSize();
-  spherePoints = generatePointsOnSphere(planes.length, radius);
+  spherePoints    = generatePointsOnSphere(planes.length, radius);
 
   planes.forEach(({ mesh }, i) => {
     mesh.geometry.dispose();
     mesh.geometry = new THREE.PlaneGeometry(planeSize, planeSize);
-    const pos = spherePoints[i];
-    mesh.position.copy(pos);
+    mesh.position.copy(spherePoints[i]);
     mesh.lookAt(0, 0, 0);
   });
 
   updateCameraDistance(radius);
-  camera.position.set(0, 0, distance);
   controls.update();
 }
 
+// ------------------------
+//  Chargement dynamique des textures
+// ------------------------
 imagesData.forEach((imgData, index) => {
   loader.load(
     imgData.url,
@@ -128,7 +158,7 @@ imagesData.forEach((imgData, index) => {
         transparent: true,
       });
       const geometry = new THREE.PlaneGeometry(getResponsivePlaneSize(), getResponsivePlaneSize());
-      const plane = new THREE.Mesh(geometry, material);
+      const plane    = new THREE.Mesh(geometry, material);
       scene.add(plane);
       planes.push({ mesh: plane, data: imgData });
       updatePositions();
