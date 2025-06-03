@@ -5,7 +5,7 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 // ------------------------
 //  Constantes & Réglages
 // ------------------------
-const COVER = 0.40; // % de surface de sphère que l’on veut réellement couvrir
+const COVER = 0.35; // % de surface de sphère que l’on veut réellement couvrir
 // ------------------------
 //  Marges d'interface (header fixe, bords)
 // ------------------------
@@ -68,7 +68,7 @@ function updateCameraDistance (radius, planeSize) {
 
   const distV    = boundingR / Math.tan(vFovRad / 2);
   const distH    = boundingR / Math.tan(hFovRad / 2);
-  const distance = Math.max(distV, distH) * 1.15;   // +5 % de marge
+  const distance = Math.max(distV, distH) * 1.20;   // +5 % de marge
 
   camera.position.set(0, 0, distance);
 
