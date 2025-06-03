@@ -1,13 +1,18 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
-function getResponsiveRadius() {
+function getResponsiveRadius () {
+  // on part du côté le plus petit de la fenêtre
   const minDim = Math.min(window.innerWidth, window.innerHeight);
-  if (minDim < 480) return 3;
-  if (minDim < 768) return 4;
-  if (minDim < 1024) return 5;
-  return 6;
+
+  /*  On convertit ce côté en un rayon “naturel” :
+      - 3 ≈ rayon minimal (smartphone en mode portrait)
+      - 10 ≈ rayon maximal (très grand écran)
+      Le facteur 120 est empirique ; change-le si tu trouves que
+      le globe est encore trop petit ou trop grand.               */
+  return THREE.MathUtils.clamp(minDim / 120, 3, 10);
 }
+
 
 function getAdaptiveRadius(numImages) {
   let base = getResponsiveRadius();
