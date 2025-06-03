@@ -48,15 +48,20 @@ function getResponsivePlaneSize () {
   return THREE.MathUtils.clamp(width / 400, 1.2, 6);
 }
 
-function getNonOverlappingPlaneSize (numImages, radius) {
-  /*  surface ≃ 4πR² / n  →  écart moyen ≃ √surface  */
-  const CAMERA_MARGIN = 1.3;
+function getNonOverlappingPlaneSize(numImages, radius) {
   const areaPerPoint = 4 * Math.PI * radius * radius / numImages;
   const spacing      = Math.sqrt(areaPerPoint);   // distance centre-à-centre
-  const safeDiag     = spacing * 1.5;             // 30 % de marge visuelle
-  const safeSize     = safeDiag / Math.SQRT2;     // diag = size*√2
-  // on respecte quand même la taille responsive maxi
-  return Math.min(getResponsivePlaneSize(), safeSize);
+  const safeDiag     = spacing * 0.75;            // sécurité visuelle
+  const safeSize     = safeDiag / Math.SQRT2;
+
+  const responsiveMax = getResponsivePlaneSize();
+
+  // 🟢 Facteur d’agrandissement manuel
+  const upscaleFactor = 1.25;
+
+  const adjustedSize = Math.min(safeSize * upscaleFactor, responsiveMax * 1.5); // ne pas dépasser un max absolu
+
+  return adjustedSize;
 }
 
 function updateCameraDistance (radius, planeSize) {
