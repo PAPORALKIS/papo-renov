@@ -5,7 +5,7 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 // ------------------------
 //  Constantes & Réglages
 // ------------------------
-const COVER = 0.55; // % de surface de sphère que l’on veut réellement couvrir
+const COVER = 0.60; // % de surface de sphère que l’on veut réellement couvrir
 
 // ------------------------
 //  Fonctions « responsive »
@@ -36,7 +36,7 @@ function getResponsivePlaneSize () {
 
 function updateCameraDistance (radius) {
   const fov      = THREE.MathUtils.degToRad(camera.fov);
-  const distance = radius / Math.tan(fov / 2) * 1.05; // 5 % de marge visuelle
+  const distance = radius / Math.tan(fov / 2) * 1.1; // 10 % de marge visuelle
   camera.position.set(0, 0, distance);
   return distance; // utile si on veut ré‑utiliser la valeur
 }
