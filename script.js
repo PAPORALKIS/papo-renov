@@ -1,14 +1,8 @@
-// ✅ Importations
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
-// ✅ Hauteur de la barre de menu
-const menuHeight = 60;
-
-// ✅ Fonctions responsives mises à jour
 function getResponsiveRadius() {
-  const canvas = renderer.domElement;
-  const minDim = Math.min(canvas.clientWidth, canvas.clientHeight);
+  const minDim = Math.min(window.innerWidth, window.innerHeight);
   if (minDim < 480) return 3;
   if (minDim < 768) return 4;
   if (minDim < 1024) return 5;
@@ -21,7 +15,7 @@ function getAdaptiveRadius(numImages) {
 }
 
 function getResponsivePlaneSize() {
-  const width = renderer.domElement.clientWidth;
+  const width = window.innerWidth;
   if (width < 480) return 1.3;
   if (width < 768) return 1.7;
   if (width < 1024) return 2.2;
@@ -43,34 +37,14 @@ function generatePointsOnSphere(numPoints, radius) {
   return points;
 }
 
-// ✅ Scène et rendu
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
 const renderer = new THREE.WebGLRenderer({ antialias: true });
-
-const container = document.getElementById('container');
-container.appendChild(renderer.domElement);
-container.style.position = 'absolute';
-container.style.top = `${menuHeight}px`;
-container.style.left = '0';
-container.style.width = '100%';
-container.style.height = `calc(100vh - ${menuHeight}px)`;
-container.style.overflow = 'hidden';
-
-function resizeRenderer() {
-  const width = window.innerWidth;
-  const height = window.innerHeight - menuHeight;
-  renderer.setSize(width, height);
-  camera.aspect = width / height;
-  camera.updateProjectionMatrix();
-  updatePositions(); // ✅ Recalcule sur redimensionnement
-}
-resizeRenderer();
-
+renderer.setSize(window.innerWidth, window.innerHeight);
 renderer.setPixelRatio(window.devicePixelRatio);
 renderer.setClearColor(0x0a0f2c);
+document.getElementById('container').appendChild(renderer.domElement);
 
-// ✅ Contrôles caméra
 const controls = new OrbitControls(camera, renderer.domElement);
 controls.enableDamping = true;
 controls.autoRotate = true;
@@ -80,7 +54,6 @@ camera.position.set(0, 0, 30);
 
 scene.add(new THREE.AmbientLight(0xffffff, 1));
 
-// ✅ Chargement des textures
 const loader = new THREE.TextureLoader();
 const raycaster = new THREE.Raycaster();
 const mouse = new THREE.Vector2();
@@ -93,7 +66,31 @@ const imagesData = [
   { url: '../img/CUIEXT2.jpg', text: 'Image 5 - Description', group: 'C' },
   { url: '../img/CUIEXT3.jpg', text: 'Image 6 - Description', group: 'C' },
   { url: '../img/CUIEXT4.jpg', text: 'Image 7 - Description', group: null },
-  // ... (autres images inchangées)
+  { url: '../img/CUIEXT5.jpg', text: 'Image 8 - Description', group: null },
+  { url: '../img/CUIEXT6.jpg', text: 'Image 8 - Description', group: null },
+  { url: '../img/CUIMARS1.jpg', text: 'Image 8 - Description', group: null },
+  { url: '../img/CUIMARS2.jpg', text: 'Image 8 - Description', group: null },
+  { url: '../img/CUIMARS3.jpg', text: 'Image 8 - Description', group: null },
+  { url: '../img/CUIMARS4.jpg', text: 'Image 8 - Description', group: null },
+  { url: '../img/Iso2.jpg', text: 'Image 8 - Description', group: null },
+  { url: '../img/Iso3.jpg', text: 'Image 8 - Description', group: null },
+  { url: '../img/Iso4.jpg', text: 'Image 8 - Description', group: null },
+  { url: '../img/Iso5.jpg', text: 'Image 8 - Description', group: null },
+  { url: '../img/Iso6.jpg', text: 'Image 8 - Description', group: null },
+  { url: '../img/SDB1.jpg', text: 'Image 8 - Description', group: null },
+  { url: '../img/SDB2.jpg', text: 'Image 8 - Description', group: null },
+  { url: '../img/SDB3.jpg', text: 'Image 8 - Description', group: null },
+  { url: '../img/SDB4.jpg', text: 'Image 8 - Description', group: null },
+  { url: '../img/SDB5.jpg', text: 'Image 8 - Description', group: null },
+  { url: '../img/WC1.jpg', text: 'Image 8 - Description', group: null },
+  { url: '../img/WC2.jpg', text: 'Image 8 - Description', group: null },
+  { url: '../cuisine_exterieure_cyporex.jpg', text: 'Image 8 - Description', group: null },
+  { url: '../img/ext1.jpg', text: 'Image 8 - Description', group: null },
+  { url: '../img/ext2.jpg', text: 'Image 8 - Description', group: null },
+  { url: '../img/exterieur.jpg', text: 'Image 8 - Description', group: null },
+  { url: '../img/Iso1.jpg', text: 'Image 8 - Description', group: null },
+  { url: '../meuble-laura-1.jpg', text: 'Image 8 - Description', group: null },
+  { url: '../meuble-laura-2.jpg', text: 'Image 8 - Description', group: null },
 ];
 
 const planes = [];
@@ -116,13 +113,11 @@ function updatePositions() {
   controls.update();
 }
 
-let loadedCount = 0;
-const totalImages = imagesData.length;
-
-imagesData.forEach((imgData) => {
+imagesData.forEach((imgData, index) => {
   loader.load(
     imgData.url,
     (texture) => {
+      console.log(`Image chargée (${index + 1}/${imagesData.length}):`, imgData.url);
       const material = new THREE.MeshBasicMaterial({
         map: texture,
         side: THREE.DoubleSide,
@@ -132,16 +127,15 @@ imagesData.forEach((imgData) => {
       const plane = new THREE.Mesh(geometry, material);
       scene.add(plane);
       planes.push({ mesh: plane, data: imgData });
-
-      loadedCount++;
-      if (loadedCount === totalImages) updatePositions();
+      updatePositions();
     },
     undefined,
-    (error) => console.warn('Erreur de chargement :', imgData.url, error)
+    (error) => {
+      console.warn('Erreur de chargement :', imgData.url, error);
+    }
   );
 });
 
-// ✅ Interaction clic sur image
 function onMouseClick(event) {
   mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
   mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
@@ -158,7 +152,6 @@ function onMouseClick(event) {
 
 window.addEventListener('click', onMouseClick);
 
-// ✅ Preview modal
 const preview = document.getElementById('preview');
 const carouselImage = document.getElementById('carousel-image');
 const carouselText = document.getElementById('carousel-text');
@@ -193,7 +186,6 @@ closePreviewBtn.addEventListener('click', () => {
   document.getElementById('container').style.transform = 'translateY(0)';
 });
 
-// ✅ Animation continue
 function animate() {
   requestAnimationFrame(animate);
   controls.update();
@@ -201,7 +193,11 @@ function animate() {
 }
 animate();
 
-// ✅ Événement de redimensionnement
 window.addEventListener('resize', () => {
-  resizeRenderer();
+  const width = window.innerWidth;
+  const height = window.innerHeight;
+  renderer.setSize(width, height);
+  camera.aspect = width / height;
+  camera.updateProjectionMatrix();
+  updatePositions();
 });
