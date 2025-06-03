@@ -1,5 +1,3 @@
-
-
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
@@ -41,20 +39,23 @@ function generatePointsOnSphere(numPoints, radius) {
 
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
-const renderer = new THREE.WebGLRenderer({ antialias: true });
+const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
 renderer.setSize(window.innerWidth, window.innerHeight);
 renderer.setPixelRatio(window.devicePixelRatio);
 renderer.setClearColor(0x0a0f2c);
 document.getElementById('container').appendChild(renderer.domElement);
 
+// Controls
 const controls = new OrbitControls(camera, renderer.domElement);
 controls.enableDamping = true;
 controls.autoRotate = true;
 controls.autoRotateSpeed = 2.0;
-controls.enableZoom = false;
+controls.enableZoom = true;
+controls.minDistance = 10;
+controls.maxDistance = 60;
+controls.enablePan = false;
 camera.position.set(0, 0, 30);
 
-scene.add(new THREE.AxesHelper(10));
 scene.add(new THREE.AmbientLight(0xffffff, 1));
 
 const loader = new THREE.TextureLoader();
@@ -111,7 +112,9 @@ function updatePositions() {
     mesh.lookAt(0, 0, 0);
   });
 
-  camera.position.set(0, 0, radius + 6);
+  // Ajuster la position caméra en fonction du rayon
+  camera.position.set(0, 0, radius + 10);
+
   controls.update();
 }
 
@@ -119,7 +122,7 @@ imagesData.forEach((imgData, index) => {
   loader.load(
     imgData.url,
     (texture) => {
-      console.log(`Image chargée (${index + 1}/${imagesData.length}):`, imgData.url);
+      // console.log(`Image chargée (${index + 1}/${imagesData.length}):`, imgData.url);
       const material = new THREE.MeshBasicMaterial({
         map: texture,
         side: THREE.DoubleSide,
@@ -138,9 +141,20 @@ imagesData.forEach((imgData, index) => {
   );
 });
 
-function onMouseClick(event) {
-  mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-  mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+// Gestion click / touch sur images
+
+function getPointerPosition(event) {
+  if (event.touches && event.touches.length > 0) {
+    return { x: event.touches[0].clientX, y: event.touches[0].clientY };
+  } else {
+    return { x: event.clientX, y: event.clientY };
+  }
+}
+
+function onPointerClick(event) {
+  const pos = getPointerPosition(event);
+  mouse.x = (pos.x / window.innerWidth) * 2 - 1;
+  mouse.y = -(pos.y / window.innerHeight) * 2 + 1;
   raycaster.setFromCamera(mouse, camera);
   const intersects = raycaster.intersectObjects(planes.map(p => p.mesh));
   if (intersects.length > 0) {
@@ -152,7 +166,8 @@ function onMouseClick(event) {
   }
 }
 
-window.addEventListener('click', onMouseClick);
+window.addEventListener('click', onPointerClick);
+window.addEventListener('touchstart', onPointerClick);
 
 const preview = document.getElementById('preview');
 const carouselImage = document.getElementById('carousel-image');
@@ -169,8 +184,8 @@ function openPreview(groupImages) {
   currentIndex = 0;
   showImage(currentIndex);
   preview.style.display = 'flex';
-  document.getElementById('container').style.transform = 'translateY(100px)';
-  document.body.style.overflow = 'auto';
+  document.getElementById('container').style.filter = 'blur(4px)';
+  document.body.style.overflow = 'hidden';
 }
 
 function showImage(index) {
@@ -181,12 +196,15 @@ function showImage(index) {
   carouselText.textContent = currentGroup[index].text;
 }
 
-prevBtn.addEventListener('click', () => showImage(currentIndex - 1));
-nextBtn.addEventListener('click', () => showImage(currentIndex + 1));
-closePreviewBtn.addEventListener('click', () => {
+prevBtn.onclick = () => showImage(currentIndex - 1);
+nextBtn.onclick = () => showImage(currentIndex + 1);
+closePreviewBtn.onclick = () => {
   preview.style.display = 'none';
-  document.getElementById('container').style.transform = 'translateY(0)';
-});
+  document.getElementById('container').style.filter = 'none';
+  document.body.style.overflow = 'auto';
+};
+
+// Animation
 
 function animate() {
   requestAnimationFrame(animate);
@@ -194,6 +212,8 @@ function animate() {
   renderer.render(scene, camera);
 }
 animate();
+
+// Gestion responsive
 
 window.addEventListener('resize', () => {
   const width = window.innerWidth;
