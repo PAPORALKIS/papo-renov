@@ -39,7 +39,7 @@ function getAdaptiveRadius (numImages) {
   const planeSize = getResponsivePlaneSize();
   const radius    = planeSize * Math.sqrt(numImages / (4 * Math.PI * COVER));
   // bornes de sécurité
-  return THREE.MathUtils.clamp(radius, 3, 12);
+  return THREE.MathUtils.clamp(radius*1.2, 4, 20);
 }
 
 function getResponsivePlaneSize () {
@@ -50,9 +50,10 @@ function getResponsivePlaneSize () {
 
 function getNonOverlappingPlaneSize (numImages, radius) {
   /*  surface ≃ 4πR² / n  →  écart moyen ≃ √surface  */
+  const CAMERA_MARGIN = 1.3;
   const areaPerPoint = 4 * Math.PI * radius * radius / numImages;
   const spacing      = Math.sqrt(areaPerPoint);   // distance centre-à-centre
-  const safeDiag     = spacing * 0.7;             // 30 % de marge visuelle
+  const safeDiag     = spacing * 0.6;             // 30 % de marge visuelle
   const safeSize     = safeDiag / Math.SQRT2;     // diag = size*√2
   // on respecte quand même la taille responsive maxi
   return Math.min(getResponsivePlaneSize(), safeSize);
