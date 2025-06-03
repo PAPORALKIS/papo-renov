@@ -1,5 +1,3 @@
-
-
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
@@ -95,6 +93,7 @@ const imagesData = [
   { url: '../meuble-laura-1.jpg', text: 'Image 8 - Description', group: null },
   { url: '../meuble-laura-2.jpg', text: 'Image 8 - Description', group: null },
 ];
+
 const planes = [];
 let spherePoints = [];
 
