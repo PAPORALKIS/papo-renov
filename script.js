@@ -50,7 +50,7 @@ controls.enableDamping = true;
 controls.autoRotate = true;
 controls.autoRotateSpeed = 2.0;
 controls.enableZoom = true;
-camera.position.set(0, 0, 30);
+camera.position.set(0, 0, 80);
 
 scene.add(new THREE.AmbientLight(0xffffff, 1));
 
