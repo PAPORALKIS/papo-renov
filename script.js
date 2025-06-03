@@ -1,6 +1,9 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
+// ✅ MODIF: hauteur de la barre de menu
+const menuHeight = 60
+
 function getResponsiveRadius() {
   const minDim = Math.min(window.innerWidth, window.innerHeight);
   if (minDim < 480) return 3;
@@ -40,10 +43,28 @@ function generatePointsOnSphere(numPoints, radius) {
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
 const renderer = new THREE.WebGLRenderer({ antialias: true });
-renderer.setSize(window.innerWidth, window.innerHeight);
+
+// ✅ MODIF: container sous la barre
+const container = document.getElementById('container');
+container.appendChild(renderer.domElement);
+container.style.position = 'absolute';
+container.style.top = `${menuHeight}px`;
+container.style.left = '0';
+container.style.width = '100%';
+container.style.height = `calc(100vh - ${menuHeight}px)`;
+container.style.overflow = 'hidden';
+
+function resizeRenderer() {
+  const width = window.innerWidth;
+  const height = window.innerHeight - menuHeight; // ✅ MODIF
+  renderer.setSize(width, height);
+  camera.aspect = width / height;
+  camera.updateProjectionMatrix();
+}
+resizeRenderer(); // ✅ MODIF
+
 renderer.setPixelRatio(window.devicePixelRatio);
 renderer.setClearColor(0x0a0f2c);
-document.getElementById('container').appendChild(renderer.domElement);
 
 const controls = new OrbitControls(camera, renderer.domElement);
 controls.enableDamping = true;
@@ -194,10 +215,6 @@ function animate() {
 animate();
 
 window.addEventListener('resize', () => {
-  const width = window.innerWidth;
-  const height = window.innerHeight;
-  renderer.setSize(width, height);
-  camera.aspect = width / height;
-  camera.updateProjectionMatrix();
-  updatePositions();
+  resizeRenderer();  // ✅ MODIF
+  updatePositions(); // ✅ MODIF
 });
