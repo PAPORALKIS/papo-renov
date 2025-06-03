@@ -52,7 +52,6 @@ controls.autoRotateSpeed = 2.0;
 controls.enableZoom = false;
 camera.position.set(0, 0, 30);
 
-scene.add(new THREE.AxesHelper(10));
 scene.add(new THREE.AmbientLight(0xffffff, 1));
 
 const loader = new THREE.TextureLoader();
