@@ -1,196 +1,188 @@
 <!DOCTYPE html>
 <html lang="fr">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Réalisations - Papo Renov</title>
-  <!-- <link rel="stylesheet" href="../style.css" /> -->
-   <style>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Réalisations - Papo Renov</title>
+
+    <!-- Polices & librairies externes -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+    <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet" />
+
+    <!-- Import map Three.js -->
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "https://unpkg.com/three@0.162.0/build/three.module.js",
+          "three/addons/": "https://unpkg.com/three@0.162.0/examples/jsm/"
+        }
+      }
+    </script>
+
+    <!-- Styles internes minimalistes (tu peux évidemment extraire dans un .css) -->
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        font-family: "Poppins", sans-serif;
+      }
 
       header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background: white;
-    padding: 10px 20px;
-    border-bottom: 1px solid #ccc;
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-  }
-
-  nav ul {
-    display: flex;
-    gap: 15px;
-    list-style: none;
-  }
-
-  nav ul li a {
-    text-decoration: none;
-    color: #333;
-    font-weight: 600;
-    padding: 8px 10px;
-    transition: color 0.3s ease;
-  }
-
-  nav ul li a:hover,
-  nav ul li a.active {
-    color: #007bff;
-    border-bottom: 2px solid #007bff;
-  }
-
-  .burger {
-    display: none; /* ou bloc si tu veux mobile */
-  }
-
-
-    #container {
-      width: 100vw;
-      height: 100vh;
-      background: radial-gradient(circle at center, #0d0d1a 0%, #000 100%);
-      position: fixed;
-      top: 0;
-      left: 0;
-    }
-
-    canvas {
-      position: fixed;
-      top: 0;
-      left: 0;
-      pointer-events: auto;
-      z-index: 0;
-    }
-
-    /* vue du caroussel */
-    #preview {
-      position: fixed;
-      top:0;
-      right: 0;
-      width: 35vw;
-      height: 100vh;
-      background-color: #111a44;
-      color: white;
-      display: flex; /* tu peux changer selon besoin */
-      flex-direction: column;
-      align-items: center;
-      padding: 10px;
-      box-sizing: border-box;
-      z-index: 2000; /* très important ! mettre au-dessus du header */
-    }
-
-
-    #close-preview {
-      align-self: flex-end;
-      background: transparent;
-      border: none;
-      color: white;
-      font-size: 1.5rem;
-      cursor: pointer;
-    }
-
-    #carousel-container {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 100%;
-      height: 90%;
-      gap: 10px;
-    }
-
-    #prev-btn, #next-btn {
-      background: transparent;
-      border: none;
-      font-size: 2rem;
-      color: white;
-      cursor: pointer;
-      user-select: none;
-    }
-
-    #carousel-slide {
-      flex-grow: 1;
-      text-align: center;
-    }
-
-    #carousel-slide img {
-      max-width: 100%;
-      max-height: 70vh;
-      border-radius: 10px;
-      user-select: none;
-    }
-
-    #carousel-slide p {
-      margin-top: 10px;
-    }
-
-  
-
-    /* ne pas voir la barre sous les images  */
-    #carousel-track {
-      /* ... existant ... */
-      scrollbar-width: none; /* Firefox */
-      -ms-overflow-style: none;  /* IE 10+ */
-    }
-
-    #carousel-track::-webkit-scrollbar {
-      display: none; /* Chrome, Safari, Opera */
-    }
-
-
-</style>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-  <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
-    <script type="importmap">
-    {
-      "imports": {
-        "three": "https://unpkg.com/three@0.162.0/build/three.module.js",
-        "three/addons/": "https://unpkg.com/three@0.162.0/examples/jsm/"
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+        background: #fff;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px 20px;
+        border-bottom: 1px solid #ccc;
       }
-    }
-  </script>
-</head>
-<body>
-  <header>
-    <!-- <div class="logo">
-      <img src="../logo.png" alt="Logo Papo Renov" />
-    </div> -->
-    <nav>
-      <ul>
-        <li><a href="../index.html">Accueil</a></li>
-        <li><a href="realisations.html">Réalisations</a></li>
-        <li><a href="tarifs.html">Tarifs</a></li>
-        <li><a href="planning.html">Planning</a></li>
-        <li><a href="devis.html">Demande de devis</a></li>
-        <li><a href="contact.html">Contact</a></li>
-      </ul>
-    </nav>
-    <div class="burger" onclick="toggleMenu()">☰</div>
-  </header>
+      nav ul {
+        list-style: none;
+        display: flex;
+        gap: 15px;
+      }
+      nav a {
+        text-decoration: none;
+        color: #333;
+        font-weight: 600;
+        padding: 8px 10px;
+        transition: color 0.3s ease;
+      }
+      nav a:hover,
+      nav a.active {
+        color: #007bff;
+        border-bottom: 2px solid #007bff;
+      }
+      .burger {
+        display: none; /* visible si tu veux un menu mobile */
+      }
 
-  <section class="titre-section" data-aos="fade-down">
-    <h1>Nos Réalisations</h1>
-    <p>Découvrez quelques-uns de nos projets récents</p>
-  </section>
+      /* ---------- GLOBE CANVAS ---------- */
+      #container {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background: radial-gradient(circle at center, #0d0d1a 0%, #000 100%);
+        z-index: 0; /* sous la navbar */
+      }
+      canvas {
+        position: fixed;
+        top: 0;
+        left: 0;
+        pointer-events: auto;
+        z-index: 0;
+      }
 
-  <section id="globe-section">
-    <div id="container"></div>
-    <div id="preview" style="display:none;">
-    <button id="close-preview">X</button>
-    <div id="carousel-container">
-      <button id="prev-btn">&#8592;</button>
-      <div id="carousel-slide">
-        <img id="carousel-image" src="" alt="" />
-        <p id="carousel-text"></p>
+      /* ---------- PREVIEW / CARROUSSEL ---------- */
+      #preview {
+        position: fixed;
+        top: 0;
+        right: 0;
+        width: 35vw;
+        height: 100vh;
+        background: #111a44;
+        color: #fff;
+        display: none; /* affiché dynamiquement */
+        flex-direction: column;
+        align-items: center;
+        padding: 10px;
+        z-index: 2000; /* au-dessus de tout */
+      }
+      #close-preview {
+        align-self: flex-end;
+        background: none;
+        border: none;
+        color: #fff;
+        font-size: 1.5rem;
+        cursor: pointer;
+      }
+      #carousel-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        height: 90%;
+        gap: 10px;
+      }
+      #prev-btn,
+      #next-btn {
+        background: transparent;
+        border: none;
+        font-size: 2rem;
+        color: #fff;
+        cursor: pointer;
+        user-select: none;
+      }
+      #carousel-slide {
+        flex-grow: 1;
+        text-align: center;
+      }
+      #carousel-slide img {
+        max-width: 100%;
+        max-height: 70vh;
+        border-radius: 10px;
+        user-select: none;
+      }
+      #carousel-slide p {
+        margin-top: 10px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- ---------- HEADER / NAV ---------- -->
+    <header>
+      <nav>
+        <ul>
+          <li><a href="../index.html">Accueil</a></li>
+          <li><a href="realisations.html" class="active">Réalisations</a></li>
+          <li><a href="tarifs.html">Tarifs</a></li>
+          <li><a href="planning.html">Planning</a></li>
+          <li><a href="devis.html">Demande de devis</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </nav>
+      <div class="burger" onclick="toggleMenu()">☰</div>
+    </header>
+
+    <!-- ---------- TITRE SECTION ---------- -->
+    <section class="titre-section" data-aos="fade-down" style="text-align:center; padding:80px 20px 20px 20px; color:#fff; position:relative; z-index:1;">
+      <h1>Nos Réalisations</h1>
+      <p>Découvrez quelques-uns de nos projets récents</p>
+    </section>
+
+    <!-- ---------- GLOBE SECTION ---------- -->
+    <section id="globe-section">
+      <div id="container"></div>
+
+      <div id="preview">
+        <button id="close-preview">X</button>
+        <div id="carousel-container">
+          <button id="prev-btn">&#8592;</button>
+          <div id="carousel-slide">
+            <img id="carousel-image" src="" alt="" />
+            <p id="carousel-text"></p>
+          </div>
+          <button id="next-btn">&#8594;</button>
+        </div>
       </div>
-      <button id="next-btn">&#8594;</button>
-    </div>
-  </div>
-  </section>
+    </section>
 
-  <script type="module" src="../script.js"></script>
+    <!-- ---------- SCRIPTS ---------- -->
+    <!-- Ton module JavaScript avec le globe -->
+    <script type="module" src="../js/realisations.js"></script>
+    <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+    <script>
+      AOS.init();
+    </script>
 
-  
-<footer>
-    <p>&copy; 2025 Papo Renov - Tous droits réservés</p>
-  </footer>
-</body>
+    <footer style="text-align:center; padding:40px 0; color:#fff; background:#000;">
+      <p>&copy; 2025 Papo Renov - Tous droits réservés</p>
+    </footer>
+  </body>
 </html>
