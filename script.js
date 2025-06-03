@@ -245,7 +245,6 @@ function openPreview(groupImages) {
   currentIndex = 0;
   showImage(currentIndex);
   preview.style.display = 'flex';
-  document.getElementById('container').style.transform = 'translateY(100px)';
   document.body.style.overflow = 'auto';
 }
 
@@ -261,7 +260,6 @@ prevBtn.addEventListener('click', () => showImage(currentIndex - 1));
 nextBtn.addEventListener('click', () => showImage(currentIndex + 1));
 closePreviewBtn.addEventListener('click', () => {
   preview.style.display = 'none';
-  document.getElementById('container').style.transform = 'translateY(0)';
 });
 
 function animate() {
