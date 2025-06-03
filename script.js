@@ -21,10 +21,8 @@ function getAdaptiveRadius(numImages) {
 
 function getResponsivePlaneSize() {
   const width = window.innerWidth;
-  if (width < 480) return 1.3;
-  if (width < 768) return 1.7;
-  if (width < 1024) return 2.2;
-  return 2.8;
+  // 1.2 → sur mobile, 2.8 → grand écran
+  return THREE.MathUtils.clamp(width / 400, 1.2, 2.8);
 }
 
 function generatePointsOnSphere(numPoints, radius) {
@@ -114,7 +112,8 @@ function updatePositions() {
     mesh.lookAt(0, 0, 0);
   });
 
-  camera.position.set(0, 0, radius + 6);
+  updateCameraDistance(radius);
+  camera.position.set(0, 0, distance);
   controls.update();
 }
 
