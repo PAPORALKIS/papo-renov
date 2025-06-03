@@ -6,6 +6,20 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 //  Constantes & Réglages
 // ------------------------
 const COVER = 0.60; // % de surface de sphère que l’on veut réellement couvrir
+// ------------------------
+//  Marges d'interface (header fixe, bords)
+// ------------------------
+const UI = {
+  top: 80,   // hauteur en px de ta barre de menus (adapte si besoin)
+  edge: 16   // marge intérieure aux quatre bords
+};
+
+function getViewport () {
+  // Surface réellement visible pour la 3D
+  const w = window.innerWidth  - UI.edge * 2;
+  const h = window.innerHeight - UI.top  - UI.edge * 2;
+  return { width: w, height: h, aspect: w / h };
+}
 
 // ------------------------
 //  Fonctions « responsive »
@@ -34,11 +48,35 @@ function getResponsivePlaneSize () {
   return THREE.MathUtils.clamp(width / 400, 1.2, 2.8);
 }
 
-function updateCameraDistance (radius) {
-  const fov      = THREE.MathUtils.degToRad(camera.fov);
-  const distance = radius / Math.tan(fov / 2) * 1.20; // 20 % de marge visuelle
-  camera.position.set(0, 0, 10);
-  return distance; // utile si on veut ré‑utiliser la valeur
+function getNonOverlappingPlaneSize (numImages, radius) {
+  /*  surface ≃ 4πR² / n  →  écart moyen ≃ √surface  */
+  const areaPerPoint = 4 * Math.PI * radius * radius / numImages;
+  const spacing      = Math.sqrt(areaPerPoint);   // distance centre-à-centre
+  const safeDiag     = spacing * 0.7;             // 30 % de marge visuelle
+  const safeSize     = safeDiag / Math.SQRT2;     // diag = size*√2
+  // on respecte quand même la taille responsive maxi
+  return Math.min(getResponsivePlaneSize(), safeSize);
+}
+
+function updateCameraDistance (radius, planeSize) {
+  // Rayon englobant = sphère + demi-diagonale du plus grand plan
+  const boundingR = radius + (planeSize * Math.SQRT2) / 2;
+
+  const vp       = getViewport();
+  const vFovRad  = THREE.MathUtils.degToRad(camera.fov);
+  const hFovRad  = 2 * Math.atan(Math.tan(vFovRad / 2) * vp.aspect);
+
+  const distV    = boundingR / Math.tan(vFovRad / 2);
+  const distH    = boundingR / Math.tan(hFovRad / 2);
+  const distance = Math.max(distV, distH) * 1.05;   // +5 % de marge
+
+  camera.position.set(0, 0, distance);
+
+  // bornes de zoom utilisateur
+  controls.minDistance = distance * 0.8;
+  controls.maxDistance = distance * 1.5;
+
+  return distance;
 }
 
 // ------------------------
@@ -130,7 +168,7 @@ let   spherePoints = [];
 // ------------------------
 function updatePositions () {
   const radius    = getAdaptiveRadius(planes.length);
-  const planeSize = getResponsivePlaneSize();
+  const planeSize = getNonOverlappingPlaneSize(planes.length, radius); // ⬅️ nouveau
   spherePoints    = generatePointsOnSphere(planes.length, radius);
 
   planes.forEach(({ mesh }, i) => {
@@ -140,7 +178,7 @@ function updatePositions () {
     mesh.lookAt(0, 0, 0);
   });
 
-  updateCameraDistance(radius);
+  updateCameraDistance(radius, planeSize);  // ⬅️ on passe planeSize
   controls.update();
 }
 
