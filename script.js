@@ -53,7 +53,7 @@ function getNonOverlappingPlaneSize (numImages, radius) {
   const CAMERA_MARGIN = 1.3;
   const areaPerPoint = 4 * Math.PI * radius * radius / numImages;
   const spacing      = Math.sqrt(areaPerPoint);   // distance centre-à-centre
-  const safeDiag     = spacing * 0.75;             // 30 % de marge visuelle
+  const safeDiag     = spacing * 0.95;             // 30 % de marge visuelle
   const safeSize     = safeDiag / Math.SQRT2;     // diag = size*√2
   // on respecte quand même la taille responsive maxi
   return Math.min(getResponsivePlaneSize(), safeSize);
