@@ -1,9 +1,4 @@
 
-// === Structure HTML à prévoir dans votre page ===
-// <div id="navbar"> ... </div>
-// <div id="container"></div>
-// <div id="preview"> ... </div>
-
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
@@ -45,7 +40,6 @@ function generatePointsOnSphere(numPoints, radius) {
 
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
-
 const renderer = new THREE.WebGLRenderer({ antialias: true });
 renderer.setSize(window.innerWidth, window.innerHeight);
 renderer.setPixelRatio(window.devicePixelRatio);
@@ -58,6 +52,9 @@ controls.autoRotate = true;
 controls.autoRotateSpeed = 2.0;
 controls.enableZoom = false;
 camera.position.set(0, 0, 30);
+
+scene.add(new THREE.AxesHelper(10));
+scene.add(new THREE.AmbientLight(0xffffff, 1));
 
 const loader = new THREE.TextureLoader();
 const raycaster = new THREE.Raycaster();
@@ -97,7 +94,6 @@ const imagesData = [
   { url: '../meuble-laura-1.jpg', text: 'Image 8 - Description', group: null },
   { url: '../meuble-laura-2.jpg', text: 'Image 8 - Description', group: null },
 ];
-
 const planes = [];
 let spherePoints = [];
 
@@ -113,28 +109,32 @@ function updatePositions() {
     mesh.position.copy(pos);
     mesh.lookAt(0, 0, 0);
   });
+
   camera.position.set(0, 0, radius + 6);
+  controls.update();
 }
 
-let texturesLoaded = 0;
-
-imagesData.forEach((imgData) => {
-  loader.load(imgData.url, (texture) => {
-    const material = new THREE.MeshBasicMaterial({
-      map: texture,
-      side: THREE.DoubleSide,
-      transparent: true,
-    });
-    const geometry = new THREE.PlaneGeometry(getResponsivePlaneSize(), getResponsivePlaneSize());
-    const plane = new THREE.Mesh(geometry, material);
-    scene.add(plane);
-    planes.push({ mesh: plane, data: imgData });
-
-    texturesLoaded++;
-    if (texturesLoaded === imagesData.length) {
+imagesData.forEach((imgData, index) => {
+  loader.load(
+    imgData.url,
+    (texture) => {
+      console.log(`Image chargée (${index + 1}/${imagesData.length}):`, imgData.url);
+      const material = new THREE.MeshBasicMaterial({
+        map: texture,
+        side: THREE.DoubleSide,
+        transparent: true,
+      });
+      const geometry = new THREE.PlaneGeometry(getResponsivePlaneSize(), getResponsivePlaneSize());
+      const plane = new THREE.Mesh(geometry, material);
+      scene.add(plane);
+      planes.push({ mesh: plane, data: imgData });
       updatePositions();
+    },
+    undefined,
+    (error) => {
+      console.warn('Erreur de chargement :', imgData.url, error);
     }
-  });
+  );
 });
 
 function onMouseClick(event) {
@@ -202,6 +202,3 @@ window.addEventListener('resize', () => {
   camera.updateProjectionMatrix();
   updatePositions();
 });
-
-
-{"query":"three.js responsive 3D globe image gallery with floating toolbar and adaptive layout"}
