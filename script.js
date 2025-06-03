@@ -5,7 +5,7 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 // ------------------------
 //  Constantes & Réglages
 // ------------------------
-const COVER = 0.45; // % de surface de sphère que l’on veut réellement couvrir
+const COVER = 0.55; // % de surface de sphère que l’on veut réellement couvrir
 
 // ------------------------
 //  Fonctions « responsive »
