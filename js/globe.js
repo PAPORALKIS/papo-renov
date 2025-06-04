@@ -1,7 +1,27 @@
 import * as THREE from 'three';
 
-// Initialisation
-const container = document.getElementById("globe-container");
+// Sélection des éléments DOM
+const container = document.getElementById("container");
+const preview = document.getElementById('preview');
+const closeBtn = document.getElementById('close-preview');
+const carouselImage = document.getElementById('carousel-image');
+const carouselText = document.getElementById('carousel-text');
+
+// Fonction ouverture du preview
+function openPreview(imageSrc, text = '') {
+  preview.style.display = 'flex';
+  container.classList.add('shift-left');
+  carouselImage.src = imageSrc;
+  carouselText.textContent = text;
+}
+
+// Fermeture du preview
+closeBtn.addEventListener('click', () => {
+  preview.style.display = 'none';
+  container.classList.remove('shift-left');
+});
+
+// Three.js : Initialisation
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(
   75,
@@ -23,7 +43,12 @@ scene.add(logoSprite);
 
 camera.position.z = 6;
 
-// Utilitaire de création de sprite
+// Raycaster & interaction
+const interactiveSprites = [];
+const raycaster = new THREE.Raycaster();
+const mouse = new THREE.Vector2();
+
+// Création de sprite
 function createSprite(path, index, total, radius = 4.5, imageSize = 1) {
   const loader = new THREE.TextureLoader();
   return new Promise((resolve) => {
@@ -39,13 +64,15 @@ function createSprite(path, index, total, radius = 4.5, imageSize = 1) {
       sprite.position.set(x, y, z);
       sprite.scale.set(imageSize, imageSize, 1);
 
+      sprite.userData = { path };
+      interactiveSprites.push(sprite);
       scene.add(sprite);
       resolve();
     });
   });
 }
 
-// Chargement progressif des sprites (batch limit)
+// Chargement des sprites par lots
 async function loadSpritesInBatches(imagePaths, batchSize = 5, delay = 100) {
   const radius = window.innerWidth < 768 ? 2.5 : window.innerWidth < 1024 ? 3.5 : 4.5;
 
@@ -54,20 +81,20 @@ async function loadSpritesInBatches(imagePaths, batchSize = 5, delay = 100) {
     await Promise.all(
       batch.map((path, idx) => createSprite(path, i + idx, imagePaths.length, radius))
     );
-    await new Promise(resolve => setTimeout(resolve, delay)); // petit délai entre lots
+    await new Promise(resolve => setTimeout(resolve, delay));
   }
 }
 
-// Chargement du JSON et lancement
+// Lancement
 fetch("img/images.json")
   .then(res => res.json())
   .then(images => {
     const paths = images.map(name => `img/${name}`);
-    loadSpritesInBatches(paths, 4, 150); // ajuste selon la performance
+    loadSpritesInBatches(paths, 4, 150);
   })
   .catch(err => console.error("Erreur chargement JSON:", err));
 
-// Animation avec limite de FPS (~30 FPS)
+// Animation
 let lastTime = 0;
 function animate(time) {
   if (time - lastTime > 33) {
@@ -78,6 +105,22 @@ function animate(time) {
   requestAnimationFrame(animate);
 }
 animate();
+
+// Click détecté sur sprite
+renderer.domElement.addEventListener('click', (event) => {
+  const rect = renderer.domElement.getBoundingClientRect();
+  mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
+  mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
+
+  raycaster.setFromCamera(mouse, camera);
+  const intersects = raycaster.intersectObjects(interactiveSprites);
+
+  if (intersects.length > 0) {
+    const sprite = intersects[0].object;
+    const imagePath = sprite.userData.path;
+    openPreview(imagePath, "Description à venir...");
+  }
+});
 
 // Redimensionnement
 window.addEventListener('resize', () => {
