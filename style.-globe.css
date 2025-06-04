@@ -95,3 +95,12 @@ canvas {
 #carousel-track::-webkit-scrollbar {
   display: none; /* Chrome, Safari, Opera */
 }
+#carousel-track::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
+
+/* Décalage du globe quand le preview est ouvert */
+.shift-left {
+  transform: translateX(-17vw);
+  transition: transform 0.4s ease;
+}
