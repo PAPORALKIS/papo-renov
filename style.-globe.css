@@ -99,6 +99,6 @@ canvas {
   display: none; /* Chrome, Safari, Opera */
 }
 #container.shift-left {
-  transform: translateX(-17.5vw); /* moitié de la largeur du preview */
+  transform: translateX(-35vw); /* moitié de la largeur du preview */
   transition: transform 0.5s ease;
 }
