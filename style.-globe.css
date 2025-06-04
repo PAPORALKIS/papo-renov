@@ -104,3 +104,8 @@ canvas {
   transform: translateX(-17vw);
   transition: transform 0.4s ease;
 }
+/* Décalage du container vers la gauche quand le preview est ouvert */
+.shift-left {
+  transform: translateX(-17vw);
+  transition: transform 0.4s ease;
+}
