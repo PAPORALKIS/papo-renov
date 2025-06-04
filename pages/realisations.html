@@ -82,7 +82,11 @@
       z-index: 2000; /* très important ! mettre au-dessus du header */
     }
 
-
+    #container.shift-left {
+  transform: translateX(-17.5vw); /* moitié de la largeur du preview */
+  transition: transform 0.5s ease;
+    }
+     
     #close-preview {
       align-self: flex-end;
       background: transparent;
