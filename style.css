@@ -209,6 +209,31 @@ footer {
   margin-bottom: 8px;
   line-height: 1.4;
 }
+/* Bouton "Ajouter à mes contacts" - visible uniquement sur smartphone */
+.btn-contact-smartphone {
+  display: none;
+}
 
+@media (max-width: 768px) {
+  .btn-contact-smartphone {
+    display: inline-block;
+    margin-top: 1em;
+  }
+
+  .btn-contact-smartphone button {
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    padding: 0.6em 1.2em;
+    border-radius: 8px;
+    font-size: 1em;
+    cursor: pointer;
+    font-family: 'Poppins', sans-serif;
+  }
+
+  .btn-contact-smartphone button:hover {
+    background-color: #0056b3;
+  }
+}
 
 
