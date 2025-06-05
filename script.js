@@ -1,3 +1,279 @@
+// globe.js – version optimisée pour mobile & tablette
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
+// ------------------------
+//  Constantes & Réglages
+// ------------------------
+const COVER = 0.30;
+const UI = { top: 80, edge: 16 };
+
+function getViewport () {
+  const w = window.innerWidth  - UI.edge * 2;
+  const h = window.innerHeight - UI.top  - UI.edge * 2;
+  return { width: w, height: h, aspect: w / h };
+}
+
+function getResponsiveRadius () {
+  const minDim = Math.min(window.innerWidth, window.innerHeight);
+  return THREE.MathUtils.clamp(minDim / 120, 3, 10);
+}
+
+function getAdaptiveRadius (numImages) {
+  const planeSize = getResponsivePlaneSize();
+  const radius = planeSize * Math.sqrt(numImages / (4 * Math.PI * COVER));
+  return THREE.MathUtils.clamp(radius*1.2, 4, 20);
+}
+
+function getResponsivePlaneSize () {
+  const width = window.innerWidth;
+  return THREE.MathUtils.clamp(width / 400, 1.2, 6);
+}
+
+function getNonOverlappingPlaneSize(numImages, radius) {
+  const areaPerPoint = 4 * Math.PI * radius * radius / numImages;
+  const spacing = Math.sqrt(areaPerPoint);
+  const safeDiag = spacing * 0.75;
+  const safeSize = safeDiag / Math.SQRT2;
+  const responsiveMax = getResponsivePlaneSize();
+  const upscaleFactor = 1.25;
+  return Math.min(safeSize * upscaleFactor, responsiveMax * 1.5);
+}
+
+function updateCameraDistance (radius, planeSize) {
+  const boundingR = radius + (planeSize * Math.SQRT2) / 2;
+  const vp = getViewport();
+  const vFovRad = THREE.MathUtils.degToRad(camera.fov);
+  const hFovRad = 2 * Math.atan(Math.tan(vFovRad / 2) * vp.aspect);
+  const distV = boundingR / Math.tan(vFovRad / 2);
+  const distH = boundingR / Math.tan(hFovRad / 2);
+  const distance = Math.max(distV, distH) * 1.30;
+  camera.position.set(0, 0, distance);
+  controls.minDistance = distance * 0.8;
+  controls.maxDistance = distance * 1.5;
+  return distance;
+}
+
+function generatePointsOnSphere (numPoints, radius) {
+  const points = [];
+  const offset = 2 / numPoints;
+  const increment = Math.PI * (3 - Math.sqrt(5));
+  for (let i = 0; i < numPoints; i++) {
+    const y = ((i * offset) - 1) + (offset / 2);
+    const r = Math.sqrt(1 - y * y);
+    const phi = i * increment;
+    const x = Math.cos(phi) * r;
+    const z = Math.sin(phi) * r;
+    points.push(new THREE.Vector3(x * radius, y * radius, z * radius));
+  }
+  return points;
+}
+
+// ------------------------
+//  Scène, caméra, renderer
+// ------------------------
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
+const renderer = new THREE.WebGLRenderer({ antialias: true });
+renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.setPixelRatio(window.devicePixelRatio);
+renderer.setClearColor(0x0a0f2c);
+document.getElementById('container').appendChild(renderer.domElement);
+
+const controls = new OrbitControls(camera, renderer.domElement);
+controls.enableDamping = true;
+controls.autoRotate = true;
+controls.autoRotateSpeed = 2.0;
+controls.enableZoom = true;
+controls.enablePan = false;
+controls.mouseButtons.RIGHT = THREE.MOUSE.ROTATE;
+renderer.domElement.addEventListener('contextmenu', e => e.preventDefault());
+
+camera.position.set(0, 0, 80);
+scene.add(new THREE.AmbientLight(0xffffff, 1));
+
+// ------------------------
+//  Chargement des images
+// ------------------------
+const loader = new THREE.TextureLoader();
+loader.setCrossOrigin('anonymous'); // utile si images externes
+const raycaster = new THREE.Raycaster();
+const mouse = new THREE.Vector2();
+
+const isTablet = /iPad|Tablet|Android(?!.*Mobile)/i.test(navigator.userAgent);
+const MAX_IMAGES = isTablet ? 20 : imagesData.length;
+
+const imagesData = [
+  // (ton tableau original d'images, inchangé)
+  const imagesData = [
+  { url: '../img/CHBR0.jpg', text: 'Image 0 - Description', group: 'A' },
+  { url: '../img/CHBR1.jpg', text: 'Image 2 - Description', group: 'A' },
+  { url: '../img/CUIEXT.jpg', text: 'Image 3 - Description', group: 'B' },
+  { url: '../img/CUIEXT1.jpg', text: 'Image 4 - Description', group: 'B' },
+  { url: '../img/CUIEXT2.jpg', text: 'Image 5 - Description', group: 'B' },
+  { url: '../img/CUIEXT3.jpg', text: 'Image 6 - Description', group: 'B' },
+  { url: '../img/CUIEXT4.jpg', text: 'Image 7 - Description', group: 'B' },
+  { url: '../img/CUIEXT5.jpg', text: 'Image 8 - Description', group: 'B' },
+  { url: '../img/CUIEXT6.jpg', text: 'Image 8 - Description', group: 'B' },
+  { url: '../img/CUIMARS1.jpg', text: 'Image 8 - Description', group: 'C' },
+  { url: '../img/CUIMARS2.jpg', text: 'Image 8 - Description', group: 'C' },
+  { url: '../img/CUIMARS3.jpg', text: 'Image 8 - Description', group: 'C' },
+  { url: '../img/CUIMARS4.jpg', text: 'Image 8 - Description', group: 'C' },
+  { url: '../img/Iso2.jpg', text: 'Image 8 - Description', group: 'D' },
+  { url: '../img/Iso3.jpg', text: 'Image 8 - Description', group: 'D' },
+  { url: '../img/Iso4.jpg', text: 'Image 8 - Description', group: 'D' },
+  { url: '../img/Iso5.jpg', text: 'Image 8 - Description', group: 'D' },
+  { url: '../img/Iso6.jpg', text: 'Image 8 - Description', group: 'D' },
+  { url: '../img/SDB1.jpg', text: 'Image 8 - Description', group: 'C' },
+  { url: '../img/SDB2.jpg', text: 'Image 8 - Description', group: 'C' },
+  { url: '../img/SDB3.jpg', text: 'Image 8 - Description', group: 'C' },
+  { url: '../img/SDB4.jpg', text: 'Image 8 - Description', group: 'C' },
+  { url: '../img/SDB5.jpg', text: 'Image 8 - Description', group: 'C' },
+  { url: '../img/WC1.jpg', text: 'Image 8 - Description', group: 'C' },
+  { url: '../img/WC2.jpg', text: 'Image 8 - Description', group: 'C' },
+  { url: '../cuisine_exterieure_cyporex.jpg', text: 'Image 8 - Description', group: 'B' },
+  { url: '../img/ext1.jpg', text: 'Image 8 - Description', group: 'E' },
+  { url: '../img/ext2.jpg', text: 'Image 8 - Description', group: 'E' },
+  { url: '../img/exterieur.jpg', text: 'Image 8 - Description', group: 'E' },
+  { url: '../img/Iso1.jpg', text: 'Image 8 - Description', group: 'D' },
+  { url: '../img/meuble-laura-1.jpg', text: 'Image 8 - Description', group: 'F' },
+  { url: '../img/meuble-laura-2.jpg', text: 'Image 8 - Description', group: 'F' },
+  { url: '../img/meuble-laura-3.jpg', text: 'Image 8 - Description', group: 'F' },
+  { url: '../img/martegauxavant1.jpg', text: 'Image 8 - Description', group: 'G' },
+  { url: '../img/martegauxavant2.jpg', text: 'Image 8 - Description', group: 'G' },
+  { url: '../img/martegauxavant3.jpg', text: 'Image 8 - Description', group: 'G' },
+  { url: '../img/martegauxB.jpg', text: 'Image 8 - Description', group: 'G' },
+  { url: '../img/martegauxC.jpg', text: 'Image 8 - Description', group: 'G' },
+  { url: '../img/martegauxD.jpg', text: 'Image 8 - Description', group: 'G' },
+  { url: '../img/martegauxE.jpg', text: 'Image 8 - Description', group: 'G' },
+  { url: '../img/velaux0.jpg', text: 'Image 8 - Description', group: 'H' },
+  { url: '../img/velaux1.jpg', text: 'Image 8 - Description', group: 'H' },
+  { url: '../img/velaux2.jpg', text: 'Image 8 - Description', group: 'H' },
+  { url: '../img/velaux3.jpg', text: 'Image 8 - Description', group: 'H' },
+];
+
+const planes = [];
+let spherePoints = [];
+
+function updatePositions () {
+  const radius = getAdaptiveRadius(planes.length);
+  const planeSize = getNonOverlappingPlaneSize(planes.length, radius);
+  spherePoints = generatePointsOnSphere(planes.length, radius);
+  planes.forEach(({ mesh }, i) => {
+    mesh.geometry.dispose();
+    mesh.geometry = new THREE.PlaneGeometry(planeSize, planeSize);
+    mesh.position.copy(spherePoints[i]);
+    mesh.lookAt(0, 0, 0);
+  });
+  updateCameraDistance(radius, planeSize);
+  controls.update();
+}
+
+// ------------------------
+//  Texture optimisée
+// ------------------------
+function loadTextureOptimized(url, callback) {
+  loader.load(
+    url,
+    texture => {
+      texture.minFilter = THREE.LinearFilter;
+      texture.magFilter = THREE.LinearFilter;
+      texture.anisotropy = 2;
+      texture.generateMipmaps = false;
+      callback(texture);
+    },
+    undefined,
+    err => console.warn('Erreur chargement texture :', url, err)
+  );
+}
+
+// ------------------------
+//  Chargement dynamique limité
+// ------------------------
+imagesData.slice(0, MAX_IMAGES).forEach((imgData, index) => {
+  loadTextureOptimized(imgData.url, (texture) => {
+    console.log(`Image chargée (${index + 1}/${MAX_IMAGES}):`, imgData.url);
+    const material = new THREE.MeshBasicMaterial({
+      map: texture,
+      side: THREE.DoubleSide,
+      transparent: true,
+    });
+    const geometry = new THREE.PlaneGeometry(getResponsivePlaneSize(), getResponsivePlaneSize());
+    const plane = new THREE.Mesh(geometry, material);
+    scene.add(plane);
+    planes.push({ mesh: plane, data: imgData });
+    updatePositions();
+  });
+});
+
+// ------------------------
+//  Interaction preview
+// ------------------------
+function onMouseClick(event) {
+  mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+  mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+  raycaster.setFromCamera(mouse, camera);
+  const intersects = raycaster.intersectObjects(planes.map(p => p.mesh));
+  if (intersects.length > 0) {
+    const clickedMesh = intersects[0].object;
+    const clickedData = planes.find(p => p.mesh === clickedMesh).data;
+    const groupKey = clickedData.group;
+    const groupImages = groupKey ? imagesData.filter(img => img.group === groupKey) : [clickedData];
+    openPreview(groupImages);
+  }
+}
+
+window.addEventListener('click', onMouseClick);
+
+const preview = document.getElementById('preview');
+const carouselImage = document.getElementById('carousel-image');
+const carouselText = document.getElementById('carousel-text');
+const prevBtn = document.getElementById('prev-btn');
+const nextBtn = document.getElementById('next-btn');
+const closePreviewBtn = document.getElementById('close-preview');
+
+let currentGroup = [];
+let currentIndex = 0;
+
+function openPreview(groupImages) {
+  currentGroup = groupImages;
+  currentIndex = 0;
+  showImage(currentIndex);
+  preview.style.display = 'flex';
+  document.body.style.overflow = 'auto';
+}
+
+function showImage(index) {
+  if (index < 0) index = currentGroup.length - 1;
+  if (index >= currentGroup.length) index = 0;
+  currentIndex = index;
+  carouselImage.src = currentGroup[index].url;
+  carouselText.textContent = currentGroup[index].text;
+}
+
+prevBtn.addEventListener('click', () => showImage(currentIndex - 1));
+nextBtn.addEventListener('click', () => showImage(currentIndex + 1));
+closePreviewBtn.addEventListener('click', () => {
+  preview.style.display = 'none';
+});
+
+function animate() {
+  requestAnimationFrame(animate);
+  controls.update();
+  renderer.render(scene, camera);
+}
+animate();
+
+window.addEventListener('resize', () => {
+  const width = window.innerWidth;
+  const height = window.innerHeight;
+  renderer.setSize(width, height);
+  camera.aspect = width / height;
+  camera.updateProjectionMatrix();
+  updatePositions();
+});
+//ancien
+
 // globe.js – version conservant la structure d’origine
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
