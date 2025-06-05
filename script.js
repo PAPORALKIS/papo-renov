@@ -119,9 +119,6 @@ document.getElementById('container').appendChild(renderer.domElement);
 const controls = new OrbitControls(camera, renderer.domElement);
 controls.enableDamping     = true;
 controls.autoRotate        = true;
-//ajout
-if (isTablet) controls.autoRotate = false;
-//ajout 
 controls.autoRotateSpeed   = 2.0;
 controls.enableZoom        = true;
 controls.enablePan = false;                 // désactive le déplacement latéral  
