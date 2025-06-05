@@ -119,6 +119,9 @@ document.getElementById('container').appendChild(renderer.domElement);
 const controls = new OrbitControls(camera, renderer.domElement);
 controls.enableDamping     = true;
 controls.autoRotate        = true;
+//ajout
+if (isTablet) controls.autoRotate = false;
+//ajout 
 controls.autoRotateSpeed   = 2.0;
 controls.enableZoom        = true;
 controls.enablePan = false;                 // désactive le déplacement latéral  
@@ -279,14 +282,28 @@ nextBtn.addEventListener('click', () => showImage(currentIndex + 1));
 closePreviewBtn.addEventListener('click', () => {
   preview.style.display = 'none';
 });
+//new
+let lastFrameTime = 0;
+const fpsCap = 30;
 
-function animate() {
+function animate(time) {
   requestAnimationFrame(animate);
+  if (time - lastFrameTime < 1000 / fpsCap) return;
+  lastFrameTime = time;
   controls.update();
   renderer.render(scene, camera);
 }
 animate();
+//new
 
+//supprimer
+//function animate() {
+  //requestAnimationFrame(animate);
+  //controls.update();
+  //renderer.render(scene, camera);
+//}
+//animate();
+// supprimer
 window.addEventListener('resize', () => {
   const width = window.innerWidth;
   const height = window.innerHeight;
