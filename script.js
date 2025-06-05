@@ -168,6 +168,8 @@ const imagesData = [
   { url: '../img/Iso1.jpg', text: 'Image 8 - Description', group: null },
   { url: '../meuble-laura-1.jpg', text: 'Image 8 - Description', group: null },
   { url: '../meuble-laura-2.jpg', text: 'Image 8 - Description', group: null },
+  { url: '../img/CHBR0.jpg', text: 'Image 0 - Description', group: 'A' },
+
 ];
 
 const planes = [];
