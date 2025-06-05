@@ -282,28 +282,14 @@ nextBtn.addEventListener('click', () => showImage(currentIndex + 1));
 closePreviewBtn.addEventListener('click', () => {
   preview.style.display = 'none';
 });
-//new
-let lastFrameTime = 0;
-const fpsCap = 30;
 
-function animate(time) {
+function animate() {
   requestAnimationFrame(animate);
-  if (time - lastFrameTime < 1000 / fpsCap) return;
-  lastFrameTime = time;
   controls.update();
   renderer.render(scene, camera);
 }
 animate();
-//new
 
-//supprimer
-//function animate() {
-  //requestAnimationFrame(animate);
-  //controls.update();
-  //renderer.render(scene, camera);
-//}
-//animate();
-// supprimer
 window.addEventListener('resize', () => {
   const width = window.innerWidth;
   const height = window.innerHeight;
