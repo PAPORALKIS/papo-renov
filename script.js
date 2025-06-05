@@ -136,6 +136,9 @@ const loader    = new THREE.TextureLoader();
 const raycaster = new THREE.Raycaster();
 const mouse     = new THREE.Vector2();
 
+const isTablet = /iPad|Tablet|Android(?!.*Mobile)/i.test(navigator.userAgent);
+const MAX_IMAGES = isTablet ? 20 : imagesData.length;
+
 const imagesData = [
   { url: '../img/CHBR0.jpg', text: 'Image 0 - Description', group: 'A' },
   { url: '../img/CHBR1.jpg', text: 'Image 2 - Description', group: 'A' },
