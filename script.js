@@ -1,4 +1,5 @@
 
+
 // globe.js – version conservant la structure d’origine
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
@@ -135,9 +136,6 @@ scene.add(new THREE.AmbientLight(0xffffff, 1));
 const loader    = new THREE.TextureLoader();
 const raycaster = new THREE.Raycaster();
 const mouse     = new THREE.Vector2();
-
-const isTablet = /iPad|Tablet|Android(?!.*Mobile)/i.test(navigator.userAgent);
-const MAX_IMAGES = isTablet ? 20 : imagesData.length;
 
 const imagesData = [
   { url: '../img/CHBR0.jpg', text: 'Image 0 - Description', group: 'A' },
