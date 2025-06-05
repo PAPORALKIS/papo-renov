@@ -1,3 +1,4 @@
+
 // globe.js – version conservant la structure d’origine
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
