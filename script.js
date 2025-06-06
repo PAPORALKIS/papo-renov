@@ -258,15 +258,27 @@ const closePreviewBtn = document.getElementById('close-preview');
 
 let currentGroup = [];
 let currentIndex = 0;
+//ancien 
 
+//function openPreview(groupImages) {
+  //currentGroup = groupImages;
+  //currentIndex = 0;
+  //showImage(currentIndex);
+  //preview.style.display = 'flex';
+  //document.body.style.overflow = 'auto';
+//}
+//ancien 
+
+//news 
 function openPreview(groupImages) {
   currentGroup = groupImages;
   currentIndex = 0;
   showImage(currentIndex);
   preview.style.display = 'flex';
-  document.body.style.overflow = 'auto';
+  document.body.style.overflow = 'hidden'; // empêche le scroll pendant le preview
+  controls.enabled = false;                // désactive les contrôles 3D
 }
-
+//news 
 function showImage(index) {
   if (index < 0) index = currentGroup.length - 1;
   if (index >= currentGroup.length) index = 0;
@@ -280,8 +292,11 @@ nextBtn.addEventListener('click', () => showImage(currentIndex + 1));
 closePreviewBtn.addEventListener('click', () => {
   preview.style.display = 'none';
 });
-
-function animate() {
+//jout 
+document.body.style.overflow = 'auto'; // réactive le scroll
+  controls.enabled = true;               // réactive les contrôles 3D
+//ajout 
+  function animate() {
   requestAnimationFrame(animate);
   controls.update();
   renderer.render(scene, camera);
