@@ -1,5 +1,6 @@
 
 
+
 // globe.js – version conservant la structure d’origine
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
@@ -119,7 +120,6 @@ document.getElementById('container').appendChild(renderer.domElement);
 const controls = new OrbitControls(camera, renderer.domElement);
 controls.enableDamping     = true;
 controls.autoRotate        = true;
-if (isTablet) controls.autoRotate = false;
 controls.autoRotateSpeed   = 2.0;
 controls.enableZoom        = true;
 controls.enablePan = false;                 // désactive le déplacement latéral  
