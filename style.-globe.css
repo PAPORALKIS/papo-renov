@@ -1,4 +1,18 @@
 fen principale
+/*ancien 
+/* {
+  margin: 0;
+  //padding: 0;
+  //box-sizing: border-box;
+//}
+
+//body {
+  //overflow: hidden;
+//}
+//ancien
+
+//nouveau 
+/* Réinitialisation générale */
 * {
   margin: 0;
   padding: 0;
@@ -7,6 +21,7 @@ fen principale
 
 body {
   overflow: hidden;
+  font-family: sans-serif;
 }
 
 #container {
@@ -17,6 +32,7 @@ body {
   height: 100vh;
   z-index: 0;
   overflow: hidden;
+  transition: transform 0.5s ease;
 }
 
 canvas {
@@ -32,7 +48,7 @@ canvas {
   position: fixed;
   top: 0;
   right: 0;
-  width: 35%;
+  width: 35vw;
   height: 100vh;
   background-color: #111a44; /* bleu foncé */
   color: white;
@@ -41,6 +57,7 @@ canvas {
   align-items: center;
   padding: 10px;
   box-sizing: border-box;
+  z-index: 10;
 }
 
 #close-preview {
@@ -57,8 +74,9 @@ canvas {
   align-items: center;
   justify-content: center;
   width: 65VW;
-  height: 90VW;
+  height: 100VW;
   gap: 10px;
+  z-index: 5;
 }
 
 #prev-btn, #next-btn {
@@ -73,6 +91,7 @@ canvas {
 #carousel-slide {
   flex-grow: 1;
   text-align: center;
+  overflow: hidden;
 }
 
 #carousel-slide img {
@@ -80,11 +99,19 @@ canvas {
   max-height: 70vh;
   border-radius: 10px;
   user-select: none;
+  object-fit: contain;
+  transition; transform 0.3s ease;
 }
+
+#carousel-slide img:hover {
+  transform; scle(1.02);
 
 #carousel-slide p {
   margin-top: 10px;
+  color: #ccc;
+  font-size: 1rem;
 }
+
 /* ne pas voir la barre sous les images  */
 #carousel-track {
   /* ... existant ... */
