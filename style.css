@@ -212,23 +212,32 @@ footer {
 /* Bouton "Ajouter à mes contacts" - visible uniquement sur smartphone */
 .btn-contact-smartphone {
   display: none;
-}
-
-.btn-contact-smartphone a {
-  display: inline-block;
-  background-color: #007BFF;
-  color: white;
-  text-decoration: none;
-  padding: 0.6em 1.2em;
-  border-radius: 8px;
-  font-size: 1em;
-  cursor: pointer;
-  font-family: 'Poppins', sans-serif;
   text-align: center;
+  margin-top: 1em;
 }
 
-.btn-contact-smartphone a:hover {
-  background-color: #0056b3;
+@media (max-width: 992px) {  /* On élargit un peu la limite pour couvrir plus d'appareils */
+  .btn-contact-smartphone {
+    display: block !important;  /* Forcer l'affichage */
+  }
+
+  .btn-contact-smartphone a {
+    display: inline-block;
+    background-color: #007BFF;
+    color: white;
+    text-decoration: none;
+    padding: 0.6em 1.2em;
+    border-radius: 8px;
+    font-size: 1em;
+    cursor: pointer;
+    font-family: 'Poppins', sans-serif;
+    text-align: center;
+  }
+
+  .btn-contact-smartphone a:hover {
+    background-color: #0056b3;
+  }
 }
+
 
 
