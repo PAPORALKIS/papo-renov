@@ -1,9 +1,10 @@
 BEGIN:VCARD
 VERSION:3.0
+N:Paporalkis;;
 FN:Papo Renov
 ORG:Papo Renov
-TEL:+33 6 71 70 29 99
+TEL;TYPE=CELL:+33671702999
 EMAIL:kpaporalkis.pro@gmail.com
-URL:https://www.paporenov.fr
-ADR:;;13590 Meyreuil 
+ADR;TYPE=WORK:;;Meyreuil
+URL:https://paporalkis.github.io/papo-renov/
 END:VCARD
