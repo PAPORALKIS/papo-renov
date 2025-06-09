@@ -216,7 +216,7 @@ footer {
   margin-top: 1em;
 }
 
-@media (max-width: 992px) {  /* On élargit un peu la limite pour couvrir plus d'appareils */
+@media (max-width: 600px) {  /* On élargit un peu la limite pour couvrir plus d'appareils */
   .btn-contact-smartphone {
     display: block !important;  /* Forcer l'affichage */
   }
