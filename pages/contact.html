@@ -33,47 +33,32 @@
     <p>Nous sommes à votre écoute pour tous vos projets de rénovation</p>
   </section>
 
-  <section class="contact-form" data-aos="fade-up">
-    <form action="https://formspree.io/f/xvgrkwaq" method="POST">
-  <input type="hidden" name="_captcha" value="false">
-  <input type="hidden" name="_next" value="https://paporalkis.github.io/papo-renov/pages/confirmation.html">
+<section class="contact-form" data-aos="fade-up">
+  <form action="https://formspree.io/f/xvgrkwaq" method="POST">
+    <input type="hidden" name="_captcha" value="false" />
+    <input type="hidden" name="_next" value="https://paporalkis.github.io/papo-renov/pages/confirmation.html" />
 
-      <label for="name">Nom :</label>
-      <input type="text" id="name" name="name" required />
+    <label for="name">Nom :</label>
+    <input type="text" id="name" name="name" required />
 
-      <label for="email">Email :</label>
-      <input type="email" id="email" name="email" required />
+    <label for="email">Email :</label>
+    <input type="email" id="email" name="email" required />
 
-      <label for="message">Message :</label>
-      <textarea id="message" name="message" rows="5" required></textarea>
+    <label for="message">Message :</label>
+    <textarea id="message" name="message" rows="5" required></textarea>
 
-      <button type="submit">Envoyer</button>
-      
-<!-- Formulaire -->
-<form action="mailto:contact@paporenov.fr" method="post" enctype="text/plain">
-  <label for="name">Nom :</label>
-  <input type="text" id="name" name="name" required />
+    <button type="submit">Envoyer</button>
+  </form>
 
-  <label for="email">Email :</label>
-  <input type="email" id="email" name="email" required />
+  <!-- Bouton pour smartphone uniquement -->
+  <div class="btn-contact-smartphone">
+    <a href="../paporenov.vcf" download>
+      📇 Ajouter ce professionnel à mes contacts
+    </a>
+  </div>
+</section>
 
-  <label for="message">Message :</label>
-  <textarea id="message" name="message" rows="5" required></textarea>
-
-  <button type="submit">Envoyer</button>
-</form>
-
-<!-- Bouton pour smartphone uniquement -->
-<div class="btn-contact-smartphone">
-  <a href="../paporenov.vcf" download>
-    📇 Ajouter ce professionnel à mes contacts
-  </a>
-</div>
-
-
-    </form>
-  </section>
-
+  
   <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
   <script>
     AOS.init({ duration: 800, once: true });
