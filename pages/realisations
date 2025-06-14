@@ -1,0 +1,477 @@
+-<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Carrousel 3D avec avancée ée</title>
+  <style>
+    /* Variables CSS pour taille des images, profondeur Z et offset du  */
+    :root {
+      --img-size: 150px;        /* taille de chaque image dans le carrousel */
+      --translateZ: 900px;       /* distance à laquelle les images sont placées en 3D */
+      --offset: -250px;     /* décalage vertical de l'image ée */
+      --perspective: 3000px; /* perspective 3D */
+      --container-top: 30%;
+      --container-left: 45%;
+      --container-translate-y: -49%;
+      --container-translate-x: -50%;
+    }
+
+    html, body {
+      margin: 0; height: 100%;
+      background: #00010d;       /* fond très sombre */
+      overflow: hidden;          /* empêche le scroll de la page */
+      font-family: sans-serif;
+    }
+
+    /* Logo en filigrane au centre en fond avec faible opacité */
+    body::before {
+      content: "";
+      position: fixed;
+      top: 50%; left: 50%;
+      width: 1000px; height: 1000px;
+      background: url("img/logo.png") no-repeat center/contain;
+      opacity: 0.03;
+      transform: translate(-50%, -50%);
+      pointer-events: none; /* clics passent au travers */
+      z-index: 0;
+    }
+
+    /* Conteneur centré pour le carrousel avec perspective 3D */
+    .carousel-container {
+      position: fixed;
+      top: var(--container-top);
+      left: var(--container-left);
+      transform: translate(var(--container-translate-x), var(--container-translate-y));
+      perspective: var(--perspective);  /* profondeur 3D pour effet */
+      z-index: 1;
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    /* Conteneur des images avec style 3D */
+    .carousel {
+      position: relative;
+      width: 0; height: 0;
+      transform-style: preserve-3d;
+      transform: rotateX(-4deg); /* légère inclinaison vers l'avant */
+      touch-action: pan-y; /* permet de scroll vertical sur mobile sans bloquer */
+    }
+
+    /* Style des images */
+    .carousel img {
+      position: absolute;
+      width: var(--img-size);
+      height: var(--img-size);
+      object-fit: cover;      /* image recadrée en conservant proportions */
+      border-radius: 12px;
+      box-shadow: 0 0 14px rgba(0, 0, 0, 0.7);
+      transition: transform 0.6s ease, z-index 0.6s ease; /* animation douce */
+      cursor: pointer;
+      z-index: 1;
+      transform-origin: center center;
+      user-select: none;
+      -webkit-user-drag: none;
+    }
+
+    /*  léger au survol */
+    .carousel img:hover {
+      transform: scale(1.1);
+      z-index: 10;
+    }
+
+    /* Style pour l’image ée au clic */
+    .ed {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      background: rgba(0,0,0,0.95);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+    }
+    .ed img {
+      width: 90vw;
+      max-height: 70vh;
+      transform: translateY(var(--offset));
+      border-radius: 8px;
+      box-shadow: 0 0 40px black;
+    }
+
+    /* Adaptation mobile et tablette en portrait : plus petit, profondeur réduite */
+  @media (max-width: 767px) and (orientation: portrait) {
+  :root {
+    --translateZ: 300px; /* Exemple : recule la caméra */
+    --img-size: 16vw;
+    --offset: -100px;
+    --perspective: 1500px;
+    --container-top: 50%;
+    --container-left: 50%;
+    --container-translate-x: -50%;
+    --container-translate-y: -50%;
+  }
+
+  .carousel {
+    perspective: var(--perspective);
+    position: absolute;
+    top: var(--container-top);
+    left: var(--container-left);
+    transform: translate(var(--container-translate-x), var(--container-translate-y)) rotateY(var(--rotation)) translateZ(var(--translateZ));
+    transition: transform 0.5s ease;
+  }
+}
+    /* Adaptation mobile/tablette en paysage : ajustement taille et position */
+    @media (max-width: 767px) and (orientation: landscape) {
+      :root {
+        --img-size: 13vw; /* Définit la taille des images à 25vw (25% de la largeur de la fenêtre).*/
+        
+        --translateZ:325px; /* <-- ici la distance Z pour la caméra en paysage */
+        
+        --offset: -100px; /* Sert à décaler les éléments (probablement sur l’axe Y ou X) de -180 pixels.
+       Peut être utilisé pour ajuster la hauteur ou la rotation verticale du carrousel/image. */
+        
+        --perspective: 1500px; /* Détermine la profondeur de la perspective 3D.
+      Plus la valeur est grande, moins l’effet de perspective est prononcé (les objets paraissent plus plats). */
+        
+        --container-top: 35%; /* <-- Centre le conteneur principal à 50% du haut et 50% de la gauche de l’écran. */
+        
+       /* --container-left: 50%; /* <--Centre le conteneur principal à 50% du haut et 50% de la gauche de l’écran. */
+        
+        --container-translate-y: -50%; /* <-- Combiné avec top: 50% et left: 50%, cela centre parfaitement l’élément */
+        
+        --container-translate-x: -50%; /* <-- Combiné avec top: 50% et left: 50%, cela centre parfaitement l’élément */
+         
+      }
+       .carrousel {
+    perspective: var(--perspective); /* Applique la perspective */
+    position: absolute;
+    top: var(--container-top);
+    left: var(--container-left);
+    transform: translate(-50%, -50%) rotateY(var(--rotation)) translateZ(var(--translateZ));
+    transition: transform 0.5s ease; /* Transition fluide pour l'animation */
+  }
+
+  .carrousel__image {
+    width: var(--img-size); /* Taille des images ajustée */
+    transform: rotateY(calc(360deg / var(--num-images) * var(--i))) translateX(20px);
+    transition: transform 0.5s ease; /* Transition pour l’animation */
+  }
+    }
+
+    /* Adaptation tablettes grand écran (768px à 1024px) */
+    @media (min-width: 768px) and (max-width: 1024px) {
+      :root {
+        
+        --img-size: 10vw; /* Définit la taille des images à 25vw (25% de la largeur de la fenêtre).*/
+        
+        --translateZ:1000px; /* <-- ici la distance Z pour la caméra en paysage */
+        
+        --offset: -100px; /* Sert à décaler les éléments (probablement sur l’axe Y ou X) de -180 pixels.
+       Peut être utilisé pour ajuster la hauteur ou la rotation verticale du carrousel/image. */
+        
+        --perspective: 1500px; /* Détermine la profondeur de la perspective 3D.
+      Plus la valeur est grande, moins l’effet de perspective est prononcé (les objets paraissent plus plats). */
+        
+        --container-top: 35%; /* <-- Centre le conteneur principal à 50% du haut et 50% de la gauche de l’écran. */
+        
+       /* --container-left: 50%; /* <--Centre le conteneur principal à 50% du haut et 50% de la gauche de l’écran. */
+        
+        --container-translate-y: -50%; /* <-- Combiné avec top: 50% et left: 50%, cela centre parfaitement l’élément */
+        
+        --container-translate-x: -50%; /* <-- Combiné avec top: 50% et left: 50%, cela centre parfaitement l’élément */
+         
+      }
+       .carrousel {
+    perspective: var(--perspective); /* Applique la perspective */
+    position: absolute;
+    top: var(--container-top);
+    left: var(--container-left);
+    transform: translate(-50%, -50%) rotateY(var(--rotation)) translateZ(var(--translateZ));
+    transition: transform 0.5s ease; /* Transition fluide pour l'animation */
+  }
+
+  .carrousel__image {
+    width: var(--img-size); /* Taille des images ajustée */
+    transform: rotateY(calc(360deg / var(--num-images) * var(--i))) translateX(30px);
+    transition: transform 0.5s ease; /* Transition pour l’animation */
+  }
+    }
+  </style>
+</head>
+<body>
+  <header>
+  <div class="logo">
+    <img src="../img/logo.png" alt="Logo Paporalkis">
+  </div>
+  <nav>
+    <ul>
+      <li><a href="../index.html">Accueil</a></li>
+      <li><a href="devis.html">Demande de devis</a></li>
+      <li><a href="realisations.html">Mes réalisations</a></li>
+      <li><a href="tarifs.html">Tarifs</a></li>
+      <li><a href="planning.html">Planning</a></li>
+      <li><a href="contact.html"class="active">Contact</a></li>
+      
+    </ul>
+  </nav>
+</header>
+  
+  <div class="carousel-container" id="carousel-container">
+    <h1 class="title">Voici mes réalsations</h1>
+    <div class="carousel" id="carousel">
+      <!-- Tes images -->
+      <img src="img/CHBR0.jpg" />
+      <img src="img/CHBR1.jpg" />
+      <img src="img/CUIEXT.jpg" />
+      <img src="img/CUIEXT1.jpg" />
+      <img src="img/CUIEXT2.jpg" />
+      <img src="img/CUIEXT3.jpg" />
+      <img src="img/CUIEXT4.jpg" />
+      <img src="img/CUIEXT5.jpg" />
+      <img src="img/CUIEXT6.jpg" />
+      <img src="img/CUIMARS1.jpg" />
+      <img src="img/CUIMARS2.jpg" />
+      <img src="img/CUIMARS3.jpg" />
+      <img src="img/CUIMARS4.jpg" />
+      <img src="img/Iso2.jpg" />
+      <img src="img/Iso3.jpg" />
+      <img src="img/Iso4.jpg" />
+      <img src="img/Iso5.jpg" />
+      <img src="img/Iso6.jpg" />
+      <img src="img/SDB1.jpg" />
+      <img src="img/SDB2.jpg" />
+      <img src="img/SDB3.jpg" />
+      <img src="img/SDB4.jpg" />
+      <img src="img/SDB5.jpg" />
+      <img src="img/WC2.jpg" />
+      <img src="img/cuisine_exterieure_cyporex.jpg" />
+      <img src="img/ext1.jpg" />
+      <img src="img/ext2.jpg" />
+      <img src="img/exterieur.jpg" />
+      <img src="img/meuble-laura-1.jpg" />
+      <img src="img/meuble-laura-2.jpg" />
+      <img src="img/meuble-laura-3.jpg" />
+      <img src="img/martegauxavant1.jpg" />
+      <img src="img/martegauxavant2.jpg" />
+      <img src="img/martegauxavant3.jpg" />
+      <img src="img/martegauxB.jpg" />
+      <img src="img/martegauxC.jpg" />
+      <img src="img/martegauxD.jpg" />
+      <img src="img/martegauxE.jpg" />
+      <img src="img/velaux0.jpg" />
+      <img src="img/velaux1.jpg" />
+      <img src="img/velaux2.jpg" />
+      <img src="img/velaux3.jpg" />
+    </div>
+  </div>
+
+  <script>
+    const carousel = document.getElementById("carousel");
+    const container = document.getElementById("carousel-container");
+    const images = carousel.getElementsByTagName("img");
+    const total = images.length;
+
+    // Fonction pour récupérer les valeurs CSS variables dynamiques
+    function getRootCSSVars() {
+      const rootStyles = getComputedStyle(document.documentElement);
+      return {
+        translateZ: parseInt(rootStyles.getPropertyValue('--translateZ')) || 1000,
+        offset: rootStyles.getPropertyValue('--offset') || '-250px',
+        perspective: rootStyles.getPropertyValue('--perspective') || '3000px',
+        containerTop: rootStyles.getPropertyValue('--container-top') || '30%',
+        containerLeft: rootStyles.getPropertyValue('--container-left') || '45%',
+        containerTranslateX: rootStyles.getPropertyValue('--container-translate-x') || '-50%',
+        containerTranslateY: rootStyles.getPropertyValue('--container-translate-y') || '-49%',
+        imgSize: rootStyles.getPropertyValue('--img-size') || '150px'
+      };
+    }
+
+    // Mets à jour la perspective et position du container en fonction des variables CSS
+    function updateContainerStyle() {
+      const vars = getRootCSSVars();
+      container.style.perspective = vars.perspective;
+      container.style.top = vars.containerTop;
+      container.style.left = vars.containerLeft;
+      container.style.transform = `translate(${vars.containerTranslateX}, ${vars.containerTranslateY})`;
+    }
+
+    // Mets à jour la taille des images à partir de la variable CSS
+    function updateImageSizes() {
+      const vars = getRootCSSVars();
+      Array.from(images).forEach(img => {
+        img.style.width = vars.imgSize.trim();
+        img.style.height = vars.imgSize.trim();
+      });
+    }
+
+    // Récupère la profondeur 3D à partir de la variable CSS --translateZ
+    let baseRadius = 900;
+
+    // Profondeur et scale spécifiques pour image ée
+    const Scale = 1.5;        // facteur d’agrandissement de l’image ée
+
+    let angle = 0;                // angle global du carrousel en degrés
+    let autoRotate = true;        // indique si le carrousel tourne automatiquement
+    let lastTime = performance.now(); // timestamp de la dernière frame
+
+    let velocity = 0;             // vitesse actuelle de rotation (en degrés/frame)
+    const friction = 0.95;        // frottement qui ralentit la rotation lors du drag
+
+    let isDragging = false;       // indique si l’utilisateur est en train de glisser
+    let lastX = 0;                // dernière position X de la souris/touch
+
+    // Place et transforme les images sur le cercle en fonction de l’angle global
+    function positionImages() {
+      const vars = getRootCSSVars();
+      baseRadius = vars.translateZ;
+      const offset = vars.offset.trim();
+      const angleStep = 360 / total;  // angle entre chaque image
+
+      // Trouve l’image la plus proche du centre (frontale)
+      let closestIndex = 0;
+      let minDiff = 360;
+
+      for (let i = 0; i < total; i++) {
+        const theta = (angleStep * i + angle) % 360;
+        const diff = Math.min(Math.abs(theta), Math.abs(360 - theta));
+        if (diff < minDiff) {
+          minDiff = diff;
+          closestIndex = i;
+        }
+      }
+
+      // Positionne chaque image en rotation Y + translation Z pour créer l’effet cercle
+      for (let i = 0; i < total; i++) {
+        const theta = angleStep * i + angle;
+        const extraRotation = -angleStep * 0.3;  // légère rotation sur elle-même pour esthétique
+
+        if (i === closestIndex) {
+          // Image ée au centre
+          images[i].style.transform =
+            `rotateY(${theta}deg) translateZ(${baseRadius * 1.6}px) translateY(-20px) rotateY(${extraRotation}deg) scale(1.5)`;
+          images[i].style.zIndex = 100;  // devant toutes les autres
+          images[i].style.filter = "drop-shadow(0 0 20px rgba(255,255,255,0.6))";
+          images[i].style.setProperty('--offset', offset);
+        } else {
+          // Images normales autour
+          images[i].style.transform =
+            `rotateY(${theta}deg) translateZ(${baseRadius}px) rotateY(${extraRotation}deg) scale(1)`;
+          images[i].style.zIndex = 1;
+          images[i].style.filter = "none";
+        }
+      }
+    }
+
+    // Animation appelée à chaque frame
+    function animate(now) {
+      const delta = now - lastTime;  // temps écoulé depuis la dernière frame
+
+      if (autoRotate) {
+        velocity = 0.0050 * delta;  // vitesse fixe de rotation automatique
+        angle += velocity;
+      } else {
+        angle += velocity;          // rotation selon la vitesse du drag
+        velocity *= friction;       // ralentit peu à peu (friction)
+        if (Math.abs(velocity) < 0.001) {
+          autoRotate = true;        // reprend rotation automatique si très lent
+          velocity = 0;
+        }
+      }
+
+      positionImages();             // repositionne les images selon angle
+      lastTime = now;
+      requestAnimationFrame(animate);
+    }
+
+    // Permet de relancer la rotation automatique après interaction utilisateur
+    let interactionTimeout;
+    function restartAutoRotate() {
+      clearTimeout(interactionTimeout);
+      interactionTimeout = setTimeout(() => {
+        autoRotate = false;       // On arrête auto rotation à la fin du timeout
+        velocity = 0.02;          // vitesse initiale à reprendre
+      }, 2000);
+    }
+
+    // Gère la roulette de la souris ( + rotation)
+    container.addEventListener("wheel", (e) => {
+      e.preventDefault();
+      autoRotate = false;
+      velocity += e.deltaY * 0.003;  // vitesse changée par la molette
+      restartAutoRotate();
+    });
+
+    // Début drag souris
+    container.addEventListener("mousedown", (e) => {
+      isDragging = true;
+      lastX = e.clientX;
+      autoRotate = false;
+      velocity = 0;
+    });
+
+    // Fin drag souris
+    window.addEventListener("mouseup", () => {
+      if (isDragging) {
+        isDragging = false;
+        restartAutoRotate();
+      }
+    });
+
+    // Pendant drag souris
+    window.addEventListener("mousemove", (e) => {
+      if (isDragging) {
+        const dx = e.clientX - lastX;
+        velocity = dx * 0.5;
+        angle += velocity;
+        lastX = e.clientX;
+      }
+    });
+
+    // Touch start
+    container.addEventListener("touchstart", (e) => {
+      if (e.touches.length === 1) {
+        isDragging = true;
+        lastX = e.touches[0].clientX;
+        autoRotate = false;
+        velocity = 0;
+      }
+    });
+
+    // Touch end
+    container.addEventListener("touchend", () => {
+      if (isDragging) {
+        isDragging = false;
+        restartAutoRotate();
+      }
+    });
+
+    // Touch move
+    container.addEventListener("touchmove", (e) => {
+      if (isDragging && e.touches.length === 1) {
+        const dx = e.touches[0].clientX - lastX;
+        velocity = dx * 0.5;
+        angle += velocity;
+        lastX = e.touches[0].clientX;
+      }
+    });
+
+    // Mise à jour responsive lors du resize ou rotation
+    window.addEventListener('resize', () => {
+      updateContainerStyle();
+      updateImageSizes();
+      positionImages();
+    });
+
+    // Initialisation
+    updateContainerStyle();
+    updateImageSizes();
+    positionImages();
+
+    requestAnimationFrame(animate);
+  </script>
+</body>
+</html>
