@@ -161,6 +161,10 @@ nav ul li a.active {
     transform: translate(var(--container-translate-x), var(--container-translate-y)) rotateY(var(--rotation)) translateZ(var(--translateZ));
     transition: transform 0.5s ease;
   }
+    .ed img {
+  width: 95vw;
+  max-height: 80vh;
+}
 }
     /* Adaptation mobile/tablette en paysage : ajustement taille et position */
     @media (max-width: 767px) and (orientation: landscape) {
@@ -198,6 +202,10 @@ nav ul li a.active {
     width: var(--img-size); /* Taille des images ajustée */
     transform: rotateY(calc(360deg / var(--num-images) * var(--i))) translateX(20px);
     transition: transform 0.5s ease; /* Transition pour l’animation */
+  }
+  .ed img {
+  width: 90vw;
+  max-height: 65vh;
   }
     }
 
@@ -238,6 +246,10 @@ nav ul li a.active {
     transform: rotateY(calc(360deg / var(--num-images) * var(--i))) translateX(30px);
     transition: transform 0.5s ease; /* Transition pour l’animation */
   }
+      .ed img {
+  width: 85vw;
+  max-height: 70vh;
+}
     }
   </style>
 </head>
