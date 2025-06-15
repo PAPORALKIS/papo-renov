@@ -29,7 +29,6 @@ nav ul {
   gap: 15px;
   margin: 0;
   padding: 0;
-  margin-left: -100px; /* Décale vers la gauche, ajuste à volonté */
 }
 
 nav ul li a {
@@ -238,6 +237,49 @@ nav ul li a.active {
     transition: transform 0.5s ease; /* Transition pour l’animation */
   }
     }
+    /* Mobile : menu vertical centré */
+@media (max-width: 768px) {
+  nav ul {
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+
+  header {
+    flex-direction: column;
+    align-items: center;
+    padding: 15px;
+  }
+
+  .logo img {
+    height: 30px; /* plus petit sur mobile */
+    margin-bottom: 10px;
+  }
+
+  nav ul li a {
+    font-size: 16px;
+  }
+}
+
+/* Tablette en mode portrait ou paysage */
+@media (min-width: 769px) and (max-width: 1024px) {
+  nav ul {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
+  }
+
+  nav ul li a {
+    font-size: 17px;
+  }
+}
+
+/* Grand écran : aucun changement majeur, mais peut adapter la taille */
+@media (min-width: 1025px) {
+  nav ul li a {
+    font-size: 18px;
+  }
+}
   </style>
 </head>
 <body>
