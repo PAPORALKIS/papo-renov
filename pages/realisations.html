@@ -29,7 +29,6 @@ nav ul {
   gap: 15px;
   margin: 0;
   padding: 0;
-  margin-left: -40px; /* Décale vers la gauche, ajuste à volonté */
 }
 
 nav ul li a {
@@ -69,7 +68,7 @@ nav ul li a.active {
       top: 50%; left: 50%;
       width: 1000px; height: 1000px;
       background: url("/img/logo.png") no-repeat center/contain;
-      opacity: 0.09;
+      opacity: 0.03;
       transform: translate(-50%, -50%);
       pointer-events: none; /* clics passent au travers */
       z-index: 0;
@@ -172,7 +171,7 @@ nav ul li a.active {
         --offset: -100px; /* Sert à décaler les éléments (probablement sur l’axe Y ou X) de -180 pixels.
        Peut être utilisé pour ajuster la hauteur ou la rotation verticale du carrousel/image. */
         
-        --perspective: 1100px; /* Détermine la profondeur de la perspective 3D.
+        --perspective: 1500px; /* Détermine la profondeur de la perspective 3D.
       Plus la valeur est grande, moins l’effet de perspective est prononcé (les objets paraissent plus plats). */
         
         --container-top: 45%; /* <-- Centre le conteneur principal à 50% du haut et 50% de la gauche de l’écran. */
@@ -206,7 +205,7 @@ nav ul li a.active {
         
         --img-size: 10vw; /* Définit la taille des images à 25vw (25% de la largeur de la fenêtre).*/
         
-        --translateZ:1300px; /* <-- ici la distance Z pour la caméra en paysage */
+        --translateZ:1000px; /* <-- ici la distance Z pour la caméra en paysage */
         
         --offset: -100px; /* Sert à décaler les éléments (probablement sur l’axe Y ou X) de -180 pixels.
        Peut être utilisé pour ajuster la hauteur ou la rotation verticale du carrousel/image. */
@@ -214,7 +213,7 @@ nav ul li a.active {
         --perspective: 1500px; /* Détermine la profondeur de la perspective 3D.
       Plus la valeur est grande, moins l’effet de perspective est prononcé (les objets paraissent plus plats). */
         
-        --container-top: 45%; /* <-- Centre le conteneur principal à 50% du haut et 50% de la gauche de l’écran. */
+        --container-top: 35%; /* <-- Centre le conteneur principal à 50% du haut et 50% de la gauche de l’écran. */
         
        /* --container-left: 50%; /* <--Centre le conteneur principal à 50% du haut et 50% de la gauche de l’écran. */
         
