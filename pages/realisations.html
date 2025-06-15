@@ -15,7 +15,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 5px 30px;
+  padding: 10px 20px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }  
 
@@ -27,9 +27,9 @@ nav ul {
   list-style: none;
   display: flex;
   gap: 15px;
-  margin: 20px;
+  margin: 0;
   padding: 0;
-  transform: translateX(-30px);
+  margin-left: -40px; /* Décale vers la gauche, ajuste à volonté */
 }
 
 nav ul li a {
@@ -69,7 +69,7 @@ nav ul li a.active {
       top: 50%; left: 50%;
       width: 1000px; height: 1000px;
       background: url("/img/logo.png") no-repeat center/contain;
-      opacity: 0.03;
+      opacity: 0.09;
       transform: translate(-50%, -50%);
       pointer-events: none; /* clics passent au travers */
       z-index: 0;
@@ -161,22 +161,18 @@ nav ul li a.active {
     transform: translate(var(--container-translate-x), var(--container-translate-y)) rotateY(var(--rotation)) translateZ(var(--translateZ));
     transition: transform 0.5s ease;
   }
-    .ed img {
-  width: 95vw;
-  max-height: 80vh;
-}
 }
     /* Adaptation mobile/tablette en paysage : ajustement taille et position */
     @media (max-width: 767px) and (orientation: landscape) {
       :root {
-        --img-size: 10vw; /* Définit la taille des images à 25vw (25% de la largeur de la fenêtre).*/
+        --img-size: 13vw; /* Définit la taille des images à 25vw (25% de la largeur de la fenêtre).*/
         
         --translateZ:325px; /* <-- ici la distance Z pour la caméra en paysage */
         
         --offset: -100px; /* Sert à décaler les éléments (probablement sur l’axe Y ou X) de -180 pixels.
        Peut être utilisé pour ajuster la hauteur ou la rotation verticale du carrousel/image. */
         
-        --perspective: 1600px; /* Détermine la profondeur de la perspective 3D.
+        --perspective: 1100px; /* Détermine la profondeur de la perspective 3D.
       Plus la valeur est grande, moins l’effet de perspective est prononcé (les objets paraissent plus plats). */
         
         --container-top: 45%; /* <-- Centre le conteneur principal à 50% du haut et 50% de la gauche de l’écran. */
@@ -195,17 +191,12 @@ nav ul li a.active {
     left: var(--container-left);
     transform: translate(-50%, -50%) rotateY(var(--rotation)) translateZ(var(--translateZ));
     transition: transform 0.5s ease; /* Transition fluide pour l'animation */
-
-    }
+  }
 
   .carousel__image {
     width: var(--img-size); /* Taille des images ajustée */
     transform: rotateY(calc(360deg / var(--num-images) * var(--i))) translateX(20px);
     transition: transform 0.5s ease; /* Transition pour l’animation */
-  }
-  .ed img {
-  width: 90vw;
-  max-height: 65vh;
   }
     }
 
@@ -213,9 +204,9 @@ nav ul li a.active {
     @media (min-width: 768px) and (max-width: 1024px) {
       :root {
         
-        --img-size: 8vw; /* Définit la taille des images à 25vw (25% de la largeur de la fenêtre).*/
+        --img-size: 10vw; /* Définit la taille des images à 25vw (25% de la largeur de la fenêtre).*/
         
-        --translateZ:1000px; /* <-- ici la distance Z pour la caméra en paysage */
+        --translateZ:1300px; /* <-- ici la distance Z pour la caméra en paysage */
         
         --offset: -100px; /* Sert à décaler les éléments (probablement sur l’axe Y ou X) de -180 pixels.
        Peut être utilisé pour ajuster la hauteur ou la rotation verticale du carrousel/image. */
@@ -223,7 +214,7 @@ nav ul li a.active {
         --perspective: 1500px; /* Détermine la profondeur de la perspective 3D.
       Plus la valeur est grande, moins l’effet de perspective est prononcé (les objets paraissent plus plats). */
         
-        --container-top: 35%; /* <-- Centre le conteneur principal à 50% du haut et 50% de la gauche de l’écran. */
+        --container-top: 45%; /* <-- Centre le conteneur principal à 50% du haut et 50% de la gauche de l’écran. */
         
        /* --container-left: 50%; /* <--Centre le conteneur principal à 50% du haut et 50% de la gauche de l’écran. */
         
@@ -246,10 +237,6 @@ nav ul li a.active {
     transform: rotateY(calc(360deg / var(--num-images) * var(--i))) translateX(30px);
     transition: transform 0.5s ease; /* Transition pour l’animation */
   }
-      .ed img {
-  width: 85vw;
-  max-height: 70vh;
-}
     }
   </style>
 </head>
