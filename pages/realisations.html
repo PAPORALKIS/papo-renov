@@ -5,6 +5,43 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>Carrousel 3D avec avancée ée</title>
   <style>
+    header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  z-index: 10000;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  box-shadow: 0 2px 5px rgba(255, 255, 255, 0.1);
+}
+
+.logo img {
+  height: 40px;
+}
+
+nav ul {
+  list-style: none;
+  display: flex;
+  gap: 15px;
+  margin: 0;
+  padding: 0;
+}
+
+nav ul li a {
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+  transition: color 0.3s;
+}
+
+nav ul li a:hover,
+nav ul li a.active {
+  color: #ffcc00;
+}
     /* Variables CSS pour taille des images, profondeur Z et offset du  */
     :root {
       --img-size: 150px;        /* taille de chaque image dans le carrousel */
@@ -30,7 +67,7 @@
       position: fixed;
       top: 50%; left: 50%;
       width: 1000px; height: 1000px;
-      background: url("../img/logo.png") no-repeat center/contain;
+      background: url("/img/logo.png") no-repeat center/contain;
       opacity: 0.03;
       transform: translate(-50%, -50%);
       pointer-events: none; /* clics passent au travers */
