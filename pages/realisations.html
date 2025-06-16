@@ -143,28 +143,42 @@ nav ul li a.active {
     /* Adaptation mobile et tablette en portrait : plus petit, profondeur réduite */
   @media (max-width: 767px) and (orientation: portrait) {
 
-     nav ul {
-    justify-content: center; /* centre les liens horizontalement */
-    margin: 10px auto;        /* centre le bloc lui-même */
-    transform: none !important; /* enlève le décalage vers la gauche */
-    flex-wrap: wrap;          /* permet de passer à la ligne si besoin */
-  }
-
-  nav ul li {
-    margin: 5px 10px; /* un peu d'espacement entre les éléments */
-  }
-
   header {
-    flex-direction: column; /* empile le logo et le menu */
-    padding: 10px 20px;
+    display: flex;
+    flex-direction: row;      /* Logo à gauche, liens à droite */
+    justify-content: space-between;
     align-items: center;
+    padding: 10px 15px;
+    flex-wrap: nowrap;
   }
 
   .logo {
-    margin-bottom: 5px; /* espace entre le logo et les liens */
+    margin: 0;
+    flex-shrink: 0;           /* Empêche le logo de rétrécir */
   }
+
+  header nav {
+    flex-grow: 1;
+    display: flex;
+    justify-content: flex-end; /* Place les liens à droite */
+  }
+
+  nav ul {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 10px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  nav ul li {
+    margin: 5px 5px;
+  }
+
   :root {
-    --translateZ: 170px; /* Exemple : recule la caméra */
+    --translateZ: 170px;
     --img-size: 20vw;
     --offset: -100px;
     --perspective: 2000px;
