@@ -154,6 +154,7 @@ nav ul li a.active {
 
   .logo {
     margin: 0;
+    height: 30px;
   
   }
 
@@ -194,6 +195,16 @@ nav ul li a.active {
     left: var(--container-left);
     transform: translate(var(--container-translate-x), var(--container-translate-y)) rotateY(var(--rotation)) translateZ(var(--translateZ));
     transition: transform 0.5s ease;
+  }
+      nav ul li a {
+    font-size: 3.2vw; /* Taille responsive basée sur la largeur de l’écran */
+  }
+
+  /* Réduction supplémentaire si nécessaire */
+  @media (max-width: 450px) {
+    nav ul li a {
+      font-size: 3.8vw;
+    }
   }
 }
     /* Adaptation mobile/tablette en paysage : ajustement taille et position */
