@@ -157,15 +157,18 @@ nav ul li a.active {
     flex-wrap: nowrap;
   }
 
-  .logo {
-    margin: 0;
-  }
+.logo img {
+  max-width: 100px;
+  height: auto;
 
   header nav {
     flex-grow: 1;
     display: flex;
     justify-content: flex-end;
-  }
+    max-width: 60%;
+  flex-wrap: wrap; /* Ajoute ceci si tu veux que les liens passent à la ligne en cas de besoin */
+}
+  
 
   nav ul {
     display: flex;
