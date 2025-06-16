@@ -141,11 +141,16 @@ nav ul li a.active {
     }
 
     /* Adaptation mobile et tablette en portrait : plus petit, profondeur réduite */
-  @media (max-width: 767px) and (orientation: portrait) {
+  :root {
+    --translateZ: 170px;
+    --img-size: 20vw;
+    --offset: -100px;
+    --perspective: 2000px;
+  }
 
   header {
     display: flex;
-    flex-direction: row;      /* Logo à gauche, liens à droite */
+    flex-direction: row;
     justify-content: space-between;
     align-items: center;
     padding: 10px 15px;
@@ -154,14 +159,12 @@ nav ul li a.active {
 
   .logo {
     margin: 0;
-    height: 30px;
-  
   }
 
   header nav {
     flex-grow: 1;
     display: flex;
-    justify-content: flex-end; /* Place les liens à droite */
+    justify-content: flex-end;
   }
 
   nav ul {
@@ -177,34 +180,23 @@ nav ul li a.active {
     margin: 5px 5px;
   }
 
-  :root {
-    --translateZ: 170px;
-    --img-size: 20vw;
-    --offset: -100px;
-    --perspective: 2000px;
-    --container-top: 50%;
-    --container-left: 50%;
-    --container-translate-x: -50%;
-    --container-translate-y: -50%;
+  nav ul li a {
+    font-size: 3.2vw;
+  }
+
+  @media (max-width: 450px) {
+    nav ul li a {
+      font-size: 3.8vw;
+    }
   }
 
   .carousel {
     perspective: var(--perspective);
     position: absolute;
-    top: var(--container-top);
-    left: var(--container-left);
-    transform: translate(var(--container-translate-x), var(--container-translate-y)) rotateY(var(--rotation)) translateZ(var(--translateZ));
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotateY(var(--rotation)) translateZ(var(--translateZ));
     transition: transform 0.5s ease;
-  }
-      nav ul li a {
-    font-size: 3.2vw; /* Taille responsive basée sur la largeur de l’écran */
-  }
-
-  /* Réduction supplémentaire si nécessaire */
-  @media (max-width: 450px) {
-    nav ul li a {
-      font-size: 3.8vw;
-    }
   }
 }
     /* Adaptation mobile/tablette en paysage : ajustement taille et position */
