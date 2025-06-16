@@ -146,10 +146,6 @@ nav ul li a.active {
     --img-size: 20vw;
     --offset: -100px;
     --perspective: 2000px;
-    --container-top: 50%;
-    --container-left: 50%;
-    --container-translate-x: -50%;
-    --container-translate-y: -50%;
   }
 
   header {
@@ -161,18 +157,15 @@ nav ul li a.active {
     flex-wrap: nowrap;
   }
 
-.logo img {
-  max-width: 10px;
-  height: auto;
+  .logo img {
+    margin: 0;
+  }
 
   header nav {
     flex-grow: 1;
     display: flex;
     justify-content: flex-end;
-    max-width: 60%;
- 
-}
-  
+  }
 
   nav ul {
     display: flex;
