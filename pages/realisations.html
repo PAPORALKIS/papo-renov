@@ -81,19 +81,17 @@ nav ul li a.active {
 
 /* ====== Titre de page ====== */
     .page-title {
-      position: fixed; /* ajouté pour fixer le titre au viewport */
-      top: 60px; /* juste sous le header */
-      left: 50%;
-      transform: translateX(-50%);
-      color: white; /* Couleur du texte en blanc */
-      font-size: 2.5em; /* Taille du texte, 2.5 fois la taille de base de la police */
-      font-weight: 700; /* Épaisseur du texte, ici en gras */
-      text-align: center; /* Centrage horizontal du texte dans son conteneur */
-      margin: 0 20px 5px;
-      text-shadow: 0 0 8px rgba(255, 204, 0, 0.8); /* Ombre portée autour du texte */
-      user-select: none; /* Empêche la sélection du texte */
-      z-index: 10002; /* au-dessus du header */
-    }
+  position: fixed;
+  top: 60px;
+  left: 0;
+  right: 0;
+  text-align: center;
+  font-size: 1.8em;
+  padding: 0 10px;
+  margin: 0 auto;
+  white-space: normal;
+  z-index: 10002;
+}
 
      /* Responsive pour titre sur petit écran */
     @media (max-width: 600px) {
