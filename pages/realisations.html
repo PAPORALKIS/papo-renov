@@ -141,64 +141,24 @@ nav ul li a.active {
     }
 
     /* Adaptation mobile et tablette en portrait : plus petit, profondeur réduite */
+  @media (max-width: 767px) and (orientation: portrait) {
   :root {
-    --translateZ: 170px;
-    --img-size: 20vw;
+    --translateZ: 300px; /* Exemple : recule la caméra */
+    --img-size: 16vw;
     --offset: -100px;
-    --perspective: 2000px;
-  }
-
-  header {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 15px;
-    flex-wrap: nowrap;
-  }
-
-.logo img {
-  max-width: 100px;
-  height: auto;
-
-  header nav {
-    flex-grow: 1;
-    display: flex;
-    justify-content: flex-end;
-    max-width: 60%;
-  flex-wrap: wrap; /* Ajoute ceci si tu veux que les liens passent à la ligne en cas de besoin */
-}
-  
-
-  nav ul {
-    display: flex;
-    justify-content: flex-end;
-    gap: 10px;
-    margin: 0;
-    padding: 0;
-    list-style: none;
-  }
-
-  nav ul li {
-    margin: 5px 5px;
-  }
-
-  nav ul li a {
-    font-size: 3.2vw;
-  }
-
-  @media (max-width: 450px) {
-    nav ul li a {
-      font-size: 3.8vw;
-    }
+    --perspective: 1200px;
+    --container-top: 50%;
+    --container-left: 50%;
+    --container-translate-x: -50%;
+    --container-translate-y: -50%;
   }
 
   .carousel {
     perspective: var(--perspective);
     position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%) rotateY(var(--rotation)) translateZ(var(--translateZ));
+    top: var(--container-top);
+    left: var(--container-left);
+    transform: translate(var(--container-translate-x), var(--container-translate-y)) rotateY(var(--rotation)) translateZ(var(--translateZ));
     transition: transform 0.5s ease;
   }
 }
@@ -219,7 +179,7 @@ nav ul li a.active {
         
        /* --container-left: 50%; /* <--Centre le conteneur principal à 50% du haut et 50% de la gauche de l’écran. */
         
-        --container-translate-y: -50%; /* <-- Combiné avec top: 50% et left: 50%, cela centre parfaitement l’élément */
+        --container-translate-y: -30%; /* <-- Combiné avec top: 50% et left: 50%, cela centre parfaitement l’élément */
         
         --container-translate-x: -50%; /* <-- Combiné avec top: 50% et left: 50%, cela centre parfaitement l’élément */
          
