@@ -142,9 +142,11 @@ nav ul li a.active {
 
     /* Adaptation mobile et tablette en portrait : plus petit, profondeur réduite */
   :root {
-    --translateZ: 100px; /*distance de la translation sur l’axe Z (profondeur). */
+     --translateZ: -200px;     /* recul du manège par rapport à la caméra */
     --img-size: 15vw;/* taille des images en largeur relative (viewport width). */
-    --offset: -100px;/* décalage horizontal (ici négatif, vers la gauche)*/
+    --radius: 300px;          /* rayon du cercle pour espacement entre images */
+     --carousel-top: 50%;      /* placement vertical du manège dans la page */
+    --carousel-left: 50%;     /* placement horizontal du manège dans la page */
     --perspective: 2000px;/* distance de la perspective 3D (plus grand = effet 3D plus subtil).*/
   }
 
@@ -192,12 +194,16 @@ nav ul li a.active {
     }
   }
 
-  .carousel {
-    perspective: var(--perspective);/*applique la perspective 3D définie par la variable CSS. */
-    position: absolute;/*positionne le carrousel par rapport à son premier parent positionné. */
-    top: 50%;/* */
-    left: 50%;
-    /*place son point d’ancrage au centre du conteneur parent.
+ .carousel {
+  position: absolute;
+  top: var(--carousel-top);
+  left: var(--carousel-left);
+  transform: translate(-50%, -50%) translateZ(var(--translateZ));
+  perspective: var(--perspective);
+  transform-style: preserve-3d;
+  width: 100%;
+  height: 100%;
+}
 
 transform:
 
