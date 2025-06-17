@@ -37,7 +37,6 @@ nav ul li a {
   text-decoration: none;
   font-weight: bold;
   transition: color 0.3s;
-   white-space: nowrap; /* Empêche le retour à la ligne */
 }
 
 nav ul li a:hover,
@@ -143,79 +142,66 @@ nav ul li a.active {
 
     /* Adaptation mobile et tablette en portrait : plus petit, profondeur réduite */
   :root {
-    --translateZ: 100px; /*distance de la translation sur l’axe Z (profondeur). */
-    --img-size: 20vw;/* taille des images en largeur relative (viewport width). */
-    --offset: -100px;/* décalage horizontal (ici négatif, vers la gauche)*/
-    --perspective: 2000px;/* distance de la perspective 3D (plus grand = effet 3D plus subtil).*/
+    --translateZ: 170px;
+    --img-size: 20vw;
+    --offset: -100px;
+    --perspective: 2000px;
   }
 
   header {
-    display: flex;/*active le modèle flexbox. */
-    flex-direction: row;/*aligne les enfants horizontalement. */
-    justify-content: space-between;/* espace les enfants pour qu’ils occupent toute la largeur, premier à gauche, dernier à droite. */
-    align-items: center;/*dcentre verticalement les enfants.*/
-    padding: 10px 15px;/*espace intérieur haut/bas 10px, gauche/droite 15px. */
-    flex-wrap: nowrap;/* interdit le passage à la ligne des éléments. */
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 15px;
+    flex-wrap: nowrap;
   }
 
-  .logo img {
-    margin: 0;/*on enlève toute marge extérieure. */
-   
-  }
+.logo img {
+  max-width: 100px;
+  height: auto;
 
   header nav {
-    flex-grow: 1;/*prend tout l’espace disponible restant. */
-     overflow: hidden; /* Cache les débordements si nécessaire */
-    display: flex;/* active flexbox. */
-    justify-content: flex-end;/*aligne les liens à droite. */
-  }
+    flex-grow: 1;
+    display: flex;
+    justify-content: flex-end;
+    max-width: 60%;
+  flex-wrap: wrap; /* Ajoute ceci si tu veux que les liens passent à la ligne en cas de besoin */
+}
+  
 
   nav ul {
-    display: flex;/*aligne horizontalement les */
-    justify-content: flex-end;/*pousse les items vers la droite. */
-    gap: 5px;/* espace de 10px entre les items. */
-    margin-left: auto; /* pousse toute la liste vers la droite */
-    margin: 0;/* upprime marges et paddings par défaut.*/
-    padding: 0;/* */
-    list-style: none;/*supprime les puces de la liste. */
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
   }
 
   nav ul li {
-    margin: 3px 3px;/* Pour chaque élément <li> de la liste, on ajoute une marge extérieure de 5px partout. */
+    margin: 5px 5px;
   }
 
   nav ul li a {
-    font-size: 1vw;/*Pour les liens dans la liste, la taille de la police est relative à la largeur de l’écran (3.2% de la largeur). */
+    font-size: 3.2vw;
   }
 
   @media (max-width: 450px) {
     nav ul li a {
-      font-size: 3vw;/* Sur très petits écrans (moins de 450px), on augmente légèrement la taille de la police des liens (3.8% de la largeur) pour améliorer la lisibilité. */
+      font-size: 3.8vw;
     }
   }
 
   .carousel {
-    perspective: var(--perspective);/*applique la perspective 3D définie par la variable CSS. */
-    position: absolute;/*positionne le carrousel par rapport à son premier parent positionné. */
-    top: 50%;/* */
+    perspective: var(--perspective);
+    position: absolute;
+    top: 50%;
     left: 50%;
-    /*place son point d’ancrage au centre du conteneur parent.
-
-transform:
-
- */
     transform: translate(-50%, -50%) rotateY(var(--rotation)) translateZ(var(--translateZ));
-    /*translate(-50%, -50%) centre exactement le carrousel sur ce point (centre de son propre box).
-
-rotateY(var(--rotation)) applique une rotation autour de l’axe vertical (var rotation définie ailleurs).
-
-translateZ(var(--translateZ)) déplace le carrousel en profondeur pour l’effet 3D.*/
-    
-    transition: transform 0.5s ease;/*adoucit la transition du transform sur 0.5 seconde avec une courbe d’accélération. */
+    transition: transform 0.5s ease;
   }
 }
-
-    
     /* Adaptation mobile/tablette en paysage : ajustement taille et position */
     @media (max-width: 767px) and (orientation: landscape) {
       :root {
