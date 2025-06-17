@@ -85,7 +85,7 @@ nav ul li a.active {
       font-size: 2.5em;/* Taille du texte, 2.5 fois la taille de base de la police */
       font-weight: 700;/* Épaisseur du texte, ici en gras */
       text-align: center;/* Centrage horizontal du texte dans son conteneur */
-      margin: 100px 20px 40px; /* en tenant compte du header fixé */ /* Marges autour de l'élément : 100px en haut, 20px à droite et gauche, 40px en bas */
+      margin: 0px 20px 5px; /* en tenant compte du header fixé */ /* Marges autour de l'élément : 100px en haut, 20px à droite et gauche, 40px en bas */
      /* -> c'est cette marge haute qui positionne verticalement le texte par rapport au haut de la page ou à l’élément précédent */
       text-shadow: 0 0 8px rgba(255, 204, 0, 0.8);/* Ombre portée autour du texte, ici jaune/orangé avec un flou de 8px */
       user-select: none; /* Empêche la sélection du texte par l’utilisateur (clic + drag) */
@@ -167,6 +167,23 @@ nav ul li a.active {
     --perspective: 2250px;/* distance de la perspective 3D (plus grand = effet 3D plus subtil).*/
       --camera-tilt: 20deg;
   }
+/* Titre au-dessus du carrousel */
+.carousel-title {
+  position: absolute;
+  top: calc(70% - 20px - 2em); /* place 20px au-dessus du carrousel (70% top) moins la hauteur du titre */
+  left: 50%;
+  transform: translateX(-50%);
+  margin: 0;
+  font-size: 6vw;
+  color: #222;
+  z-index: 10;
+}
+
+    .realisations-container {
+  position: relative; /* référence pour les absolute à l’intérieur */
+  width: 100%;
+  height: 400px; /* ajuste en fonction de la taille visible de ton carrousel */
+}
 
   header {
     display: flex;/*active le modèle flexbox. */
