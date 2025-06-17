@@ -95,7 +95,7 @@ nav ul li a.active {
       position: relative;
       width: 0; height: 0;
       transform-style: preserve-3d;
-      transform: rotateX(-10deg); /* légère inclinaison vers l'avant */
+      transform: rotateX(-4deg); /* légère inclinaison vers l'avant */
       touch-action: pan-y; /* permet de scroll vertical sur mobile sans bloquer */
     }
 
@@ -194,6 +194,7 @@ nav ul li a.active {
   }
 
   .carousel {
+    transform: rotateX(-4deg); /* légère inclinaison vers l'avant */
     perspective: var(--perspective);/*applique la perspective 3D définie par la variable CSS. */
     position: absolute;/*positionne le carrousel par rapport à son premier parent positionné. */
     top: 50%;/* */
