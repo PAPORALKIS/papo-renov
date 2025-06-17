@@ -175,44 +175,68 @@ nav ul li a.active {
     align-items: center;/*dcentre verticalement les enfants.*/
     padding: 10px 15px;/*espace intérieur haut/bas 10px, gauche/droite 15px. */
     flex-wrap: nowrap;/* interdit le passage à la ligne des éléments. */
+     width: 100%;
+  box-sizing: border-box; /* Pour que padding soit inclus dans largeur */
+  height: 50px; /* barre fine en hauteur, tu peux ajuster */
   }
 
-  .logo img {
-    margin: 0;/*on enlève toute marge extérieure. */
-    max-width: 40%; /* Empêche qu’il prenne trop de place */
-  }
+    .logo {
+  flex: 0 0 auto; /* Ne grandit pas */
+  max-width: 30%; /* Limite plus stricte du logo */
+}
 
-  header nav {
-    flex-grow: 1;/*prend tout l’espace disponible restant. */
-     overflow: hidden; /* Cache les débordements si nécessaire */
-    display: flex;/* active flexbox. */
-    justify-content: flex-end;/*aligne les liens à droite. */
-  }
+ .logo img {
+  width: 100%; /* Le logo remplit son conteneur */
+  height: auto;
+  display: block;
+  margin: 0;
+}
 
-  nav ul {
-    display: flex;/*aligne horizontalement les */
-    justify-content: flex-end;/*pousse les items vers la droite. */
-    gap: 5px;/* espace de 1px entre les items. */
-    margin: 0;/* upprime marges et paddings par défaut.*/
-    padding: 0;/* */
-    list-style: none;/*supprime les puces de la liste. */
-  }
+header nav {
+  flex: 1 1 auto; /* prend l’espace restant */
+  display: flex;
+  justify-content: flex-end;
+  overflow: hidden; /* cache débordement */
+  min-width: 0; /* pour que le flex-shrink fonctionne */
+}
 
-  nav ul li {
-    margin: 3px 3px;/* Pour chaque élément <li> de la liste, on ajoute une marge extérieure de 5px partout. */
-  }
+nav ul {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  white-space: nowrap; /* Pas de retour à la ligne */
+  overflow: hidden;
+  text-overflow: ellipsis; /* coupe si trop long */
+  max-width: 100%; /* limite largeur */
+}
 
+nav ul li {
+  margin: 0;
+  padding: 0;
+  flex-shrink: 0; /* ne rétrécit pas */
+}
+
+ nav ul li a {
+  font-size: 3vw; /* taille responsive */
+  white-space: nowrap;
+  display: block;
+  padding: 5px 8px;
+  overflow: hidden;
+  text-overflow: ellipsis; /* coupe texte trop long */
+  max-width: 100px; /* limite max largeur lien (ajuste selon besoins) */
+}
+
+ 
+@media (max-width: 320px) {
   nav ul li a {
-    font-size: 1vw;/*Pour les liens dans la liste, la taille de la police est relative à la largeur de l’écran (3.2% de la largeur). */
- white-space: nowrap; /* Empêche le retour à la ligne */
+    font-size: 4vw; /* lisible sur très petit écran */
+    max-width: 80px;
+    padding: 4px 6px;
   }
-
-  @media (max-width: 450px) {
-    nav ul li a {
-      font-size: 3vw;/* Sur très petits écrans (moins de 450px), on augmente légèrement la taille de la police des liens (3.8% de la largeur) pour améliorer la lisibilité. */
-    }
-  }
-
+}
   .carousel {
   
     perspective: var(--perspective);/*applique la perspective 3D définie par la variable CSS. */
