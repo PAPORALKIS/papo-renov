@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>Carrousel 3D avec avancée ée</title>
   <style>
+     /* ====== Header ====== */
   header {
   position: fixed;
   top: 0;
@@ -44,16 +45,7 @@ nav ul li a.active {
   color: #ffcc00;
 }
 
-     .page-title {
-      color: white;
-      font-size: 2.5em;
-      font-weight: 700;
-      margin: 20px 40px 40px 40px;
-      text-align: left;
-      text-shadow: 1px 1px 3px rgba(0,0,0,0.7);
-      position: relative;
-      top: var(--page-title-offset, 0px);
-    }
+
     
     /* Variables CSS pour taille des images, profondeur Z et offset du  */
     :root {
@@ -87,6 +79,17 @@ nav ul li a.active {
       z-index: 0;
     }
 
+ /* ====== Titre de page ====== */
+    .page-title {
+      color: white;
+      font-size: 2.5em;
+      font-weight: 700;
+      text-align: center;
+      margin: 100px 20px 40px; /* en tenant compte du header fixé */
+      text-shadow: 0 0 8px rgba(255, 204, 0, 0.8);
+      user-select: none;
+    }
+    
     /* Conteneur centré pour le carrousel avec perspective 3D */
     .carousel-container {
       position: fixed;
