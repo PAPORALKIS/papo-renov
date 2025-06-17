@@ -146,6 +146,7 @@ nav ul li a.active {
     --img-size: 15vw;/* taille des images en largeur relative (viewport width). */
     --offset: -100px;/* décalage horizontal (ici négatif, vers la gauche)*/
     --perspective: 2250px;/* distance de la perspective 3D (plus grand = effet 3D plus subtil).*/
+      --camera-tilt: 20deg;
   }
 
   header {
@@ -194,7 +195,7 @@ nav ul li a.active {
   }
 
   .carousel {
-    transform: rotateX(-15deg); /* légère inclinaison vers l'avant */
+  
     perspective: var(--perspective);/*applique la perspective 3D définie par la variable CSS. */
     position: absolute;/*positionne le carrousel par rapport à son premier parent positionné. */
     top: 50%;/* */
@@ -204,7 +205,8 @@ nav ul li a.active {
 transform:
 
  */
-    transform: translate(-50%, -50%) rotateY(var(--rotation)) translateZ(var(--translateZ));
+   transform: translate(-50%, -50%) rotateX(var(--camera-tilt)) rotateY(var(--rotation)) translateZ(var(--translateZ));
+
     /*translate(-50%, -50%) centre exactement le carrousel sur ce point (centre de son propre box).
 
 rotateY(var(--rotation)) applique une rotation autour de l’axe vertical (var rotation définie ailleurs).
