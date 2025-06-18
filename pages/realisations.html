@@ -232,15 +232,16 @@ nav ul li a.active {
     justify-content: flex-end;/*aligne les liens à droite. */
   }
 
-  nav ul {
-    display: flex;/*aligne horizontalement les */
-    justify-content: flex-end;/*pousse les items vers la droite. */
-    gap: 1px;/* espace de 1px entre les items. */
-    margin: 0;/* upprime marges et paddings par défaut.*/
-    padding: 0;/* */
-    list-style: none;/*supprime les puces de la liste. */
-    transform: translateX(1px); /* déplace les liens vers la droite */
-  }
+nav ul {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  /* transform: translateX(1px); ❌ à éviter */
+  margin-right: 20px; /* ✅ pousse les liens vers la gauche */
+}
 
   nav ul li {
     margin: 3px 3px;/* Pour chaque élément <li> de la liste, on ajoute une marge extérieure de 5px partout. */
