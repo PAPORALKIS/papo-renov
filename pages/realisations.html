@@ -80,28 +80,26 @@ nav ul li a.active {
       content: "";
       position: fixed;
       top: 50%; left: 50%;
-      width: 850px;
-      height: 850px;
+      width: 1000px; height: 1000px;
       background: url("/img/logo.png") no-repeat center/contain;
-      opacity: 0.05;
-      filter: blur(1.5px) contrast(110%) grayscale(50%);
-      transform: translate(-50%, -50%) rotate(5deg);
+      opacity: 0.10;
+      transform: translate(-50%, -50%);
       pointer-events: none; /* clics passent au travers */
       z-index: 0;
     }
 
 /* ====== Titre de page ====== */
-
     .page-title {
-  font-family: 'Poppins', sans-serif;
-  font-weight: 600;
-  font-size: 2.2em;
-  letter-spacing: 0.05em;
-  color: #fdfdfd;
-  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.7);
-  background: linear-gradient(90deg, #ffd700, #ff8c00);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  position: fixed;
+  top: 60px;
+  left: 0;
+  right: 0;
+  text-align: center;
+  font-size: 1.8em;
+  padding: 0 10px;
+  margin: 0 auto;
+  white-space: normal;
+  z-index: 10002;
 }
 
      /* Responsive pour titre sur petit écran */
