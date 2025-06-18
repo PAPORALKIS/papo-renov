@@ -218,9 +218,12 @@ nav ul li a.active {
   }
 
   .logo img {
-    margin: 0;/*on enlève toute marge extérieure. */
-    max-width: 40%; /* Empêche qu’il prenne trop de place */
-  }
+  height: auto;              /* conserve le ratio naturel */
+  max-height: 60px;          /* limite la hauteur */
+  width: auto;               /* ajuste automatiquement la largeur */
+  max-width: 100%;           /* empêche de dépasser le conteneur */
+  display: block;
+}
 
   header nav {
    /*aligne les liens à droite. flex-grow: 1;/*prend tout l’espace disponible restant. */
@@ -236,7 +239,7 @@ nav ul li a.active {
     margin: 0;/* upprime marges et paddings par défaut.*/
     padding: 0;/* */
     list-style: none;/*supprime les puces de la liste. */
-    transform: translateX(2Opx); /* déplace les liens vers la droite */
+    transform: translateX(25px); /* déplace les liens vers la droite */
   }
 
   nav ul li {
