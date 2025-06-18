@@ -193,7 +193,7 @@ nav ul li a.active {
 /* Titre au-dessus du carrousel */
 .carousel-title {
   position: absolute;
-  top: calc(50% - 50px - 2em); /* place 20px au-dessus du carrousel (70% top) moins la hauteur du titre */
+  top: calc(70% - 20px - 2em); /* place 20px au-dessus du carrousel (70% top) moins la hauteur du titre */
   left: 50%;
   transform: translateX(-50%);
   margin: 0;
@@ -219,7 +219,7 @@ nav ul li a.active {
 
   .logo img {
   height: auto;              /* conserve le ratio naturel */
-  max-height: 60px;          /* limite la hauteur */
+  max-height: 40px;          /* limite la hauteur */
   width: auto;               /* ajuste automatiquement la largeur */
   max-width: 100%;           /* empêche de dépasser le conteneur */
   display: block;
@@ -239,7 +239,7 @@ nav ul li a.active {
     margin: 0;/* upprime marges et paddings par défaut.*/
     padding: 0;/* */
     list-style: none;/*supprime les puces de la liste. */
-    transform: translateX(25px); /* déplace les liens vers la droite */
+    transform: translateX(22px); /* déplace les liens vers la droite */
   }
 
   nav ul li {
@@ -247,13 +247,13 @@ nav ul li a.active {
   }
 
   nav ul li a {
-    font-size: 10px;/*Pour les liens dans la liste, la taille de la police est relative à la largeur de l’écran (3.2% de la largeur). */
+    font-size: 9px;/*Pour les liens dans la liste, la taille de la police est relative à la largeur de l’écran (3.2% de la largeur). */
  white-space: nowrap; /* Empêche le retour à la ligne */
   }
 
   @media (max-width: 450px) {
     nav ul li a {
-      font-size: 10px;/* Sur très petits écrans (moins de 450px), on augmente légèrement la taille de la police des liens (3.8% de la largeur) pour améliorer la lisibilité. */
+      font-size: 9px;/* Sur très petits écrans (moins de 450px), on augmente légèrement la taille de la police des liens (3.8% de la largeur) pour améliorer la lisibilité. */
     }
   }
 
