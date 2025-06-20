@@ -17,8 +17,8 @@
   z-index: 10001;
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  padding: 1px 30px;
+  align-items: right;
+  padding: 1px 5px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }  
 
@@ -29,8 +29,10 @@
 nav ul {
   list-style: none;
   display: flex;
-  gap: 15px;
-  margin: 20px;
+  flex-wrap: nowrap;     /* ✅ jamais de retour à la ligne */
+
+  gap: 8px;
+  margin: 0px;
   padding: 0;
   
 }
