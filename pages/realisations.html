@@ -218,32 +218,37 @@ nav ul li a.active {
   }
 .logo {
   flex-shrink: 0; 
+  margin-right: 8px;
   {
   
   .logo img {
-                /* conserve le ratio naturel */
-  max-height: 35px;          /* limite la hauteur */
-  width: auto;               /* ajuste automatiquement la largeur */
-             /* empêche de dépasser le conteneur */
-  
+height: auto;
+  max-height: 28px;      /* ✅ plus petit qu’avant */
+  width: auto;
+  max-width: 90%;
+  display: block;
 }
 
   header nav {
-  flex-grow: 1;
+    flex: 1 1 auto;
   display: flex;
   justify-content: flex-end;
-  overflow-x: hidden; /* sécurité pour les petits écrans */
+  
 }
 
 nav ul {
   display: flex;
-  flex-wrap: nowrap;   /* pas de retour à la ligne */
+  flex-wrap: nowrap;     /* ✅ jamais de retour à la ligne */
   gap: 6px;
   margin: 0;
   padding: 0;
   list-style: none;
+  white-space: nowrap;   /* ✅ force les liens à rester sur une ligne */
 }
 
+  nav ul li {
+  margin: 0;
+}
   nav ul li a {
     display: inline-block;
     font-size: 6px;/*Pour les liens dans la liste, la taille de la police est relative à la largeur de l’écran (3.2% de la largeur). */
