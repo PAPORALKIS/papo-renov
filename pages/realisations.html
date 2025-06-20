@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="fr">
+<!DOCTYPE html>
+<html lang="fr">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, 
@@ -96,6 +97,25 @@ nav ul li a.active {
   --container-translate-x: -50%;
   --container-translate-y: -49%;
   --camera-tilt: 4deg;
+}
+ html, body {
+      margin: 0; height: 100%;
+      background: #00010d;       /* fond très sombre */
+      overflow: hidden;          /* empêche le scroll de la page */
+      font-family: sans-serif;
+    }
+
+    /* Logo en filigrane au centre en fond avec faible opacité */
+    body::before {
+  content: ""; /* Pseudo-élément vide pour afficher un élément graphique */
+  position: fixed; /* Fixé à l'écran, reste en place même au scroll */
+  top: 50%; left: 50%; /* Positionne le centre du logo au centre de la fenêtre */
+  width: 300px; height: 300px; /* Taille du logo en fond (ajustable) */
+  background: url("../img/logo.png") no-repeat center/contain; /* Affiche le logo centré, sans répétition, redimensionné */
+  opacity: 0.2; /* Transparence faible du logo pour un effet discret */
+  transform: translate(-50%, -50%); /* Décale le logo pour le centrer parfaitement */
+  pointer-events: none; /* Permet aux clics de passer au travers (le logo ne bloque rien) */
+  z-index: 0; /* Envoyé tout au fond de la pile d'affichage */
 }
 
 /* Smartphones portrait */
