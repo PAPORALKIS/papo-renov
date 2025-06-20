@@ -1,7 +1,8 @@
 <!DOCTYPE html><html lang="fr">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, 
+    viewport-fit=cover" />
   <title>Carrousel 3D - Réalisations</title>
   
   <style>
@@ -132,7 +133,8 @@
       <img src="../img/velaux2.jpg" alt="test" class="carousel__image" />
       <img src="../img/velaux3.jpg" alt="test" class="carousel__image" />
     </div>
-  </div>  <!-- ===== Script JS pour le carrousel 3D et l'interaction utilisateur ===== -->  <script>
+  </div>  
+  <script>
     const carousel = document.getElementById("carousel");
     const container = document.getElementById("carousel-container");
     const images = carousel.getElementsByTagName("img");
@@ -308,5 +310,6 @@
     updateImageSizes();
     positionImages();
     requestAnimationFrame(animate);
-  </script></body>
+  </script>
+</body>
 </html>
