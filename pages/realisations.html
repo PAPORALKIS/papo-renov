@@ -117,7 +117,77 @@ nav ul li a.active {
   pointer-events: none; /* Permet aux clics de passer au travers (le logo ne bloque rien) */
   z-index: 0; /* Envoyé tout au fond de la pile d'affichage */
 }
+body {
 
+  overflow: auto;
+    }
+    }
+    /* Conteneur centré pour le carrousel avec perspective 3D */
+    .carousel-container {
+      position: fixed;
+      top: var(--container-top);
+      left: var(--container-left);
+      transform: translate(var(--container-translate-x), var(--container-translate-y));
+      perspective: var(--perspective);  /* profondeur 3D pour effet */
+      z-index: 1;
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    /* Conteneur des images avec style 3D */
+    .carousel {
+      position: relative;
+      width: 0; height: 0;
+      transform-style: preserve-3d;
+      transform: rotateX(-4deg); /* légère inclinaison vers l'avant */
+      touch-action: pan-y; /* permet de scroll vertical sur mobile sans bloquer */
+    }
+
+    /* Style des images */
+    .carousel img {
+      position: absolute;
+      width: var(--img-size);
+      height: var(--img-size);
+      object-fit: cover;      /* image recadrée en conservant proportions */
+      border-radius: 12px;
+      box-shadow: 0 0 14px rgba(0, 0, 0, 0.7);
+      transition: transform 0.6s ease, z-index 0.6s ease; /* animation douce */
+      cursor: pointer;
+      z-index: 1;
+      transform-origin: center center;
+      user-select: none;
+      -webkit-user-drag: none;
+    }
+
+    /*  léger au survol */
+    .carousel img:hover {
+      transform: scale(1.1);
+      z-index: 10;
+    }
+
+    /* Style pour l’image ée au clic */
+    .ed {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      background: rgba(0,0,0,0.95);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+    }
+    .ed img {
+      width: 90vw;
+      max-height: 70vh;
+      transform: translateY(var(--offset));
+      border-radius: 8px;
+      box-shadow: 0 0 40px black;
+    }
+
+  
 /* Smartphones portrait */
 @media (max-width: 600px) and (orientation: portrait) {
   :root {
