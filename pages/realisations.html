@@ -258,7 +258,10 @@ nav ul {
 
   @media (max-width: 450px) {
     nav ul li a {
-      font-size: 9px;/* Sur très petits écrans (moins de 450px), on augmente légèrement la taille de la police des liens (3.8% de la largeur) pour améliorer la lisibilité. */
+      display: inline-block;
+      font-size: 6px;/* Sur très petits écrans (moins de 450px), on augmente légèrement la taille de la police des liens (3.8% de la largeur) pour améliorer la lisibilité. */
+ white-space: nowrap; /* Empêche le retour à la ligne */ 
+      text-decoration: none;
     }
   }
 
