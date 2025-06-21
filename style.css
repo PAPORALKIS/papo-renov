@@ -224,7 +224,8 @@ footer {
 
 /* === Responsive navigation mobile portrait === */
 @media (max-width: 480px) {
-  .logo {
+  .logo,
+  .logo img {
     display: none;
   }
 
