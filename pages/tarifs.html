@@ -16,10 +16,6 @@
       margin: 0;
     }
 
-    /* Supprime les styles header/nav du fichier original */
-    /* Pour avoir le même style que dans devis.html */
-
-    /* Styles spécifiques à la section tarifs */
     .section {
       max-width: 1000px;
       margin: 2rem auto;
@@ -27,6 +23,8 @@
       padding: 2rem;
       border-radius: 12px;
       box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+      hyphens: none;
+      overflow-x: auto;  /* Ajouté : scroll horizontal si tableau trop large */
     }
 
     .section img {
@@ -46,6 +44,10 @@
       width: 100%;
       border-collapse: collapse;
       margin-top: 1rem;
+      hyphens: none;
+      word-break: break-word;
+      overflow-wrap: break-word;
+      table-layout: fixed; /* Pour mieux gérer largeur colonnes */
     }
 
     th, td {
@@ -53,22 +55,15 @@
       border: 1px solid #ccc;
       text-align: left;
       font-size: 0.95rem;
-      /* Empêche la césure de mots */
       hyphens: none;
-      word-break: normal;
+      word-break: break-word;
       overflow-wrap: break-word;
+      white-space: normal; /* Pour éviter débordements */
     }
 
     th {
       background-color: #003366;
       color: white;
-    }
-
-    /* Appliquer aussi pour les paragraphes, labels, etc. */
-    p, label, .pack, .pack p, .pack h3 {
-      hyphens: none;
-      word-break: normal;
-      overflow-wrap: break-word;
     }
 
     .pack {
@@ -77,7 +72,6 @@
       padding: 1rem;
       margin: 1.5rem 0;
       border-radius: 12px;
-      font-size: 0.9rem;
     }
 
     .pack h3 {
@@ -89,48 +83,35 @@
       text-align: center;
     }
 
-    /* Ajustement responsive pour réduire taille police et éviter coupures */
-    @media (max-width: 1200px) {
-      table th, table td {
-        font-size: 0.9rem;
-      }
-      .pack {
-        font-size: 0.85rem;
-      }
-    }
-
-    @media (max-width: 800px) {
-      .section {
-        max-width: 90%;
-        padding: 1rem;
-      }
-      table th, table td {
-        font-size: 0.85rem;
-      }
-      .pack {
-        font-size: 0.8rem;
+    /* Police responsive pour éviter coupures */
+    @media (max-width: 768px) {
+      body {
+        font-size: 14px;
       }
       h2 {
-        font-size: 1.6rem;
+        font-size: 1.5rem;
+      }
+      th, td {
+        font-size: 0.85rem;
       }
     }
 
     @media (max-width: 480px) {
-      table th, table td {
-        font-size: 0.75rem;
-      }
-      .pack {
-        font-size: 0.7rem;
+      body {
+        font-size: 12px;
       }
       h2 {
         font-size: 1.3rem;
+      }
+      th, td {
+        font-size: 0.75rem;
       }
     }
   </style>
 </head>
 <body>
 
-  <!-- HEADER et NAV (identique à devis.html) -->
+  <!-- HEADER et NAV -->
   <header>
     <div class="logo">
       <img src="../img/logo.png" alt="Logo Papo Rénov" />
