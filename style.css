@@ -12,19 +12,18 @@ body {
 
 /* === Header === */
 header {
-  display: flex; /* Affiche les enfants en ligne (horizontalement) */
-  align-items: center; /* Centre verticalement les éléments */
-  justify-content: space-between; /* Espace entre les éléments (logo à gauche, nav à droite) */
-  background-color: #fff; /* Fond blanc */
-  padding: 10px 20px; /* Espacement intérieur */
-  border-bottom: 1px solid #ccc; /* Ligne grise en bas du header */
-  position: sticky; /* Le header reste visible en haut lors du scroll */
-  top: 0; /* Collé en haut de la page */
-  z-index: 999; /* S'assure que le header passe au-dessus des autres éléments */
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: white; /* Barre blanche */
+  padding: 8px 20px;
+  border-bottom: 1px solid #ddd;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
 }
-
 .logo img {
-  height: 50px; /* Hauteur fixe de l'image du logo */
+  height: 45px; /* Hauteur fixe de l'image du logo */
   max-width: 100%; /* Empêche le débordement horizontal */
   objectif-fit: contain; /* (⚠️ Erreur ici : "height: contain" n'existe pas → c’est "object-fit: contain" pour les images) */
 }
@@ -33,12 +32,13 @@ header {
 nav ul {
   list-style: none; /* Supprime les puces */
   display: flex; /* Les éléments li sont alignés horizontalement */
-  gap: 15px; /* Espace entre chaque élément */
+  gap: 20px; /* Espace entre chaque élément */
   padding: 0;
   margin: 0;
+  flex-wrap: nowrap;
   overflow-x: auto; /* Permet le scroll horizontal si le menu est trop large */
   -webkit-overflow-scrolling: touch; /* Meilleur scroll sur mobile */
-  scrollbar-width: none; /* Supprime la barre de scroll (Firefox) */
+  
 }
 
 nav ul::-webkit-scrollbar {
