@@ -1,75 +1,75 @@
-/* Reset et base */
+/* === Reset et base === */
 * {
-  box-sizing: border-box;
+  box-sizing: border-box; /* Inclut les bordures et le padding dans les dimensions des éléments (width/height) */
 }
 
 body {
-  margin: 0;
-  font-family: 'Poppins', sans-serif;
-  background-color: #f5f5f5;
-  color: #333;
+  margin: 0; /* Supprime les marges par défaut du navigateur */
+  font-family: 'Poppins', sans-serif; /* Définit la police principale */
+  background-color: #f5f5f5; /* Couleur de fond claire */
+  color: #333; /* Couleur du texte principale (gris foncé) */
 }
 
-/* Header */
+/* === Header === */
 header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background-color: #fff;
-  padding: 10px 20px;
-  border-bottom: 1px solid #ccc;
-  position: sticky;
-  top: 0;
-  z-index: 999;
+  display: flex; /* Affiche les enfants en ligne (horizontalement) */
+  align-items: center; /* Centre verticalement les éléments */
+  justify-content: space-between; /* Espace entre les éléments (logo à gauche, nav à droite) */
+  background-color: #fff; /* Fond blanc */
+  padding: 10px 20px; /* Espacement intérieur */
+  border-bottom: 1px solid #ccc; /* Ligne grise en bas du header */
+  position: sticky; /* Le header reste visible en haut lors du scroll */
+  top: 0; /* Collé en haut de la page */
+  z-index: 999; /* S'assure que le header passe au-dessus des autres éléments */
 }
 
 .logo img {
-  height: 50px;
-  max-width: 100%;
-  height: contain;
+  height: 50px; /* Hauteur fixe de l'image du logo */
+  max-width: 100%; /* Empêche le débordement horizontal */
+  height: contain; /* (⚠️ Erreur ici : "height: contain" n'existe pas → c’est "object-fit: contain" pour les images) */
 }
 
-/* Navigation */
+/* === Navigation === */
 nav ul {
-  list-style: none;
-  display: flex;
-  gap: 15px;
+  list-style: none; /* Supprime les puces */
+  display: flex; /* Les éléments li sont alignés horizontalement */
+  gap: 15px; /* Espace entre chaque élément */
   padding: 0;
   margin: 0;
-  overflow-x: auto; /* Scroll horizontal si trop large */
-  -webkit-overflow-scrolling: touch;
-  scrollbar-width: none; /* Firefox */
+  overflow-x: auto; /* Permet le scroll horizontal si le menu est trop large */
+  -webkit-overflow-scrolling: touch; /* Meilleur scroll sur mobile */
+  scrollbar-width: none; /* Supprime la barre de scroll (Firefox) */
 }
 
 nav ul::-webkit-scrollbar {
-  display: none; /* Chrome, Safari */
+  display: none; /* Supprime la barre de scroll (Chrome, Safari) */
 }
 
 nav ul li {
-  white-space: nowrap;
+  white-space: nowrap; /* Empêche le retour à la ligne des liens */
 }
 
 nav ul li a {
-  text-decoration: none;
-  color: #333;
-  font-weight: 600;
-  padding: 8px 10px;
+  text-decoration: none; /* Supprime le soulignement */
+  color: #333; /* Couleur du texte */
+  font-weight: 600; /* Texte en semi-gras */
+  padding: 8px 10px; /* Espacement autour du lien */
   display: inline-block;
-  transition: color 0.3s ease;
+  transition: color 0.3s ease; /* Animation douce du changement de couleur */
 }
 
 nav ul li a:hover,
 nav ul li a.active {
-  color: #007bff;
-  border-bottom: 2px solid #007bff;
+  color: #007bff; /* Bleu sur hover ou lien actif */
+  border-bottom: 2px solid #007bff; /* Soulignement bleu */
 }
 
-/* Hero */
+/* === Hero section === */
 .hero {
   position: relative;
-  height: 80vh;
-  background-size: cover;
-  background-position: center;
+  height: 80vh; /* Hauteur de 80% de la fenêtre */
+  background-size: cover; /* Image de fond couvrante */
+  background-position: center; /* Centrée */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -77,17 +77,17 @@ nav ul li a.active {
 }
 
 .overlay {
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.5); /* Fond semi-transparent noir */
   padding: 40px 25px;
   border-radius: 10px;
-  color: white;
+  color: white; /* Texte blanc */
   text-align: center;
   max-width: 90%;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+  box-shadow: 0 4px 15px rgba(0,0,0,0.3); /* Ombre autour de la boîte */
 }
 
 .highlight {
-  color: #007bff;
+  color: #007bff; /* Texte bleu vif */
   font-weight: 700;
 }
 
@@ -111,9 +111,10 @@ nav ul li a.active {
 }
 
 .cta-button:hover {
-  background-color: #0056b3;
+  background-color: #0056b3; /* Bleu plus foncé au survol */
   box-shadow: 0 7px 15px rgba(0,86,179,0.6);
 }
+
 .header-container {
   display: flex;
   align-items: center;
@@ -121,7 +122,7 @@ nav ul li a.active {
   padding: 10px 20px;
 }
 
-/* Footer */
+/* === Footer === */
 footer {
   text-align: center;
   padding: 18px 12px;
@@ -131,7 +132,7 @@ footer {
   color: #666;
 }
 
-/* Responsive text adjustments */
+/* === Responsive (Adaptation sur petits écrans) === */
 @media (max-width: 768px) {
   .overlay {
     padding: 30px 20px;
@@ -146,7 +147,7 @@ footer {
 
 @media (max-width: 480px) {
   header {
-    flex-wrap: wrap;
+    flex-wrap: wrap; /* Permet au contenu du header de passer à la ligne */
     justify-content: center;
   }
   nav ul {
@@ -169,8 +170,8 @@ footer {
     font-size: 14px;
   }
 }
-/* Tarifs - Grille et cartes */
 
+/* === Section Tarifs === */
 .tarif-section {
   padding: 40px 20px;
   background-color: #f5f5f5;
@@ -179,19 +180,19 @@ footer {
 .tarif-grid {
   display: grid;
   gap: 20px;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* Grille responsive */
 }
 
 .tarif-card {
   background-color: #fff;
   border-radius: 10px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1); /* Légère ombre */
   padding: 20px;
   transition: transform 0.2s ease;
 }
 
 .tarif-card:hover {
-  transform: translateY(-5px);
+  transform: translateY(-5px); /* Léger effet de "soulèvement" au survol */
 }
 
 .tarif-card h3 {
@@ -209,16 +210,17 @@ footer {
   margin-bottom: 8px;
   line-height: 1.4;
 }
-/* Bouton "Ajouter à mes contacts" - visible uniquement sur smartphone */
+
+/* === Bouton pour smartphone === */
 .btn-contact-smartphone {
-  display: none;
+  display: none; /* Masqué par défaut (sauf sur mobile) */
   text-align: center;
   margin-top: 1em;
 }
 
-@media (max-width: 600px) {  /* On élargit un peu la limite pour couvrir plus d'appareils */
+@media (max-width: 600px) {  /* Pour petits écrans */
   .btn-contact-smartphone {
-    display: block !important;  /* Forcer l'affichage */
+    display: block !important;  /* Forcé à apparaître sur mobile */
   }
 
   .btn-contact-smartphone a {
@@ -238,6 +240,3 @@ footer {
     background-color: #0056b3;
   }
 }
-
-
-
