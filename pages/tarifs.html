@@ -21,14 +21,31 @@
     /* Pour avoir le même style que dans devis.html */
 
     /* Styles spécifiques à la section tarifs */
-    .section {
-      max-width: 1000px;
-      margin: 2rem auto;
-      background-color: rgba(255, 255, 255, 0.95);
-      padding: 2rem;
-      border-radius: 12px;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-    }
+.section {
+  max-width: 900px; /* un peu moins large que 1000px pour serrer un peu */
+  margin: 2rem auto;
+  background-color: rgba(255, 255, 255, 0.95);
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+/* Limite la largeur des tableaux et centre */
+table {
+  max-width: 700px; /* limite la largeur max du tableau */
+  width: 100%;      /* occupe tout le conteneur sauf si > max-width */
+  margin: 1rem auto 0 auto; /* centre le tableau */
+  border-collapse: collapse;
+  table-layout: fixed; /* pour colonnes largeur fixe */
+}
+
+th, td {
+  padding: 0.7rem;
+  border: 1px solid #ccc;
+  text-align: left;
+  font-size: 0.95rem;
+  word-wrap: break-word; /* coupe le texte long */
+}
 
     .section img {
       width: 70px;
