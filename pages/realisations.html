@@ -8,6 +8,26 @@
   
   <style>
     /* Valeurs par défaut - desktop */
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      background: #00010d;
+      font-family: sans-serif;
+      overflow: hidden;
+    }
+    body::before {
+  content: ""; /* Pseudo-élément vide pour afficher un élément graphique */
+  position: fixed; /* Fixé à l'écran, reste en place même au scroll */
+  top: 50%; 
+  left: 50%; /* Positionne le centre du logo au centre de la fenêtre */
+  width: 300px; height: 300px; /* Taille du logo en fond (ajustable) */
+  background: url("../img/logo.png") no-repeat center/contain; /* Affiche le logo centré, sans répétition, redimensionné */
+  opacity: 0.2; /* Transparence faible du logo pour un effet discret */
+  transform: translate(-50%, -50%); /* Décale le logo pour le centrer parfaitement */
+  pointer-events: none; /* Permet aux clics de passer au travers (le logo ne bloque rien) */
+  z-index: 0; /* Envoyé tout au fond de la pile d'affichage */
+}
 header {
   position: fixed;
   top: 0;
@@ -56,16 +76,6 @@ nav ul li a:hover,
 nav ul li a.active {
   color: #ffcc00;
 }
-  /* Variables CSS pour taille des images, profondeur Z et offset du  */
-
-
- html, body {
-      margin: 0; 
-   height: 100%;
-      background: #00010d;       /* fond très sombre */
-      overflow: auto;          /* empêche le scroll de la page */
-      font-family: sans-serif;
-    }
 
 .page-title {
   margin-top: 60px;
@@ -77,21 +87,6 @@ nav ul li a.active {
 }
   
   
-    /* Logo en filigrane au centre en fond avec faible opacité */
-    body::before {
-  content: ""; /* Pseudo-élément vide pour afficher un élément graphique */
-  position: fixed; /* Fixé à l'écran, reste en place même au scroll */
-  top: 50%; 
-  left: 50%; /* Positionne le centre du logo au centre de la fenêtre */
-  width: 300px; height: 300px; /* Taille du logo en fond (ajustable) */
-  background: url("../img/logo.png") no-repeat center/contain; /* Affiche le logo centré, sans répétition, redimensionné */
-  opacity: 0.2; /* Transparence faible du logo pour un effet discret */
-  transform: translate(-50%, -50%); /* Décale le logo pour le centrer parfaitement */
-  pointer-events: none; /* Permet aux clics de passer au travers (le logo ne bloque rien) */
-  z-index: 0; /* Envoyé tout au fond de la pile d'affichage */
-}
-    
-    /* Conteneur centré pour le carrousel avec perspective 3D */
     .carousel-container {
       position: fixed;
       top: var(--container-top);
@@ -152,49 +147,41 @@ nav ul li a.active {
     }
   
 
-@med(max-width: 600px) and (orientation: portrait) {
-  :root {
-    --img-size: 10vw;
-    --translateZ: 320px;
-    --offset: -100px;
-    --perspective: 2250px;
-    --container-top: 50%;
-    --container-left: 50%;
-    --container-translate-x: -50%;
-    --container-translate-y: -50%;
-    --camera-tilt: 20deg;
-  }
-}
+@media (max-width: 768px) {
+      :root {
+        --img-size: 18vw;
+        --translateZ: 250px;
+        --offset: -100px;
+        --perspective: 1200px;
+        --container-top: 56%;
+        --camera-tilt: 15deg;
+      }
+      body::before {
+        width: 40vw;
+        height: 40vw;
+        opacity: 0.02;
+      }
+    }
 
-/* Smartphones paysage */
-@media (max-width: 767px) and (orientation: landscape) {
-  :root {
-    --img-size: 13vw;
-    --translateZ: 320px;
-    --offset: -150px;
-    --perspective: 2500px;
-    --container-top: 50%;
-    --container-left: 50%;
-    --container-translate-x: -50%;
-    --container-translate-y: -50%;
-    --camera-tilt: 20deg;
-  }
-}
+    @media (min-width: 769px) and (max-width: 1024px) {
+      :root {
+        --img-size: 10vw;
+        --translateZ: 500px;
+        --offset: -150px;
+        --perspective: 2000px;
+        --container-top: 50%;
+      }
+    }
 
-/* Tablettes (768px à 1024px) */
-@media (min-width: 768px) and (max-width: 1024px) {
-  :root {
-    --img-size: 6vw;
-    --translateZ: 3500px;
-    --offset: -400px;
-    --perspective: 4500px;
-    --container-top: 50%;
-    --container-left: 50%;
-    --container-translate-x: -50%;
-    --container-translate-y: -50%;
-    --camera-tilt: 20deg;
-  }
-}
+    @media (min-width: 1025px) {
+      :root {
+        --img-size: 8vw;
+        --translateZ: 900px;
+        --offset: -200px;
+        --perspective: 3000px;
+        --container-top: 50%;
+      }
+    }
       </style>
 </head>
 <body>
@@ -369,6 +356,14 @@ nav ul li a.active {
     let baseRadius = 900;
     let angle = 0;
     let autoRotate = true;
+const carousel = document.getElementById("carousel");
+    const container = document.getElementById("carousel-container");
+    const images = carousel.getElementsByTagName("img");
+    const total = images.length;
+    let baseRadius = 900;
+    const Scale = 1.5;
+    let angle = 0;
+    let autoRotate = true;
     let lastTime = performance.now();
     let velocity = 0;
     const friction = 0.95;
@@ -376,16 +371,16 @@ nav ul li a.active {
     let lastX = 0;
 
     function getRootCSSVars() {
-      const styles = getComputedStyle(document.documentElement);
+      const rootStyles = getComputedStyle(document.documentElement);
       return {
-        translateZ: parseInt(styles.getPropertyValue('--translateZ')),
-        offset: styles.getPropertyValue('--offset'),
-        perspective: styles.getPropertyValue('--perspective'),
-        containerTop: styles.getPropertyValue('--container-top'),
-        containerLeft: styles.getPropertyValue('--container-left'),
-        containerTranslateX: styles.getPropertyValue('--container-translate-x'),
-        containerTranslateY: styles.getPropertyValue('--container-translate-y'),
-        imgSize: styles.getPropertyValue('--img-size')
+        translateZ: parseInt(rootStyles.getPropertyValue('--translateZ')),
+        offset: rootStyles.getPropertyValue('--offset'),
+        perspective: rootStyles.getPropertyValue('--perspective'),
+        containerTop: rootStyles.getPropertyValue('--container-top'),
+        containerLeft: rootStyles.getPropertyValue('--container-left'),
+        containerTranslateX: rootStyles.getPropertyValue('--container-translate-x'),
+        containerTranslateY: rootStyles.getPropertyValue('--container-translate-y'),
+        imgSize: rootStyles.getPropertyValue('--img-size')
       };
     }
 
@@ -433,51 +428,13 @@ nav ul li a.active {
       requestAnimationFrame(animate);
     }
 
-    function restartAutoRotate() {
-      clearTimeout(interactionTimeout);
-      interactionTimeout = setTimeout(() => {
-        autoRotate = false;
-        velocity = 0.02;
-      }, 2000);
-    }
-
     container.addEventListener("wheel", (e) => {
       e.preventDefault();
       autoRotate = false;
       velocity += e.deltaY * 0.003;
-      restartAutoRotate();
+      setTimeout(() => autoRotate = true, 3000);
     });
 
-    container.addEventListener("mousedown", (e) => {
-      isDragging = true;
-      lastX = e.clientX;
-      autoRotate = false;
-      velocity = 0;
-    });
-
-    window.addEventListener("mouseup", () => {
-      if (isDragging) {
-        isDragging = false;
-        restartAutoRotate();
-      }
-    });
-
-    window.addEventListener("mousemove", (e) => {
-      if (isDragging) {
-        const dx = e.clientX - lastX;
-        velocity = dx * 0.5;
-        angle += velocity;
-        lastX = e.clientX;
-      }
-    });
-
-    window.addEventListener('resize', () => {
-      updateContainerStyle();
-      updateImageSizes();
-      positionImages();
-    });
-
-    let interactionTimeout;
     updateContainerStyle();
     updateImageSizes();
     positionImages();
