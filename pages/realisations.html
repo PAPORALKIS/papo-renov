@@ -27,11 +27,8 @@ header {
   flex-shrink: 0;
   
 .logo img {
-  height: auto;
   max-height: 32px;      /* ✅ plus petit qu’avant */
   width: auto;
-  max-width: 70%;
-  display: block;
 
 }
 
@@ -61,29 +58,31 @@ nav ul li a.active {
 }
   /* Variables CSS pour taille des images, profondeur Z et offset du  */
 
-:root {
-  --img-size: 150px;
-  --translateZ: 900px;
-  --offset: -250px;
-  --perspective: 3000px;
-  --container-top: 30%;
-  --container-left: 45%;
-  --container-translate-x: -50%;
-  --container-translate-y: -49%;
-  --camera-tilt: 4deg;
-}
+
  html, body {
-      margin: 0; height: 100%;
+      margin: 0; 
+   height: 100%;
       background: #00010d;       /* fond très sombre */
-      overflow: hidden;          /* empêche le scroll de la page */
+      overflow: auto;          /* empêche le scroll de la page */
       font-family: sans-serif;
     }
 
+.page-title {
+  margin-top: 60px;
+  font-size: 22px;
+  text-align: center;
+  color: white;
+  font-weight: bold;
+  z-index: 100;
+}
+  
+  
     /* Logo en filigrane au centre en fond avec faible opacité */
     body::before {
   content: ""; /* Pseudo-élément vide pour afficher un élément graphique */
   position: fixed; /* Fixé à l'écran, reste en place même au scroll */
-  top: 50%; left: 50%; /* Positionne le centre du logo au centre de la fenêtre */
+  top: 50%; 
+  left: 50%; /* Positionne le centre du logo au centre de la fenêtre */
   width: 300px; height: 300px; /* Taille du logo en fond (ajustable) */
   background: url("../img/logo.png") no-repeat center/contain; /* Affiche le logo centré, sans répétition, redimensionné */
   opacity: 0.2; /* Transparence faible du logo pour un effet discret */
@@ -91,10 +90,6 @@ nav ul li a.active {
   pointer-events: none; /* Permet aux clics de passer au travers (le logo ne bloque rien) */
   z-index: 0; /* Envoyé tout au fond de la pile d'affichage */
 }
-body {
-
-  overflow: auto;
-    }
     
     /* Conteneur centré pour le carrousel avec perspective 3D */
     .carousel-container {
@@ -114,7 +109,8 @@ body {
     /* Conteneur des images avec style 3D */
     .carousel {
       position: relative;
-      width: 0; height: 0;
+      width: 0; 
+      height: 0;
       transform-style: preserve-3d;
       transform: rotateX(-4deg); /* légère inclinaison vers l'avant */
       touch-action: pan-y; /* permet de scroll vertical sur mobile sans bloquer */
@@ -142,34 +138,20 @@ body {
       z-index: 10;
     }
 
-    /* Style pour l’image au clic */
-    .ed {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100vw; height: 100vh;
-      background: rgba(0,0,0,0.95);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      z-index: 9999;
+  /* Root CSS variables */
+    :root {
+      --img-size: 150px;
+      --translateZ: 900px;
+      --offset: -250px;
+      --perspective: 3000px;
+      --container-top: 30%;
+      --container-left: 45%;
+      --container-translate-x: -50%;
+      --container-translate-y: -49%;
+      --camera-tilt: 4deg;
     }
-    .ed img {
-      width: 90vw;
-      max-height: 70vh;
-      transform: translateY(var(--offset));
-      border-radius: 8px;
-      box-shadow: 0 0 40px black;
-    }
-.page-title {
-  margin-top: 60px;
-  font-size: 22px;
-  text-align: center;
-  color: white;
-  font-weight: bold;
-  z-index: 100;
-}
   
-/* Smartphones portrait */
+
 @media (max-width: 600px) and (orientation: portrait) {
   :root {
     --img-size: 10vw;
@@ -244,7 +226,8 @@ body {
         <li><a href="contact.html" class="active">Contact</a></li>
       </ul>
     </nav>
-  </header>  <!-- ===== Titre de la page ===== -->  <div class="page-title">Mes réalisations</div>  <!-- ===== Zoom Overlay (image en grand + vignettes) ===== -->  <div class="zoom-overlay" id="zoomOverlay">
+  </header>  <!-- ===== Titre de la page ===== -->
+  <div class="page-title">Mes réalisations</div>  <!-- ===== Zoom Overlay (image en grand + vignettes) ===== -->  <div class="zoom-overlay" id="zoomOverlay">
     <div class="zoom-description" id="zoomDescription"></div>
     <img class="zoom-image" id="zoomImage" src="" alt="Zoom" />
     <div class="zoom-thumbnails" id="zoomThumbnails"></div>
