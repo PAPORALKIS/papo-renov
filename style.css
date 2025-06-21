@@ -21,25 +21,27 @@ header {
   position: sticky;
   top: 0;
   z-index: 1000;
+  
 }
 .logo img {
   height: 45px; /* Hauteur fixe de l'image du logo */
   max-width: 100%; /* Empêche le débordement horizontal */
-  objectif-fit: contain; /* (⚠️ Erreur ici : "height: contain" n'existe pas → c’est "object-fit: contain" pour les images) */
+  object-fit: contain; /* (⚠️ Erreur ici : "height: contain" n'existe pas → c’est "object-fit: contain" pour les images) */
 }
 
 /* === Navigation === */
 nav ul {
-  list-style: none; /* Supprime les puces */
-  display: flex; /* Les éléments li sont alignés horizontalement */
-  gap: 20px; /* Espace entre chaque élément */
+  list-style: none;
+  display: flex;
+  gap: 20px;
   padding: 0;
   margin: 0;
-  flex-wrap: nowrap;
-  overflow-x: auto; /* Permet le scroll horizontal si le menu est trop large */
-  -webkit-overflow-scrolling: touch; /* Meilleur scroll sur mobile */
-  
+  flex-wrap: nowrap; /* ⛔ empêche les liens de passer à la ligne */
+  overflow-x: auto;   /* ✅ autorise le scroll horizontal si nécessaire */
+  justify-content: flex-end; /* ✅ aligne les éléments à droite */
+  white-space: nowrap; /* ✅ empêche les liens de se couper ou passer à la ligne */
 }
+
 
 nav ul::-webkit-scrollbar {
   display: none; /* Supprime la barre de scroll (Chrome, Safari) */
