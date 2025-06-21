@@ -1,313 +1,256 @@
-/* ====== HTML ====== */
 <!DOCTYPE html>
 <html lang="fr">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <title>Carrousel 3D avec avancée ée</title>
+  <title>Carrousel 3D avec avancée</title>
  
   <style>
 
+  /* ===== Barre de navigation ===== */
   header {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  background: white;
-  z-index: 10001;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1px 30px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-}  
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background: white;
+    z-index: 10001;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1px 30px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  }  
 
-.logo img {
-  height: 40px;
-}
+  .logo img {
+    height: 40px;
+  }
 
-nav ul {
-  list-style: none;
-  display: flex;
-  gap: 15px;
-  margin: 20px;
-  padding: 0;
-  transform: translateX(-50px);
-}
+  nav ul {
+    list-style: none;
+    display: flex;
+    gap: 15px;
+    margin: 20px 0;
+    padding: 0;
+    transform: translateX(-50px);
+  }
 
-nav ul li a {
-  color: black;
-  text-decoration: none;
-  font-weight: bold;
-  transition: color 0.3s;
-}
+  nav ul li a {
+    color: black;
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.3s;
+  }
 
-nav ul li a:hover,
-nav ul li a.active {
-  color: #ffcc00;
-}
+  nav ul li a:hover,
+  nav ul li a.active {
+    color: #ffcc00;
+  }
 
+  /* Variables CSS pour taille des images, profondeur Z et offset */
+  :root {
+    --img-size: 150px;        /* taille de chaque image dans le carrousel */
+    --translateZ: 900px;       /* distance à laquelle les images sont placées en 3D */
+    --offset: -250px;          /* décalage vertical de l'image agrandie */
+    --perspective: 3000px;     /* perspective 3D */
+    --container-top: 30%;
+    --container-left: 45%;
+    --container-translate-y: -49%;
+    --container-translate-x: -50%;
+  }
 
-    
-    /* Variables CSS pour taille des images, profondeur Z et offset du  */
-    :root {
-      --img-size: 150px;        /* taille de chaque image dans le carrousel */
-      --translateZ: 900px;       /* distance à laquelle les images sont placées en 3D */
-      --offset: -250px;     /* décalage vertical de l'image ée */
-      --perspective: 3000px; /* perspective 3D */
-      --container-top: 30%;
-      --container-left: 45%;
-      --container-translate-y: -49%;
-      --container-translate-x: -50%;
-    }
+  html, body {
+    margin: 0; 
+    height: 100%;
+    background: #00010d;       /* fond très sombre */
+    overflow: hidden;          /* empêche le scroll de la page */
+    font-family: sans-serif;
+  }
 
-    html, body {
-      margin: 0; height: 100%;
-      background: #00010d;       /* fond très sombre */
-      overflow: hidden;          /* empêche le scroll de la page */
-      font-family: sans-serif;
-    }
+  /* Logo en filigrane au centre en fond avec faible opacité */
+  body::before {
+    content: "";
+    position: fixed;
+    top: 50%; left: 50%;
+    width: 300px; height: 300px;
+    background: url("../img/logo.png") no-repeat center/contain;
+    opacity: 0.2;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    z-index: 0;
+  }
 
-    /* Logo en filigrane au centre en fond avec faible opacité */
-    body::before {
-  content: ""; /* Pseudo-élément vide pour afficher un élément graphique */
-  position: fixed; /* Fixé à l'écran, reste en place même au scroll */
-  top: 50%; left: 50%; /* Positionne le centre du logo au centre de la fenêtre */
-  width: 300px; height: 300px; /* Taille du logo en fond (ajustable) */
-  background: url("../img/logo.png") no-repeat center/contain; /* Affiche le logo centré, sans répétition, redimensionné */
-  opacity: 0.2; /* Transparence faible du logo pour un effet discret */
-  transform: translate(-50%, -50%); /* Décale le logo pour le centrer parfaitement */
-  pointer-events: none; /* Permet aux clics de passer au travers (le logo ne bloque rien) */
-  z-index: 0; /* Envoyé tout au fond de la pile d'affichage */
-}
+  /* ===== Titre de page ===== */
+  .page-title {
+    position: fixed;
+    top: 60px;
+    left: 0;
+    right: 0;
+    text-align: center;
+    font-size: 1.8em;
+    padding: 0 10px;
+    margin: 0 auto;
+    white-space: normal;
+    color: white;
+    z-index: 10002;
+  }
 
-/* ====== Titre de page ====== */
+  /* Responsive pour titre sur petit écran */
+  @media (max-width: 600px) {
     .page-title {
-  position: fixed;
-  top: 60px;
-  left: 0;
-  right: 0;
-  text-align: center;
-  font-size: 1.8em;
-  padding: 0 10px;
-  margin: 0 auto;
-  white-space: normal;
-  z-index: 10002;
-}
-
-     /* Responsive pour titre sur petit écran */
-    @media (max-width: 600px) {
-      .page-title {
-        font-size: 1.8em;
-        top: 60px;
-        margin: 0 10px 5px;
-        padding: 0 5px;
-        width: 90%;
-        white-space: normal;
-      }
-     body  {
+      font-size: 1.8em;
+      top: 60px;
+      margin: 0 10px 5px;
+      padding: 0 5px;
+      width: 90%;
+      white-space: normal;
+    }
+    body {
       overflow: auto;
     }
-    }
-    /* Conteneur centré pour le carrousel avec perspective 3D */
-    .carousel-container {
-      position: fixed;
-      top: var(--container-top);
-      left: var(--container-left);
-      transform: translate(var(--container-translate-x), var(--container-translate-y));
-      perspective: var(--perspective);  /* profondeur 3D pour effet */
-      z-index: 1;
-      width: 100vw;
-      height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-
-    /* Conteneur des images avec style 3D */
-    .carousel {
-      position: relative;
-      width: 0; height: 0;
-      transform-style: preserve-3d;
-      transform: rotateX(-4deg); /* légère inclinaison vers l'avant */
-      touch-action: pan-y; /* permet de scroll vertical sur mobile sans bloquer */
-    }
-
-    /* Style des images */
-    .carousel img {
-      position: absolute;
-      width: var(--img-size);
-      height: var(--img-size);
-      object-fit: cover;      /* image recadrée en conservant proportions */
-      border-radius: 12px;
-      box-shadow: 0 0 14px rgba(0, 0, 0, 0.7);
-      transition: transform 0.6s ease, z-index 0.6s ease; /* animation douce */
-      cursor: pointer;
-      z-index: 1;
-      transform-origin: center center;
-      user-select: none;
-      -webkit-user-drag: none;
-    }
-
-    /*  léger au survol */
-    .carousel img:hover {
-      transform: scale(1.1);
-      z-index: 10;
-    }
-
-    /* Style pour l’image ée au clic */
-    .ed {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100vw; height: 100vh;
-      background: rgba(0,0,0,0.95);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      z-index: 9999;
-    }
-    .ed img {
-      width: 90vw;
-      max-height: 70vh;
-      transform: translateY(var(--offset));
-      border-radius: 8px;
-      box-shadow: 0 0 40px black;
-    }
-
-/* Variables globales par défaut (desktop) */
-:root {
-  --translateZ: 320px;
-  --img-size: 17vw;
-  --offset: -100px;
-  --perspective: 2250px;
-  --camera-tilt: 20deg;
-}
-
-/* Fallbacks via classes JS si besoin (optionnel à activer via JS) */
-body.mobile-portrait {
-  --translateZ: 200px;
-  --img-size: 24vw;
-  --offset: -80px;
-  --perspective: 1500px;
-}
-
-body.mobile-landscape {
-  --translateZ: 240px;
-  --img-size: 18vw;
-  --offset: -200px;
-  --perspective: 1800px;
-}
-
-/* Media query : smartphones & tablettes - Portrait */
-@media screen and (max-width: 1024px) and (orientation: portrait) {
-  :root {
-    --translateZ: 200px;
-    --img-size: 20vw;
-    --offset: -60px;
-    --perspective: 1800px;
-    --camera-tilt: 10deg;
   }
-}
 
-/* Media query : smartphones & tablettes - Paysage */
-@media screen and (max-width: 1024px) and (orientation: landscape) {
-  :root {
-    --translateZ: 500px;
-    --img-size: 10vw;
-    --offset: -340px;
-    --perspective: 3000px;
-    --camera-tilt: 15deg;
-  }
-}
-       .carousel {
-    perspective: var(--perspective); /* Applique la perspective */
-    position: absolute;
+  /* Conteneur centré pour le carrousel avec perspective 3D */
+  .carousel-container {
+    position: fixed;
     top: var(--container-top);
     left: var(--container-left);
-    transform: translate(-50%, -50%) rotateY(var(--rotation)) translateZ(var(--translateZ));
-    transition: transform 0.5s ease; /* Transition fluide pour l'animation */
-
-    }
-
-  .carousel__image {
-    width: var(--img-size); /* Taille des images ajustée */
-    transform: rotateY(calc(360deg / var(--num-images) * var(--i))) translateX(20px);
-    transition: transform 0.5s ease; /* Transition pour l’animation */
+    transform: translate(var(--container-translate-x), var(--container-translate-y));
+    perspective: var(--perspective);
+    z-index: 1;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
-    }
 
-    /* Adaptation tablettes grand écran (768px à 1024px) Change le samsung flip */
-    @media (min-width: 768px) and (max-width: 1024px) {
-      :root {
-        
-        --img-size: 15vw; /* Définit la taille des images à 25vw (25% de la largeur de la fenêtre).*/
-        
-        --translateZ: calc(100vw / 1.2); /* <-- ici la distance Z pour la caméra en paysage */
-        
-        --offset: -2000px; /* Sert à décaler les éléments (probablement sur l’axe Y ou X) de -180 pixels.
-       Peut être utilisé pour ajuster la hauteur ou la rotation verticale du carrousel/image. */
-        
-        --perspective: 4000px; /* Détermine la profondeur de la perspective 3D.
-      Plus la valeur est grande, moins l’effet de perspective est prononcé (les objets paraissent plus plats). */
-        
-        --container-top: 35%; /* <-- Centre le conteneur principal à 50% du haut et 50% de la gauche de l’écran. */
-        
-       --container-left: 50%; /* <--Centre le conteneur principal à 50% du haut et 50% de la gauche de l’écran. */
-        
-        --container-translate-y: -50%; /* <-- Combiné avec top: 50% et left: 50%, cela centre parfaitement l’élément */
-        
-        --container-translate-x: -50%; /* <-- Combiné avec top: 50% et left: 50%, cela centre parfaitement l’élément */
-         
-      }
-       .carousel {
-    perspective: var(--perspective); /* Applique la perspective */
+  /* Conteneur des images avec style 3D */
+  .carousel {
+    position: relative;
+    width: 0; 
+    height: 0;
+    transform-style: preserve-3d;
+    transform: rotateX(-4deg);
+    touch-action: pan-y;
+  }
+
+  /* Style des images */
+  .carousel img {
     position: absolute;
-    top: var(--container-top);
-    left: var(--container-left);
-    transform: translate(-50%, -50%) rotateY(var(--rotation)) translateZ(var(--translateZ));
-    transition: transform 0.5s ease; /* Transition fluide pour l'animation */
+    width: var(--img-size);
+    height: var(--img-size);
+    object-fit: cover;
+    border-radius: 12px;
+    box-shadow: 0 0 14px rgba(0, 0, 0, 0.7);
+    transition: transform 0.6s ease, z-index 0.6s ease;
+    cursor: pointer;
+    z-index: 1;
+    transform-origin: center center;
+    user-select: none;
+    -webkit-user-drag: none;
   }
 
-  .carousel__image {
-    width: var(--img-size); /* Taille des images ajustée */
-    transform: rotateY(calc(360deg / var(--num-images) * var(--i))) translateX(10px);
-    transition: transform 0.5s ease; /* Transition pour l’animation */
+  /* Légère animation au survol */
+  .carousel img:hover {
+    transform: scale(1.1);
+    z-index: 10;
   }
+
+  /* Style pour l’image agrandie au clic */
+  .ed {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw; 
+    height: 100vh;
+    background: rgba(0,0,0,0.95);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+  }
+
+  .ed img {
+    width: 90vw;
+    max-height: 70vh;
+    transform: translateY(var(--offset));
+    border-radius: 8px;
+    box-shadow: 0 0 40px black;
+  }
+
+  /* Variables globales par défaut (desktop) */
+  :root {
+    --translateZ: 320px;
+    --img-size: 17vw;
+    --offset: -100px;
+    --perspective: 2250px;
+    --camera-tilt: 20deg;
+  }
+
+  /* Media query : smartphones & tablettes - Portrait */
+  @media screen and (max-width: 1024px) and (orientation: portrait) {
+    :root {
+      --translateZ: 200px;
+      --img-size: 20vw;
+      --offset: -60px;
+      --perspective: 1800px;
+      --camera-tilt: 10deg;
     }
+  }
+
+  /* Media query : smartphones & tablettes - Paysage */
+  @media screen and (max-width: 1024px) and (orientation: landscape) {
+    :root {
+      --translateZ: 500px;
+      --img-size: 10vw;
+      --offset: -340px;
+      --perspective: 3000px;
+      --camera-tilt: 15deg;
+    }
+  }
+
+  /* Adaptation tablettes grand écran (768px à 1024px) */
+  @media (min-width: 768px) and (max-width: 1024px) {
+    :root {
+      --img-size: 15vw;
+      --translateZ: calc(100vw / 1.2);
+      --offset: -180px;
+      --perspective: 4000px;
+      --container-top: 35%;
+      --container-left: 50%;
+      --container-translate-y: -50%;
+      --container-translate-x: -50%;
+    }
+  }
+
   </style>
 </head>
-  
-  
 <body>
-  
-  
 
   <header>
-  <div class="logo">
-    <img src="../img/logo.png" alt="Logo Paporalkis" />
-  </div>
-  <nav>
-    <ul>
-      <li><a href="../index.html">Accueil</a></li>
-      <li><a href="devis.html">Demande de devis</a></li>
-      <li><a href="realisations.html" class="active">Mes réalisations</a></li>
-      <li><a href="tarifs.html">Tarifs</a></li>
-      <li><a href="planning.html">Planning</a></li>
-      <li><a href="contact.html">Contact</a></li>
-    </ul>
-  </nav>
-</header>
-  
+    <div class="logo">
+      <img src="../img/logo.png" alt="Logo Paporalkis" />
+    </div>
+    <nav>
+      <ul>
+        <li><a href="../index.html">Accueil</a></li>
+        <li><a href="devis.html">Demande de devis</a></li>
+        <li><a href="realisations.html" class="active">Mes réalisations</a></li>
+        <li><a href="tarifs.html">Tarifs</a></li>
+        <li><a href="planning.html">Planning</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
 
-<div class="page-title" style="color: white; font-size: 2em; margin: 20px 40px;">Mes réalisations</div>
-    
-<div class="carousel-container" id="carousel-container">
-   
+  <div class="page-title">Mes réalisations</div>
+  
+  <div class="carousel-container" id="carousel-container">
     <div class="carousel" id="carousel">
       <!-- Tes images -->
       <img src="../img/CHBR0.jpg" alt="test" class="carousel__image" />
       <img src="../img/CHBR1.jpg" alt="test" class="carousel__image" />
-      <img src="../img/CUIEXT.jpg"  alt="test" class="carousel__image" />
+      <img src="../img/CUIEXT.jpg" alt="test" class="carousel__image" />
       <img src="../img/CUIEXT1.jpg" alt="test" class="carousel__image" />
       <img src="../img/CUIEXT2.jpg" alt="test" class="carousel__image" />
       <img src="../img/CUIEXT3.jpg" alt="test" class="carousel__image" />
