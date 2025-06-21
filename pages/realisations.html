@@ -374,10 +374,78 @@ nav ul li a.active {
 
       positionImages();
       lastTime = now;
+    const carousel = document.getElementById("carousel");
+    const container = document.getElementById("carousel-container");
+    const images = carousel.getElementsByTagName("img");
+    const total = images.length;
+    const Scale = 1.5;
+    let baseRadius = 900;
+    let angle = 0;
+    let autoRotate = true;
+    let lastTime = performance.now();
+    let velocity = 0;
+    const friction = 0.95;
+    let isDragging = false;
+    let lastX = 0;
+
+    function getRootCSSVars() {
+      const styles = getComputedStyle(document.documentElement);
+      return {
+        translateZ: parseInt(styles.getPropertyValue('--translateZ')),
+        offset: styles.getPropertyValue('--offset'),
+        perspective: styles.getPropertyValue('--perspective'),
+        containerTop: styles.getPropertyValue('--container-top'),
+        containerLeft: styles.getPropertyValue('--container-left'),
+        containerTranslateX: styles.getPropertyValue('--container-translate-x'),
+        containerTranslateY: styles.getPropertyValue('--container-translate-y'),
+        imgSize: styles.getPropertyValue('--img-size')
+      };
+    }
+
+    function updateContainerStyle() {
+      const vars = getRootCSSVars();
+      container.style.perspective = vars.perspective;
+      container.style.top = vars.containerTop;
+      container.style.left = vars.containerLeft;
+      container.style.transform = `translate(${vars.containerTranslateX}, ${vars.containerTranslateY})`;
+    }
+
+    function updateImageSizes() {
+      const vars = getRootCSSVars();
+      Array.from(images).forEach(img => {
+        img.style.width = vars.imgSize.trim();
+        img.style.height = vars.imgSize.trim();
+      });
+    }
+
+    function positionImages() {
+      const vars = getRootCSSVars();
+      baseRadius = vars.translateZ;
+      const angleStep = 360 / total;
+      for (let i = 0; i < total; i++) {
+        const theta = angleStep * i + angle;
+        images[i].style.transform = `rotateY(${theta}deg) translateZ(${baseRadius}px)`;
+      }
+    }
+
+    function animate(now) {
+      const delta = now - lastTime;
+      if (autoRotate) {
+        velocity = 0.005 * delta;
+        angle += velocity;
+      } else {
+        angle += velocity;
+        velocity *= friction;
+        if (Math.abs(velocity) < 0.001) {
+          autoRotate = true;
+          velocity = 0;
+        }
+      }
+      positionImages();
+      lastTime = now;
       requestAnimationFrame(animate);
     }
 
-    let interactionTimeout;
     function restartAutoRotate() {
       clearTimeout(interactionTimeout);
       interactionTimeout = setTimeout(() => {
@@ -416,37 +484,13 @@ nav ul li a.active {
       }
     });
 
-    container.addEventListener("touchstart", (e) => {
-      if (e.touches.length === 1) {
-        isDragging = true;
-        lastX = e.touches[0].clientX;
-        autoRotate = false;
-        velocity = 0;
-      }
-    });
-
-    container.addEventListener("touchend", () => {
-      if (isDragging) {
-        isDragging = false;
-        restartAutoRotate();
-      }
-    });
-
-    container.addEventListener("touchmove", (e) => {
-      if (isDragging && e.touches.length === 1) {
-        const dx = e.touches[0].clientX - lastX;
-        velocity = dx * 0.5;
-        angle += velocity;
-        lastX = e.touches[0].clientX;
-      }
-    });
-
     window.addEventListener('resize', () => {
       updateContainerStyle();
       updateImageSizes();
       positionImages();
     });
 
+    let interactionTimeout;
     updateContainerStyle();
     updateImageSizes();
     positionImages();
