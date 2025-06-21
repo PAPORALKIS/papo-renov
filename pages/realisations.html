@@ -220,8 +220,19 @@
       --container-left: 50%;
       --container-translate-y: -50%;
       --container-translate-x: -50%;
-    }
+
+      @media screen and (max-width: 480px) and (orientation: portrait) {
+  header .logo {
+    display: none;
   }
+
+  /* Ajuster nav ul pour avoir la même présentation que les autres pages */
+  header nav ul {
+    transform: none !important; /* annule le translateX(-50px) */
+    margin: 0;
+    gap: 10px; /* espace entre liens comme tu souhaites */
+  }
+}
 
   </style>
 </head>
