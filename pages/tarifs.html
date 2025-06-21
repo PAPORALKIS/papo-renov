@@ -24,7 +24,7 @@
       border-radius: 12px;
       box-shadow: 0 5px 15px rgba(0,0,0,0.2);
       hyphens: none;
-      overflow-x: auto;  /* Ajouté : scroll horizontal si tableau trop large */
+      overflow-x: auto;  /* Scroll horizontal si tableau trop large */
     }
 
     .section img {
@@ -45,9 +45,9 @@
       border-collapse: collapse;
       margin-top: 1rem;
       hyphens: none;
-      word-break: break-word;
-      overflow-wrap: break-word;
-      table-layout: fixed; /* Pour mieux gérer largeur colonnes */
+      word-break: normal;
+      overflow-wrap: normal;
+      table-layout: fixed; /* pour gérer largeur colonnes */
     }
 
     th, td {
@@ -55,10 +55,10 @@
       border: 1px solid #ccc;
       text-align: left;
       font-size: 0.95rem;
-      hyphens: none;
-      word-break: break-word;
-      overflow-wrap: break-word;
-      white-space: normal; /* Pour éviter débordements */
+      word-break: normal;    /* Empêche la coupure en plein mot */
+      hyphens: none;         /* Désactive la césure */
+      white-space: normal;   /* Retour ligne uniquement entre mots */
+      overflow-wrap: normal; /* Ne force pas la coupure des mots */
     }
 
     th {
@@ -194,13 +194,7 @@
     <div class="pack"><h3>Pack Rénovation Express – 1 jour</h3><p><strong>250 €</strong> – Peinture, petits montages, fixations</p></div>
     <div class="pack"><h3>Pack Jardinage Complet – 1/2 journée</h3><p><strong>140 €</strong> – Tonte, taille, soufflage</p></div>
     <div class="pack"><h3>Pack Terrasse + Pergola</h3><p><strong>Sur devis</strong> – Installation clé en main</p></div>
-    <div class="pack"><h3>Pack Rénovation pièce (15m²)</h3><p><strong>600 €</strong> – Peinture + sol + finitions</p></div>
-    <div class="pack"><h3>Pack Extérieur Entretien</h3><p><strong>100 €/jour</strong> – Tonte + haie + débroussaillage</p></div>
-    <div class="pack"><h3>Pack Cuisine Clé en main</h3><p><strong>Sur devis</strong> – De la conception à l'installation</p></div>
-    <div class="pack"><h3>Pack Dressing sur-mesure</h3><p><strong>Sur devis</strong> – Aménagement + pose</p></div>
-    <div class="pack"><h3>Pack "RÉNO EXPRESS"</h3><p><strong>À partir de 790 € TTC</strong><br/>Rafraîchissement des peintures (≤50 m²), nettoyage complet, réparations légères, remise en état extérieur. <br/>Délai : 3 à 5 jours</p></div>
-    <div class="pack"><h3>Pack "RÉNO EXTÉRIEURE"</h3><p><strong>À partir de 890 € TTC</strong><br/>Tonte, débroussaillage, taille, nettoyage/pose terrasse, pose pergola/voile, éclairage extérieur basique</p></div>
-    <div class="pack"><h3>Pack "Cuisine extérieure Cyporex"</h3><p><strong>À partir de 1490 € TTC</strong> (base 2 m)<br/>Structure en béton cellulaire, plan de travail, BBQ/évier, finitions personnalisées</p></div>
+    <div class="pack"><h3>Pack Rénovation pièce (15m²)</h3><p><strong>Sur devis</strong> – Sur mesure</p></div>
   </div>
 
 </body>
