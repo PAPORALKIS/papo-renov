@@ -45,7 +45,7 @@ nav {
 nav ul {
   list-style: none;
   display: flex;
-  gap: 6px;
+  gap: 2px;
   padding: 0;
   margin: 0;
   flex-wrap: nowrap;
@@ -65,7 +65,7 @@ nav ul li a {
   text-decoration: none;
   color: #333;
   font-weight: 600;
-  padding: 8px 10px;
+  padding: 6px 6px;
   display: inline-block;
   transition: color 0.3s ease;
 }
