@@ -2,133 +2,44 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Contact - Papo Renov</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="../style.css" />
   <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet" />
   <style>
-    /* Conteneur général centré avec max-width pour limiter la largeur */
-    body {
-      font-family: 'Poppins', sans-serif;
-      margin: 0;
-      padding: 0 1rem;
-      box-sizing: border-box;
-      overflow-x: hidden; /* éviter débordement horizontal */
-      background: #fff;
-    }
-    header {
-      max-width: 900px;
-      margin: 0 auto;
-      padding: 1rem 0;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
+    /* Nav simple horizontale responsive sans burger */
     nav ul {
       list-style: none;
-      display: flex;
-      gap: 1rem;
       padding: 0;
-      margin: 0;
+      margin: 0 auto;
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap; /* autorise retour à la ligne sur petit écran */
+      gap: 1.5rem;
+      background: transparent;
     }
     nav ul li a {
       text-decoration: none;
       color: #003366;
       font-weight: 600;
+      padding: 0.5rem 0;
+      display: block;
+      transition: color 0.3s ease;
+      white-space: nowrap; /* évite que les liens soient coupés en deux lignes */
     }
+    nav ul li a:hover,
     nav ul li a.active {
-      text-decoration: underline;
-    }
-
-    .logo img {
-      max-height: 50px;
-      width: auto;
-    }
-
-    .titre-section, .contact-form {
-      max-width: 700px;
-      margin: 2rem auto;
-      padding: 1rem;
-      box-sizing: border-box;
-    }
-    .titre-section h1 {
-      margin-bottom: 0.2rem;
-      font-size: 2rem;
-      color: #003366;
-      text-align: center;
-    }
-    .titre-section p {
-      text-align: center;
-      color: #555;
-      margin-top: 0;
-      font-size: 1.1rem;
-    }
-
-    form {
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-    }
-    label {
-      font-weight: 600;
+      border-bottom: 3px solid #003366;
       color: #003366;
     }
-    input[type="text"],
-    input[type="email"],
-    textarea {
-      padding: 0.6rem;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-      font-size: 1rem;
-      width: 100%;
-      box-sizing: border-box;
-      resize: vertical;
-    }
-    button[type="submit"] {
-      background-color: #003366;
-      color: white;
-      padding: 0.75rem;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-      font-weight: 600;
-      font-size: 1.1rem;
-      transition: background-color 0.3s ease;
-    }
-    button[type="submit"]:hover {
-      background-color: #00509e;
-    }
-
-    .btn-contact-smartphone {
-      margin-top: 1.5rem;
-      text-align: center;
-    }
-    .btn-contact-smartphone a {
-      color: #003366;
-      font-weight: 600;
-      text-decoration: none;
-    }
-
-    /* Responsive pour petits écrans */
-    @media (max-width: 480px) {
-      header {
-        flex-direction: column;
+    /* Ajustement mobile : réduire gap, font-size plus petit */
+    @media (max-width: 600px) {
+      nav ul {
         gap: 1rem;
       }
-      nav ul {
-        flex-direction: column;
-        gap: 0.5rem;
-        align-items: center;
-      }
-      .titre-section h1 {
-        font-size: 1.5rem;
-      }
-      .titre-section p {
-        font-size: 1rem;
-      }
-      button[type="submit"] {
-        font-size: 1rem;
+      nav ul li a {
+        font-size: 0.9rem;
       }
     }
   </style>
@@ -183,9 +94,6 @@
 <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
 <script>
   AOS.init({ duration: 800, once: true });
-  function toggleMenu() {
-    document.querySelector('nav ul').classList.toggle('active');
-  }
 </script>
 </body>
 </html>
