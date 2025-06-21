@@ -353,54 +353,8 @@ translateZ(var(--translateZ)) déplace le carrousel en profondeur pour l’effet
     width: var(--img-size); /* Taille des images ajustée */
     transform: rotateY(calc(360deg / var(--num-images) * var(--i))) translateX(10px);
     transition: transform 0.5s ease; /* Transition pour l’animation */
-  }.zoom-overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      background: rgba(0, 0, 0, 0.95);
-      display: none;
-      justify-content: center;
-      align-items: center;
-      flex-direction: column;
-      z-index: 9999;
+  }
     }
-
-    .zoom-image {
-      max-width: 90vw;
-      max-height: 70vh;
-      border-radius: 12px;
-      box-shadow: 0 0 30px rgba(255, 255, 255, 0.4);
-      margin-bottom: 20px;
-    }
-
-    .zoom-description {
-      color: #fff;
-      font-size: 1em;
-      margin-bottom: 20px;
-    }
-
-    .zoom-thumbnails {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      justify-content: center;
-    }
-
-    .zoom-thumbnails img {
-      width: 100px;
-      height: 100px;
-      object-fit: cover;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: transform 0.3s;
-    }
-
-    .zoom-thumbnails img:hover {
-      transform: scale(1.1);
-    }
-    
   </style>
 </head>
   
@@ -425,11 +379,7 @@ translateZ(var(--translateZ)) déplace le carrousel en profondeur pour l’effet
   </ul>
 </nav>
 </header>
-  <div class="zoom-overlay" id="zoomOverlay">
-    <div class="zoom-description" id="zoomDescription"></div>
-    <img class="zoom-image" id="zoomImage" src="" alt="Zoom" />
-    <div class="zoom-thumbnails" id="zoomThumbnails"></div>
-  </div>
+
 
 <div class="page-title" style="color: white; font-size: 2em; margin: 20px 40px;">Mes réalisations</div>
     
@@ -474,7 +424,7 @@ translateZ(var(--translateZ)) déplace le carrousel en profondeur pour l’effet
       <img src="../img/martegauxB.jpg" alt="test" class="carousel__image" />
       <img src="../img/martegauxC.jpg" alt="test" class="carousel__image" />
       <img src="../img/martegauxD.jpg" alt="test" class="carousel__image" />
-      <img src="../img/martegauxE.jpg"alt="test" class="carousel__image" />
+      <img src="../img/martegauxE.jpg" />
       <img src="../img/velaux0.jpg" alt="test" class="carousel__image" />
       <img src="../img/velaux1.jpg" alt="test" class="carousel__image" />
       <img src="../img/velaux2.jpg" alt="test" class="carousel__image" />
