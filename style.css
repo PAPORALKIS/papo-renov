@@ -155,7 +155,7 @@ footer {
   }
 
   nav ul {
-    gap: 4px;
+    gap: 2px;
     justify-content: flex-start;
   }
 
@@ -235,7 +235,7 @@ footer {
     @media (max-width: 480px) {
   .tarif-grid {
     grid-template-columns: 1fr;
-    gap: 12px;
+    gap: 8px;
   }
 
   .tarif-card {
