@@ -1,14 +1,33 @@
-
 <!DOCTYPE html>
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
   <title>Planning - Papo Rénov</title>
-  <link
-  href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&
-  display=swap" rel=stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../style.css">
-  <link rel="stylesheet" href="../style.css">
+  <style>
+    .calendar-wrapper {
+      width: 100%;
+      max-width: 1000px;
+      margin: 0 auto;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .calendar-wrapper iframe {
+      width: 100%;
+      height: 700px;
+      border: none;
+      display: block;
+    }
+
+    @media (max-width: 768px) {
+      .calendar-wrapper iframe {
+        height: 600px;
+      }
+    }
+  </style>
 </head>
 <body>
 
@@ -22,44 +41,47 @@
       <li><a href="devis.html">Demande de devis</a></li>
       <li><a href="realisations.html">Mes réalisations</a></li>
       <li><a href="tarifs.html">Tarifs</a></li>
-      <li><a href="planning.html"class="active">Planning</a></li>
+      <li><a href="planning.html" class="active">Planning</a></li>
       <li><a href="contact.html">Contact</a></li>
-     
     </ul>
   </nav>
 </header>
-  <main class="form-section">
-    <div class="overlay">
-      <h1>Planning</h1>
-      <p>Consultez mes disponibilités ci-dessous :</p>
-     <iframe src="https://calendar.google.com/calendar/embed?src=kpaporalkis.pro%40gmail.com&ctz=Europe%2FParis" style="border: 0" width="800" height="600" frameborder="0" scrolling="no"></iframe>
 
-      <h2 style="margin-top: 40px;">Réserver une date</h2>
-      <form action="https://formspree.io/f/mpwrpypd" method="POST">
-        <input type="hidden" name="_captcha" value="false">
-        <input type="hidden" name="_next" value="https://paporalkis.github.io/papo-renov/pages/confirmation.html">
+<main class="form-section">
+  <div class="overlay">
+    <h1>Planning</h1>
+    <p>Consultez mes disponibilités ci-dessous :</p>
 
-        <label for="name">Nom :</label><br>
-        <input type="text" name="name" required><br><br>
-
-        <label for="email">Email :</label><br>
-        <input type="email" name="email" required><br><br>
-
-        <label for="date">Date souhaitée :</label><br>
-        <input type="date" name="date" required><br><br>
-
-        <label for="message">Message complémentaire :</label><br>
-        <textarea name="message" rows="4" placeholder="Précisez vos besoins..."></textarea><br><br>
-
-        <button type="submit" class="cta-button">Envoyer la demande</button>
-      </form>
-      <p style="font-size: 0.9em; color: #666;">* Vous recevrez une réponse de confirmation par e-mail.</p>
+    <div class="calendar-wrapper">
+      <iframe src="https://calendar.google.com/calendar/embed?src=kpaporalkis.pro%40gmail.com&ctz=Europe%2FParis"></iframe>
     </div>
-  </main>
 
-  <footer>
-    <p>&copy; 2025 Paporalkis - Tous droits réservés</p>
-  </footer>
+    <h2 style="margin-top: 40px;">Réserver une date</h2>
+    <form action="https://formspree.io/f/mpwrpypd" method="POST">
+      <input type="hidden" name="_captcha" value="false">
+      <input type="hidden" name="_next" value="https://paporalkis.github.io/papo-renov/pages/confirmation.html">
+
+      <label for="name">Nom :</label><br>
+      <input type="text" name="name" required><br><br>
+
+      <label for="email">Email :</label><br>
+      <input type="email" name="email" required><br><br>
+
+      <label for="date">Date souhaitée :</label><br>
+      <input type="date" name="date" required><br><br>
+
+      <label for="message">Message complémentaire :</label><br>
+      <textarea name="message" rows="4" placeholder="Précisez vos besoins..."></textarea><br><br>
+
+      <button type="submit" class="cta-button">Envoyer la demande</button>
+    </form>
+    <p style="font-size: 0.9em; color: #666;">* Vous recevrez une réponse de confirmation par e-mail.</p>
+  </div>
+</main>
+
+<footer>
+  <p>&copy; 2025 Paporalkis - Tous droits réservés</p>
+</footer>
 
 </body>
 </html>
