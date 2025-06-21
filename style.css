@@ -224,14 +224,13 @@ footer {
 
 /* === Responsive navigation mobile portrait === */
 @media (max-width: 480px) {
-  header {
-    flex-direction: column;
-    align-items: center;
-    padding: 10px;
+  .logo {
+    display: none;
   }
 
-  .logo {
-    margin-bottom: 6px;
+  header {
+    justify-content: center;
+    padding: 6px 8px;
   }
 
   nav ul {
