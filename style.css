@@ -149,27 +149,27 @@ footer {
 
 @media (max-width: 480px) {
   header {
-    flex-wrap: wrap; /* Permet au contenu du header de passer à la ligne */
-    justify-content: space-between;
+    flex-direction: column; /* ✅ Affiche logo + nav en colonne */
+    align-items: center;     /* ✅ Centre tous les éléments horizontalement */
+    padding: 10px;
   }
+
+  .logo {
+    margin-bottom: 10px;     /* ✅ Espace entre le logo et la nav */
+  }
+
   nav ul {
-    width: 100%;
-    justify-content: center;
-    gap: 12px;
+    width: 100%;              /* ✅ Prend toute la largeur disponible */
+    justify-content: center;  /* ✅ Centre les liens */
+    overflow-x: auto;         /* ✅ Permet le scroll si trop de liens */
+    gap: 10px;                /* ✅ Espacement entre liens */
+    padding: 0 10px;
   }
+
   nav ul li a {
     padding: 6px 8px;
     font-size: 14px;
-  }
-  .overlay h1 {
-    font-size: 1.8rem;
-  }
-  .slogan {
-    font-size: 1rem;
-  }
-  .cta-button {
-    padding: 10px 20px;
-    font-size: 14px;
+    white-space: nowrap;     /* ✅ Empêche les liens de passer à la ligne */
   }
 }
 
