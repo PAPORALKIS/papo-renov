@@ -23,8 +23,9 @@
       padding: 2rem;
       border-radius: 12px;
       box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-      hyphens: none;
-      overflow-x: auto;  /* Scroll horizontal si tableau trop large */
+
+      overflow-x: auto; /* Scroll horizontal si besoin */
+      -webkit-overflow-scrolling: touch; /* Smooth scroll iOS */
     }
 
     .section img {
@@ -44,10 +45,7 @@
       width: 100%;
       border-collapse: collapse;
       margin-top: 1rem;
-      hyphens: none;
-      word-break: normal;
-      overflow-wrap: normal;
-      table-layout: fixed; /* pour gérer largeur colonnes */
+      table-layout: auto; /* Cols s’adaptent au contenu */
     }
 
     th, td {
@@ -55,10 +53,11 @@
       border: 1px solid #ccc;
       text-align: left;
       font-size: 0.95rem;
-      word-break: normal;    /* Empêche la coupure en plein mot */
-      hyphens: none;         /* Désactive la césure */
-      white-space: normal;   /* Retour ligne uniquement entre mots */
-      overflow-wrap: normal; /* Ne force pas la coupure des mots */
+
+      word-break: break-word;    /* Coupe mot si nécessaire sans tiret */
+      hyphens: none;             /* Pas de césure */
+      white-space: normal;       /* Retour à la ligne normal */
+      overflow-wrap: break-word; /* Découpe mot si besoin */
     }
 
     th {
@@ -83,7 +82,7 @@
       text-align: center;
     }
 
-    /* Police responsive pour éviter coupures */
+    /* Police responsive */
     @media (max-width: 768px) {
       body {
         font-size: 14px;
