@@ -2,32 +2,13 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, 
+    viewport-fit=cover" />
   <title>Carrousel 3D - Réalisations</title>
   
   <style>
     /* Valeurs par défaut - desktop */
-    html, body {
-      margin: 0;
-      padding: 0;
-      height: 100%;
-      background: #00010d;
-      font-family: sans-serif;
-      overflow: hidden;
-    }
-    body::before {
-  content: ""; /* Pseudo-élément vide pour afficher un élément graphique */
-  position: fixed; /* Fixé à l'écran, reste en place même au scroll */
-  top: 50%; 
-  left: 50%; /* Positionne le centre du logo au centre de la fenêtre */
-  width: 300px; height: 300px; /* Taille du logo en fond (ajustable) */
-  background: url("../img/logo.png") no-repeat center/contain; /* Affiche le logo centré, sans répétition, redimensionné */
-  opacity: 0.2; /* Transparence faible du logo pour un effet discret */
-  transform: translate(-50%, -50%); /* Décale le logo pour le centrer parfaitement */
-  pointer-events: none; /* Permet aux clics de passer au travers (le logo ne bloque rien) */
-  z-index: 0; /* Envoyé tout au fond de la pile d'affichage */
-}
-header {
+   header {
   position: fixed;
   top: 0;
   left: 0;
@@ -36,18 +17,17 @@ header {
   z-index: 10001;
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  padding: 3px 12px;
-  height: 50px;
+  align-items: right;
+  padding: 1px 5px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-}
+}  
 
-.logo {
-  flex-shrink: 0;
-  
 .logo img {
-  max-height: 15px;      /* ✅ plus petit qu’avant */
+  height: auto;
+  max-height: 40px;      /* ✅ plus petit qu’avant */
   width: auto;
+  max-width: 70%;
+  display: block;
 
 }
 
@@ -56,7 +36,7 @@ nav ul {
   display: flex;
   flex-wrap: nowrap;     /* ✅ jamais de retour à la ligne */
 
-  gap: 3px;
+  gap: 6px;
   margin: 0px;
   padding: 0;
   
@@ -67,27 +47,52 @@ nav ul li a {
   text-decoration: none;
   font-weight: bold;
   transition: color 0.3s;
-  font-size: 12px;
+  font-size: 7px;
   white-space: nowrap;
-
-  padding: 8px 10px;
-  font-size: 14px;}
+}
 
 nav ul li a:hover,
 nav ul li a.active {
   color: #ffcc00;
 }
+  /* Variables CSS pour taille des images, profondeur Z et offset du  */
 
-.page-title {
-  margin-top: 60px;
-  font-size: 22px;
-  text-align: center;
-  color: white;
-  font-weight: bold;
-  z-index: 100;
+:root {
+  --img-size: 150px;
+  --translateZ: 900px;
+  --offset: -250px;
+  --perspective: 3000px;
+  --container-top: 30%;
+  --container-left: 45%;
+  --container-translate-x: -50%;
+  --container-translate-y: -49%;
+  --camera-tilt: 4deg;
 }
-  
-  
+ html, body {
+      margin: 0; height: 100%;
+      background: #00010d;       /* fond très sombre */
+      overflow: hidden;          /* empêche le scroll de la page */
+      font-family: sans-serif;
+    }
+
+    /* Logo en filigrane au centre en fond avec faible opacité */
+    body::before {
+  content: ""; /* Pseudo-élément vide pour afficher un élément graphique */
+  position: fixed; /* Fixé à l'écran, reste en place même au scroll */
+  top: 50%; left: 50%; /* Positionne le centre du logo au centre de la fenêtre */
+  width: 300px; height: 300px; /* Taille du logo en fond (ajustable) */
+  background: url("../img/logo.png") no-repeat center/contain; /* Affiche le logo centré, sans répétition, redimensionné */
+  opacity: 0.2; /* Transparence faible du logo pour un effet discret */
+  transform: translate(-50%, -50%); /* Décale le logo pour le centrer parfaitement */
+  pointer-events: none; /* Permet aux clics de passer au travers (le logo ne bloque rien) */
+  z-index: 0; /* Envoyé tout au fond de la pile d'affichage */
+}
+body {
+
+  overflow: auto;
+    }
+    
+    /* Conteneur centré pour le carrousel avec perspective 3D */
     .carousel-container {
       position: fixed;
       top: var(--container-top);
@@ -105,8 +110,7 @@ nav ul li a.active {
     /* Conteneur des images avec style 3D */
     .carousel {
       position: relative;
-      width: 0; 
-      height: 0;
+      width: 0; height: 0;
       transform-style: preserve-3d;
       transform: rotateX(-4deg); /* légère inclinaison vers l'avant */
       touch-action: pan-y; /* permet de scroll vertical sur mobile sans bloquer */
@@ -134,67 +138,82 @@ nav ul li a.active {
       z-index: 10;
     }
 
-  /* Root CSS variables */
-    :root {
-      --img-size: 150px;
-      --translateZ: 900px;
-      --offset: -250px;
-      --perspective: 3000px;
-      --container-top: 30%;
-      --container-left: 45%;
-      --container-translate-x: -50%;
-      --container-translate-y: -49%;
-      --camera-tilt: 4deg;
+    /* Style pour l’image au clic */
+    .ed {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      background: rgba(0,0,0,0.95);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
     }
+    .ed img {
+      width: 90vw;
+      max-height: 70vh;
+      transform: translateY(var(--offset));
+      border-radius: 8px;
+      box-shadow: 0 0 40px black;
+    }
+
   
-
-
-@media (max-width: 768px) {
+/* Smartphones portrait */
+@media (max-width: 600px) and (orientation: portrait) {
   :root {
     --img-size: 10vw;
-    --translateZ: 220px;
-    --offset: -60px;
-    --perspective: 1000px;
-    --container-top: 52%;
+    --translateZ: 320px;
+    --offset: -100px;
+    --perspective: 2250px;
+    --container-top: 50%;
     --container-left: 50%;
     --container-translate-x: -50%;
     --container-translate-y: -50%;
-    --camera-tilt: 12deg;
+    --camera-tilt: 20deg;
   }
-
-  body::before {
-    width: 30vw;
-    height: 30vw;
-    opacity: 0.03;
+  @media (max-width: 450px) {
+  :root {
+    --img-size: 17vw;
+    --translateZ: 320px;
+    --offset: -100px;
+    --perspective: 2250px;
+    --container-top: 50%;
+    --container-left: 50%;
+    --container-translate-x: -50%;
+    --container-translate-y: -50%;
+    --camera-tilt: 20deg;
   }
 }
 
-      body::before {
-        width: 40vw;
-        height: 40vw;
-        opacity: 0.02;
-      }
-    }
+/* Smartphones paysage */
+@media (max-width: 767px) and (orientation: landscape) {
+  :root {
+    --img-size: 13vw;
+    --translateZ: 320px;
+    --offset: -150px;
+    --perspective: 2500px;
+    --container-top: 50%;
+    --container-left: 50%;
+    --container-translate-x: -50%;
+    --container-translate-y: -50%;
+    --camera-tilt: 20deg;
+  }
+}
 
-    @media (min-width: 769px) and (max-width: 1024px) {
-      :root {
-        --img-size: 10vw;
-        --translateZ: 500px;
-        --offset: -150px;
-        --perspective: 2000px;
-        --container-top: 50%;
-      }
-    }
-
-    @media (min-width: 1025px) {
-      :root {
-        --img-size: 8vw;
-        --translateZ: 900px;
-        --offset: -200px;
-        --perspective: 3000px;
-        --container-top: 50%;
-      }
-    }
+/* Tablettes (768px à 1024px) */
+@media (min-width: 768px) and (max-width: 1024px) {
+  :root {
+    --img-size: 6vw;
+    --translateZ: 3500px;
+    --offset: -400px;
+    --perspective: 4500px;
+    --container-top: 50%;
+    --container-left: 50%;
+    --container-translate-x: -50%;
+    --container-translate-y: -50%;
+    --camera-tilt: 20deg;
+  }
+}
       </style>
 </head>
 <body>
@@ -213,9 +232,11 @@ nav ul li a.active {
         <li><a href="contact.html" class="active">Contact</a></li>
       </ul>
     </nav>
-  </header>  <!-- ===== Titre de la page ===== -->
-  <div class="page-title">Mes réalisations</div>  <!-- ===== Zoom Overlay (image en grand + vignettes) ===== -->  <div class="zoom-overlay" id="zoomOverlay">
-  <div class="carousel-container" id="carousel-container">
+  </header>  <!-- ===== Titre de la page ===== -->  <div class="page-title">Mes réalisations</div>  <!-- ===== Zoom Overlay (image en grand + vignettes) ===== -->  <div class="zoom-overlay" id="zoomOverlay">
+    <div class="zoom-description" id="zoomDescription"></div>
+    <img class="zoom-image" id="zoomImage" src="" alt="Zoom" />
+    <div class="zoom-thumbnails" id="zoomThumbnails"></div>
+  </div>  <!-- ===== Conteneur du carrousel ===== -->  <div class="carousel-container" id="carousel-container">
     <div class="carousel" id="carousel">
       <!-- Toutes les images à afficher dans le carrousel -->
       <img src="../img/CHBR0.jpg" alt="test" class="carousel__image" />
@@ -263,7 +284,52 @@ nav ul li a.active {
     </div>
   </div>  
   <script>
-        function positionImages() {
+    const carousel = document.getElementById("carousel");
+    const container = document.getElementById("carousel-container");
+    const images = carousel.getElementsByTagName("img");
+    const total = images.length;
+
+    function getRootCSSVars() {
+      const rootStyles = getComputedStyle(document.documentElement);
+      return {
+        translateZ: parseInt(rootStyles.getPropertyValue('--translateZ')) || 1000,
+        offset: rootStyles.getPropertyValue('--offset') || '-250px',
+        perspective: rootStyles.getPropertyValue('--perspective') || '3000px',
+        containerTop: rootStyles.getPropertyValue('--container-top') || '30%',
+        containerLeft: rootStyles.getPropertyValue('--container-left') || '45%',
+        containerTranslateX: rootStyles.getPropertyValue('--container-translate-x') || '-50%',
+        containerTranslateY: rootStyles.getPropertyValue('--container-translate-y') || '-49%',
+        imgSize: rootStyles.getPropertyValue('--img-size') || '150px'
+      };
+    }
+
+    function updateContainerStyle() {
+      const vars = getRootCSSVars();
+      container.style.perspective = vars.perspective;
+      container.style.top = vars.containerTop;
+      container.style.left = vars.containerLeft;
+      container.style.transform = `translate(${vars.containerTranslateX}, ${vars.containerTranslateY})`;
+    }
+
+    function updateImageSizes() {
+      const vars = getRootCSSVars();
+      Array.from(images).forEach(img => {
+        img.style.width = vars.imgSize.trim();
+        img.style.height = vars.imgSize.trim();
+      });
+    }
+
+    let baseRadius = 900;
+    const Scale = 1.5;
+    let angle = 0;
+    let autoRotate = true;
+    let lastTime = performance.now();
+    let velocity = 0;
+    const friction = 0.95;
+    let isDragging = false;
+    let lastX = 0;
+
+    function positionImages() {
       const vars = getRootCSSVars();
       baseRadius = vars.translateZ;
       const offset = vars.offset.trim();
@@ -316,69 +382,77 @@ nav ul li a.active {
 
       positionImages();
       lastTime = now;
-        function getRootCSSVars() {
-      const rootStyles = getComputedStyle(document.documentElement);
-      return {
-        translateZ: parseInt(rootStyles.getPropertyValue('--translateZ')),
-        offset: rootStyles.getPropertyValue('--offset'),
-        perspective: rootStyles.getPropertyValue('--perspective'),
-        containerTop: rootStyles.getPropertyValue('--container-top'),
-        containerLeft: rootStyles.getPropertyValue('--container-left'),
-        containerTranslateX: rootStyles.getPropertyValue('--container-translate-x'),
-        containerTranslateY: rootStyles.getPropertyValue('--container-translate-y'),
-        imgSize: rootStyles.getPropertyValue('--img-size')
-      };
-    }
-
-    function updateContainerStyle() {
-      const vars = getRootCSSVars();
-      container.style.perspective = vars.perspective;
-      container.style.top = vars.containerTop;
-      container.style.left = vars.containerLeft;
-      container.style.transform = `translate(${vars.containerTranslateX}, ${vars.containerTranslateY})`;
-    }
-
-    function updateImageSizes() {
-      const vars = getRootCSSVars();
-      Array.from(images).forEach(img => {
-        img.style.width = vars.imgSize.trim();
-        img.style.height = vars.imgSize.trim();
-      });
-    }
-
-    function positionImages() {
-      const vars = getRootCSSVars();
-      baseRadius = vars.translateZ;
-      const angleStep = 360 / total;
-      for (let i = 0; i < total; i++) {
-        const theta = angleStep * i + angle;
-        images[i].style.transform = `rotateY(${theta}deg) translateZ(${baseRadius}px)`;
-      }
-    }
-
-    function animate(now) {
-      const delta = now - lastTime;
-      if (autoRotate) {
-        velocity = 0.005 * delta;
-        angle += velocity;
-      } else {
-        angle += velocity;
-        velocity *= friction;
-        if (Math.abs(velocity) < 0.001) {
-          autoRotate = true;
-          velocity = 0;
-        }
-      }
-      positionImages();
-      lastTime = now;
       requestAnimationFrame(animate);
+    }
+
+    let interactionTimeout;
+    function restartAutoRotate() {
+      clearTimeout(interactionTimeout);
+      interactionTimeout = setTimeout(() => {
+        autoRotate = false;
+        velocity = 0.02;
+      }, 2000);
     }
 
     container.addEventListener("wheel", (e) => {
       e.preventDefault();
       autoRotate = false;
       velocity += e.deltaY * 0.003;
-      setTimeout(() => autoRotate = true, 3000);
+      restartAutoRotate();
+    });
+
+    container.addEventListener("mousedown", (e) => {
+      isDragging = true;
+      lastX = e.clientX;
+      autoRotate = false;
+      velocity = 0;
+    });
+
+    window.addEventListener("mouseup", () => {
+      if (isDragging) {
+        isDragging = false;
+        restartAutoRotate();
+      }
+    });
+
+    window.addEventListener("mousemove", (e) => {
+      if (isDragging) {
+        const dx = e.clientX - lastX;
+        velocity = dx * 0.5;
+        angle += velocity;
+        lastX = e.clientX;
+      }
+    });
+
+    container.addEventListener("touchstart", (e) => {
+      if (e.touches.length === 1) {
+        isDragging = true;
+        lastX = e.touches[0].clientX;
+        autoRotate = false;
+        velocity = 0;
+      }
+    });
+
+    container.addEventListener("touchend", () => {
+      if (isDragging) {
+        isDragging = false;
+        restartAutoRotate();
+      }
+    });
+
+    container.addEventListener("touchmove", (e) => {
+      if (isDragging && e.touches.length === 1) {
+        const dx = e.touches[0].clientX - lastX;
+        velocity = dx * 0.5;
+        angle += velocity;
+        lastX = e.touches[0].clientX;
+      }
+    });
+
+    window.addEventListener('resize', () => {
+      updateContainerStyle();
+      updateImageSizes();
+      positionImages();
     });
 
     updateContainerStyle();
