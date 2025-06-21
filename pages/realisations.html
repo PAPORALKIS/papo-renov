@@ -4,49 +4,11 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>Carrousel 3D avec avancée</title>
- 
+ <link rel="stylesheet" href="../css/main.css" />
   <style>
 
   /* ===== Barre de navigation ===== */
-  header {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    background: white;
-    z-index: 10001;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1px 30px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  }  
-
-  .logo img {
-    height: 40px;
-  }
-
-  nav ul {
-    list-style: none;
-    display: flex;
-    gap: 15px;
-    margin: 20px 0;
-    padding: 0;
-    transform: translateX(-50px);
-  }
-
-  nav ul li a {
-    color: black;
-    text-decoration: none;
-    font-weight: bold;
-    transition: color 0.3s;
-  }
-
-  nav ul li a:hover,
-  nav ul li a.active {
-    color: #ffcc00;
-  }
-
+  
   /* Variables CSS pour taille des images, profondeur Z et offset */
   :root {
     --img-size: 150px;        /* taille de chaque image dans le carrousel */
