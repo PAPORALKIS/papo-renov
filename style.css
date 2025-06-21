@@ -1,13 +1,13 @@
 /* === Reset et base === */
 * {
-  box-sizing: border-box; /* Inclut les bordures et le padding dans les dimensions des éléments (width/height) */
+  box-sizing: border-box;
 }
 
 body {
-  margin: 0; /* Supprime les marges par défaut du navigateur */
-  font-family: 'Poppins', sans-serif; /* Définit la police principale */
-  background-color: #f5f5f5; /* Couleur de fond claire */
-  color: #333; /* Couleur du texte principale (gris foncé) */
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  background-color: #f5f5f5;
+  color: #333;
 }
 
 /* === Header === */
@@ -15,18 +15,19 @@ header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background-color: white; /* Barre blanche */
+  background-color: white;
   padding: 8px 10px;
   border-bottom: 1px solid #ddd;
   position: sticky;
   top: 0;
   z-index: 1000;
-  
+  flex-wrap: wrap; /* Ajouté : permet l’adaptation si pas assez de place */
 }
+
 .logo img {
-  height: 45px; /* Hauteur fixe de l'image du logo */
-  max-width: 100%; /* Empêche le débordement horizontal */
-  object-fit: contain; /* (⚠️ Erreur ici : "height: contain" n'existe pas → c’est "object-fit: contain" pour les images) */
+  height: 45px;
+  max-width: 100%;
+  object-fit: contain;
 }
 
 /* === Navigation === */
@@ -36,42 +37,42 @@ nav ul {
   gap: 5px;
   padding: 0;
   margin: 0;
-  flex-wrap: nowrap; /* ⛔ empêche les liens de passer à la ligne */
-  overflow-x: auto;   /* ✅ autorise le scroll horizontal si nécessaire */
-  justify-content: flex-end; /* ✅ aligne les éléments à droite */
-  white-space: nowrap; /* ✅ empêche les liens de se couper ou passer à la ligne */
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  justify-content: flex-end;
+  white-space: nowrap;
+  width: 100%;
 }
 
-
 nav ul::-webkit-scrollbar {
-  display: none; /* Supprime la barre de scroll (Chrome, Safari) */
+  display: none;
 }
 
 nav ul li {
-  white-space: nowrap; /* Empêche le retour à la ligne des liens */
+  white-space: nowrap;
 }
 
 nav ul li a {
-  text-decoration: none; /* Supprime le soulignement */
-  color: #333; /* Couleur du texte */
-  font-weight: 600; /* Texte en semi-gras */
-  padding: 8px 10px; /* Espacement autour du lien */
+  text-decoration: none;
+  color: #333;
+  font-weight: 600;
+  padding: 8px 10px;
   display: inline-block;
-  transition: color 0.3s ease; /* Animation douce du changement de couleur */
+  transition: color 0.3s ease;
 }
 
 nav ul li a:hover,
 nav ul li a.active {
-  color: #007bff; /* Bleu sur hover ou lien actif */
-  border-bottom: 2px solid #007bff; /* Soulignement bleu */
+  color: #007bff;
+  border-bottom: 2px solid #007bff;
 }
 
 /* === Hero section === */
 .hero {
   position: relative;
-  height: 80vh; /* Hauteur de 80% de la fenêtre */
-  background-size: cover; /* Image de fond couvrante */
-  background-position: center; /* Centrée */
+  height: 80vh;
+  background-size: cover;
+  background-position: center;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -79,17 +80,17 @@ nav ul li a.active {
 }
 
 .overlay {
-  background: rgba(0, 0, 0, 0.5); /* Fond semi-transparent noir */
+  background: rgba(0, 0, 0, 0.5);
   padding: 40px 25px;
   border-radius: 10px;
-  color: white; /* Texte blanc */
+  color: white;
   text-align: center;
   max-width: 90%;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.3); /* Ombre autour de la boîte */
+  box-shadow: 0 4px 15px rgba(0,0,0,0.3);
 }
 
 .highlight {
-  color: #007bff; /* Texte bleu vif */
+  color: #007bff;
   font-weight: 700;
 }
 
@@ -113,7 +114,7 @@ nav ul li a.active {
 }
 
 .cta-button:hover {
-  background-color: #0056b3; /* Bleu plus foncé au survol */
+  background-color: #0056b3;
   box-shadow: 0 7px 15px rgba(0,86,179,0.6);
 }
 
@@ -134,45 +135,6 @@ footer {
   color: #666;
 }
 
-/* === Responsive (Adaptation sur petits écrans) === */
-@media (max-width: 768px) {
-  .overlay {
-    padding: 30px 20px;
-  }
-  .slogan {
-    font-size: 1.1rem;
-  }
-  .cta-button {
-    padding: 12px 24px;
-  }
-}
-
-@media (max-width: 480px) {
-  header {
-    flex-direction: column; /* ✅ Affiche logo + nav en colonne */
-    align-items: center;     /* ✅ Centre tous les éléments horizontalement */
-    padding: 10px;
-  }
-
-  .logo {
-    margin-bottom: 10px;     /* ✅ Espace entre le logo et la nav */
-  }
-
-  nav ul {
-    width: 100%;              /* ✅ Prend toute la largeur disponible */
-    justify-content: center;  /* ✅ Centre les liens */
-    overflow-x: auto;         /* ✅ Permet le scroll si trop de liens */
-    gap: 10px;                /* ✅ Espacement entre liens */
-    padding: 0 10px;
-  }
-
-  nav ul li a {
-    padding: 6px 8px;
-    font-size: 14px;
-    white-space: nowrap;     /* ✅ Empêche les liens de passer à la ligne */
-  }
-}
-
 /* === Section Tarifs === */
 .tarif-section {
   padding: 40px 20px;
@@ -182,19 +144,19 @@ footer {
 .tarif-grid {
   display: grid;
   gap: 20px;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* Grille responsive */
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
 }
 
 .tarif-card {
   background-color: #fff;
   border-radius: 10px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1); /* Légère ombre */
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
   padding: 20px;
   transition: transform 0.2s ease;
 }
 
 .tarif-card:hover {
-  transform: translateY(-5px); /* Léger effet de "soulèvement" au survol */
+  transform: translateY(-5px);
 }
 
 .tarif-card h3 {
@@ -215,14 +177,14 @@ footer {
 
 /* === Bouton pour smartphone === */
 .btn-contact-smartphone {
-  display: none; /* Masqué par défaut (sauf sur mobile) */
+  display: none;
   text-align: center;
   margin-top: 1em;
 }
 
-@media (max-width: 600px) {  /* Pour petits écrans */
+@media (max-width: 600px) {
   .btn-contact-smartphone {
-    display: block !important;  /* Forcé à apparaître sur mobile */
+    display: block !important;
   }
 
   .btn-contact-smartphone a {
@@ -240,5 +202,52 @@ footer {
 
   .btn-contact-smartphone a:hover {
     background-color: #0056b3;
+  }
+}
+
+/* === Responsive adaptatif === */
+@media (max-width: 768px) {
+  .overlay {
+    padding: 30px 20px;
+  }
+
+  .slogan {
+    font-size: 1.1rem;
+  }
+
+  .cta-button {
+    padding: 12px 24px;
+  }
+}
+
+/* Petits écrans paysage / tablettes verticales */
+@media (max-width: 600px) {
+  nav ul li a {
+    padding: 6px 8px;
+    font-size: 14px;
+  }
+}
+
+/* Smartphones très étroits portrait */
+@media (max-width: 400px) {
+  header {
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
+  }
+
+  .logo {
+    margin-bottom: 10px;
+  }
+
+  nav ul {
+    justify-content: center;
+    gap: 8px;
+    padding: 0 10px;
+  }
+
+  nav ul li a {
+    padding: 6px 8px;
+    font-size: 14px;
   }
 }
