@@ -150,7 +150,7 @@ footer {
 @media (max-width: 480px) {
   header {
     flex-wrap: wrap; /* Permet au contenu du header de passer à la ligne */
-    justify-content: center;
+    justify-content: space-between;
   }
   nav ul {
     width: 100%;
