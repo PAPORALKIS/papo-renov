@@ -8,7 +8,7 @@
   
   <style>
     /* Valeurs par défaut - desktop */
-   header {
+header {
   position: fixed;
   top: 0;
   left: 0;
@@ -17,14 +17,18 @@
   z-index: 10001;
   display: flex;
   justify-content: space-between;
-  align-items: right;
-  padding: 1px 5px;
+  align-items: center;
+  padding: 3px 12px;
+  height: 50px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-}  
+}
 
+.logo {
+  flex-shrink: 0;
+  
 .logo img {
   height: auto;
-  max-height: 40px;      /* ✅ plus petit qu’avant */
+  max-height: 32px;      /* ✅ plus petit qu’avant */
   width: auto;
   max-width: 70%;
   display: block;
@@ -156,7 +160,14 @@ body {
       border-radius: 8px;
       box-shadow: 0 0 40px black;
     }
-
+.page-title {
+  margin-top: 60px;
+  font-size: 22px;
+  text-align: center;
+  color: white;
+  font-weight: bold;
+  z-index: 100;
+}
   
 /* Smartphones portrait */
 @media (max-width: 600px) and (orientation: portrait) {
@@ -171,6 +182,7 @@ body {
     --container-translate-y: -50%;
     --camera-tilt: 20deg;
   }
+}
   @media (max-width: 450px) {
   :root {
     --img-size: 17vw;
