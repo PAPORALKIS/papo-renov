@@ -48,7 +48,7 @@ nav ul li a {
   text-decoration: none;
   font-weight: bold;
   transition: color 0.3s;
-  font-size: 7px;
+  font-size: 12px;
   white-space: nowrap;
 }
 
@@ -152,7 +152,7 @@ nav ul li a.active {
     }
   
 
-@media (max-width: 600px) and (orientation: portrait) {
+@med(max-width: 600px) and (orientation: portrait) {
   :root {
     --img-size: 10vw;
     --translateZ: 320px;
@@ -228,10 +228,7 @@ nav ul li a.active {
     </nav>
   </header>  <!-- ===== Titre de la page ===== -->
   <div class="page-title">Mes réalisations</div>  <!-- ===== Zoom Overlay (image en grand + vignettes) ===== -->  <div class="zoom-overlay" id="zoomOverlay">
-    <div class="zoom-description" id="zoomDescription"></div>
-    <img class="zoom-image" id="zoomImage" src="" alt="Zoom" />
-    <div class="zoom-thumbnails" id="zoomThumbnails"></div>
-  </div>  <!-- ===== Conteneur du carrousel ===== -->  <div class="carousel-container" id="carousel-container">
+  <div class="carousel-container" id="carousel-container">
     <div class="carousel" id="carousel">
       <!-- Toutes les images à afficher dans le carrousel -->
       <img src="../img/CHBR0.jpg" alt="test" class="carousel__image" />
