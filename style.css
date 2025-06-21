@@ -21,7 +21,13 @@ header {
   position: sticky;
   top: 0;
   z-index: 1000;
-  flex-wrap: wrap; /* Ajouté : permet l’adaptation si pas assez de place */
+  flex-wrap: nowrap;
+  overflow-x: auto;
+}
+
+.logo {
+  flex: 0 0 auto;
+  margin-right: 10px;
 }
 
 .logo img {
@@ -31,17 +37,20 @@ header {
 }
 
 /* === Navigation === */
+nav {
+  flex: 1 1 auto;
+  overflow-x: auto;
+}
+
 nav ul {
   list-style: none;
   display: flex;
-  gap: 5px;
+  gap: 6px;
   padding: 0;
   margin: 0;
   flex-wrap: nowrap;
-  overflow-x: auto;
-  justify-content: flex-end;
   white-space: nowrap;
-  width: 100%;
+  justify-content: flex-end;
 }
 
 nav ul::-webkit-scrollbar {
@@ -86,7 +95,7 @@ nav ul li a.active {
   color: white;
   text-align: center;
   max-width: 90%;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
 }
 
 .highlight {
@@ -109,20 +118,13 @@ nav ul li a.active {
   text-decoration: none;
   font-weight: 700;
   border-radius: 6px;
-  box-shadow: 0 5px 10px rgba(0,123,255,0.4);
+  box-shadow: 0 5px 10px rgba(0, 123, 255, 0.4);
   transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .cta-button:hover {
   background-color: #0056b3;
-  box-shadow: 0 7px 15px rgba(0,86,179,0.6);
-}
-
-.header-container {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 10px 20px;
+  box-shadow: 0 7px 15px rgba(0, 86, 179, 0.6);
 }
 
 /* === Footer === */
@@ -133,6 +135,21 @@ footer {
   border-top: 1px solid #ccc;
   font-size: 14px;
   color: #666;
+}
+
+/* === Responsive (Adaptation sur petits écrans) === */
+@media (max-width: 768px) {
+  .overlay {
+    padding: 30px 20px;
+  }
+
+  .slogan {
+    font-size: 1.1rem;
+  }
+
+  .cta-button {
+    padding: 12px 24px;
+  }
 }
 
 /* === Section Tarifs === */
@@ -150,7 +167,7 @@ footer {
 .tarif-card {
   background-color: #fff;
   border-radius: 10px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   padding: 20px;
   transition: transform 0.2s ease;
 }
@@ -202,52 +219,5 @@ footer {
 
   .btn-contact-smartphone a:hover {
     background-color: #0056b3;
-  }
-}
-
-/* === Responsive adaptatif === */
-@media (max-width: 768px) {
-  .overlay {
-    padding: 30px 20px;
-  }
-
-  .slogan {
-    font-size: 1.1rem;
-  }
-
-  .cta-button {
-    padding: 12px 24px;
-  }
-}
-
-/* Petits écrans paysage / tablettes verticales */
-@media (max-width: 600px) {
-  nav ul li a {
-    padding: 6px 8px;
-    font-size: 14px;
-  }
-}
-
-/* Smartphones très étroits portrait */
-@media (max-width: 400px) {
-  header {
-    flex-direction: column;
-    align-items: center;
-    padding: 10px;
-  }
-
-  .logo {
-    margin-bottom: 10px;
-  }
-
-  nav ul {
-    justify-content: center;
-    gap: 8px;
-    padding: 0 10px;
-  }
-
-  nav ul li a {
-    padding: 6px 8px;
-    font-size: 14px;
   }
 }
