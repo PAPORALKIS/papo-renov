@@ -2,369 +2,222 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Paporalkis - Tarifs & Services</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Tarifs – Paporalkis</title>
+  <link rel="stylesheet" href="../style.css" />
   <style>
-    /* === Reset et base === */
-    * {
-      box-sizing: border-box;
-    }
-
     body {
+      font-family: 'Segoe UI', sans-serif;
+      background: url('../img/logo.png') no-repeat center center fixed;
+      background-size: 60%;
+      background-attachment: fixed;
+      opacity: 0.95;
       margin: 0;
-      font-family: 'Poppins', sans-serif;
-      background-color: #f5f5f5;
-      color: #333;
     }
 
-    /* === Header === */
     header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
       background-color: white;
-      padding: 6px 10px;
-      border-bottom: 1px solid #ddd;
-      position: sticky;
-      top: 0;
-      z-index: 1000;
-      flex-wrap: nowrap;
-      overflow-x: auto;
+      padding: 15px 30px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
     }
 
-    .logo {
-      flex: 0 0 auto;
-      margin-right: 10px;
+    .header-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
     }
 
     .logo img {
-      height: 40px;
-      max-width: 100%;
-      object-fit: contain;
-    }
-
-    /* === Navigation === */
-    nav {
-      flex: 1 1 auto;
-      overflow-x: auto;
+      height: 50px;
     }
 
     nav ul {
       list-style: none;
       display: flex;
-      gap: 3px;
-      padding: 0;
+      flex-wrap: wrap;
+      gap: 20px;
       margin: 0;
-      flex-wrap: nowrap;
-      white-space: nowrap;
-      justify-content: flex-end;
-    }
-
-    nav ul::-webkit-scrollbar {
-      display: none;
-    }
-
-    nav ul li {
-      white-space: nowrap;
+      padding: 0;
     }
 
     nav ul li a {
       text-decoration: none;
       color: #333;
-      font-weight: 600;
-      padding: 6px 8px;
-      font-size: 14px;
-      display: inline-block;
-      transition: color 0.3s ease;
+      font-weight: bold;
+      font-size: 16px;
     }
 
-    nav ul li a:hover,
     nav ul li a.active {
-      color: #007bff;
-      border-bottom: 2px solid #007bff;
+      color: #001F3F;
+      border-bottom: 2px solid #001F3F;
     }
 
-    /* === Hero section === */
-    .hero {
-      position: relative;
-      height: 80vh;
-      background-size: cover;
-      background-position: center;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-      background-image: url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1350&q=80'); /* Exemple d'image */
-    }
-
-    .overlay {
-      background: rgba(0, 0, 0, 0.5);
-      padding: 40px 25px;
-      border-radius: 10px;
-      color: white;
-      text-align: center;
-      max-width: 90%;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-    }
-
-    .highlight {
-      color: #007bff;
-      font-weight: 700;
-    }
-
-    .slogan {
-      margin-top: 15px;
-      font-size: 1.25rem;
-      line-height: 1.4;
-    }
-
-    .cta-button {
-      display: inline-block;
-      margin-top: 25px;
-      padding: 14px 30px;
-      background-color: #007bff;
-      color: white;
-      text-decoration: none;
-      font-weight: 700;
-      border-radius: 6px;
-      box-shadow: 0 5px 10px rgba(0, 123, 255, 0.4);
-      transition: background-color 0.3s ease, box-shadow 0.3s ease;
-    }
-
-    .cta-button:hover {
-      background-color: #0056b3;
-      box-shadow: 0 7px 15px rgba(0, 86, 179, 0.6);
-    }
-
-    /* === Section Tarifs === */
-    .tarif-section {
-      padding: 40px 20px;
-      background-color: #f5f5f5;
-    }
-
-    .tarif-section h2 {
-      text-align: center;
-      color: #007bff;
-      margin-bottom: 30px;
-      font-weight: 700;
-      font-size: 2rem;
-    }
-
-    .tarif-grid {
-      display: grid;
-      gap: 20px;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    }
-
-    .tarif-card {
-      background-color: #fff;
-      border-radius: 10px;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-      padding: 20px;
-      transition: transform 0.2s ease;
-    }
-
-    .tarif-card:hover {
-      transform: translateY(-5px);
-    }
-
-    .tarif-card h3 {
-      margin-top: 0;
-      color: #007bff;
-      font-size: 1.2rem;
-    }
-
-    .tarif-card ul {
-      padding-left: 18px;
-      margin: 10px 0;
-    }
-
-    .tarif-card li {
-      margin-bottom: 8px;
-      line-height: 1.4;
-    }
-
-    /* === Bouton pour smartphone === */
-    .btn-contact-smartphone {
-      display: none;
-      text-align: center;
-      margin-top: 1em;
-    }
-
-    @media (max-width: 600px) {
-      .btn-contact-smartphone {
-        display: block !important;
-      }
-
-      .btn-contact-smartphone a {
-        display: inline-block;
-        background-color: #007BFF;
-        color: white;
-        text-decoration: none;
-        padding: 0.6em 1.2em;
-        border-radius: 8px;
-        font-size: 1em;
-        cursor: pointer;
-        font-family: 'Poppins', sans-serif;
+    @media (max-width: 768px) {
+      nav {
+        width: 100%;
         text-align: center;
-        transition: background-color 0.3s ease;
-      }
-
-      .btn-contact-smartphone a:hover {
-        background-color: #0056b3;
-      }
-    }
-
-    @media (max-width: 480px) {
-      .tarif-grid {
-        grid-template-columns: 1fr;
-        gap: 12px;
-      }
-
-      .tarif-card {
-        padding: 15px 12px;
-      }
-
-      .tarif-card h3 {
-        font-size: 1.1rem;
-      }
-
-      .tarif-card li {
-        font-size: 0.9rem;
-      }
-
-      header {
-        flex-wrap: nowrap;
-        justify-content: flex-start;
-        padding: 6px 8px;
-      }
-
-      .logo {
-        margin-right: 8px;
-      }
-
-      .logo img {
-        height: 36px;
+        margin-top: 10px;
       }
 
       nav ul {
-        gap: 4px;
-        justify-content: flex-start;
-      }
-
-      nav ul li a {
-        padding: 4px 6px;
-        font-size: 13px;
+        justify-content: center;
       }
     }
 
-    /* === Footer === */
-    footer {
+    .section {
+      max-width: 1000px;
+      margin: 2rem auto;
+      background-color: rgba(255, 255, 255, 0.95);
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    }
+
+    .section img {
+      width: 70px;
+      height: auto;
+      margin-bottom: 1rem;
+    }
+
+    h2 {
       text-align: center;
-      padding: 18px 12px;
-      background-color: #fff;
-      border-top: 1px solid #ccc;
-      font-size: 14px;
-      color: #666;
+      color: #003366;
+      font-size: 2rem;
+      margin-top: 0;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1rem;
+    }
+
+    th, td {
+      padding: 0.7rem;
+      border: 1px solid #ccc;
+      text-align: left;
+      font-size: 0.95rem;
+    }
+
+    th {
+      background-color: #003366;
+      color: white;
+    }
+
+    .pack {
+      background-color: #f4f9ff;
+      border: 2px solid #003366;
+      padding: 1rem;
+      margin: 1.5rem 0;
+      border-radius: 12px;
+    }
+
+    .pack h3 {
+      margin-top: 0;
+      color: #003366;
+    }
+
+    .centered {
+      text-align: center;
     }
   </style>
 </head>
 <body>
+
+  <!-- HEADER -->
   <header>
-    <div class="logo">
-      <img src="https://via.placeholder.com/150x40?text=Logo" alt="Logo Paporalkis" />
+    <div class="header-container">
+      <div class="logo">
+        <img src="../img/logo.png" alt="Logo Paporalkis" />
+      </div>
+      <nav>
+        <ul>
+          <li><a href="../index.html">Accueil</a></li>
+          <li><a href="devis.html">Demande de devis</a></li>
+          <li><a href="realisations.html">Mes réalisations</a></li>
+          <li><a href="tarifs.html" class="active">Tarifs</a></li>
+          <li><a href="planning.html">Planning</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </nav>
     </div>
-    <nav>
-      <ul>
-        <li><a href="#" class="active">Accueil</a></li>
-        <li><a href="#tarifs">Tarifs</a></li>
-        <li><a href="#services">Services</a></li>
-        <li><a href="#contact">Contact</a></li>
-      </ul>
-    </nav>
   </header>
 
-  <section class="hero" role="banner" aria-label="Présentation principale">
-    <div class="overlay">
-      <h1>Bienvenue chez <span class="highlight">Paporalkis</span></h1>
-      <p class="slogan">Votre partenaire de confiance pour tous vos petits travaux intérieurs et extérieurs à Meyreuil.</p>
-      <a href="#contact" class="cta-button">Demandez un devis</a>
+  <!-- SECTION : Rénovation intérieure -->
+  <div class="section">
+    <div class="centered">
+      <img src="../img/renovation_interieure.png" alt="Travaux rénovations">
+      <h2>Rénovation intérieure</h2>
     </div>
-  </section>
+    <table>
+      <tr><th>Prestation</th><th>Détail / Unité</th><th>Prix (€)</th><th>Commentaires</th></tr>
+      <tr><td>Peinture murale</td><td>au m²</td><td>12</td><td>Hors préparation</td></tr>
+      <tr><td>Pose de parquet flottant</td><td>au m²</td><td>18</td><td>Sous-couche incluse</td></tr>
+      <tr><td>Montage de meuble</td><td>par meuble</td><td>30</td><td>Meuble standard</td></tr>
+      <tr><td>Installation de placo</td><td>au m²</td><td>25</td><td>Pose sur ossature métallique</td></tr>
+      <tr><td>Isolation murs</td><td>au m²</td><td>22</td><td>Hors pose de placo</td></tr>
+      <tr><td>Isolation plafond</td><td>au m²</td><td>28</td><td>Hors pose de placo</td></tr>
+      <tr><td>Pose de cuisine</td><td>/jour</td><td>À partir de 350</td><td>Sur devis selon projet</td></tr>
+      <tr><td>Pose de dressing</td><td>Par ml</td><td>À partir de 250</td><td>Sur devis selon projet</td></tr>
+      <tr><td>Pose de plinthes</td><td>ml</td><td>5</td><td></td></tr>
+      <tr><td>Pose de faïence murale</td><td>au m²</td><td>30</td><td>Sans fourniture</td></tr>
+    </table>
+  </div>
 
-  <main>
-    <section id="tarifs" class="tarif-section" aria-labelledby="tarifs-title">
-      <h2 id="tarifs-title">Nos Tarifs</h2>
-      <div class="tarif-grid">
-        <article class="tarif-card" tabindex="0" aria-label="Rénovation intérieure">
-          <h3>Rénovation intérieure</h3>
-          <ul>
-            <li>Peinture (murs et plafonds) : 15€/m²</li>
-            <li>Pose de carrelage : 25€/m²</li>
-            <li>Remplacement de prises électriques : 30€ / prise</li>
-          </ul>
-        </article>
+  <!-- SECTION : Travaux du quotidien -->
+  <div class="section">
+    <div class="centered">
+      <img src="../img/reno_express.png" alt="Travaux quotidiens">
+      <h2>Travaux du quotidien</h2>
+    </div>
+    <table>
+      <tr><th>Prestation</th><th>Unité</th><th>Prix (€)</th><th>Commentaires</th></tr>
+      <tr><td>Fixation étagères/luminaires etc.</td><td>par unité</td><td>15</td><td>Vis et chevilles incluses</td></tr>
+      <tr><td>Pose de moustiquaires</td><td>par fenêtre</td><td>25</td><td></td></tr>
+      <tr><td>Réparation mur (enduit)</td><td>au m²</td><td>18</td><td>Enduit lissage compris</td></tr>
+      <tr><td>Remplacement joint silicone</td><td>par mètre</td><td>10</td><td></td></tr>
+    </table>
+  </div>
 
-        <article class="tarif-card" tabindex="0" aria-label="Travaux du quotidien">
-          <h3>Travaux du quotidien</h3>
-          <ul>
-            <li>Montage de meubles : 20€ / meuble</li>
-            <li>Réparation de portes et fenêtres : à partir de 35€</li>
-            <li>Petits bricolages : 25€/heure</li>
-          </ul>
-        </article>
+  <!-- SECTION : Extérieur -->
+  <div class="section">
+    <div class="centered">
+      <img src="../img/exterieur.png" alt="Travaux extérieurs">
+      <h2>Extérieur</h2>
+    </div>
+    <table>
+      <tr><th>Prestation</th><th>Unité</th><th>Prix (€)</th><th>Commentaires</th></tr>
+      <tr><td>Tonte de pelouse</td><td>&lt; 200m²</td><td>35–60</td><td></td></tr>
+      <tr><td></td><td>200–500 m²</td><td>50–90</td><td></td></tr>
+      <tr><td></td><td>&gt; 500 m²</td><td>à partir de 90</td><td>Sur devis</td></tr>
+      <tr><td>Taille de haie</td><td>ml</td><td>6</td><td>Hauteur &lt; 2m</td></tr>
+      <tr><td>Débroussaillage</td><td>au m²</td><td>1.2</td><td>Terrain dégagé</td></tr>
+      <tr><td>Pose terrasse bois</td><td>au m²</td><td>50</td><td>Bois exotique ou composite</td></tr>
+      <tr><td>Pose de pergola</td><td>—</td><td>À partir de 600</td><td>Selon modèle</td></tr>
+      <tr><td>Nettoyage haute pression</td><td>au m²</td><td>2</td><td>Allée, façade</td></tr>
+      <tr><td>Plantation massifs</td><td>par m²</td><td>35</td><td>Plantes non incluses</td></tr>
+    </table>
+  </div>
 
-        <article class="tarif-card" tabindex="0" aria-label="Travaux extérieurs">
-          <h3>Travaux extérieurs</h3>
-          <ul>
-            <li>Entretien de jardin : 30€/heure</li>
-            <li>Nettoyage de façades : sur devis</li>
-            <li>Pose de clôture : 40€/mètre</li>
-          </ul>
-        </article>
+  <!-- SECTION : Packs -->
+  <div class="section">
+    <div class="centered">
+      <img src="../img/pack.png" alt="Packs rénovation" style="width: 90px;">
+      <h2>Packs</h2>
+    </div>
 
-        <article class="tarif-card" tabindex="0" aria-label="Packs de services">
-          <h3>Packs de services</h3>
-          <ul>
-            <li>Pack rénovation complète : sur devis</li>
-            <li>Pack entretien régulier : forfait mensuel</li>
-          </ul>
-        </article>
-      </div>
+    <div class="pack"><h3>Pack Rénovation Express – 1 jour</h3><p><strong>250 €</strong> – Peinture, petits montages, fixations</p></div>
+    <div class="pack"><h3>Pack Jardinage Complet – 1/2 journée</h3><p><strong>140 €</strong> – Tonte, taille, soufflage</p></div>
+    <div class="pack"><h3>Pack Terrasse + Pergola</h3><p><strong>Sur devis</strong> – Installation clé en main</p></div>
+    <div class="pack"><h3>Pack Rénovation pièce (15m²)</h3><p><strong>600 €</strong> – Peinture + sol + finitions</p></div>
+    <div class="pack"><h3>Pack Extérieur Entretien</h3><p><strong>100 €/jour</strong> – Tonte + haie + débroussaillage</p></div>
+    <div class="pack"><h3>Pack Cuisine Clé en main</h3><p><strong>Sur devis</strong> – De la conception à l'installation</p></div>
+    <div class="pack"><h3>Pack Dressing sur-mesure</h3><p><strong>Sur devis</strong> – Aménagement + pose</p></div>
+    <div class="pack"><h3>Pack "RÉNO EXPRESS"</h3><p><strong>À partir de 790 € TTC</strong><br/>Rafraîchissement des peintures (≤50 m²), nettoyage complet, réparations légères, remise en état extérieur. <br/>Délai : 3 à 5 jours</p></div>
+    <div class="pack"><h3>Pack "RÉNO EXTÉRIEURE"</h3><p><strong>À partir de 890 € TTC</strong><br/>Tonte, débroussaillage, taille, nettoyage/pose terrasse, pose pergola/voile, éclairage extérieur basique</p></div>
+    <div class="pack"><h3>Pack "Cuisine extérieure Cyporex"</h3><p><strong>À partir de 1490 € TTC</strong> (base 2 m)<br/>Structure en béton cellulaire, plan de travail, BBQ/évier, finitions personnalisées</p></div>
+  </div>
 
-      <div class="btn-contact-smartphone" aria-hidden="true">
-        <a href="#contact">Contactez-nous</a>
-      </div>
-    </section>
-
-    <section id="services" aria-label="Description des services">
-      <div style="max-width: 700px; margin: 40px auto; padding: 0 20px; text-align: center;">
-        <h2>Nos Services</h2>
-        <p>Nous intervenons pour tous vos petits travaux : rénovation intérieure, bricolage, entretien extérieur, et bien plus encore. Contactez-nous pour un devis personnalisé.</p>
-      </div>
-    </section>
-
-    <section id="contact" aria-label="Contact et demande de devis" style="max-width: 700px; margin: 40px auto; padding: 0 20px;">
-      <h2>Contactez-nous</h2>
-      <form action="mailto:k.paporalkis@gmail.com" method="post" enctype="text/plain" aria-describedby="form-info">
-        <p id="form-info">Remplissez le formulaire ci-dessous pour une demande de devis.</p>
-        <label for="name">Nom complet :</label><br />
-        <input type="text" id="name" name="Nom" required /><br /><br />
-
-        <label for="email">Email :</label><br />
-        <input type="email" id="email" name="Email" required /><br /><br />
-
-        <label for="message">Votre message :</label><br />
-        <textarea id="message" name="Message" rows="5" required></textarea><br /><br />
-
-        <button type="submit" style="background:#007bff; color:#fff; padding:10px 18px; border:none; border-radius:6px; cursor:pointer; font-weight:700;">Envoyer</button>
-      </form>
-    </section>
-  </main>
-
-  <footer>
-    &copy; 2025 Paporalkis - Tous droits réservés
-  </footer>
 </body>
 </html>
