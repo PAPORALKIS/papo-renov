@@ -16,7 +16,7 @@ header {
   align-items: center;
   justify-content: space-between;
   background-color: white;
-  padding: 8px 10px;
+  padding: 6px 10px;
   border-bottom: 1px solid #ddd;
   position: sticky;
   top: 0;
@@ -31,7 +31,7 @@ header {
 }
 
 .logo img {
-  height: 45px;
+  height: 40px;
   max-width: 100%;
   object-fit: contain;
 }
@@ -45,7 +45,7 @@ nav {
 nav ul {
   list-style: none;
   display: flex;
-  gap: 2px;
+  gap: 6px;
   padding: 0;
   margin: 0;
   flex-wrap: nowrap;
@@ -65,7 +65,8 @@ nav ul li a {
   text-decoration: none;
   color: #333;
   font-weight: 600;
-  padding: 6px 6px;
+  padding: 6px 8px;
+  font-size: 14px;
   display: inline-block;
   transition: color 0.3s ease;
 }
@@ -137,18 +138,30 @@ footer {
   color: #666;
 }
 
-/* === Responsive (Adaptation sur petits écrans) === */
-@media (max-width: 768px) {
-  .overlay {
-    padding: 30px 20px;
+/* === Responsive (smartphones portrait ≤ 480px) === */
+@media (max-width: 480px) {
+  header {
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    padding: 6px 8px;
   }
 
-  .slogan {
-    font-size: 1.1rem;
+  .logo {
+    margin-right: 8px;
   }
 
-  .cta-button {
-    padding: 12px 24px;
+  .logo img {
+    height: 36px;
+  }
+
+  nav ul {
+    gap: 4px;
+    justify-content: flex-start;
+  }
+
+  nav ul li a {
+    padding: 4px 6px;
+    font-size: 13px;
   }
 }
 
@@ -219,32 +232,5 @@ footer {
 
   .btn-contact-smartphone a:hover {
     background-color: #0056b3;
-  }
-}
-
-/* === Responsive navigation mobile portrait === */
-@media (max-width: 480px) {
-  .logo,
-  .logo img {
-    display: none;
-  }
-
-  header {
-    justify-content: center;
-    padding: 6px 8px;
-  }
-
-  nav ul {
-    width: 100%;
-    justify-content: center;
-    overflow-x: auto;
-    gap: 4px;
-    padding: 0 4px;
-  }
-
-  nav ul li a {
-    padding: 4px 6px;
-    font-size: 13px;
-    white-space: nowrap;
   }
 }
