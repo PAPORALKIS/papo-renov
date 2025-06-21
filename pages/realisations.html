@@ -8,7 +8,19 @@
   <style>
 
   /* ===== Barre de navigation ===== */
-  
+  header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 60px;
+  background: rgba(10,10,20,0.9);
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+  z-index: 10001;  /* bien au-dessus du filigrane */
+  box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+}
   /* Variables CSS pour taille des images, profondeur Z et offset */
   :root {
     --img-size: 150px;        /* taille de chaque image dans le carrousel */
@@ -182,7 +194,8 @@
       --container-left: 50%;
       --container-translate-y: -50%;
       --container-translate-x: -50%;
-
+}
+    }
       @media screen and (max-width: 480px) and (orientation: portrait) {
   header .logo {
     display: none;
