@@ -232,5 +232,21 @@ footer {
 
   .btn-contact-smartphone a:hover {
     background-color: #0056b3;
+    @media (max-width: 480px) {
+  .tarif-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .tarif-card {
+    padding: 15px 12px;
+  }
+
+  .tarif-card h3 {
+    font-size: 1.1rem;
+  }
+
+  .tarif-card li {
+    font-size: 0.9rem;
   }
 }
