@@ -363,7 +363,7 @@ nav ul li a {
 
     /* Définit la taille des images ou éléments en 3D
        ici, 10% de la largeur de l'écran (viewport width) */
-    --img-size: 10vw;
+    --img-size: 1vw;
 
     /* Ajuste le décalage des éléments (probablement horizontal ou vertical)
        valeur négative : décalage vers la gauche ou vers le haut */
@@ -378,10 +378,10 @@ nav ul li a {
     --camera-tilt: 15deg;
   }
 }
-  /* Adaptation tablettes grand écran (768px à 1024px) */
+  /* Adaptation tablettes grand écran (768px à 1024px) modifie sur samsung paysage */
   @media (min-width: 768px) and (max-width: 1024px) {
     :root {
-      --img-size: 1vw;
+      --img-size: 10vw;
       --translateZ: calc(100vw / 1.2);
       --offset: -350px;
       --perspective: 4000px;
