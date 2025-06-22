@@ -155,10 +155,10 @@ body {
   header {
   position: fixed;                 /* Fixée en haut de la page */
   top: 0; left: 0; right: 0;       /* Collée aux bords horizontaux */
-  height: 50px;                    /* Hauteur de 50px */
+  height: 40px;                    /* Hauteur de 50px */
   background: white;              /* Fond blanc */
   display: flex;                  /* Mise en ligne des enfants */
-  align-items: ; flex-end;            /* ⛔️ Correction à prévoir : `flex-end` ou `center` selon intention */
+  align-items: ; center;            /* ⛔️ Correction à prévoir : `flex-end` ou `center` selon intention */
   padding: 0 20px;                /* Marge horizontale intérieure */
   z-index: 10001;                 /* Très au-dessus du reste (y compris le filigrane) */
   box-shadow: 0 2px 5px rgba(0,0,0,0.5); /* Ombre portée vers le bas */
@@ -180,7 +180,7 @@ nav::-webkit-scrollbar {
 nav ul {
   list-style: none;
   display: flex;
-  gap: 15px;                      /* espace entre les liens */
+  gap: 8px;                      /* espace entre les liens */
   margin: 0;
   padding: 0;
   justify-content: flex-end;     /* pousse les liens vers la droite */
