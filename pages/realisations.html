@@ -354,16 +354,30 @@ nav ul li a {
   }
 
   /* Media query : smartphones & tablettes - Paysage */
-  @media screen and (max-width: 1024px) and (orientation: landscape) {
-    :root {
-      --translateZ: 500px;
-      --img-size: 10vw;
-      --offset: -340px;
-      --perspective: 3000px;
-      --camera-tilt: 15deg;
-    }
-  }
+@media screen and (max-width: 1024px) and (orientation: landscape) {
+  
+  :root {
+    /* Définit la profondeur du placement des éléments en 3D 
+       (plus la valeur est petite, plus l'élément semble éloigné) */
+    --translateZ: 100px;
 
+    /* Définit la taille des images ou éléments en 3D
+       ici, 10% de la largeur de l'écran (viewport width) */
+    --img-size: 10vw;
+
+    /* Ajuste le décalage des éléments (probablement horizontal ou vertical)
+       valeur négative : décalage vers la gauche ou vers le haut */
+    --offset: -340px;
+
+    /* Définit la distance de la perspective 3D.
+       Plus la valeur est grande, plus l'effet de profondeur est subtil. */
+    --perspective: 3000px;
+
+    /* Inclinaison virtuelle de la "caméra" 3D (en degrés),
+       donne un effet de bascule vers l’avant (rotation sur l’axe X ou Y) */
+    --camera-tilt: 15deg;
+  }
+}
   /* Adaptation tablettes grand écran (768px à 1024px) */
   @media (min-width: 768px) and (max-width: 1024px) {
     :root {
