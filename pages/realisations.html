@@ -26,6 +26,27 @@
 .logo img {
   height: 40px;
 }    
+    nav ul {
+  list-style: none;
+  display: flex;
+  gap: 15px;
+  margin: 20px;
+  padding: 0;
+  transform: translateX(-50px);
+}
+
+nav ul li a {
+  color: black;
+  text-decoration: none;
+  font-weight: bold;
+  transition: color 0.3s;
+}
+
+nav ul li a:hover,
+nav ul li a.active {
+  color: #ffcc00;
+}
+
   /* Variables CSS pour taille des images, profondeur Z et offset */
   :root {
     --img-size: 150px;        /* taille de chaque image dans le carrousel */
