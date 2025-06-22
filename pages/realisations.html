@@ -345,7 +345,7 @@ nav ul li a {
   /* Media query : smartphones & tablettes - Portrait */
   @media screen and (max-width: 1024px) and (orientation: portrait) {
     :root {
-      --translateZ: 200px;
+      --translateZ: 150px;
       --img-size: 20vw;
       --offset: -60px;
       --perspective: 1800px;
@@ -563,7 +563,7 @@ nav ul li a {
         if (i === closestIndex) {
           // Image ée au centre
           images[i].style.transform =
-            `rotateY(${theta}deg) translateZ(${baseRadius * 1.6}px) translateY(-20px) rotateY(${extraRotation}deg) scale(1.5)`;
+            `rotateY(${theta}deg) translateZ(${baseRadius * 1.6}px) translateY(-20px) rotateY(${extraRotation}deg) scale(1.9)`;
           images[i].style.zIndex = 100;  // devant toutes les autres
           images[i].style.filter = "drop-shadow(0 0 20px rgba(255,255,255,0.6))";
           images[i].style.setProperty('--offset', offset);
