@@ -152,45 +152,53 @@ body {
       box-shadow: 0 -1px 3px rgba(0,0,0,0.1);
     }
   /* ===== Barre de navigation ===== */
-  header {
-  position: fixed;                 /* Fixée en haut de la page */
-  top: 0; left: 0; right: 0;       /* Collée aux bords horizontaux */
-  height: 40px;                    /* Hauteur de 50px */
-  background: white;              /* Fond blanc */
-  display: flex;                  /* Mise en ligne des enfants */
-  align-items: ; center;            /* ⛔️ Correction à prévoir : `flex-end` ou `center` selon intention */
-  padding: 0 20px;                /* Marge horizontale intérieure */
-  z-index: 10001;                 /* Très au-dessus du reste (y compris le filigrane) */
-  box-shadow: 0 2px 5px rgba(0,0,0,0.5); /* Ombre portée vers le bas */
+  /* Barre de navigation (entête) */
+header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 50px;
+  background: white;
+  display: flex;
+  align-items: center;         /* ✅ Centre verticalement les enfants */
+  justify-content: space-between; /* ✅ Espace entre le logo (gauche) et la nav (droite) */
+  padding: 0 20px;
+  z-index: 10001;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.5);
 }
+
+/* Logo */
 .logo img {
   height: 40px;
-}    
+}
 
+/* Conteneur <nav> pour les liens */
 nav {
-  overflow-x: auto;               /* permet le scroll horizontal si nécessaire */
-  white-space: nowrap;            /* empêche le retour à la ligne */
-  scrollbar-width: none;          /* pour Firefox */
+  overflow-x: auto;           /* Scroll horizontal si écran étroit */
+  white-space: nowrap;
+  scrollbar-width: none;      /* Firefox */
 }
-
 nav::-webkit-scrollbar {
-  display: none;                  /* cache la barre de scroll (mobile) */
+  display: none;              /* Chrome/Safari */
 }
 
+/* Liste des liens */
 nav ul {
   list-style: none;
   display: flex;
-  gap: 8px;                      /* espace entre les liens */
+  gap: 15px;
   margin: 0;
   padding: 0;
-  justify-content: flex-end;     /* pousse les liens vers la droite */
-  width: max-content;            /* largeur auto selon le contenu (pour le scroll) */
+  margin-left: auto;         /* ✅ Pousse toute la liste à droite */
+  align-items: center;       /* ✅ Aligne les liens verticalement */
 }
 nav ul li a {
-  color: black;                    /* Texte noir */
-  text-decoration: none;          /* Pas de soulignement */
-  font-weight: bold;              /* En gras */
-  transition: color 0.3s;         /* Animation fluide pour changement de couleur */
+  color: black;
+  text-decoration: none;
+  font-weight: bold;
+  transition: color 0.3s;
+  line-height: 50px;         /* ✅ Même hauteur que le header pour aider au centrage */
 }
 
 nav ul li a:hover,
