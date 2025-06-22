@@ -153,55 +153,62 @@ body {
     }
   /* ===== Barre de navigation ===== */
   header {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 50px;
-  background: white;
-  display: flex;
-  align-items: right;
-  padding: 0 20px;
-  z-index: 10001;  /* bien au-dessus du filigrane */
-  box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+  position: fixed;                 /* Fixée en haut de la page */
+  top: 0; left: 0; right: 0;       /* Collée aux bords horizontaux */
+  height: 50px;                    /* Hauteur de 50px */
+  background: white;              /* Fond blanc */
+  display: flex;                  /* Mise en ligne des enfants */
+  align-items: right;             /* ⛔️ Correction à prévoir : `flex-end` ou `center` selon intention */
+  padding: 0 20px;                /* Marge horizontale intérieure */
+  z-index: 10001;                 /* Très au-dessus du reste (y compris le filigrane) */
+  box-shadow: 0 2px 5px rgba(0,0,0,0.5); /* Ombre portée vers le bas */
 }
-
-
 .logo img {
   height: 40px;
 }    
-    nav ul {
-  list-style: none;
-  display: flex;
-  gap: 10px;
-  margin: 5px;
-  padding: 0;
-  transform: translateX(-50px);
+nav ul {
+nav {
+  overflow-x: auto;               /* permet le scroll horizontal si nécessaire */
+  white-space: nowrap;            /* empêche le retour à la ligne */
+  scrollbar-width: none;          /* pour Firefox */
 }
 
+nav::-webkit-scrollbar {
+  display: none;                  /* cache la barre de scroll (mobile) */
+}
+
+nav ul {
+  list-style: none;
+  display: flex;
+  gap: 15px;                      /* espace entre les liens */
+  margin: 0;
+  padding: 0;
+  justify-content: flex-end;     /* pousse les liens vers la droite */
+  width: max-content;            /* largeur auto selon le contenu (pour le scroll) */
+}
 nav ul li a {
-  color: black;
-  text-decoration: none;
-  font-weight: bold;
-  transition: color 0.3s;
+  color: black;                    /* Texte noir */
+  text-decoration: none;          /* Pas de soulignement */
+  font-weight: bold;              /* En gras */
+  transition: color 0.3s;         /* Animation fluide pour changement de couleur */
 }
 
 nav ul li a:hover,
 nav ul li a.active {
-  color: #ffcc00;
+  color: #ffcc00;                 /* Jaune au survol ou si actif */
 }
 
   /* Variables CSS pour taille des images, profondeur Z et offset */
-  :root {
-    --img-size: 150px;        /* taille de chaque image dans le carrousel */
-    --translateZ: 900px;       /* distance à laquelle les images sont placées en 3D */
-    --offset: -250px;          /* décalage vertical de l'image agrandie */
-    --perspective: 3000px;     /* perspective 3D */
-    --container-top: 30%;
-    --container-left: 45%;
-    --container-translate-y: -49%;
-    --container-translate-x: -50%;
-  }
+:root {
+  --img-size: 150px;              /* Taille des images dans un carrousel */
+  --translateZ: 900px;            /* Profondeur des images en 3D */
+  --offset: -250px;               /* Décalage vertical lors d’un zoom/agrandissement */
+  --perspective: 3000px;          /* Perspective pour les effets 3D */
+  --container-top: 30%;
+  --container-left: 45%;
+  --container-translate-y: -49%;
+  --container-translate-x: -50%;
+}
 
   html, body {
     margin: 0; 
@@ -225,19 +232,19 @@ nav ul li a.active {
   }
 
   /* ===== Titre de page ===== */
-  .page-title {
-    position: fixed;
-    top: 60px;
-    left: 0;
-    right: 0;
-    text-align: center;
-    font-size: 1.8em;
-    padding: 0 10px;
-    margin: 0 auto;
-    white-space: normal;
-    color: white;
-    z-index: 10002;
-  }
+.page-title {
+  position: fixed;
+  top: 60px;                      /* Juste sous le header */
+  left: 0;
+  right: 0;
+  text-align: center;            /* Centré horizontalement */
+  font-size: 1.8em;              /* Titre assez grand */
+  padding: 0 10px;
+  margin: 0 auto;
+  white-space: normal;           /* Permet le retour à la ligne */
+  color: white;                  /* Texte blanc */
+  z-index: 10002;                /* Au-dessus du header */
+}
 
   /* Responsive pour titre sur petit écran */
   @media (max-width: 600px) {
