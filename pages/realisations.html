@@ -381,7 +381,7 @@ nav ul li a {
   /* Adaptation tablettes grand écran (768px à 1024px) */
   @media (min-width: 768px) and (max-width: 1024px) {
     :root {
-      --img-size: 15vw;
+      --img-size: 1vw;
       --translateZ: calc(100vw / 1.2);
       --offset: -350px;
       --perspective: 4000px;
@@ -522,7 +522,7 @@ nav ul li a {
     let baseRadius = 900;
 
     // Profondeur et scale spécifiques pour image ée
-    const Scale = 1.5;        // facteur d’agrandissement de l’image ée
+    const Scale = 1.8;        // facteur d’agrandissement de l’image ée
 
     let angle = 0;                // angle global du carrousel en degrés
     let autoRotate = true;        // indique si le carrousel tourne automatiquement
@@ -563,9 +563,9 @@ nav ul li a {
         if (i === closestIndex) {
           // Image ée au centre
           images[i].style.transform =
-            `rotateY(${theta}deg) translateZ(${baseRadius * 2}px) translateY(-20px) rotateY(${extraRotation}deg) scale(2.5)`;
+            `rotateY(${theta}deg) translateZ(${baseRadius * 1.6}px) translateY(-20px) rotateY(${extraRotation}deg) scale(1.5)`;
           images[i].style.zIndex = 100;  // devant toutes les autres
-          images[i].style.filter = "drop-shadow(0 0 30px rgba(255,255,255,0.6))";
+          images[i].style.filter = "drop-shadow(0 0 20px rgba(255,255,255,0.6))";
           images[i].style.setProperty('--offset', offset);
         } else {
           // Images normales autour
