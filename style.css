@@ -205,6 +205,24 @@ footer {
   line-height: 1.4;
 }
 
+/* === Section Formulaire === */
+.form-section {
+  display: flex;
+  justify-content: center;
+  padding: 40px 20px;
+}
+
+.form-section > .overlay {
+  max-width: 1000px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.form-overlay {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
 /* === Bouton pour smartphone === */
 .btn-contact-smartphone {
   display: none;
