@@ -208,14 +208,16 @@
     let autoRotate = true;
 
     function positionImages() {
-      const total = images.length;
-      const step = 360 / total;
-      for (let i = 0; i < total; i++) {
-        const img = images[i];
-        const theta = step * i + angle;
-        img.style.transform = `rotateY(${theta}deg) translateZ(var(--translateZ))`;
-      }
-    }
+  const total = images.length;
+  const step = 360 / total;
+
+  for (let i = 0; i < total; i++) {
+    const img = images[i];
+    const theta = step * i + angle;
+    img.style.transform = `rotateY(${theta}deg) translateZ(var(--translateZ))`;
+    img.style.zIndex = `${Math.round(1000 - Math.abs(theta % 360))}`; // priorité au premier plan
+  }
+}
 
     function animate() {
       if (autoRotate) {
