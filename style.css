@@ -267,4 +267,9 @@ footer {
   .tarif-card li {
     font-size: 0.9rem;
   }
+     @media (max-width: 480px) and (orientation: portrait) {
+  header nav ul li a {
+    font-size: 10px; /* ou 20px si tu veux encore plus grand */
+  }
 }
+
