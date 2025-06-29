@@ -403,7 +403,68 @@ nav ul li a {
     gap: 10px; /* espace entre liens comme tu souhaites */
   }
 }
+/* --------- AMÉLIORATION RESPONSIVE POUR REALISATIONS --------- */
 
+/* Smartphone portrait : améliore lisibilité du menu */
+@media screen and (max-width: 480px) and (orientation: portrait) {
+  nav ul li a {
+    font-size: 16px;
+    padding: 0 8px;
+    line-height: 48px;
+  }
+
+  .carousel img {
+    border-radius: 10px;
+  }
+
+  .page-title {
+    font-size: 1.4em;
+    padding-top: 10px;
+  }
+}
+
+/* Smartphone paysage : évite trop petit affichage */
+@media screen and (max-width: 768px) and (orientation: landscape) {
+  nav ul li a {
+    font-size: 14px;
+    padding: 0 6px;
+  }
+
+  .page-title {
+    font-size: 1.2em;
+  }
+
+  .carousel img {
+    border-radius: 8px;
+  }
+}
+
+/* Tablette portrait */
+@media screen and (min-width: 481px) and (max-width: 768px) and (orientation: portrait) {
+  nav ul li a {
+    font-size: 15px;
+  }
+
+  .carousel img {
+    --img-size: 22vw;
+  }
+
+  .page-title {
+    font-size: 1.6em;
+  }
+}
+
+/* Défilement horizontal du menu si besoin */
+nav {
+  max-width: 100vw;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+nav ul {
+  flex-wrap: nowrap;
+  padding: 0 10px;
+}
   </style>
 </head>
 <body>
