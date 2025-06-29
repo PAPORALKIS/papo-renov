@@ -72,21 +72,6 @@
       z-index: 10;
     }
 
-    .filter-bar {
-      margin-top: 100px;
-      text-align: center;
-    }
-
-    .filter-bar button {
-      margin: 5px;
-      padding: 10px 15px;
-      background: #00bfff;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-
     .carousel-container {
       position: fixed;
       top: 50%;
@@ -127,55 +112,42 @@
       z-index: 10;
     }
 
-    .lightbox {
+    .realisations-page {
+      background-color: #00010d;
+      color: white;
+      overflow: hidden;
+    }
+
+    .realisations-page .carousel-container {
       position: fixed;
-      top: 0; left: 0;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      perspective: var(--perspective);
       width: 100vw;
       height: 100vh;
-      background: rgba(0,0,0,0.95);
-      display: none;
+      display: flex;
       justify-content: center;
       align-items: center;
-      z-index: 9999;
+      pointer-events: none;
     }
 
-    .lightbox img {
-      max-width: 90vw;
-      max-height: 80vh;
-      border-radius: 8px;
-      box-shadow: 0 0 40px black;
+    .realisations-page .carousel {
+      transform-style: preserve-3d;
+      transform: rotateX(-4deg);
+      pointer-events: auto;
     }
 
-    /* Responsive ajusté */
-    @media screen and (max-width: 1024px) and (orientation: landscape) {
-      :root {
-        --img-size: 14vw;
-        --translateZ: 220px;
-        --perspective: 1800px;
-      }
-    }
-
-    @media screen and (max-width: 768px) and (orientation: portrait) {
-      :root {
-        --img-size: 28vw;
-        --translateZ: 170px;
-        --perspective: 1600px;
-      }
-    }
-
-    @media screen and (max-width: 768px) and (orientation: landscape) {
-      :root {
-        --img-size: 18vw;
-        --translateZ: 150px;
-        --perspective: 1400px;
-      }
+    .realisations-page .carousel img {
+      object-fit: cover;
+      pointer-events: auto;
     }
   </style>
 </head>
-<body>
+<body class="realisations-page">
   <header>
     <div class="logo">
-      <img src="../img/logo.png" alt="Logo Paporalkis">
+      <img src="../img/logo.png" alt="Logo Paporalkis" />
     </div>
     <nav>
       <ul>
@@ -187,12 +159,11 @@
         <li><a href="contact.html">Contact</a></li>
       </ul>
     </nav>
-  </header>  <div class="page-title">Mes réalisations</div>  <div class="filter-bar">
-    <button onclick="filterCategory('all')">Toutes</button>
-    <button onclick="filterCategory('cuisine')">Cuisines</button>
-    <button onclick="filterCategory('sdb')">Salles de bain</button>
-    <button onclick="filterCategory('ext')">Extérieurs</button>
-  </div>  <div class="carousel-container">
+  </header>
+
+  <div class="page-title">Mes réalisations</div>
+
+  <div class="carousel-container">
     <div class="carousel" id="carousel">
       <img src="../img/CHBR0.jpg" alt="test" class="carousel__image" />
       <img src="../img/CHBR1.jpg" alt="test" class="carousel__image" />
@@ -237,13 +208,11 @@
       <img src="../img/velaux2.jpg" alt="test" class="carousel__image" />
       <img src="../img/velaux3.jpg" alt="test" class="carousel__image" />
     </div>
-  </div>  <div class="lightbox" id="lightbox" onclick="this.style.display='none'">
-    <img id="lightbox-img" src="" alt="Zoom">
-  </div>  <script>
+  </div>
+
+  <script>
     const carousel = document.getElementById("carousel");
     const images = carousel.querySelectorAll("img");
-    const lightbox = document.getElementById("lightbox");
-    const lightboxImg = document.getElementById("lightbox-img");
 
     let angle = 0;
     let autoRotate = true;
@@ -264,25 +233,6 @@
         positionImages();
       }
       requestAnimationFrame(animate);
-    }
-
-    images.forEach(img => {
-      img.addEventListener("click", () => {
-        lightboxImg.src = img.src;
-        lightbox.style.display = "flex";
-      });
-    });
-
-    function filterCategory(category) {
-      images.forEach(img => {
-        if (category === 'all' || img.classList.contains(category)) {
-          img.style.display = "block";
-        } else {
-          img.style.display = "none";
-        }
-      });
-      angle = 0;
-      positionImages();
     }
 
     positionImages();
