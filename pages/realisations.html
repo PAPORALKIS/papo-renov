@@ -7,10 +7,24 @@
   <link rel="stylesheet" href="../css/main.css" />
   <style>
     :root {
-      --img-size: 19vw;
-      --translateZ: 300px;
+      --img-size: min(18vw, 150px);
+      --translateZ: 400px;
       --offset: -100px;
-      --perspective: 2250px;
+      --perspective: 2000px;
+    }
+
+    @media (max-width: 500px) {
+      :root {
+        --img-size: 26vw;
+        --translateZ: 280px;
+      }
+    }
+
+    @media (min-width: 1200px) {
+      :root {
+        --img-size: 120px;
+        --translateZ: 500px;
+      }
     }
 
     html, body {
@@ -105,6 +119,7 @@
       z-index: 1;
       user-select: none;
       -webkit-user-drag: none;
+      margin: 0 5px;
     }
 
     .carousel img:hover {
@@ -116,31 +131,6 @@
       background-color: #00010d;
       color: white;
       overflow: hidden;
-    }
-
-    .realisations-page .carousel-container {
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      perspective: var(--perspective);
-      width: 100vw;
-      height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      pointer-events: none;
-    }
-
-    .realisations-page .carousel {
-      transform-style: preserve-3d;
-      transform: rotateX(-4deg);
-      pointer-events: auto;
-    }
-
-    .realisations-page .carousel img {
-      object-fit: cover;
-      pointer-events: auto;
     }
   </style>
 </head>
