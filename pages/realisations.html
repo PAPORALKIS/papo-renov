@@ -1,160 +1,215 @@
-<!DOCTYPE html>
-<html lang="fr">
+<!DOCTYPE html><html lang="fr">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Mes Réalisations - Carrousel 3D</title>
-  <link rel="stylesheet" href="../css/main.css" />
   <style>
+    /* Variables CSS pour un carrousel responsive */
     :root {
       --img-size: min(18vw, 150px);
       --translateZ: 400px;
-      --offset: -100px;
-      --perspective: 2000px;
-    }
+      --perspective: 1800px;
+    }@media (max-width: 768px) {
+  :root {
+    --img-size: 24vw;
+    --translateZ: 300px;
+  }
+}
 
-    @media (max-width: 500px) {
-      :root {
-        --img-size: 26vw;
-        --translateZ: 280px;
-      }
-    }
+@media (max-width: 480px) {
+  :root {
+    --img-size: 28vw;
+    --translateZ: 220px;
+  }
+}
 
-    @media (min-width: 1200px) {
-      :root {
-        --img-size: 120px;
-        --translateZ: 500px;
-      }
-    }
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family: 'Poppins', sans-serif;
+  background: #00010d;
+  overflow: hidden;
+}
 
-    html, body {
-      margin: 0;
-      padding: 0;
-      height: 100%;
-      font-family: 'Poppins', sans-serif;
-      background: #00010d;
-      overflow: hidden;
-    }
+body::before {
+  content: "";
+  position: fixed;
+  top: 50%; left: 50%;
+  width: 300px; height: 300px;
+  background: url("../img/logo.png") no-repeat center/contain;
+  opacity: 0.2;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
 
-    body::before {
-      content: "";
-      position: fixed;
-      top: 50%; left: 50%;
-      width: 300px; height: 300px;
-      background: url("../img/logo.png") no-repeat center/contain;
-      opacity: 0.2;
-      transform: translate(-50%, -50%);
-      pointer-events: none;
-    }
+header {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: 50px;
+  background: white;
+  display: flex;
+  align-items: center;
+  padding: 0 10px;
+  z-index: 20;
+  overflow-x: auto; /* Permet le scroll horizontal si trop de liens */
+}
 
-    header {
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      height: 50px;
-      background: white;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 20px;
-      z-index: 10;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.5);
-    }
+.logo img {
+  height: 40px;
+  margin-right: 20px;
+}
 
-    .logo img {
-      height: 40px;
-    }
+nav ul {
+  list-style: none;
+  display: flex;
+  gap: 15px;
+  margin: 0;
+  padding: 0;
+  flex-wrap: nowrap;
+}
 
-    nav ul {
-      list-style: none;
-      display: flex;
-      gap: 15px;
-      margin: 0;
-      padding: 0;
-    }
+nav ul li a {
+  text-decoration: none;
+  color: black;
+  font-weight: bold;
+  white-space: nowrap;
+}
 
-    nav ul li a {
-      text-decoration: none;
-      color: black;
-      font-weight: bold;
-    }
+.page-title {
+  color: white;
+  text-align: center;
+  font-size: 2em;
+  margin-top: 60px;
+}
 
-    .page-title {
-      color: white;
-      text-align: center;
-      font-size: 1.8em;
-      margin-top: 60px;
-      z-index: 10;
-    }
+.filters {
+  text-align: center;
+  margin: 10px auto;
+}
 
-    .carousel-container {
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      perspective: var(--perspective);
-      width: 100vw;
-      height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      pointer-events: none;
-    }
+.filters button {
+  margin: 5px;
+  padding: 8px 14px;
+  font-size: 0.9em;
+  border-radius: 6px;
+  border: none;
+  background-color: #ffffff33;
+  color: white;
+  cursor: pointer;
+}
 
-    .carousel {
-      position: relative;
-      transform-style: preserve-3d;
-      transform: rotateX(-4deg);
-      pointer-events: auto;
-    }
+.filters button:hover {
+  background-color: #ffffff55;
+}
 
-    .carousel img {
-      position: absolute;
-      width: var(--img-size);
-      height: var(--img-size);
-      object-fit: cover;
-      border-radius: 12px;
-      box-shadow: 0 0 14px rgba(0,0,0,0.7);
-      transition: transform 0.6s, z-index 0.6s;
-      cursor: pointer;
-      z-index: 1;
-      user-select: none;
-      -webkit-user-drag: none;
-      margin: 0 5px;
-    }
+.carousel-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  perspective: var(--perspective);
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
-    .carousel img:hover {
-      transform: scale(1.1);
-      z-index: 10;
-    }
+.carousel {
+  position: relative;
+  transform-style: preserve-3d;
+  cursor: grab;
+}
 
-    .realisations-page {
-      background-color: #00010d;
-      color: white;
-      overflow: hidden;
-    }
+.carousel img {
+  position: absolute;
+  width: var(--img-size);
+  height: var(--img-size);
+  object-fit: cover;
+  border-radius: 12px;
+  box-shadow: 0 0 14px rgba(0,0,0,0.7);
+  transition: transform 0.6s ease, z-index 0.6s;
+  z-index: 1;
+  user-select: none;
+}
+
+.carousel img:hover {
+  transform: scale(1.1);
+  z-index: 10;
+}
+
+.zoom-viewer {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.9);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  z-index: 100;
+}
+
+.zoom-viewer img {
+  max-width: 90vw;
+  max-height: 80vh;
+  border-radius: 10px;
+}
+
+.zoom-comment {
+  color: white;
+  margin-top: 10px;
+  text-align: center;
+  font-size: 1.1em;
+}
+
+.close-btn {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  font-size: 2em;
+  color: white;
+  cursor: pointer;
+}
+
   </style>
 </head>
-<body class="realisations-page">
+<body>
   <header>
-    <div class="logo">
-      <img src="../img/logo.png" alt="Logo Paporalkis" />
-    </div>
+    <!-- Logo et navigation scrollable -->
+    <div class="logo"><img src="../img/logo.png" alt="Logo"></div>
     <nav>
       <ul>
         <li><a href="../index.html">Accueil</a></li>
-        <li><a href="devis.html">Demande de devis</a></li>
-        <li><a href="realisations.html" class="active">Mes réalisations</a></li>
+        <li><a href="devis.html">Devis</a></li>
+        <li><a href="realisations.html" class="active">Réalisations</a></li>
         <li><a href="tarifs.html">Tarifs</a></li>
         <li><a href="planning.html">Planning</a></li>
         <li><a href="contact.html">Contact</a></li>
       </ul>
     </nav>
-  </header>
-
-  <div class="page-title">Mes réalisations</div>
-
-  <div class="carousel-container">
-    <div class="carousel" id="carousel">
+  </header>  <div class="page-title">Mes réalisations</div>  <!-- Boutons de filtrage des thèmes -->  <div class="filters">
+    <button data-theme="all">Tous</button>
+    <button data-theme="sdb">Salle de bain</button>
+    <button data-theme="cuisine">Cuisine</button>
+    <button data-theme="dressing">Dressing</button>
+    <button data-theme="exterieur">Extérieur</button>
+    <button data-theme="autre">Autres</button>
+  </div>  <!-- Conteneur principal du carrousel -->  <div class="carousel-container">
+    <div class="carousel" id="carousel"></div>
+  </div>  <!-- Fenêtre de zoom quand on clique une image -->  <div class="zoom-viewer" id="zoomViewer">
+    <span class="close-btn" onclick="closeZoom()">&times;</span>
+    <img id="zoomImage" src="" alt="zoom" />
+    <div class="zoom-comment" id="zoomComment"></div>
+  </div>  <script>
+    const carousel = document.getElementById('carousel');
+    const imagesData = [
+      { src: '../img/SDB1.jpg', theme: 'sdb', comment: 'Salle de bain moderne à Marseille' },
+      { src: '../img/CUIMARS1.jpg', theme: 'cuisine', comment: 'Cuisine Mars 2024' },
+      { src: '../img/ext1.jpg', theme: 'exterieur', comment: 'Terrasse bois' },
+      { src: '../img/meuble-laura-2.jpg', theme: 'dressing', comment: 'Dressing sur-mesure' },
+      { src: '../img/Iso5.jpg', theme: 'autre', comment: 'Isolation combles' },
       <img src="../img/CHBR0.jpg" alt="test" class="carousel__image" />
       <img src="../img/CHBR1.jpg" alt="test" class="carousel__image" />
       <img src="../img/CUIEXT.jpg" alt="test" class="carousel__image" />
@@ -197,38 +252,88 @@
       <img src="../img/velaux1.jpg" alt="test" class="carousel__image" />
       <img src="../img/velaux2.jpg" alt="test" class="carousel__image" />
       <img src="../img/velaux3.jpg" alt="test" class="carousel__image" />
-    </div>
-  </div>
+    
+      
+    ];
 
-  <script>
-    const carousel = document.getElementById("carousel");
-    const images = carousel.querySelectorAll("img");
+    const zoomViewer = document.getElementById('zoomViewer');
+    const zoomImage = document.getElementById('zoomImage');
+    const zoomComment = document.getElementById('zoomComment');
 
-    let angle = 0;
-    let autoRotate = true;
-
-    function positionImages() {
-  const total = images.length;
-  const step = 360 / total;
-
-  for (let i = 0; i < total; i++) {
-    const img = images[i];
-    const theta = step * i + angle;
-    img.style.transform = `rotateY(${theta}deg) translateZ(var(--translateZ))`;
-    img.style.zIndex = `${Math.round(1000 - Math.abs(theta % 360))}`; // priorité au premier plan
-  }
-}
-
-    function animate() {
-      if (autoRotate) {
-        angle += 0.2;
-        positionImages();
-      }
-      requestAnimationFrame(animate);
+    function createImages(filter) {
+      carousel.innerHTML = '';
+      const filtered = filter === 'all' ? imagesData : imagesData.filter(img => img.theme === filter);
+      filtered.forEach((img, index) => {
+        const el = document.createElement('img');
+        el.src = img.src;
+        el.dataset.index = index;
+        el.addEventListener('click', () => showZoom(img));
+        carousel.appendChild(el);
+      });
+      positionImages();
     }
 
-    positionImages();
-    animate();
-  </script>
-</body>
+    // Applique une rotation circulaire aux images
+    function positionImages() {
+      const images = carousel.querySelectorAll('img');
+      const total = images.length;
+      const step = 360 / total;
+      images.forEach((img, i) => {
+        const theta = step * i + angle;
+        img.style.transform = `rotateY(${theta}deg) translateZ(var(--translateZ))`;
+      });
+    }
+
+    // Gère l'affichage de la fenêtre zoom avec le commentaire
+    function showZoom(img) {
+      zoomImage.src = img.src;
+      zoomComment.textContent = img.comment;
+      zoomViewer.style.display = 'flex';
+    }
+
+    // Ferme la fenêtre zoom
+    function closeZoom() {
+      zoomViewer.style.display = 'none';
+    }
+
+    // Gestion du scroll manuel (drag/touch)
+    let isDragging = false;
+    let startX = 0;
+    let angle = 0;
+
+    carousel.addEventListener('mousedown', e => {
+      isDragging = true;
+      startX = e.clientX;
+    });
+
+    document.addEventListener('mouseup', () => isDragging = false);
+
+    document.addEventListener('mousemove', e => {
+      if (isDragging) {
+        const dx = e.clientX - startX;
+        angle += dx * 0.3;
+        startX = e.clientX;
+        positionImages();
+      }
+    });
+
+    // Auto zoom périodique
+    setInterval(() => {
+      const imgs = carousel.querySelectorAll('img');
+      const front = imgs[0];
+      front.style.transition = 'transform 0.5s';
+      front.style.transform += ' scale(1.3)';
+      setTimeout(() => {
+        positionImages();
+      }, 600);
+    }, 5000);
+
+    // Gestion des boutons de filtrage
+    document.querySelectorAll('.filters button').forEach(btn => {
+      btn.addEventListener('click', () => createImages(btn.dataset.theme));
+    });
+
+    // Chargement initial
+    createImages('all');
+  </script></body>
 </html>
