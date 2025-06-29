@@ -1,9 +1,9 @@
-<!DOCTYPE html><html lang="fr">
+<!DOCTYPE html>
+<html lang="fr">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Mes Réalisations - Carrousel 3D</title>
-  <link rel="stylesheet" href="../css/main.css" />
   <style>
     :root {
       --img-size: min(18vw, 150px);
@@ -51,9 +51,7 @@
       z-index: 10;
       overflow-x: auto;
     }
-    .logo img {
-      height: 40px;
-    }
+    .logo img { height: 40px; }
     nav ul {
       list-style: none;
       display: flex;
@@ -72,7 +70,6 @@
       text-align: center;
       font-size: 1.8em;
       margin-top: 60px;
-      z-index: 10;
     }
     .filters {
       text-align: center;
@@ -119,14 +116,8 @@
       border-radius: 12px;
       box-shadow: 0 0 14px rgba(0,0,0,0.7);
       transition: transform 0.6s, z-index 0.6s;
-      cursor: pointer;
       z-index: 1;
       user-select: none;
-      -webkit-user-drag: none;
-    }
-    .carousel img:hover {
-      transform: scale(1.1);
-      z-index: 10;
     }
     .zoom-viewer {
       position: fixed;
@@ -160,35 +151,43 @@
     }
   </style>
 </head>
-<body class="realisations-page">
+<body>
   <header>
-    <div class="logo">
-      <img src="../img/logo.png" alt="Logo Paporalkis" />
-    </div>
+    <div class="logo"><img src="../img/logo.png" alt="Logo"></div>
     <nav>
       <ul>
         <li><a href="../index.html">Accueil</a></li>
-        <li><a href="devis.html">Demande de devis</a></li>
-        <li><a href="realisations.html" class="active">Mes réalisations</a></li>
+        <li><a href="devis.html">Devis</a></li>
+        <li><a href="realisations.html" class="active">Réalisations</a></li>
         <li><a href="tarifs.html">Tarifs</a></li>
         <li><a href="planning.html">Planning</a></li>
         <li><a href="contact.html">Contact</a></li>
       </ul>
     </nav>
-  </header>  <div class="page-title">Mes réalisations</div>  <div class="filters">
+  </header>
+
+  <div class="page-title">Mes réalisations</div>
+
+  <div class="filters">
     <button data-theme="all">Tous</button>
     <button data-theme="sdb">Salle de bain</button>
     <button data-theme="cuisine">Cuisine</button>
     <button data-theme="dressing">Dressing</button>
     <button data-theme="exterieur">Extérieur</button>
     <button data-theme="autre">Autres</button>
-  </div>  <div class="carousel-container">
+  </div>
+
+  <div class="carousel-container">
     <div class="carousel" id="carousel"></div>
-  </div>  <div class="zoom-viewer" id="zoomViewer">
+  </div>
+
+  <div class="zoom-viewer" id="zoomViewer">
     <span class="close-btn" onclick="closeZoom()">&times;</span>
-    <img id="zoomImage" src="" alt="Zoom">
+    <img id="zoomImage" src="" alt="zoom">
     <div class="zoom-comment" id="zoomComment"></div>
-  </div>  <script>
+  </div>
+
+  <script>
     const carousel = document.getElementById("carousel");
     const zoomViewer = document.getElementById("zoomViewer");
     const zoomImage = document.getElementById("zoomImage");
@@ -244,7 +243,6 @@
     let isDragging = false;
     let startX = 0;
     let dragged = false;
-    let frameCount = 0;
 
     function generateImages(filter = 'all') {
       carousel.innerHTML = '';
@@ -254,10 +252,7 @@
         img.src = data.src;
         img.setAttribute('data-theme', data.theme);
         img.setAttribute('data-comment', data.comment);
-        img.classList.add('carousel__image');
-        img.addEventListener('click', () => {
-          if (!dragged) showZoom(data);
-        });
+        img.addEventListener('click', () => { if (!dragged) showZoom(data); });
         carousel.appendChild(img);
       });
       positionImages();
@@ -281,8 +276,7 @@
     function animate() {
       if (autoRotate && !isDragging) {
         angle += 0.2;
-        frameCount++;
-        if (frameCount % 5 === 0) positionImages();
+        positionImages();
       }
       requestAnimationFrame(animate);
     }
@@ -297,17 +291,16 @@
       zoomViewer.style.display = 'none';
     }
 
-    document.querySelectorAll('.filters button').forEach(btn => {
-      btn.addEventListener('click', () => generateImages(btn.dataset.theme));
-    });
-
+    // Drag souris
     carousel.addEventListener('mousedown', e => {
       isDragging = true;
       dragged = false;
       startX = e.clientX;
+      autoRotate = false;
     });
     document.addEventListener('mouseup', () => {
       isDragging = false;
+      autoRotate = true;
       setTimeout(() => { dragged = false; }, 50);
     });
     document.addEventListener('mousemove', e => {
@@ -320,7 +313,31 @@
       }
     });
 
+    // Drag tactile
+    carousel.addEventListener('touchstart', e => {
+      isDragging = true;
+      startX = e.touches[0].clientX;
+      autoRotate = false;
+    });
+    carousel.addEventListener('touchend', () => {
+      isDragging = false;
+      autoRotate = true;
+    });
+    carousel.addEventListener('touchmove', e => {
+      if (isDragging) {
+        const dx = e.touches[0].clientX - startX;
+        angle += dx * 0.3;
+        startX = e.touches[0].clientX;
+        positionImages();
+      }
+    });
+
+    document.querySelectorAll('.filters button').forEach(btn => {
+      btn.addEventListener('click', () => generateImages(btn.dataset.theme));
+    });
+
     generateImages();
     animate();
-  </script></body>
+  </script>
+</body>
 </html>
