@@ -86,7 +86,8 @@ nav ul li a {
 
 .carousel-container {
   position: fixed;
-  top: 50%; left: 50%;
+  top: 55%;
+  left: 50%;
   transform: translate(-50%, -50%);
   perspective: var(--perspective);
   width: 100vw;
@@ -142,6 +143,40 @@ nav ul li a {
   box-shadow: 0 0 40px black;
 }
 
+/* RESPONSIVE ADJUSTMENTS */
+@media screen and (max-width: 1024px) and (orientation: landscape) {
+  :root {
+    --img-size: 14vw;
+    --translateZ: 180px;
+    --perspective: 1800px;
+  }
+  .carousel-container {
+    top: 50%;
+  }
+}
+
+@media screen and (max-width: 768px) and (orientation: portrait) {
+  :root {
+    --img-size: 30vw;
+    --translateZ: 160px;
+    --perspective: 1600px;
+  }
+  .carousel-container {
+    top: 53%;
+  }
+}
+
+@media screen and (max-width: 768px) and (orientation: landscape) {
+  :root {
+    --img-size: 16vw;
+    --translateZ: 100px;
+    --perspective: 1400px;
+  }
+  .carousel-container {
+    top: 52%;
+  }
+}
+
   </style>
 </head>
 <body>
@@ -166,7 +201,7 @@ nav ul li a {
     <button onclick="filterCategory('ext')">Extérieurs</button>
   </div>  <div class="carousel-container">
     <div class="carousel" id="carousel">
-      <img src="../img/CHBR0.jpg" alt="test" class="carousel__image" />
+           <img src="../img/CHBR0.jpg" alt="test" class="carousel__image" />
       <img src="../img/CHBR1.jpg" alt="test" class="carousel__image" />
       <img src="../img/CUIEXT.jpg" alt="test" class="carousel__image" />
       <img src="../img/CUIEXT1.jpg" alt="test" class="carousel__image" />
@@ -209,7 +244,8 @@ nav ul li a {
       <img src="../img/velaux2.jpg" alt="test" class="carousel__image" />
       <img src="../img/velaux3.jpg" alt="test" class="carousel__image" />
     </div>
-  </div>  <div class="lightbox" id="lightbox" onclick="this.style.display='none'">
+  </div> 
+  <div class="lightbox" id="lightbox" onclick="this.style.display='none'">
     <img id="lightbox-img" src="" alt="Zoom">
   </div>  <script>
     const carousel = document.getElementById("carousel");
@@ -221,10 +257,11 @@ nav ul li a {
     let autoRotate = true;
 
     function positionImages() {
-      const total = images.length;
+      const visibleImages = [...images].filter(img => img.style.display !== 'none');
+      const total = visibleImages.length;
       const step = 360 / total;
       for (let i = 0; i < total; i++) {
-        const img = images[i];
+        const img = visibleImages[i];
         const theta = step * i + angle;
         img.style.transform = `rotateY(${theta}deg) translateZ(var(--translateZ))`;
       }
@@ -259,6 +296,5 @@ nav ul li a {
 
     positionImages();
     animate();
-  </script>
-</body>
+  </script></body>
 </html>
