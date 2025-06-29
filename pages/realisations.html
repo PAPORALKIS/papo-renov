@@ -6,7 +6,7 @@
   <title>Mes Réalisations - Carrousel 3D</title>
   <style>
     :root {
-      --img-size: min(18vw, 150px);/* 👉 taille des images : modifiez ici */
+      --img-size: min(20vw, 150px);/* 👉 taille des images : modifiez ici */
       --translateZ: 400px;/* 👉 plus grand = images plus éloignées entre elles */
       --perspective: 2000px;/* 👉 augmentez à 2500px, 3000px... pour éloigner le carrousel */
     }
@@ -269,7 +269,7 @@
         const z = Math.cos(rad) * parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--translateZ'));
        
         const isFront = Math.abs(theta % 360) < step / 2;
-        img.style.transform = `translateX(${x}px) translateZ(${z}px+100)` + (isFront ? ' scale(1.9)' : '');
+        img.style.transform = `translateX(${x}px) translateZ(${z}px)` + (isFront ? ' scale(1.9)' : '');
  // 👉 ici : scale(1.3) = zoom de l'image avant*/
          // 👉 Avancer l’image zoomée vers l’avant utilisez translateZ(${z}px + 100)*/
         
