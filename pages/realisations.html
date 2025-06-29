@@ -1,477 +1,153 @@
-<!DOCTYPE html>
-<html lang="fr">
+<!DOCTYPE html><html lang="fr">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <title>Carrousel 3D avec avancée</title>
- <link rel="stylesheet" href="../css/main.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mes Réalisations - Carrousel 3D</title>
+  <link rel="stylesheet" href="../css/main.css" />
   <style>
-body {
-      font-family: 'Poppins', sans-serif;
-      margin: 0;
-      padding: 0;
-      background-color: #f9f9f9;
-    }
+    :root {
+      --img-size: 19vw;
+      --translateZ: 300px;
+      --offset: -100px;
+      --perspective: 2250px;
+    }html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family: 'Poppins', sans-serif;
+  background: #00010d;
+  overflow: hidden;
+}
 
-    nav ul li a.active {
-      text-decoration: underline;
-  color: inherit; /* garde la couleur par défaut */
-    }
+body::before {
+  content: "";
+  position: fixed;
+  top: 50%; left: 50%;
+  width: 300px; height: 300px;
+  background: url("../img/logo.png") no-repeat center/contain;
+  opacity: 0.2;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
 
-
-    .form-section {
-      background: url('../img/logo.png') no-repeat center center;
-      background-size: 30%;
-      background-repeat: no-repeat;
-      background-attachment: fixed;
-      padding: 60px 20px;
-      min-height: 90vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-    }
-
-    form {
-      background-color: rgba(255, 255, 255, 0.95);
-      padding: 30px;
-      border-radius: 10px;
-      max-width: 500px;
-      width: 100%;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    }
-
-    form h2 {
-      margin-top: 0;
-      text-align: center;
-    }
-
-    form input,
-    form textarea {
-      width: 100%;
-      padding: 10px;
-      margin-top: 10px;
-      margin-bottom: 20px;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-      font-size: 1rem;
-    }
-
-    form button {
-      background-color: #00bfff;
-      color: white;
-      border: none;
-      padding: 12px 20px;
-      font-weight: bold;
-      border-radius: 5px;
-      cursor: pointer;
-      width: 100%;
-      font-size: 1rem;
-    }
-
-    form button:hover {
-      background-color: #0099cc;
-    }
-
-    footer {
-      text-align: center;
-      padding: 20px;
-      font-size: 0.9rem;
-      color: #555;
-      background-color: #fff;
-      box-shadow: 0 -1px 3px rgba(0,0,0,0.1);
-    }body {
-      font-family: 'Poppins', sans-serif;
-      margin: 0;
-      padding: 0;
-      background-color: #f9f9f9;
-    }
-
-    
-
-    .form-section {
-      background: url('../img/logo.png') no-repeat center center;
-      background-size: 30%;
-      background-repeat: no-repeat;
-      background-attachment: fixed;
-      padding: 60px 20px;
-      min-height: 90vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-    }
-
-    form {
-      background-color: rgba(255, 255, 255, 0.95);
-      padding: 30px;
-      border-radius: 10px;
-      max-width: 500px;
-      width: 100%;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    }
-
-    form h2 {
-      margin-top: 0;
-      text-align: center;
-    }
-
-    form input,
-    form textarea {
-      width: 100%;
-      padding: 10px;
-      margin-top: 10px;
-      margin-bottom: 20px;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-      font-size: 1rem;
-    }
-
-    form button {
-      background-color: #00bfff;
-      color: white;
-      border: none;
-      padding: 12px 20px;
-      font-weight: bold;
-      border-radius: 5px;
-      cursor: pointer;
-      width: 100%;
-      font-size: 1rem;
-    }
-
-    form button:hover {
-      background-color: #0099cc;
-    }
-
-    footer {
-      text-align: center;
-      padding: 20px;
-      font-size: 0.9rem;
-      color: #555;
-      background-color: #fff;
-      box-shadow: 0 -1px 3px rgba(0,0,0,0.1);
-    }
-  /* ===== Barre de navigation ===== */
-  /* Barre de navigation (entête) */
 header {
   position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
+  top: 0; left: 0; right: 0;
   height: 50px;
   background: white;
   display: flex;
-  align-items: center;         /* ✅ Centre verticalement les enfants */
-  justify-content: space-between; /* ✅ Espace entre le logo (gauche) et la nav (droite) */
+  align-items: center;
+  justify-content: space-between;
   padding: 0 20px;
-  z-index: 10001;
+  z-index: 10;
   box-shadow: 0 2px 5px rgba(0,0,0,0.5);
 }
 
-/* Logo */
 .logo img {
   height: 40px;
 }
 
-/* Conteneur <nav> pour les liens */
-nav {
-  overflow-x: auto;           /* Scroll horizontal si écran étroit */
-  white-space: nowrap;
-  scrollbar-width: none;      /* Firefox */
-}
-nav::-webkit-scrollbar {
-  display: none;              /* Chrome/Safari */
-}
-
-/* Liste des liens */
 nav ul {
   list-style: none;
   display: flex;
   gap: 15px;
   margin: 0;
   padding: 0;
-  margin-left: auto;         /* ✅ Pousse toute la liste à droite */
-  align-items: center;       /* ✅ Aligne les liens verticalement */
 }
+
 nav ul li a {
-  color: black;
   text-decoration: none;
+  color: black;
   font-weight: bold;
-  transition: color 0.3s;
-  line-height: 50px;         /* ✅ Même hauteur que le header pour aider au centrage */
 }
 
-
-  /* Variables CSS pour taille des images, profondeur Z et offset */
-:root {
-  --img-size: 150px;              /* Taille des images dans un carrousel */
-  --translateZ: 900px;            /* Profondeur des images en 3D */
-  --offset: -250px;               /* Décalage vertical lors d’un zoom/agrandissement */
-  --perspective: 3000px;          /* Perspective pour les effets 3D */
-  --container-top: 30%;
-  --container-left: 45%;
-  --container-translate-y: -49%;
-  --container-translate-x: -50%;
-}
-
-  html, body {
-    margin: 0; 
-    height: 100%;
-    background: #00010d;       /* fond très sombre */
-    overflow: hidden;          /* empêche le scroll de la page */
-    font-family: sans-serif;
-  }
-
-  /* Logo en filigrane au centre en fond avec faible opacité */
-  body::before {
-    content: "";
-    position: fixed;
-    top: 50%; left: 50%;
-    width: 300px; height: 300px;
-    background: url("../img/logo.png") no-repeat center/contain;
-    opacity: 0.2;
-    transform: translate(-50%, -50%);
-    pointer-events: none;
-    z-index: 0;
-  }
-
-  /* ===== Titre de page ===== */
 .page-title {
+  color: white;
+  text-align: center;
+  font-size: 1.8em;
+  margin-top: 60px;
+  z-index: 10;
+}
+
+.filter-bar {
+  margin-top: 100px;
+  text-align: center;
+}
+
+.filter-bar button {
+  margin: 5px;
+  padding: 10px 15px;
+  background: #00bfff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.carousel-container {
   position: fixed;
-  top: 60px;                      /* Juste sous le header */
-  left: 0;
-  right: 0;
-  text-align: center;            /* Centré horizontalement */
-  font-size: 1.8em;              /* Titre assez grand */
-  padding: 0 10px;
-  margin: 0 auto;
-  white-space: normal;           /* Permet le retour à la ligne */
-  color: white;                  /* Texte blanc */
-  z-index: 10002;                /* Au-dessus du header */
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  perspective: var(--perspective);
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-  /* Responsive pour titre sur petit écran */
-  @media (max-width: 600px) {
-    .page-title {
-      font-size: 1.8em;
-      top: 60px;
-      margin: 0 10px 5px;
-      padding: 0 5px;
-      width: 90%;
-      white-space: normal;
-    }
-    body {
-      overflow: auto;
-    }
-  }
-
-  /* Conteneur centré pour le carrousel avec perspective 3D */
-  .carousel-container {
-    position: fixed;
-    top: var(--container-top);
-    left: var(--container-left);
-    transform: translate(var(--container-translate-x), var(--container-translate-y));
-    perspective: var(--perspective);
-    z-index: 1;
-    width: 100vw;
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-
-  /* Conteneur des images avec style 3D */
-  .carousel {
-    position: relative;
-    width: 0; 
-    height: 0;
-    transform-style: preserve-3d;
-    transform: rotateX(-4deg);
-    touch-action: pan-y;
-  }
-
-  /* Style des images */
-  .carousel img {
-    position: absolute;
-    width: var(--img-size);
-    height: var(--img-size);
-    object-fit: cover;
-    border-radius: 12px;
-    box-shadow: 0 0 14px rgba(0, 0, 0, 0.7);
-    transition: transform 0.6s ease, z-index 0.6s ease;
-    cursor: pointer;
-    z-index: 1;
-    transform-origin: center center;
-    user-select: none;
-    -webkit-user-drag: none;
-  }
-
-  /* Légère animation au survol */
-  .carousel img:hover {
-    transform: scale(1.1);
-    z-index: 10;
-  }
-
-  /* Style pour l’image agrandie au clic */
-  .ed {
-    position: fixed;
-    top: 0; left: 0;
-    width: 100vw; 
-    height: 100vh;
-    background: rgba(0,0,0,0.95);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 9999;
-  }
-
-  .ed img {
-    width: 90vw;
-    max-height: 70vh;
-    transform: translateY(var(--offset));
-    border-radius: 8px;
-    box-shadow: 0 0 40px black;
-  }
-
-  /* Variables globales par défaut (desktop) */
-  :root {
-    --translateZ: 300px;
-    --img-size: 19vw;
-    --offset: -100px;
-    --perspective: 2250px;
-    --camera-tilt: 30deg;
-  }
-
-  /* Media query : smartphones & tablettes - Portrait */
-  @media screen and (max-width: 1024px) and (orientation: portrait) {
-    :root {
-      --translateZ: 250px;
-      --img-size: 20vw;
-      --offset: -60px;
-      --perspective: 1800px;
-      --camera-tilt: 10deg;
-    }
-  }
-
-  /* Media query : smartphones & tablettes - Paysage */
-@media screen and (max-width: 1024px) and (orientation: landscape) {
-  
-  :root {
-    /* Définit la profondeur du placement des éléments en 3D 
-       (plus la valeur est petite, plus l'élément semble éloigné) */
-    --translateZ: 100px;
-
-    /* Définit la taille des images ou éléments en 3D
-       ici, 10% de la largeur de l'écran (viewport width) */
-    --img-size: 1vw;
-
-    /* Ajuste le décalage des éléments (probablement horizontal ou vertical)
-       valeur négative : décalage vers la gauche ou vers le haut */
-    --offset: -100px;
-
-    /* Définit la distance de la perspective 3D.
-       Plus la valeur est grande, plus l'effet de profondeur est subtil. */
-    --perspective: 100px;
-
-    /* Inclinaison virtuelle de la "caméra" 3D (en degrés),
-       donne un effet de bascule vers l’avant (rotation sur l’axe X ou Y) */
-    --camera-tilt: 15deg;
-  }
-}
-  /* Adaptation tablettes grand écran (768px à 1024px) modifie sur samsung paysage */
-  @media (min-width: 768px) and (max-width: 1024px) {
-    :root {
-      --img-size: 12vw;
-      --translateZ: calc(100vw / 1.2);
-      --offset: -300px;
-      --perspective: 1000px;
-      --container-top: 35%;
-      --container-left: 50%;
-      --container-translate-y: -50%;
-      --container-translate-x: -50%;
-}
-    }
-      @media screen and (max-width: 480px) and (orientation: portrait) {
-  header .logo {
-    display: none;
-  }
-
-  /* Ajuster nav ul pour avoir la même présentation que les autres pages */
-  header nav ul {
-    transform: none !important; /* annule le translateX(-50px) */
-    margin: 0;
-    gap: 10px; /* espace entre liens comme tu souhaites */
-  }
-}
-/* --------- AMÉLIORATION RESPONSIVE POUR REALISATIONS --------- */
-
-/* Smartphone portrait : améliore lisibilité du menu */
-@media screen and (max-width: 480px) and (orientation: portrait) {
-  nav ul li a {
-    font-size: 16px;
-    padding: 0 8px;
-    line-height: 48px;
-  }
-
-  .carousel img {
-    border-radius: 10px;
-  }
-
-  .page-title {
-    font-size: 1.4em;
-    padding-top: 10px;
-  }
+.carousel {
+  position: relative;
+  width: 0;
+  height: 0;
+  transform-style: preserve-3d;
+  transform: rotateX(-4deg);
 }
 
-/* Smartphone paysage : évite trop petit affichage */
-@media screen and (max-width: 768px) and (orientation: landscape) {
-  nav ul li a {
-    font-size: 14px;
-    padding: 0 6px;
-  }
-
-  .page-title {
-    font-size: 1.2em;
-  }
-
-  .carousel img {
-    border-radius: 8px;
-  }
+.carousel img {
+  position: absolute;
+  width: var(--img-size);
+  height: var(--img-size);
+  object-fit: cover;
+  border-radius: 12px;
+  box-shadow: 0 0 14px rgba(0,0,0,0.7);
+  transition: transform 0.6s, z-index 0.6s;
+  cursor: pointer;
+  z-index: 1;
+  user-select: none;
+  -webkit-user-drag: none;
 }
 
-/* Tablette portrait */
-@media screen and (min-width: 481px) and (max-width: 768px) and (orientation: portrait) {
-  nav ul li a {
-    font-size: 15px;
-  }
-
-  .carousel img {
-    --img-size: 22vw;
-  }
-
-  .page-title {
-    font-size: 1.6em;
-  }
+.carousel img:hover {
+  transform: scale(1.1);
+  z-index: 10;
 }
 
-/* Défilement horizontal du menu si besoin */
-nav {
-  max-width: 100vw;
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
+.lightbox {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0,0,0,0.95);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
 }
 
-nav ul {
-  flex-wrap: nowrap;
-  padding: 0 10px;
+.lightbox img {
+  max-width: 90vw;
+  max-height: 80vh;
+  border-radius: 8px;
+  box-shadow: 0 0 40px black;
 }
+
   </style>
 </head>
 <body>
-
   <header>
     <div class="logo">
-      <img src="../img/logo.png" alt="Logo Paporalkis" />
+      <img src="../img/logo.png" alt="Logo Paporalkis">
     </div>
     <nav>
       <ul>
@@ -483,13 +159,13 @@ nav ul {
         <li><a href="contact.html">Contact</a></li>
       </ul>
     </nav>
-  </header>
-
-  <div class="page-title">Mes réalisations</div>
-  
-  <div class="carousel-container" id="carousel-container">
+  </header>  <div class="page-title">Mes réalisations</div>  <div class="filter-bar">
+    <button onclick="filterCategory('all')">Toutes</button>
+    <button onclick="filterCategory('cuisine')">Cuisines</button>
+    <button onclick="filterCategory('sdb')">Salles de bain</button>
+    <button onclick="filterCategory('ext')">Extérieurs</button>
+  </div>  <div class="carousel-container">
     <div class="carousel" id="carousel">
-      <!-- Tes images -->
       <img src="../img/CHBR0.jpg" alt="test" class="carousel__image" />
       <img src="../img/CHBR1.jpg" alt="test" class="carousel__image" />
       <img src="../img/CUIEXT.jpg" alt="test" class="carousel__image" />
@@ -533,220 +209,56 @@ nav ul {
       <img src="../img/velaux2.jpg" alt="test" class="carousel__image" />
       <img src="../img/velaux3.jpg" alt="test" class="carousel__image" />
     </div>
-  </div>
-
- <!-- ===== Titre de page ===== -->
-  
-
-  <!-- ===== Carrousel 3D ici (à insérer) ===== -->
-  
-  <script>
+  </div>  <div class="lightbox" id="lightbox" onclick="this.style.display='none'">
+    <img id="lightbox-img" src="" alt="Zoom">
+  </div>  <script>
     const carousel = document.getElementById("carousel");
-    const container = document.getElementById("carousel-container");
-    const images = carousel.getElementsByTagName("img");
-    const total = images.length;
+    const images = carousel.querySelectorAll("img");
+    const lightbox = document.getElementById("lightbox");
+    const lightboxImg = document.getElementById("lightbox-img");
 
-    // Fonction pour récupérer les valeurs CSS variables dynamiques
-    function getRootCSSVars() {
-      const rootStyles = getComputedStyle(document.documentElement);
-      return {
-        translateZ: parseInt(rootStyles.getPropertyValue('--translateZ')) || 1000,
-        offset: rootStyles.getPropertyValue('--offset') || '-250px',
-        perspective: rootStyles.getPropertyValue('--perspective') || '3000px',
-        containerTop: rootStyles.getPropertyValue('--container-top') || '30%',
-        containerLeft: rootStyles.getPropertyValue('--container-left') || '45%',
-        containerTranslateX: rootStyles.getPropertyValue('--container-translate-x') || '-50%',
-        containerTranslateY: rootStyles.getPropertyValue('--container-translate-y') || '-49%',
-        imgSize: rootStyles.getPropertyValue('--img-size') || '150px'
-      };
-    }
+    let angle = 0;
+    let autoRotate = true;
 
-    // Mets à jour la perspective et position du container en fonction des variables CSS
-    function updateContainerStyle() {
-      const vars = getRootCSSVars();
-      container.style.perspective = vars.perspective;
-      container.style.top = vars.containerTop;
-      container.style.left = vars.containerLeft;
-      container.style.transform = `translate(${vars.containerTranslateX}, ${vars.containerTranslateY})`;
-    }
-
-    // Mets à jour la taille des images à partir de la variable CSS
-    function updateImageSizes() {
-      const vars = getRootCSSVars();
-      Array.from(images).forEach(img => {
-        img.style.width = vars.imgSize.trim();
-        img.style.height = vars.imgSize.trim();
-      });
-    }
-
-    // Récupère la profondeur 3D à partir de la variable CSS --translateZ
-    let baseRadius = 900;
-
-    // Profondeur et scale spécifiques pour image ée
-    const Scale = 1.8;        // facteur d’agrandissement de l’image ée
-
-    let angle = 0;                // angle global du carrousel en degrés
-    let autoRotate = true;        // indique si le carrousel tourne automatiquement
-    let lastTime = performance.now(); // timestamp de la dernière frame
-
-    let velocity = 0;             // vitesse actuelle de rotation (en degrés/frame)
-    const friction = 0.95;        // frottement qui ralentit la rotation lors du drag
-
-    let isDragging = false;       // indique si l’utilisateur est en train de glisser
-    let lastX = 0;                // dernière position X de la souris/touch
-
-    // Place et transforme les images sur le cercle en fonction de l’angle global
     function positionImages() {
-      const vars = getRootCSSVars();
-      baseRadius = vars.translateZ;
-      const offset = vars.offset.trim();
-      const angleStep = 360 / total;  // angle entre chaque image
-
-      // Trouve l’image la plus proche du centre (frontale)
-      let closestIndex = 0;
-      let minDiff = 360;
-
+      const total = images.length;
+      const step = 360 / total;
       for (let i = 0; i < total; i++) {
-        const theta = (angleStep * i + angle) % 360;
-        const diff = Math.min(Math.abs(theta), Math.abs(360 - theta));
-        if (diff < minDiff) {
-          minDiff = diff;
-          closestIndex = i;
-        }
-      }
-    
-
-      // Positionne chaque image en rotation Y + translation Z pour créer l’effet cercle
-      for (let i = 0; i < total; i++) {
-        const theta = angleStep * i + angle;
-        const extraRotation = -angleStep * 0.3;  // légère rotation sur elle-même pour esthétique
-
-        if (i === closestIndex) {
-          // Image ée au centre
-          images[i].style.transform =
-            `rotateY(${theta}deg) translateZ(${baseRadius * 1.6}px) translateY(-20px) rotateY(${extraRotation}deg) scale(1.9)`;
-          images[i].style.zIndex = 100;  // devant toutes les autres
-          images[i].style.filter = "drop-shadow(0 0 20px rgba(255,255,255,0.6))";
-          images[i].style.setProperty('--offset', offset);
-        } else {
-          // Images normales autour
-          images[i].style.transform =
-            `rotateY(${theta}deg) translateZ(${baseRadius}px) rotateY(${extraRotation}deg) scale(1)`;
-          images[i].style.zIndex = 1;
-          images[i].style.filter = "none";
-        }
+        const img = images[i];
+        const theta = step * i + angle;
+        img.style.transform = `rotateY(${theta}deg) translateZ(var(--translateZ))`;
       }
     }
 
-    // Animation appelée à chaque frame
-    function animate(now) {
-      const delta = now - lastTime;  // temps écoulé depuis la dernière frame
-
+    function animate() {
       if (autoRotate) {
-        velocity = 0.0050 * delta;  // vitesse fixe de rotation automatique
-        angle += velocity;
-      } else {
-        angle += velocity;          // rotation selon la vitesse du drag
-        velocity *= friction;       // ralentit peu à peu (friction)
-        if (Math.abs(velocity) < 0.001) {
-          autoRotate = true;        // reprend rotation automatique si très lent
-          velocity = 0;
-        }
+        angle += 0.2;
+        positionImages();
       }
-
-      positionImages();             // repositionne les images selon angle
-      lastTime = now;
       requestAnimationFrame(animate);
     }
 
-    // Permet de relancer la rotation automatique après interaction utilisateur
-    let interactionTimeout;
-    function restartAutoRotate() {
-      clearTimeout(interactionTimeout);
-      interactionTimeout = setTimeout(() => {
-        autoRotate = false;       // On arrête auto rotation à la fin du timeout
-        velocity = 0.02;          // vitesse initiale à reprendre
-      }, 2000);
+    images.forEach(img => {
+      img.addEventListener("click", () => {
+        lightboxImg.src = img.src;
+        lightbox.style.display = "flex";
+      });
+    });
+
+    function filterCategory(category) {
+      images.forEach(img => {
+        if (category === 'all' || img.classList.contains(category)) {
+          img.style.display = "block";
+        } else {
+          img.style.display = "none";
+        }
+      });
+      angle = 0;
+      positionImages();
     }
 
-    // Gère la roulette de la souris ( + rotation)
-    container.addEventListener("wheel", (e) => {
-      e.preventDefault();
-      autoRotate = false;
-      velocity += e.deltaY * 0.003;  // vitesse changée par la molette
-      restartAutoRotate();
-    });
-
-    // Début drag souris
-    container.addEventListener("mousedown", (e) => {
-      isDragging = true;
-      lastX = e.clientX;
-      autoRotate = false;
-      velocity = 0;
-    });
-
-    // Fin drag souris
-    window.addEventListener("mouseup", () => {
-      if (isDragging) {
-        isDragging = false;
-        restartAutoRotate();
-      }
-    });
-
-    // Pendant drag souris
-    window.addEventListener("mousemove", (e) => {
-      if (isDragging) {
-        const dx = e.clientX - lastX;
-        velocity = dx * 0.5;
-        angle += velocity;
-        lastX = e.clientX;
-      }
-    });
-
-    // Touch start
-    container.addEventListener("touchstart", (e) => {
-      if (e.touches.length === 1) {
-        isDragging = true;
-        lastX = e.touches[0].clientX;
-        autoRotate = false;
-        velocity = 0;
-      }
-    });
-
-    // Touch end
-    container.addEventListener("touchend", () => {
-      if (isDragging) {
-        isDragging = false;
-        restartAutoRotate();
-      }
-    });
-
-    // Touch move
-    container.addEventListener("touchmove", (e) => {
-      if (isDragging && e.touches.length === 1) {
-        const dx = e.touches[0].clientX - lastX;
-        velocity = dx * 0.5;
-        angle += velocity;
-        lastX = e.touches[0].clientX;
-      }
-    });
-
-    // Mise à jour responsive lors du resize ou rotation
-    window.addEventListener('resize', () => {
-      updateContainerStyle();
-      updateImageSizes();
-      positionImages();
-    });
-
-    // Initialisation
-    updateContainerStyle();
-    updateImageSizes();
     positionImages();
-
-    requestAnimationFrame(animate);
+    animate();
   </script>
-
-</div>
-  
 </body>
 </html>
