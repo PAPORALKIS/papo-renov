@@ -30,17 +30,7 @@
       background: #00010d;
       overflow: visible;
     }
-    body::before {
-      content: "";
-      position: fixed;
-      top: 50%; left: 50%;
-      width: 300px; height: 300px;/* <-- taille de l'image en fond  */
-      background: url("../img/logo.png") no-repeat center/contain;
-      opacity: 0.2;
-      transform: translate(-50%, -50%);
-      pointer-events: none;
-      z-index: -1;/* <-- Pour l’envoyer derrière tout le contenu */
-    }
+    
     /* === Header === */
 header {
   display: flex;
