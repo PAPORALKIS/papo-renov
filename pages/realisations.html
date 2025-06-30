@@ -338,11 +338,11 @@ nav ul li a.active {
     }
 
 zoomViewer.addEventListener('click', function (e) {
-  // Ne ferme que si on clique en dehors de l'image (évite les conflits)
+
   if (e.target === zoomViewer || e.target === zoomComment) {
     closeZoom();
   }
-    
+   }); 
     function closeZoom() {
       zoomViewer.style.display = 'none';
     }
