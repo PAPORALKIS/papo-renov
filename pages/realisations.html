@@ -40,41 +40,72 @@
       transform: translate(-50%, -50%);
       pointer-events: none;
     }
-    header {
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      height: 50px;
-      background: white;
-      display: flex;
-      align-items: center;
-      padding: 0 10px;
-      z-index: 10;
-      overflow-x: auto;
-    }
-    .logo img { height: 40px; }
-    
-    nav {
-  margin-left: auto;
+    /* === Header === */
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: white;
+  padding: 6px 10px;
+  border-bottom: 1px solid #ddd;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  flex-wrap: nowrap;
+  overflow-x: auto;
 }
-    nav ul {
-      list-style: none;
-      display: flex;
-      gap: 15px;
-      margin: 0;
-      padding: 0;
-      white-space: nowrap;
-    }
-    nav ul li a {
-      text-decoration: none;
-      color: black;
-      font-weight: bold;
-    }
-    .page-title {
-      color: white;
-      text-align: center;
-      font-size: 1.8em;
-      margin-top: 70px;
-    }
+
+.logo {
+  flex: 0 0 auto;
+  margin-right: 10px;
+}
+
+.logo img {
+  height: 40px;
+  max-width: 100%;
+  object-fit: contain;
+}
+
+/* === Navigation === */
+nav {
+  flex: 1 1 auto;
+  overflow-x: auto;
+}
+
+nav ul {
+  list-style: none;
+  display: flex;
+  gap: 3px;
+  padding: 0;
+  margin: 0;
+  flex-wrap: nowrap;
+  white-space: nowrap;
+  justify-content: flex-end;
+}
+
+nav ul::-webkit-scrollbar {
+  display: none;
+}
+
+nav ul li {
+  white-space: nowrap;
+}
+
+nav ul li a {
+  text-decoration: none;
+  color: #333;
+  font-weight: 600;
+  padding: 6px 8px;
+  font-size: 10px;
+  display: inline-block;
+  transition: color 0.3s ease;
+}
+
+nav ul li a:hover,
+nav ul li a.active {
+  color: #007bff;
+  border-bottom: 2px solid #007bff;
+}
     .filters {
       text-align: center;
       margin: 10px auto;
@@ -158,18 +189,19 @@
 </head>
 <body>
   <header>
-    <div class="logo"><img src="../img/logo.png" alt="Logo"></div>
-    <nav>
-      <ul>
-        <li><a href="../index.html">Accueil</a></li>
-        <li><a href="devis.html">Devis</a></li>
-        <li><a href="realisations.html" class="active">Réalisations</a></li>
-        <li><a href="tarifs.html">Tarifs</a></li>
-        <li><a href="planning.html">Planning</a></li>
-        <li><a href="contact.html">Contact</a></li>
-      </ul>
-    </nav>
-  </header>
+  <div class="logo">
+    <img src="ton-logo.png" alt="Logo Papo Rénov">
+  </div>
+  <nav>
+    <ul>
+      <li><a href="index.html">Accueil</a></li>
+      <li><a href="tarifs.html">Tarifs</a></li>
+      <li><a href="realisations.html" class="active">Réalisations</a></li>
+      <li><a href="devis.html">Demande de devis</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+  </nav>
+</header>
 
   <div class="page-title">Mes réalisations</div>
 
