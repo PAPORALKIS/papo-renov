@@ -23,14 +23,20 @@
       }
     }
     html, body {
-      margin: 0;
-      padding: 0;
-      height: 100%;
-      font-family: 'Poppins', sans-serif;
-      background: #00010d;
-      overflow: visible;
-    }
     
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family: 'Poppins', sans-serif;
+  background: var(--bg-gradient);
+  background-size: cover;
+  background-attachment: fixed;
+  background-position: center;
+  overflow: visible;
+}
+   :root {
+  --bg-gradient: linear-gradient(135deg, #f0f4f8, #d9e2ec); /* 👈 valeur par défaut (Proposition 1) */
+} 
     /* === Header === */
 header {
   display: flex;
