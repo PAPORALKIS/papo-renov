@@ -16,7 +16,7 @@ header {
   align-items: center;
   justify-content: space-between;
   background-color: white;
-  padding: 6px 10px;
+  padding: 5px 10px;
   border-bottom: 1px solid #ddd;
   position: sticky;
   top: 0;
@@ -32,7 +32,7 @@ header {
 
 .logo img {
   height: 40px;
-  max-width: 100%;
+  max-width: 80%;
   object-fit: contain;
 }
 
