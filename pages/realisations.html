@@ -176,8 +176,8 @@ nav ul li a.active {
       z-index: 100;
     }
     .zoom-viewer img {
-      max-width: 90vw;
-      max-height: 80vh;
+      max-width: 90vw;/* 👉 largeur maximale de l’image zoomée = 90% de la largeur de la fenêtre */
+      max-height: 70vh;/* 👉 hauteur maximale = 80% de la hauteur de la fenêtre */
       border-radius: 10px;
     }
     .zoom-comment {
@@ -337,6 +337,12 @@ nav ul li a.active {
       zoomViewer.style.display = 'flex';
     }
 
+zoomViewer.addEventListener('click', function (e) {
+  // Ne ferme que si on clique en dehors de l'image (évite les conflits)
+  if (e.target === zoomViewer || e.target === zoomComment) {
+    closeZoom();
+  }
+    
     function closeZoom() {
       zoomViewer.style.display = 'none';
     }
