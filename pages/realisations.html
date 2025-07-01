@@ -214,12 +214,14 @@ nav ul li a.active {
 
 
 @media (max-width: 768px) and (orientation: portrait) {
+@media (max-width: 768px) and (orientation: portrait) {
   .carousel-container {
     top: 50%;
     left: 50%;
     width: 100vw;
     height: 100vh;
     perspective: 1800px;
+    transform: translate(-50%, -50%);
   }
 
   .carousel {
@@ -227,15 +229,48 @@ nav ul li a.active {
     animation: spinVertical 30s infinite linear;
   }
 
-  /* Répartition sphérique : combinaison d'angles verticaux et horizontaux */
-  .carousel img:nth-child(1) { transform: rotateX(0deg) rotateY(0deg) translateZ(var(--translateZ))!important; }
-  .carousel img:nth-child(2) { transform: rotateX(45deg) rotateY(45deg) translateZ(var(--translateZ))!important; }
-  .carousel img:nth-child(3) { transform: rotateX(90deg) rotateY(90deg) translateZ(var(--translateZ))!important; }
-  .carousel img:nth-child(4) { transform: rotateX(135deg) rotateY(135deg) translateZ(var(--translateZ))!important; }
-  .carousel img:nth-child(5) { transform: rotateX(180deg) rotateY(180deg) translateZ(var(--translateZ))!important; }
-  .carousel img:nth-child(6) { transform: rotateX(225deg) rotateY(225deg) translateZ(var(--translateZ))!important; }
-  .carousel img:nth-child(7) { transform: rotateX(270deg) rotateY(270deg) translateZ(var(--translateZ))!important; }
-  .carousel img:nth-child(8) { transform: rotateX(315deg) rotateY(315deg) translateZ(var(--translateZ))!important; }
+  /* 👇 Bloc d'images positionnées en sphère */
+ .carousel img:nth-child(1) { transform: rotateX(8.21deg) rotateY(0.00deg) translateZ(300px) !important; }
+  .carousel img:nth-child(2) { transform: rotateX(16.86deg) rotateY(9.00deg) translateZ(300px) !important; }
+  .carousel img:nth-child(3) { transform: rotateX(24.94deg) rotateY(18.00deg) translateZ(300px) !important; }
+  .carousel img:nth-child(4) { transform: rotateX(32.64deg) rotateY(27.00deg) translateZ(300px) !important; }
+  .carousel img:nth-child(5) { transform: rotateX(39.97deg) rotateY(36.00deg) translateZ(300px) !important; }
+  .carousel img:nth-child(6) { transform: rotateX(46.97deg) rotateY(45.00deg) translateZ(300px) !important; }
+  .carousel img:nth-child(7) { transform: rotateX(53.67deg) rotateY(54.00deg) translateZ(300px) !important; }
+  .carousel img:nth-child(8) { transform: rotateX(60.09deg) rotateY(63.00deg) translateZ(300px) !important; }
+  .carousel img:nth-child(9) { transform: rotateX(66.26deg) rotateY(72.00deg) translateZ(300px) !important; }
+  .carousel img:nth-child(10) { transform: rotateX(72.18deg) rotateY(81.00deg) translateZ(300px) !important; }
+  .carousel img:nth-child(11) { transform: rotateX(77.87deg) rotateY(90.00deg) translateZ(300px) !important; }
+  .carousel img:nth-child(12) { transform: rotateX(83.35deg) rotateY(99.00deg) translateZ(300px) !important; }
+  .carousel img:nth-child(13) { transform: rotateX(88.63deg) rotateY(108.00deg) translateZ(300px) !important; }
+  .carousel img:nth-child(14) { transform: rotateX(93.71deg) rotateY(117.00deg) translateZ(300px) !important; }
+  .carousel img:nth-child(15) { transform: rotateX(98.60deg) rotateY(126.00deg) translateZ(300px) !important; }
+  .carousel img:nth-child(16) { transform: rotateX(103.30deg) rotateY(135.00deg) translateZ(300px) !important; }
+  .carousel img:nth-child(17) { transform: rotateX(107.83deg) rotateY(144.00deg) translateZ(300px) !important; }
+  .carousel img:nth-child(18) { transform: rotateX(112.17deg) rotateY(153.00deg) translateZ(300px) !important; }
+  .carousel img:nth-child(19) { transform: rotateX(116.35deg) rotateY(162.00deg) translateZ(300px) !important; }
+  .carousel img:nth-child(20) { transform: rotateX(120.35deg) rotateY(171.00deg) translateZ(300px) !important; }
+  .carousel img:nth-child(21) { transform: rotateX(124.29deg) rotateY(180.00deg) translateZ(300px) !important; }
+  .carousel img:nth-child(22) { transform: rotateX(128.13deg) rotateY(189.00deg) translateZ(300px) !important; }
+  .carousel img:nth-child(23) { transform: rotateX(131.83deg) rotateY(198.00deg) translateZ(300px) !important; }
+  .carousel img:nth-child(24) { transform: rotateX(135.42deg) rotateY(207.00deg) translateZ(300px) !important; }
+  .carousel img:nth-child(25) { transform: rotateX(138.89deg) rotateY(216.00deg) translateZ(300px) !important; }
+  .carousel img:nth-child(26) { transform: rotateX(142.25deg) rotateY(225.00deg) translateZ(300px) !important; }
+  .carousel img:nth-child(27) { transform: rotateX(145.49deg) rotateY(234.00deg) translateZ(300px) !important; }
+  .carousel img:nth-child(28) { transform: rotateX(148.63deg) rotateY(243.00deg) translateZ(300px) !important; }
+  .carousel img:nth-child(29) { transform: rotateX(151.65deg) rotateY(252.00deg) translateZ(300px) !important; }
+  .carousel img:nth-child(30) { transform: rotateX(154.56deg) rotateY(261.00deg) translateZ(300px) !important; }
+  .carousel img:nth-child(31) { transform: rotateX(157.36deg) rotateY(270.00deg) translateZ(300px) !important; }
+  .carousel img:nth-child(32) { transform: rotateX(160.04deg) rotateY(279.00deg) translateZ(300px) !important; }
+  .carousel img:nth-child(33) { transform: rotateX(162.62deg) rotateY(288.00deg) translateZ(300px) !important; }
+  .carousel img:nth-child(34) { transform: rotateX(165.08deg) rotateY(297.00deg) translateZ(300px) !important; }
+  .carousel img:nth-child(35) { transform: rotateX(167.44deg) rotateY(306.00deg) translateZ(300px) !important; }
+  .carousel img:nth-child(36) { transform: rotateX(169.68deg) rotateY(315.00deg) translateZ(300px) !important; }
+  .carousel img:nth-child(37) { transform: rotateX(171.82deg) rotateY(324.00deg) translateZ(300px) !important; }
+  .carousel img:nth-child(38) { transform: rotateX(173.85deg) rotateY(333.00deg) translateZ(300px) !important; }
+  .carousel img:nth-child(39) { transform: rotateX(175.77deg) rotateY(342.00deg) translateZ(300px) !important; }
+  .carousel img:nth-child(40) { transform: rotateX(177.59deg) rotateY(351.00deg) translateZ(300px) !important; } 
+  /* (inséré ici, bloc ci-dessus) */
 
   @keyframes spinVertical {
     from { transform: rotateX(0deg) rotateY(0deg); }
