@@ -423,11 +423,8 @@ nav ul li a.active {
 
     function positionImages() {
   if (window.matchMedia("(max-width: 768px) and (orientation: portrait)").matches) {
-    // MOBILE portrait seulement : setup drag zones par cercle
-
+    // MOBILE portrait : setup drag zones par cercle
     const container = carousel.parentElement;
-
-    // Supprime les anciennes zones si existantes
     const oldZones = container.querySelectorAll('.circle-zone');
     oldZones.forEach(z => z.remove());
 
@@ -449,7 +446,6 @@ nav ul li a.active {
       let zoneStartX = 0;
       let rotationY = 0;
 
-      // Sélectionne les 8 images du cercle i
       const images = Array.from(carousel.querySelectorAll('img')).slice(i * 8, i * 8 + 8);
 
       function applyRotation() {
@@ -478,7 +474,6 @@ nav ul li a.active {
         zoneStartX = e.clientX;
       });
 
-      // Touch events
       zone.addEventListener('touchstart', e => {
         zoneIsDragging = true;
         zoneStartX = e.touches[0].clientX;
@@ -497,47 +492,16 @@ nav ul li a.active {
     }
 
   } else {
-  const container = carousel.parentElement;
-  const oldZones = container.querySelectorAll('.circle-zone');
-  oldZones.forEach(z => z.remove());
-  positionImagesGlobale();
-     }
-  }    
-    
-  function positionImagesGlobale() {
-  const images = carousel.querySelectorAll('img');
-  const count = images.length;
-  const radius = 300; // distance au centre pour la sphère
-  const angleStep = 360 / count;
-  images.forEach((img, i) => {
-    const angle = i * angleStep;
-    img.style.transform = `rotateY(${angle}deg) translateZ(${radius}px) translate(-50%, -50%)`;
-  });
-  carousel.style.transform = `rotateY(${angle}deg) rotateX(0deg)`;
-}
-
-    // Appelle ta fonction habituelle de positionnement si tu en as une,
-    // sinon laisse cette partie vide pour ne rien toucher
-    // Exemple : positionImagesGlobale();
+    // AUTRES formats : on ne fait rien, on garde le comportement original
+    const container = carousel.parentElement;
+    const oldZones = container.querySelectorAll('.circle-zone');
+    oldZones.forEach(z => z.remove());
+    // Rien d’autre ici. Pas de positionImagesGlobale.
   }
 }
-
-
-function removeDragZones() {
-  const container = carousel.parentElement;
-  const oldZones = container.querySelectorAll('.circle-zone');
-  oldZones.forEach(z => z.remove());
-}
+ 
     
     function animate() {
-  if (autoRotate && !isDragging && !window.matchMedia("(max-width: 768px) and (orientation: portrait)").matches) {
-    angle += 0.1;
-    carousel.style.transform = `rotateY(${angle}deg) rotateX(0deg)`;
-  }
-  requestAnimationFrame(animate);
-}
-animate();
-    
       if (autoRotate && !isDragging) {
         angle += 0.1;// 👉 diminuez cette valeur, ex. 0.1 pour ralentir*/
         positionImages();
