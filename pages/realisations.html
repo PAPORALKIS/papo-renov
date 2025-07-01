@@ -426,78 +426,7 @@ nav ul li a.active {
         zIndex: 10,
         cursor: 'grab',
       });
-      container.appendChild(zone);
-
-      const images = Array.from(carousel.querySelectorAll('img')).slice(i * 8, i * 8 + 8);
-
-      let rotationY = 0;
-      function applyRotation() {
-        images.forEach((img, idx) => {
-          const angleY = idx * 45 + rotationY;
-          img.style.transform = `rotateY(${angleY}deg) rotateX(${i * 20}deg) translateZ(300px) translate(-50%, -50%)`;
-        });
-      }
-      applyRotation();
-
-      let isDragging = false;
-      let startX = 0;
-
-      zone.addEventListener('mousedown', e => {
-        isDragging = true;
-        startX = e.clientX;
-        zone.style.cursor = 'grabbing';
-        e.preventDefault();
-      });
-      window.addEventListener('mouseup', () => {
-        isDragging = false;
-        zone.style.cursor = 'grab';
-      });
-      window.addEventListener('mousemove', e => {
-        if (!isDragging) return;
-        const dx = e.clientX - startX;
-        rotationY += dx * 0.5;
-        applyRotation();
-        startX = e.clientX;
-      });
-
-      zone.addEventListener('touchstart', e => {
-        isDragging = true;
-        startX = e.touches[0].clientX;
-        e.preventDefault();
-      }, { passive: false });
-      window.addEventListener('touchend', () => {
-        isDragging = false;
-      });
-      window.addEventListener('touchmove', e => {
-        if (!isDragging) return;
-        const dx = e.touches[0].clientX - startX;
-        rotationY += dx * 0.5;
-        applyRotation();
-        startX = e.touches[0].clientX;
-      }, { passive: false });
-    }
-
-    // Fixe la sphère globale
-    carousel.style.transform = `rotateY(0deg) rotateX(0deg)`;
-
-    return; // On quitte la fonction, on ne touche pas au reste
-  }
-
-  // --- AUCUNE MODIFICATION EN DEHORS DU SMARTPHONE PORTRAIT ---
-
-  const images = carousel.querySelectorAll('img');
-  const total = images.length;
-  const step = 360 / total;
-  images.forEach((img, i) => {
-    const theta = i * step + angle;
-    const rad = theta * Math.PI / 180;
-    const x = Math.sin(rad) * parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--translateZ'));
-    const z = Math.cos(rad) * parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--translateZ'));
-    const isFront = Math.abs(theta % 360) < step / 2;
-    img.style.transform = `translateX(${x}px) translateZ(${z}px)` + (isFront ? ' scale(1.9)' : '');
-    img.style.zIndex = Math.round(1000 - Math.abs(theta % 360));
-  });
-}
+      
 
     function animate() {
       if (autoRotate && !isDragging) {
