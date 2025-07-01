@@ -388,17 +388,14 @@ nav ul li a.active {
 
       carousel.appendChild(row);
     }
-  } else {
-    
-    filtered.forEach((data, i) => {
-      const img = document.createElement('img');
-      img.src = data.src;
-      img.setAttribute('data-theme', data.theme);
-      img.setAttribute('data-comment', data.comment);
-      img.addEventListener('click', () => { if (!dragged) showZoom(data); });
-      carousel.appendChild(img);
-    });
-
+   } else {
+        // Version desktop classique
+        filtered.forEach((data, i) => {
+          const img = document.createElement('img');
+          img.src = data.src;
+          img.alt = data.comment;
+          carousel.appendChild(img);
+        });
     positionImages();
   }
 }
