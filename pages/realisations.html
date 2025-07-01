@@ -406,44 +406,22 @@ nav ul li a.active {
     }
 
     function positionImages() {
-  // Detecte smartphone portrait uniquement
-  if (window.innerWidth <= 768 && window.innerHeight > window.innerWidth) {
-    // La sphère globale reste fixe, pas de rotation globale
-    carousel.style.transform = 'rotateY(0deg) rotateX(0deg)';
+  // Bloque tout repositionnement sur mobile portrait
+  if (window.innerWidth <= 768 && window.innerHeight > window.innerWidth) return;
 
-    // 5 lignes de 8 images chacune
-    const images = Array.from(carousel.querySelectorAll('img'));
-    const imagesPerLine = 8;
-    const lines = 5;
-
-    // Supposons un tableau pour stocker l'angle horizontal (rotationY) par ligne,
-    // à manipuler via drag/touch pour le scroll horizontal indépendant (à gérer ailleurs)
-    if (!window.lineAngles) {
-      window.lineAngles = Array(lines).fill(0);
-    }
-
-    // Applique la transformation ligne par ligne, en tenant compte de lineAngles
-    for (let line = 0; line < lines; line++) {
-      const baseRotateX = line * 20; // 0, 20, 40, 60, 80 degrés comme en CSS
-      const angleOffset = window.lineAngles[line] || 0;
-
-      for (let i = 0; i < imagesPerLine; i++) {
-        const imgIndex = line * imagesPerLine + i;
-        const img = images[imgIndex];
-        if (!img) continue;
-
-        // Chaque image est espacée de 45° sur Y (360/8)
-        const theta = i * 45 + angleOffset;
-        img.style.transform = `rotateY(${theta}deg) rotateX(${baseRotateX}deg) translateZ(300px) translate(-50%, -50%)`;
-
-        // Pour zIndex on peut garder simple (plus proche devant)
-        const normalizedAngle = ((theta % 360) + 360) % 360; // angle positif mod 360
-        img.style.zIndex = normalizedAngle < 180 ? 1000 : 900;
-      }
-    }
-  }
-
-
+  const images = carousel.querySelectorAll('img');
+  const total = images.length;
+  const step = 360 / total;
+  images.forEach((img, i) => {
+    const theta = i * step + angle;
+    const rad = theta * Math.PI / 180;
+    const x = Math.sin(rad) * parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--translateZ'));
+    const z = Math.cos(rad) * parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--translateZ'));
+    const isFront = Math.abs(theta % 360) < step / 2;
+    img.style.transform = `translateX(${x}px) translateZ(${z}px)` + (isFront ? ' scale(1.9)' : '');
+    img.style.zIndex = Math.round(1000 - Math.abs(theta % 360));
+  });
+}
 
     function animate() {
       if (!(window.innerWidth <= 768 && window.innerHeight > window.innerWidth)) {
