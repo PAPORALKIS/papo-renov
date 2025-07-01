@@ -497,11 +497,12 @@ nav ul li a.active {
     }
 
   } else {
-    // AUTRES formats : on ne fait rien, on laisse tout tel quel
-    // Si tu as des zones drag créées avant, tu peux les supprimer ici
-    const container = carousel.parentElement;
-    const oldZones = container.querySelectorAll('.circle-zone');
-    oldZones.forEach(z => z.remove());
+  const container = carousel.parentElement;
+  const oldZones = container.querySelectorAll('.circle-zone');
+  oldZones.forEach(z => z.remove());
+
+  positionImagesGlobale(); // <-- IMPORTANT, fonction qui gère la sphère hors mobile portrait
+}
 
     // Appelle ta fonction habituelle de positionnement si tu en as une,
     // sinon laisse cette partie vide pour ne rien toucher
