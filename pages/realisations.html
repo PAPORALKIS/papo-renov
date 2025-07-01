@@ -454,6 +454,50 @@ zoomViewer.addEventListener('click', function (e) {
 
     // Drag souris
     carousel.addEventListener('mousedown', e => {
+      if (window.innerWidth <= 768 && window.innerHeight > window.innerWidth) return;
+      isDragging = true;
+      dragged = false;
+      startX = e.clientX;
+      autoRotate = false;
+    });
+    document.addEventListener('mouseup', () => {
+       if (window.innerWidth <= 768 && window.innerHeight > window.innerWidth) return;
+      
+      isDragging = false;
+      autoRotate = true;
+      setTimeout(() => { dragged = false; }, 50);
+    });
+    document.addEventListener('mousemove', e => {
+      if (isDragging) {
+        if (window.innerWidth <= 768 && window.innerHeight > window.innerWidth) return;
+        const dx = e.clientX - startX;
+        angle += dx * 0.3;
+        startX = e.clientX;
+        dragged = true;
+        positionImages();
+      }
+    });
+
+    // Drag tactile
+    carousel.addEventListener('touchstart', e => {
+      if (window.innerWidth <= 768 && window.innerHeight > window.innerWidth) return;
+      isDragging = true;
+      startX = e.touches[0].clientX;
+      autoRotate = false;
+    });
+    carousel.addEventListener('touchend', () => {
+      if (window.innerWidth <= 768 && window.innerHeight > window.innerWidth) return;
+      isDragging = false;
+      autoRotate = true;
+    });
+    carousel.addEventListener('touchmove', e => {
+      function closeZoom() {
+      zoomViewer.style.display = 'none';
+    }
+
+    // Drag souris
+    carousel.addEventListener('mousedown', e => {
+      if (window.innerWidth <= 768 && window.innerHeight > window.innerWidth) return;
       isDragging = true;
       dragged = false;
       startX = e.clientX;
@@ -466,6 +510,7 @@ zoomViewer.addEventListener('click', function (e) {
     });
     document.addEventListener('mousemove', e => {
       if (isDragging) {
+        if (window.innerWidth <= 768 && window.innerHeight > window.innerWidth) return;
         const dx = e.clientX - startX;
         angle += dx * 0.3;
         startX = e.clientX;
@@ -476,15 +521,25 @@ zoomViewer.addEventListener('click', function (e) {
 
     // Drag tactile
     carousel.addEventListener('touchstart', e => {
+      if (window.innerWidth <= 768 && window.innerHeight > window.innerWidth) return;
       isDragging = true;
       startX = e.touches[0].clientX;
       autoRotate = false;
     });
     carousel.addEventListener('touchend', () => {
+      if (window.innerWidth <= 768 && window.innerHeight > window.innerWidth) return;
       isDragging = false;
       autoRotate = true;
     });
     carousel.addEventListener('touchmove', e => {
+      if (isDragging) {
+        const dx = e.touches[0].clientX - startX;
+        angle += dx * 0.3;
+        startX = e.touches[0].clientX;
+        positionImages();
+      }
+    });
+
       if (isDragging) {
         const dx = e.touches[0].clientX - startX;
         angle += dx * 0.3;
