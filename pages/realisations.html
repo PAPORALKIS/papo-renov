@@ -217,13 +217,14 @@ nav ul li a.active {
     perspective: 1200px;
     height: 100vh;
     overflow: hidden;
+    position: relative; /* Important pour positionner zones */
   }
 
   .carousel {
     width: 100%;
     height: 100%;
     transform-style: preserve-3d;
-    animation: spinVertical 30s infinite linear;
+    animation: none !important; /* Supprime rotation globale */
     position: relative;
   }
 
@@ -234,10 +235,15 @@ nav ul li a.active {
     object-fit: cover;
     left: 50%;
     top: 50%;
+    transform-style: preserve-3d;
+    transform-origin: center center;
     transform: translate(-50%, -50%);
+    pointer-events: auto;
+    user-select: none;
   }
 
   /* Positionner les 40 images en 5 cercles de 8 images */
+  /* (on laisse les positions statiques, la rotation sera gérée en JS) */
   .carousel img:nth-child(1)  { transform: rotateY(0deg)   rotateX(0deg)   translateZ(300px); }
   .carousel img:nth-child(2)  { transform: rotateY(45deg)  rotateX(0deg)   translateZ(300px); }
   .carousel img:nth-child(3)  { transform: rotateY(90deg)  rotateX(0deg)   translateZ(300px); }
@@ -283,14 +289,24 @@ nav ul li a.active {
   .carousel img:nth-child(39) { transform: rotateY(270deg) rotateX(80deg)  translateZ(300px); }
   .carousel img:nth-child(40) { transform: rotateY(315deg) rotateX(80deg)  translateZ(300px); }
 
-  @keyframes spinVertical {
-    from {
-      transform: rotateY(0deg) rotateX(0deg);
-    }
-    to {
-      transform: rotateY(360deg) rotateX(360deg);
-    }
+  /* 5 zones cliquables superposées pour drag */
+  .circle-zone {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 20%;
+    top: 0; /* sera modifié en JS */
+    cursor: grab;
+    user-select: none;
+    z-index: 10;
+    background: transparent;
+    touch-action: none;
   }
+  .circle-zone:nth-child(1) { top: 0; }
+  .circle-zone:nth-child(2) { top: 20%; }
+  .circle-zone:nth-child(3) { top: 40%; }
+  .circle-zone:nth-child(4) { top: 60%; }
+  .circle-zone:nth-child(5) { top: 80%; }
 }
 
 
