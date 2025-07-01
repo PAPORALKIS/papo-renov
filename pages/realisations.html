@@ -418,8 +418,7 @@ nav ul li a.active {
     const x = Math.sin(rad) * parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--translateZ'));
     const z = Math.cos(rad) * parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--translateZ'));
     const isFront = Math.abs(theta % 360) < step / 2;
-    img.style.transform = `translateX(${x}px) translateZ(${z}px)` + (isFront ? ' scale(1.9)' : '');
-    img.style.zIndex = Math.round(1000 - Math.abs(theta % 360));
+    img.style.transform = `rotateY(${angleY}deg) rotateX(${angleX}deg) translateZ(${radius}px)`;img.style.zIndex = Math.round(1000 - Math.abs(theta % 360));
   });
 }
 
