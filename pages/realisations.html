@@ -378,26 +378,26 @@ nav ul li a.active {
         carousel.appendChild(img);
       });
       positionImages();
+      
     }
 
     function positionImages() {
-      const images = carousel.querySelectorAll('img');
-      const total = images.length;
-      const step = 360 / total;
-      images.forEach((img, i) => {
-        const theta = i * step + angle;
-        const rad = theta * Math.PI / 180;
-        const x = Math.sin(rad) * parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--translateZ'));
-        const z = Math.cos(rad) * parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--translateZ'));
-       
-        const isFront = Math.abs(theta % 360) < step / 2;
-        img.style.transform = `translateX(${x}px) translateZ(${z}px)` + (isFront ? ' scale(1.9)' : '');
- // 👉 ici : scale(1.3) = zoom de l'image avant*/
-         // 👉 Avancer l’image zoomée vers l’avant utilisez translateZ(${z}px + 100)*/
-        
-        img.style.zIndex = Math.round(1000 - Math.abs(theta % 360));
-      });
-    }
+  // Bloque tout repositionnement sur mobile portrait
+  if (window.innerWidth <= 768 && window.innerHeight > window.innerWidth) return;
+
+  const images = carousel.querySelectorAll('img');
+  const total = images.length;
+  const step = 360 / total;
+  images.forEach((img, i) => {
+    const theta = i * step + angle;
+    const rad = theta * Math.PI / 180;
+    const x = Math.sin(rad) * parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--translateZ'));
+    const z = Math.cos(rad) * parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--translateZ'));
+    const isFront = Math.abs(theta % 360) < step / 2;
+    img.style.transform = `translateX(${x}px) translateZ(${z}px)` + (isFront ? ' scale(1.9)' : '');
+    img.style.zIndex = Math.round(1000 - Math.abs(theta % 360));
+  });
+}
 
     function animate() {
       if (autoRotate && !isDragging) {
