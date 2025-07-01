@@ -500,8 +500,20 @@ nav ul li a.active {
   const container = carousel.parentElement;
   const oldZones = container.querySelectorAll('.circle-zone');
   oldZones.forEach(z => z.remove());
-
-  positionImagesGlobale(); // <-- IMPORTANT, fonction qui gère la sphère hors mobile portrait
+  positionImagesGlobale();
+     }
+  }    
+    
+  function positionImagesGlobale() {
+  const images = carousel.querySelectorAll('img');
+  const count = images.length;
+  const radius = 300; // distance au centre pour la sphère
+  const angleStep = 360 / count;
+  images.forEach((img, i) => {
+    const angle = i * angleStep;
+    img.style.transform = `rotateY(${angle}deg) translateZ(${radius}px) translate(-50%, -50%)`;
+  });
+  carousel.style.transform = `rotateY(${angle}deg) rotateX(0deg)`;
 }
 
     // Appelle ta fonction habituelle de positionnement si tu en as une,
