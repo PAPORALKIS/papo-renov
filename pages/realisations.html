@@ -214,49 +214,85 @@ nav ul li a.active {
 
 @media (max-width: 768px) and (orientation: portrait) {
   .carousel-container {
-    position: relative;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 100vw;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 12px;
-    padding: 10px 0;
+    perspective: 1200px;
+    height: 100vh;
+    overflow: hidden;
   }
 
   .carousel {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
     width: 100%;
+    height: 100%;
+    transform-style: preserve-3d;
+    animation: spinVertical 30s infinite linear;
+    position: relative;
   }
 
-  .carousel-row {
-    display: flex;
-    overflow-x: auto;
-    justify-content: start;
-    padding: 0 10px;
-    gap: 8px;
-    scroll-snap-type: x mandatory;
-    perspective: 1000px;
-  }
-
-  .carousel-row::-webkit-scrollbar {
-    display: none;
-  }
-
-  .carousel-row img {
-    flex: 0 0 auto;
-    width: 100px;
-    height: 80px;
-    border-radius: 10px;
+  .carousel img {
+    position: absolute;
+    width: 120px;
+    height: 90px;
     object-fit: cover;
-    scroll-snap-align: start;
-    transform: rotateY(0deg) rotateX(0deg) translateZ(0px); /* mis à jour dynamiquement */
-    transition: transform 0.5s;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  /* Positionner les 40 images en 5 cercles de 8 images */
+  .carousel img:nth-child(1)  { transform: rotateY(0deg)   rotateX(0deg)   translateZ(300px); }
+  .carousel img:nth-child(2)  { transform: rotateY(45deg)  rotateX(0deg)   translateZ(300px); }
+  .carousel img:nth-child(3)  { transform: rotateY(90deg)  rotateX(0deg)   translateZ(300px); }
+  .carousel img:nth-child(4)  { transform: rotateY(135deg) rotateX(0deg)   translateZ(300px); }
+  .carousel img:nth-child(5)  { transform: rotateY(180deg) rotateX(0deg)   translateZ(300px); }
+  .carousel img:nth-child(6)  { transform: rotateY(225deg) rotateX(0deg)   translateZ(300px); }
+  .carousel img:nth-child(7)  { transform: rotateY(270deg) rotateX(0deg)   translateZ(300px); }
+  .carousel img:nth-child(8)  { transform: rotateY(315deg) rotateX(0deg)   translateZ(300px); }
+
+  .carousel img:nth-child(9)  { transform: rotateY(0deg)   rotateX(20deg)  translateZ(300px); }
+  .carousel img:nth-child(10) { transform: rotateY(45deg)  rotateX(20deg)  translateZ(300px); }
+  .carousel img:nth-child(11) { transform: rotateY(90deg)  rotateX(20deg)  translateZ(300px); }
+  .carousel img:nth-child(12) { transform: rotateY(135deg) rotateX(20deg)  translateZ(300px); }
+  .carousel img:nth-child(13) { transform: rotateY(180deg) rotateX(20deg)  translateZ(300px); }
+  .carousel img:nth-child(14) { transform: rotateY(225deg) rotateX(20deg)  translateZ(300px); }
+  .carousel img:nth-child(15) { transform: rotateY(270deg) rotateX(20deg)  translateZ(300px); }
+  .carousel img:nth-child(16) { transform: rotateY(315deg) rotateX(20deg)  translateZ(300px); }
+
+  .carousel img:nth-child(17) { transform: rotateY(0deg)   rotateX(40deg)  translateZ(300px); }
+  .carousel img:nth-child(18) { transform: rotateY(45deg)  rotateX(40deg)  translateZ(300px); }
+  .carousel img:nth-child(19) { transform: rotateY(90deg)  rotateX(40deg)  translateZ(300px); }
+  .carousel img:nth-child(20) { transform: rotateY(135deg) rotateX(40deg)  translateZ(300px); }
+  .carousel img:nth-child(21) { transform: rotateY(180deg) rotateX(40deg)  translateZ(300px); }
+  .carousel img:nth-child(22) { transform: rotateY(225deg) rotateX(40deg)  translateZ(300px); }
+  .carousel img:nth-child(23) { transform: rotateY(270deg) rotateX(40deg)  translateZ(300px); }
+  .carousel img:nth-child(24) { transform: rotateY(315deg) rotateX(40deg)  translateZ(300px); }
+
+  .carousel img:nth-child(25) { transform: rotateY(0deg)   rotateX(60deg)  translateZ(300px); }
+  .carousel img:nth-child(26) { transform: rotateY(45deg)  rotateX(60deg)  translateZ(300px); }
+  .carousel img:nth-child(27) { transform: rotateY(90deg)  rotateX(60deg)  translateZ(300px); }
+  .carousel img:nth-child(28) { transform: rotateY(135deg) rotateX(60deg)  translateZ(300px); }
+  .carousel img:nth-child(29) { transform: rotateY(180deg) rotateX(60deg)  translateZ(300px); }
+  .carousel img:nth-child(30) { transform: rotateY(225deg) rotateX(60deg)  translateZ(300px); }
+  .carousel img:nth-child(31) { transform: rotateY(270deg) rotateX(60deg)  translateZ(300px); }
+  .carousel img:nth-child(32) { transform: rotateY(315deg) rotateX(60deg)  translateZ(300px); }
+
+  .carousel img:nth-child(33) { transform: rotateY(0deg)   rotateX(80deg)  translateZ(300px); }
+  .carousel img:nth-child(34) { transform: rotateY(45deg)  rotateX(80deg)  translateZ(300px); }
+  .carousel img:nth-child(35) { transform: rotateY(90deg)  rotateX(80deg)  translateZ(300px); }
+  .carousel img:nth-child(36) { transform: rotateY(135deg) rotateX(80deg)  translateZ(300px); }
+  .carousel img:nth-child(37) { transform: rotateY(180deg) rotateX(80deg)  translateZ(300px); }
+  .carousel img:nth-child(38) { transform: rotateY(225deg) rotateX(80deg)  translateZ(300px); }
+  .carousel img:nth-child(39) { transform: rotateY(270deg) rotateX(80deg)  translateZ(300px); }
+  .carousel img:nth-child(40) { transform: rotateY(315deg) rotateX(80deg)  translateZ(300px); }
+
+  @keyframes spinVertical {
+    from {
+      transform: rotateY(0deg) rotateX(0deg);
+    }
+    to {
+      transform: rotateY(360deg) rotateX(360deg);
+    }
   }
 }
+
 
   </style>
 </head>
@@ -355,50 +391,19 @@ nav ul li a.active {
     let dragged = false;
 
     function generateImages(filter = 'all') {
-  carousel.innerHTML = '';
-  const filtered = filter === 'all' ? imagesData : imagesData.filter(img => img.theme === filter);
-  const perRow = 8;
-  const rows = Math.ceil(filtered.length / perRow);
-
-  const isPortraitMobile = window.innerWidth <= 768 && window.innerHeight > window.innerWidth;
-
-  if (isPortraitMobile) {
-    for (let i = 0; i < 5; i++) {
-      const row = document.createElement('div');
-      row.classList.add('carousel-row');
-
-      for (let j = 0; j < perRow; j++) {
-        const index = i * perRow + j;
-        if (index >= filtered.length) break;
-
-        const data = filtered[index];
+      carousel.innerHTML = '';
+      const filtered = filter === 'all' ? imagesData : imagesData.filter(img => img.theme === filter);
+      filtered.forEach((data, i) => {
         const img = document.createElement('img');
         img.src = data.src;
         img.setAttribute('data-theme', data.theme);
         img.setAttribute('data-comment', data.comment);
         img.addEventListener('click', () => { if (!dragged) showZoom(data); });
-
-        // effet sphère 3D par ligne
-        const rotateY = j * 45;
-        const rotateX = i * 20;
-        img.style.transform = `rotateY(${rotateY}deg) rotateX(${rotateX}deg) translateZ(200px)`;
-
-        row.appendChild(img);
-      }
-
-      carousel.appendChild(row);
+        carousel.appendChild(img);
+      });
+      positionImages();
+      
     }
-   } else {
-        // Version desktop classique
-        filtered.forEach((data, i) => {
-          const img = document.createElement('img');
-          img.src = data.src;
-          img.alt = data.comment;
-          carousel.appendChild(img);
-        });
-    positionImages();
-  }
-}
 
     function positionImages() {
   // Bloque tout repositionnement sur mobile portrait
@@ -416,18 +421,16 @@ nav ul li a.active {
     img.style.transform = `translateX(${x}px) translateZ(${z}px)` + (isFront ? ' scale(1.9)' : '');
     img.style.zIndex = Math.round(1000 - Math.abs(theta % 360));
   });
-
-    
-function animate() {
-  const isPortraitMobile = window.innerWidth <= 768 && window.innerHeight > window.innerWidth;
-  if (!isPortraitMobile) {
-    if (autoRotate && !isDragging) {
-      angle += 0.1;
-    }
-    positionImages();
-  }
-  requestAnimationFrame(animate);
 }
+
+    function animate() {
+      if (autoRotate && !isDragging) {
+        angle += 0.1;// 👉 diminuez cette valeur, ex. 0.1 pour ralentir*/
+        positionImages();
+      }
+      requestAnimationFrame(animate);
+    }
+
     function showZoom(data) {
       zoomImage.src = data.src;
       zoomComment.textContent = data.comment;
@@ -446,50 +449,6 @@ zoomViewer.addEventListener('click', function (e) {
 
     // Drag souris
     carousel.addEventListener('mousedown', e => {
-      if (window.innerWidth <= 768 && window.innerHeight > window.innerWidth) return;
-      isDragging = true;
-      dragged = false;
-      startX = e.clientX;
-      autoRotate = false;
-    });
-    document.addEventListener('mouseup', () => {
-       if (window.innerWidth <= 768 && window.innerHeight > window.innerWidth) return;
-      
-      isDragging = false;
-      autoRotate = true;
-      setTimeout(() => { dragged = false; }, 50);
-    });
-    document.addEventListener('mousemove', e => {
-      if (isDragging) {
-        if (window.innerWidth <= 768 && window.innerHeight > window.innerWidth) return;
-        const dx = e.clientX - startX;
-        angle += dx * 0.3;
-        startX = e.clientX;
-        dragged = true;
-        positionImages();
-      }
-    });
-
-    // Drag tactile
-    carousel.addEventListener('touchstart', e => {
-      if (window.innerWidth <= 768 && window.innerHeight > window.innerWidth) return;
-      isDragging = true;
-      startX = e.touches[0].clientX;
-      autoRotate = false;
-    });
-    carousel.addEventListener('touchend', () => {
-      if (window.innerWidth <= 768 && window.innerHeight > window.innerWidth) return;
-      isDragging = false;
-      autoRotate = true;
-    });
-    carousel.addEventListener('touchmove', e => {
-      function closeZoom() {
-      zoomViewer.style.display = 'none';
-    }
-
-    // Drag souris
-    carousel.addEventListener('mousedown', e => {
-      if (window.innerWidth <= 768 && window.innerHeight > window.innerWidth) return;
       isDragging = true;
       dragged = false;
       startX = e.clientX;
@@ -502,7 +461,6 @@ zoomViewer.addEventListener('click', function (e) {
     });
     document.addEventListener('mousemove', e => {
       if (isDragging) {
-        if (window.innerWidth <= 768 && window.innerHeight > window.innerWidth) return;
         const dx = e.clientX - startX;
         angle += dx * 0.3;
         startX = e.clientX;
@@ -513,25 +471,15 @@ zoomViewer.addEventListener('click', function (e) {
 
     // Drag tactile
     carousel.addEventListener('touchstart', e => {
-      if (window.innerWidth <= 768 && window.innerHeight > window.innerWidth) return;
       isDragging = true;
       startX = e.touches[0].clientX;
       autoRotate = false;
     });
     carousel.addEventListener('touchend', () => {
-      if (window.innerWidth <= 768 && window.innerHeight > window.innerWidth) return;
       isDragging = false;
       autoRotate = true;
     });
     carousel.addEventListener('touchmove', e => {
-      if (isDragging) {
-        const dx = e.touches[0].clientX - startX;
-        angle += dx * 0.3;
-        startX = e.touches[0].clientX;
-        positionImages();
-      }
-    });
-
       if (isDragging) {
         const dx = e.touches[0].clientX - startX;
         angle += dx * 0.3;
