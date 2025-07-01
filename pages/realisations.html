@@ -256,13 +256,7 @@ nav ul li a.active {
     transform: rotateY(0deg) rotateX(0deg) translateZ(0px); /* mis à jour dynamiquement */
     transition: transform 0.5s;
   }
-
-  .carousel {
-    animation: none !important;
-  }
 }
-}
-
 
   </style>
 </head>
@@ -395,7 +389,7 @@ nav ul li a.active {
       carousel.appendChild(row);
     }
   } else {
-    // Version desktop : une seule sphère animée
+    
     filtered.forEach((data, i) => {
       const img = document.createElement('img');
       img.src = data.src;
