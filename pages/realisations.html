@@ -22,6 +22,19 @@
         --translateZ: 240px;
       }
     }
+    @media (max-width: 768px) {
+  .page-title {
+    font-size: 1.6em;
+    padding: 8px 16px;
+  }
+}
+
+@media (max-width: 500px) {
+  .page-title {
+    font-size: 1.4em;
+    padding: 6px 12px;
+  }
+}
     html, body {
     
   margin: 0;
@@ -106,11 +119,16 @@ nav ul li a.active {
 }
     /* ajout titre page */
 .page-title {
-      color: white;
-      text-align: center;
-      font-size: 1.8em;
-      margin-top: 30px;
-    }
+  color: white;
+  text-align: center;
+  font-size: 1.8em;
+  margin-top: 30px;
+  position: relative;
+  z-index: 10; /* Assure qu'il passe devant le fond */
+  background-color: rgba(0, 0, 0, 0.4); /* optionnel : fond semi-transparent pour la lisibilité */
+  padding: 10px 20px;
+  border-radius: 8px;
+}
     /* ajout titre page */
     .filters {
       text-align: center;
