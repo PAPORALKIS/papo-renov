@@ -422,24 +422,109 @@ nav ul li a.active {
     }
 
     function positionImages() {
-  // Bloque tout repositionnement sur mobile portrait
-  if (window.innerWidth <= 768 && window.innerHeight > window.innerWidth) return;
+  if (window.matchMedia("(max-width: 768px) and (orientation: portrait)").matches) {
+    // MOBILE portrait seulement : setup drag zones par cercle
 
-  const images = carousel.querySelectorAll('img');
-  const total = images.length;
-  const step = 360 / total;
-  images.forEach((img, i) => {
-    const theta = i * step + angle;
-    const rad = theta * Math.PI / 180;
-    const x = Math.sin(rad) * parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--translateZ'));
-    const z = Math.cos(rad) * parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--translateZ'));
-    const isFront = Math.abs(theta % 360) < step / 2;
-    img.style.transform = `translateX(${x}px) translateZ(${z}px)` + (isFront ? ' scale(1.9)' : '');
-    img.style.zIndex = Math.round(1000 - Math.abs(theta % 360));
-  });
+    const container = carousel.parentElement;
+
+    // Supprime les anciennes zones si existantes
+    const oldZones = container.querySelectorAll('.circle-zone');
+    oldZones.forEach(z => z.remove());
+
+    for (let i = 0; i < 5; i++) {
+      const zone = document.createElement('div');
+      zone.classList.add('circle-zone');
+      Object.assign(zone.style, {
+        position: 'absolute',
+        top: `${i * 20}%`,
+        left: 0,
+        width: '100%',
+        height: '20%',
+        zIndex: 10,
+        cursor: 'grab',
+      });
+      container.appendChild(zone);
+
+      let zoneIsDragging = false;
+      let zoneStartX = 0;
+      let rotationY = 0;
+
+      // Sélectionne les 8 images du cercle i
+      const images = Array.from(carousel.querySelectorAll('img')).slice(i * 8, i * 8 + 8);
+
+      function applyRotation() {
+        images.forEach((img, idx) => {
+          const angleY = (idx * 45) + rotationY;
+          img.style.transform = `rotateY(${angleY}deg) rotateX(${i * 20}deg) translateZ(300px) translate(-50%, -50%)`;
+        });
+      }
+      applyRotation();
+
+      zone.addEventListener('mousedown', e => {
+        zoneIsDragging = true;
+        zoneStartX = e.clientX;
+        zone.style.cursor = 'grabbing';
+        e.preventDefault();
+      });
+      window.addEventListener('mouseup', () => {
+        zoneIsDragging = false;
+        zone.style.cursor = 'grab';
+      });
+      window.addEventListener('mousemove', e => {
+        if (!zoneIsDragging) return;
+        const dx = e.clientX - zoneStartX;
+        rotationY += dx * 0.5;
+        applyRotation();
+        zoneStartX = e.clientX;
+      });
+
+      // Touch events
+      zone.addEventListener('touchstart', e => {
+        zoneIsDragging = true;
+        zoneStartX = e.touches[0].clientX;
+        e.preventDefault();
+      }, { passive: false });
+      window.addEventListener('touchend', () => {
+        zoneIsDragging = false;
+      });
+      window.addEventListener('touchmove', e => {
+        if (!zoneIsDragging) return;
+        const dx = e.touches[0].clientX - zoneStartX;
+        rotationY += dx * 0.5;
+        applyRotation();
+        zoneStartX = e.touches[0].clientX;
+      }, { passive: false });
+    }
+
+  } else {
+    // AUTRES formats : on ne fait rien, on laisse tout tel quel
+    // Si tu as des zones drag créées avant, tu peux les supprimer ici
+    const container = carousel.parentElement;
+    const oldZones = container.querySelectorAll('.circle-zone');
+    oldZones.forEach(z => z.remove());
+
+    // Appelle ta fonction habituelle de positionnement si tu en as une,
+    // sinon laisse cette partie vide pour ne rien toucher
+    // Exemple : positionImagesGlobale();
+  }
 }
 
+
+function removeDragZones() {
+  const container = carousel.parentElement;
+  const oldZones = container.querySelectorAll('.circle-zone');
+  oldZones.forEach(z => z.remove());
+}
+    
     function animate() {
+  if (autoRotate && !isDragging && !window.matchMedia("(max-width: 768px) and (orientation: portrait)").matches) {
+    angle += 0.1;
+    carousel.style.transform = `rotateY(${angle}deg) rotateX(0deg)`;
+  }
+  requestAnimationFrame(animate);
+}
+animate();
+    
       if (autoRotate && !isDragging) {
         angle += 0.1;// 👉 diminuez cette valeur, ex. 0.1 pour ralentir*/
         positionImages();
