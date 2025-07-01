@@ -424,10 +424,15 @@ nav ul li a.active {
 }
 
     function animate() {
+      if (!(window.innerWidth <= 768 && window.innerHeight > 
+            window.innerWidth)) {
       if (autoRotate && !isDragging) {
-        angle += 0.1;// 👉 diminuez cette valeur, ex. 0.1 pour ralentir*/
+        angle += 0.1;
+        }
+        }
+        // 👉 diminuez cette valeur, ex. 0.1 pour ralentir*/
         positionImages();
-      }
+      
       requestAnimationFrame(animate);
     }
 
