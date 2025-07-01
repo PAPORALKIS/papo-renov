@@ -225,7 +225,7 @@ nav ul li a.active {
     transform-style: preserve-3d;
     animation: none;
     position: relative;
-    transform: translateY(100px); /* ← descend la sphère */
+    transform: translateY(150px); /* ← descend la sphère */
   }
 
   .carousel img {
@@ -410,16 +410,32 @@ nav ul li a.active {
   // Bloque tout repositionnement sur mobile portrait
   if (window.innerWidth <= 768 && window.innerHeight > window.innerWidth) return;
 
+  
   const images = carousel.querySelectorAll('img');
   const total = images.length;
-  const step = 360 / total;
+  const rows = 5; // nombre de cercles horizontaux (latitude)
+  const cols = Math.ceil(total / rows);
+  const radius = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--translateZ'));
+
   images.forEach((img, i) => {
-    const theta = i * step + angle;
-    const rad = theta * Math.PI / 180;
-    const x = Math.sin(rad) * parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--translateZ'));
-    const z = Math.cos(rad) * parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--translateZ'));
-    const isFront = Math.abs(theta % 360) < step / 2;
-    img.style.transform = `rotateY(${angleY}deg) rotateX(${angleX}deg) translateZ(${radius}px)`;img.style.zIndex = Math.round(1000 - Math.abs(theta % 360));
+    const row = Math.floor(i / cols); // ligne (latitude)
+    const col = i % cols;             // colonne (longitude)
+
+    // Angle longitude - rotation Y - varie pour chaque image dans la ligne
+    const angleY = (360 / cols) * col + angle; // angle = rotation globale
+
+    // Angle latitude - rotation X - varie peu selon la ligne
+    const angleX = (180 / (rows - 1)) * row - 90;
+
+    img.style.transform = `
+      rotateY(${angleY}deg)
+      rotateX(${angleX}deg)
+      translateZ(${radius}px)
+    `;
+
+    // Gérer l'ordre d'affichage
+    let theta = angleY % 360;
+    img.style.zIndex = Math.round(1000 - Math.abs(theta - 180));
   });
 }
 
