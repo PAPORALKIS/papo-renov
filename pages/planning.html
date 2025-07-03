@@ -1,87 +1,511 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <title>Planning - Papo Rénov</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mes Réalisations - Carrousel 3D</title>
   <style>
-    .calendar-wrapper {
-      width: 100%;
-      max-width: 1000px;
-      margin: 0 auto;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-      border-radius: 8px;
-      overflow: hidden;
+    :root {
+      --img-size: min(20vw, 150px);/* 👉 taille des images : modifiez ici */
+      --translateZ: 490px;/* 👉 plus grand = images plus éloignées entre elles */
+      --perspective: 2200px;/* 👉 augmentez à 2500px, 3000px... pour éloigner le carrousel */
     }
-
-    .calendar-wrapper iframe {
-      width: 100%;
-      height: 700px;
-      border: none;
-      display: block;
-    }
-
     @media (max-width: 768px) {
-      .calendar-wrapper iframe {
-        height: 600px;
+      :root {
+        --img-size: 24vw;
+        --translateZ: 300px;
       }
     }
+    @media (max-width: 500px) {
+      :root {
+        --img-size: 28vw;
+        --translateZ: 240px;
+      }
+    }
+    @media (max-width: 768px) {
+  .page-title {
+    font-size: 1.6em;
+    padding: 8px 16px;
+  }
+}
+
+@media (max-width: 500px) {
+  .page-title {
+    font-size: 1.4em;
+    padding: 6px 12px;
+  }
+}
+    html, body {
+    
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family: 'Poppins', sans-serif;
+  background: #fdfdfd url('../img/fond-outils-filigrane.jpg');
+  background-repeat: repeat;
+  background-size: 400px auto;
+  background-attachment: fixed;
+  background-position: center;
+  opacity: 1;
+}
+   :root {
+  --bg-fond: url('chemin/vers/subtle-tools.jpg'), #f8f8f8; /* 👈 valeur par défaut (Proposition 1) */
+}
+    /* === Header === */
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: white;
+  padding: 4px 10px;
+  border-bottom: 1px solid #ddd;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+}
+
+.logo {
+  flex: 0 0 auto;
+  margin-right: 10px;
+}
+
+.logo img {
+  height: 40px;
+  max-width: 80%;
+  object-fit: contain;
+}
+
+/* === Navigation === */
+nav {
+  flex: 1 1 auto;
+  overflow-x: auto;
+}
+
+nav ul {
+  list-style: none;
+  display: flex;
+  gap: 3px;
+  padding: 0;
+  margin: 0;
+  flex-wrap: nowrap;
+  white-space: nowrap;
+  justify-content: flex-end;
+}
+
+nav ul::-webkit-scrollbar {
+  display: none;
+}
+
+nav ul li {
+  white-space: nowrap;
+}
+
+nav ul li a {
+  text-decoration: none;
+  color: #333;
+  font-weight: 600;
+  padding: 6px 8px;
+  font-size: 12px;/* ← C’est cette ligne qui définit la taille du texte */
+  display: inline-block;
+  transition: color 0.3s ease;
+}
+
+nav ul li a:hover,
+nav ul li a.active {
+  color: #007bff;
+  border-bottom: 2px solid #007bff;
+}
+    /* ajout titre page */
+.page-title {
+  color: #003366; /* même couleur que le texte des boutons */
+  text-align: center;
+  font-size: 1.8em;
+  margin-top: 25px;
+  position: relative;
+  z-index: 10; /* Assure qu'il passe devant le fond */
+  background: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+}
+    /* ajout titre page */
+    .filters {
+      text-align: center;
+      margin: 10px auto;
+    }
+    .filters button {
+      margin: 4px;
+      padding: 6px 12px;
+      font-size: 0.9em;
+      border-radius: 6px;
+      border: 1px solid #003366; /* ✅ contour de la même couleur que le texte */
+      background-color: #ffffff;
+      color: #003366;
+      cursor: pointer;
+       /* ✅ Ombre subtile pour effet de profondeur */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    .filters button:hover {
+      background-color: #f0f0f0;
+      color: #003366;
+    }
+    .carousel-container {
+      position: fixed;
+      top: 40%;
+      left: 45%;
+      transform: translate(-50%, -50%);
+      perspective: var(--perspective);
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      pointer-events: none;
+    }
+    .carousel {
+      position: relative;
+      transform-style: preserve-3d;
+      transform: rotateX(-4deg);
+      pointer-events: auto;
+      cursor: grab;
+    }
+    .carousel img {
+      position: absolute;
+      width: var(--img-size);
+      height: var(--img-size);
+      object-fit: cover;
+      border-radius: 12px;
+      box-shadow: 0 0 14px rgba(0,0,0,0.7);
+      transition: transform 0.6s, z-index 0.6s;
+      z-index: 1;
+      user-select: none;
+    }
+    .zoom-viewer {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.9);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      z-index: 100;
+    }
+    .zoom-viewer img {
+      max-width: 90vw;/* 👉 largeur maximale de l’image zoomée = 90% de la largeur de la fenêtre */
+      max-height: 70vh;/* 👉 hauteur maximale = 80% de la hauteur de la fenêtre */
+      border-radius: 10px;
+    }
+    .zoom-comment {
+      color: white;
+      margin-top: 10px;
+      text-align: center;
+      font-size: 1.1em;
+    }
+    .close-btn {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      font-size: 2em;
+      color: white;
+      cursor: pointer;
+    }
+
+@media (max-width: 768px) and (orientation: portrait) {
+  .carousel-container {
+    perspective: 1000px;
+    height: 100vh;
+    overflow: hidden;
+    position: relative;
+  }
+
+.carousel {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transform-style: preserve-3d;
+    transform-origin: 50% 60%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  
+  .carousel img {
+    position: absolute;
+    width: 70px;
+    height: 70px;
+    object-fit: cover;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  /* Positionner les 40 images en 5 cercles de 8 images */
+  .carousel img:nth-child(1)  { transform: rotateY(0deg)   rotateX(0deg)   translateZ(300px); }
+  .carousel img:nth-child(2)  { transform: rotateY(45deg)  rotateX(0deg)   translateZ(300px); }
+  .carousel img:nth-child(3)  { transform: rotateY(90deg)  rotateX(0deg)   translateZ(300px); }
+  .carousel img:nth-child(4)  { transform: rotateY(135deg) rotateX(0deg)   translateZ(300px); }
+  .carousel img:nth-child(5)  { transform: rotateY(180deg) rotateX(0deg)   translateZ(300px); }
+  .carousel img:nth-child(6)  { transform: rotateY(225deg) rotateX(0deg)   translateZ(300px); }
+  .carousel img:nth-child(7)  { transform: rotateY(270deg) rotateX(0deg)   translateZ(300px); }
+  .carousel img:nth-child(8)  { transform: rotateY(315deg) rotateX(0deg)   translateZ(300px); }
+
+  .carousel img:nth-child(9)  { transform: rotateY(0deg)   rotateX(20deg)  translateZ(300px); }
+  .carousel img:nth-child(10) { transform: rotateY(45deg)  rotateX(20deg)  translateZ(300px); }
+  .carousel img:nth-child(11) { transform: rotateY(90deg)  rotateX(20deg)  translateZ(300px); }
+  .carousel img:nth-child(12) { transform: rotateY(135deg) rotateX(20deg)  translateZ(300px); }
+  .carousel img:nth-child(13) { transform: rotateY(180deg) rotateX(20deg)  translateZ(300px); }
+  .carousel img:nth-child(14) { transform: rotateY(225deg) rotateX(20deg)  translateZ(300px); }
+  .carousel img:nth-child(15) { transform: rotateY(270deg) rotateX(20deg)  translateZ(300px); }
+  .carousel img:nth-child(16) { transform: rotateY(315deg) rotateX(20deg)  translateZ(300px); }
+
+  .carousel img:nth-child(17) { transform: rotateY(0deg)   rotateX(40deg)  translateZ(300px); }
+  .carousel img:nth-child(18) { transform: rotateY(45deg)  rotateX(40deg)  translateZ(300px); }
+  .carousel img:nth-child(19) { transform: rotateY(90deg)  rotateX(40deg)  translateZ(300px); }
+  .carousel img:nth-child(20) { transform: rotateY(135deg) rotateX(40deg)  translateZ(300px); }
+  .carousel img:nth-child(21) { transform: rotateY(180deg) rotateX(40deg)  translateZ(300px); }
+  .carousel img:nth-child(22) { transform: rotateY(225deg) rotateX(40deg)  translateZ(300px); }
+  .carousel img:nth-child(23) { transform: rotateY(270deg) rotateX(40deg)  translateZ(300px); }
+  .carousel img:nth-child(24) { transform: rotateY(315deg) rotateX(40deg)  translateZ(300px); }
+
+  .carousel img:nth-child(25) { transform: rotateY(0deg)   rotateX(60deg)  translateZ(300px); }
+  .carousel img:nth-child(26) { transform: rotateY(45deg)  rotateX(60deg)  translateZ(300px); }
+  .carousel img:nth-child(27) { transform: rotateY(90deg)  rotateX(60deg)  translateZ(300px); }
+  .carousel img:nth-child(28) { transform: rotateY(135deg) rotateX(60deg)  translateZ(300px); }
+  .carousel img:nth-child(29) { transform: rotateY(180deg) rotateX(60deg)  translateZ(300px); }
+  .carousel img:nth-child(30) { transform: rotateY(225deg) rotateX(60deg)  translateZ(300px); }
+  .carousel img:nth-child(31) { transform: rotateY(270deg) rotateX(60deg)  translateZ(300px); }
+  .carousel img:nth-child(32) { transform: rotateY(315deg) rotateX(60deg)  translateZ(300px); }
+
+  .carousel img:nth-child(33) { transform: rotateY(0deg)   rotateX(80deg)  translateZ(300px); }
+  .carousel img:nth-child(34) { transform: rotateY(45deg)  rotateX(80deg)  translateZ(300px); }
+  .carousel img:nth-child(35) { transform: rotateY(90deg)  rotateX(80deg)  translateZ(300px); }
+  .carousel img:nth-child(36) { transform: rotateY(135deg) rotateX(80deg)  translateZ(300px); }
+  .carousel img:nth-child(37) { transform: rotateY(180deg) rotateX(80deg)  translateZ(300px); }
+  .carousel img:nth-child(38) { transform: rotateY(225deg) rotateX(80deg)  translateZ(300px); }
+  .carousel img:nth-child(39) { transform: rotateY(270deg) rotateX(80deg)  translateZ(300px); }
+  .carousel img:nth-child(40) { transform: rotateY(315deg) rotateX(80deg)  translateZ(300px); }
+
+  @keyframes spinVertical {
+    from {
+      transform: rotateY(0deg) rotateX(0deg);
+    }
+    to {
+      transform: rotateY(360deg) rotateX(360deg);
+    }
+  }
+}
+
+
   </style>
 </head>
 <body>
-
-<header>
+  <header>
   <div class="logo">
-    <img src="../img/logo.png" alt="Logo Paporalkis">
+    <img src="../img/logo.png" alt="Logo">
   </div>
   <nav>
     <ul>
-      <li><a href="../index.html">Accueil</a></li>
-      <li><a href="devis.html">Demande de devis</a></li>
-      <li><a href="realisations.html">Mes réalisations</a></li>
+      <li><a href="index.html">Accueil</a></li>
       <li><a href="tarifs.html">Tarifs</a></li>
-      <li><a href="planning.html" class="active">Planning</a></li>
+      <li><a href="realisations.html" class="active">Réalisations</a></li>
+      <li><a href="devis.html">Demande de devis</a></li>
       <li><a href="contact.html">Contact</a></li>
     </ul>
   </nav>
 </header>
 
-<main class="form-section">
-  <div class="overlay">
-    <h1>Planning</h1>
-    <p>Consultez mes disponibilités ci-dessous :</p>
+  <div class="page-title">Mes réalisations</div>
 
-    <div class="calendar-wrapper">
-      <iframe src="https://calendar.google.com/calendar/embed?src=kpaporalkis.pro%40gmail.com&ctz=Europe%2FParis"></iframe>
-    </div>
-
-    <h2 style="margin-top: 40px;">Réserver une date</h2>
-    <form action="https://formspree.io/f/mpwrpypd" method="POST">
-      <input type="hidden" name="_captcha" value="false">
-      <input type="hidden" name="_next" value="https://paporalkis.github.io/papo-renov/pages/confirmation.html">
-
-      <label for="name">Nom :</label><br>
-      <input type="text" name="name" required><br><br>
-
-      <label for="email">Email :</label><br>
-      <input type="email" name="email" required><br><br>
-
-      <label for="date">Date souhaitée :</label><br>
-      <input type="date" name="date" required><br><br>
-
-      <label for="message">Message complémentaire :</label><br>
-      <textarea name="message" rows="4" placeholder="Précisez vos besoins..."></textarea><br><br>
-
-      <button type="submit" class="cta-button">Envoyer la demande</button>
-    </form>
-    <p style="font-size: 0.9em; color: #666;">* Vous recevrez une réponse de confirmation par e-mail.</p>
+  <div class="filters">
+    <button data-theme="all">Tous</button>
+    <button data-theme="sdb">Salle de bain</button>
+    <button data-theme="cuisine">Cuisine</button>
+    <button data-theme="dressing">Dressing</button>
+    <button data-theme="exterieur">Extérieur</button>
+    <button data-theme="autre">Autres</button>
   </div>
-</main>
 
-<footer>
-  <p>&copy; 2025 Paporalkis - Tous droits réservés</p>
-</footer>
+  <div class="carousel-container">
+    <div class="carousel" id="carousel"></div>
+  </div>
 
+  <div class="zoom-viewer" id="zoomViewer">
+    <span class="close-btn" onclick="closeZoom()">&times;</span>
+    <img id="zoomImage" src="" alt="zoom">
+    <div class="zoom-comment" id="zoomComment"></div>
+  </div>
+
+  <script>
+    const carousel = document.getElementById("carousel");
+    const zoomViewer = document.getElementById("zoomViewer");
+    const zoomImage = document.getElementById("zoomImage");
+    const zoomComment = document.getElementById("zoomComment");
+
+    const imagesData = [
+      { src: '../img/CHBR0.jpg', theme: 'chambre', comment: 'Chambre 1' },
+    { src: '../img/CHBR1.jpg', theme: 'chambre', comment: 'Chambre 2' },
+    { src: '../img/CUIEXT.jpg', theme: 'cuisine', comment: 'Cuisine + extension' },
+    { src: '../img/CUIEXT1.jpg', theme: 'cuisine', comment: 'Cuisine extérieure vue 1' },
+    { src: '../img/CUIEXT2.jpg', theme: 'cuisine', comment: 'Cuisine extérieure vue 2' },
+    { src: '../img/CUIEXT3.jpg', theme: 'cuisine', comment: 'Cuisine extérieure vue 3' },
+    { src: '../img/CUIEXT4.jpg', theme: 'cuisine', comment: 'Cuisine extérieure vue 4' },
+    { src: '../img/CUIEXT5.jpg', theme: 'cuisine', comment: 'Cuisine extérieure vue 5' },
+    { src: '../img/CUIEXT6.jpg', theme: 'cuisine', comment: 'Cuisine extérieure vue 6' },
+    { src: '../img/CUIMARS1.jpg', theme: 'cuisine', comment: 'Cuisine Mars vue 1' },
+    { src: '../img/CUIMARS2.jpg', theme: 'cuisine', comment: 'Cuisine Mars vue 2' },
+    { src: '../img/CUIMARS3.jpg', theme: 'cuisine', comment: 'Cuisine Mars vue 3' },
+    { src: '../img/CUIMARS4.jpg', theme: 'cuisine', comment: 'Cuisine Mars vue 4' },
+    { src: '../img/Iso2.jpg', theme: 'autre', comment: 'Isolation 2' },
+    { src: '../img/Iso3.jpg', theme: 'autre', comment: 'Isolation 3' },
+    { src: '../img/Iso4.jpg', theme: 'autre', comment: 'Isolation 4' },
+    { src: '../img/Iso5.jpg', theme: 'autre', comment: 'Isolation 5' },
+    { src: '../img/Iso6.jpg', theme: 'autre', comment: 'Isolation 6' },
+    { src: '../img/SDB1.jpg', theme: 'sdb', comment: 'Salle de bain 1' },
+    { src: '../img/SDB2.jpg', theme: 'sdb', comment: 'Salle de bain 2' },
+    { src: '../img/SDB3.jpg', theme: 'sdb', comment: 'Salle de bain 3' },
+    { src: '../img/SDB4.jpg', theme: 'sdb', comment: 'Salle de bain 4' },
+    { src: '../img/SDB5.jpg', theme: 'sdb', comment: 'Salle de bain 5' },
+    { src: '../img/WC2.jpg', theme: 'sdb', comment: 'WC stylé' },
+    { src: '../img/cuisine_exterieure_cyporex.jpg', theme: 'cuisine', comment: 'Cuisine extérieure Cyporex' },
+    { src: '../img/ext1.jpg', theme: 'exterieur', comment: 'Extérieur 1' },
+    { src: '../img/ext2.jpg', theme: 'exterieur', comment: 'Extérieur 2' },
+    { src: '../img/exterieur.jpg', theme: 'exterieur', comment: 'Extérieur générique' },
+    { src: '../img/meuble-laura-1.jpg', theme: 'dressing', comment: 'Dressing Laura 1' },
+    { src: '../img/meuble-laura-2.jpg', theme: 'dressing', comment: 'Dressing Laura 2' },
+    { src: '../img/meuble-laura-3.jpg', theme: 'dressing', comment: 'Dressing Laura 3' },
+    { src: '../img/martegauxavant1.jpg', theme: 'autre', comment: 'Avant Martegaux 1' },
+    { src: '../img/martegauxavant2.jpg', theme: 'autre', comment: 'Avant Martegaux 2' },
+    { src: '../img/martegauxavant3.jpg', theme: 'autre', comment: 'Avant Martegaux 3' },
+    { src: '../img/martegauxB.jpg', theme: 'autre', comment: 'Martegaux B' },
+    { src: '../img/martegauxC.jpg', theme: 'autre', comment: 'Martegaux C' },
+    { src: '../img/martegauxD.jpg', theme: 'autre', comment: 'Martegaux D' },
+    { src: '../img/martegauxE.jpg', theme: 'autre', comment: 'Martegaux E' },
+    { src: '../img/velaux0.jpg', theme: 'autre', comment: 'Velaux 0' },
+    { src: '../img/velaux1.jpg', theme: 'autre', comment: 'Velaux 1' },
+    { src: '../img/velaux2.jpg', theme: 'autre', comment: 'Velaux 2' },
+    { src: '../img/velaux3.jpg', theme: 'autre', comment: 'Velaux 3' }
+    ];
+
+    let angle = 0;
+    let autoRotate = true;
+    let isDragging = false;
+    let startX = 0;
+    let dragged = false;
+
+    function generateImages(filter = 'all') {
+      carousel.innerHTML = '';
+      const filtered = filter === 'all' ? imagesData : imagesData.filter(img => img.theme === filter);
+      filtered.forEach((data, i) => {
+        const img = document.createElement('img');
+        img.src = data.src;
+        img.setAttribute('data-theme', data.theme);
+        img.setAttribute('data-comment', data.comment);
+        img.addEventListener('click', () => { if (!dragged) showZoom(data); });
+        carousel.appendChild(img);
+      });
+      positionImages();
+      
+    }
+
+function positionImagesMobilePortrait() {
+  if (!(window.innerWidth <= 768 && window.innerHeight > window.innerWidth)) return;
+
+  const images = document.querySelectorAll('.carousel img');
+  const total = images.length;
+  const rings = 5;
+  const perRing = Math.ceil(total / rings);
+  const radius = 180;
+
+  images.forEach((img, i) => {
+    const ring = Math.floor(i / perRing);
+    const thetaDeg = (i % perRing) * (360 / perRing);
+    const theta = thetaDeg * Math.PI / 180;
+    const phi = (ring / (rings - 1)) * Math.PI;
+
+    const x = Math.sin(phi) * Math.sin(theta) * radius;
+    const y = Math.cos(phi) * radius - 60;
+    const z = Math.sin(phi) * Math.cos(theta) * radius;
+
+    img.style.transform = `translate3d(${x}px, ${y}px, ${z}px)`;
+    img.style.zIndex = Math.round(1000 - z);
+  });
+}
+window.addEventListener('load', () => {
+  positionImagesMobilePortrait();
+});
+    function animate() {
+      if (autoRotate && !isDragging) {
+        angle += 0.1;// 👉 diminuez cette valeur, ex. 0.1 pour ralentir*/
+        positionImages();
+      }
+      requestAnimationFrame(animate);
+    }
+
+    function showZoom(data) {
+      zoomImage.src = data.src;
+      zoomComment.textContent = data.comment;
+      zoomViewer.style.display = 'flex';
+    }
+
+zoomViewer.addEventListener('click', function (e) {
+
+  if (e.target === zoomViewer || e.target === zoomComment) {
+    closeZoom();
+  }
+   }); 
+    function closeZoom() {
+      zoomViewer.style.display = 'none';
+    }
+
+    // Drag souris
+    carousel.addEventListener('mousedown', e => {
+      isDragging = true;
+      dragged = false;
+      startX = e.clientX;
+      autoRotate = false;
+    });
+    document.addEventListener('mouseup', () => {
+      isDragging = false;
+      autoRotate = true;
+      setTimeout(() => { dragged = false; }, 50);
+    });
+    document.addEventListener('mousemove', e => {
+      if (isDragging) {
+        const dx = e.clientX - startX;
+        angle += dx * 0.3;
+        startX = e.clientX;
+        dragged = true;
+        positionImages();
+      }
+    });
+
+    // Drag tactile
+    carousel.addEventListener('touchstart', e => {
+      isDragging = true;
+      startX = e.touches[0].clientX;
+      autoRotate = false;
+    });
+    carousel.addEventListener('touchend', () => {
+      isDragging = false;
+      autoRotate = true;
+    });
+    carousel.addEventListener('touchmove', e => {
+      if (isDragging) {
+        const dx = e.touches[0].clientX - startX;
+        angle += dx * 0.3;
+        startX = e.touches[0].clientX;
+        positionImages();
+      }
+    });
+
+    document.querySelectorAll('.filters button').forEach(btn => {
+      btn.addEventListener('click', () => generateImages(btn.dataset.theme));
+    });
+
+    generateImages();
+    animate();
+  </script>
 </body>
 </html>
