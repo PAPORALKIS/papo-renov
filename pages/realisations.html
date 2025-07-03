@@ -217,20 +217,17 @@ nav ul li a.active {
     perspective: 1000px;
     height: 100vh;
     overflow: hidden;
+  }
+
+  .carousel {
+    width: 50%;
+    height: 50%;
+    transform-style: preserve-3d;
+    /*animation: spinVertical 30s infinite linear*/
+    transform-origin: 50% 20% -200px ; /* X Y Z */
     position: relative;
   }
 
-.carousel {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    transform-style: preserve-3d;
-    transform-origin: 50% 60%;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-  }
-  
   .carousel img {
     position: absolute;
     width: 70px;
@@ -409,27 +406,23 @@ nav ul li a.active {
       
     }
 
-function positionImagesMobilePortrait() {
-  if (!(window.innerWidth <= 768 && window.innerHeight > window.innerWidth)) return;
+    function positionImages() {
+  // Bloque tout repositionnement sur mobile portrait
+  if (window.innerWidth <= 768 && window.innerHeight > window.innerWidth) return;
 
-  const images = document.querySelectorAll('.carousel img');
+  const images = carousel.querySelectorAll('img');
   const total = images.length;
-  const rings = 5;
-  const perRing = Math.ceil(total / rings);
-  const radius = 180;
-
+  const step = 360 / total;
+  const yOffset = -100; // ✅ Valeur à ajuster pour descendre (ou remonter) les images    
   images.forEach((img, i) => {
-    const ring = Math.floor(i / perRing);
-    const thetaDeg = (i % perRing) * (360 / perRing);
-    const theta = thetaDeg * Math.PI / 180;
-    const phi = (ring / (rings - 1)) * Math.PI;
-
-    const x = Math.sin(phi) * Math.sin(theta) * radius;
-    const y = Math.cos(phi) * radius - 60;
-    const z = Math.sin(phi) * Math.cos(theta) * radius;
-
-    img.style.transform = `translate3d(${x}px, ${y}px, ${z}px)`;
-    img.style.zIndex = Math.round(1000 - z);
+    const theta = i * step + angle;
+    const rad = theta * Math.PI / 180;
+    const x = Math.sin(rad) * parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--translateZ'));
+    const z = Math.cos(rad) * parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--translateZ'));
+    const isFront = Math.abs(theta % 360) < step / 2;
+    img.style.transform = `translateX(${x}px) translateY(${yOffset}px)
+    translateZ(${z}px)` + (isFront ? ' scale(1.9)' : '');
+    img.style.zIndex = Math.round(1000 - Math.abs(theta % 360));
   });
 }
 
