@@ -243,6 +243,27 @@ nav ul li a.active {
   }
 
   /* Positionner les 40 images en 5 cercles de 8 images */
+  /* 
+
+✅ rotateY(0deg)
+  Effet : Rotation autour de l’axe vertical (Y).
+  0° = pas de rotation.
+  Si tu mets rotateY(90deg) → l’image tourne de 90° sur l’axe vertical (comme tourner la tête vers la droite).
+  Incidence : détermine la position autour du cercle horizontal (comme les heures sur une horloge).
+  
+✅ rotateX(0deg)
+  Effet : Rotation autour de l’axe horizontal (X).
+  0° = pas de basculement.
+  Si tu mets rotateX(20deg) → l’image bascule vers l’arrière.
+  Incidence : permet de créer plusieurs couches verticales (comme des étages), pour former un globe ou une sphère.
+
+✅ translateZ(200px)
+  Effet : Décale l’image vers l’avant (positif) ou l’arrière (négatif) par rapport à l’axe Z (profondeur 3D).
+  200px = pousse l’image devant la caméra de 200px.
+  Si tu mets translateZ(100px) → image plus proche du centre (donc plus serrée avec les autres).
+  Si tu mets translateZ(400px) → image plus éloignée (donc plus espacé visuellement dans le cercle).
+
+ */
   .carousel img:nth-child(1)  { transform: rotateY(0deg)   rotateX(0deg)   translateZ(200px); }
   .carousel img:nth-child(2)  { transform: rotateY(45deg)  rotateX(0deg)   translateZ(200px); }
   .carousel img:nth-child(3)  { transform: rotateY(90deg)  rotateX(0deg)   translateZ(200px); }
