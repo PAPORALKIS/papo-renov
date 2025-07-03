@@ -221,16 +221,15 @@ nav ul li a.active {
   }
 
   .carousel {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    transform-style: preserve-3d;
-    transform-origin: 50% 60%;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%) scale(0.95);
-  }
-
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transform-origin: 50% 60%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.95) rotateX(var(--rotateX, 0deg)) rotateY(var(--rotateY, 0deg));
+}
   .carousel img {
     position: absolute;
     width: 50px;
@@ -419,6 +418,51 @@ nav ul li a.active {
     let isDragging = false;
     let startX = 0;
     let dragged = false;
+
+  // Exécute uniquement si on est en mobile portrait
+  function isMobilePortrait() {
+    return window.matchMedia("(max-width: 768px) and (orientation: portrait)").matches;
+  }
+
+  if (isMobilePortrait()) {
+    const carousel = document.querySelector('.carousel');
+    let isDragging = false;
+    let startX, startY;
+    let rotateX = 0;
+    let rotateY = 0;
+
+    carousel.addEventListener('touchstart', (e) => {
+      isDragging = true;
+      startX = e.touches[0].clientX;
+      startY = e.touches[0].clientY;
+    });
+
+    carousel.addEventListener('touchmove', (e) => {
+      if (!isDragging) return;
+
+      const currentX = e.touches[0].clientX;
+      const currentY = e.touches[0].clientY;
+
+      const deltaX = currentX - startX;
+      const deltaY = currentY - startY;
+
+      rotateY += deltaX * 0.3;
+      rotateX -= deltaY * 0.3;
+
+      // Limite l'angle X pour éviter de retourner complètement la sphère
+      rotateX = Math.max(Math.min(rotateX, 90), -90);
+
+      carousel.style.setProperty('--rotateX', `${rotateX}deg`);
+      carousel.style.setProperty('--rotateY', `${rotateY}deg`);
+
+      startX = currentX;
+      startY = currentY;
+    });
+
+    carousel.addEventListener('touchend', () => {
+      isDragging = false;
+    });
+  }
 
     function generateImages(filter = 'all') {
       carousel.innerHTML = '';
