@@ -432,7 +432,9 @@ function positionImagesMobilePortrait() {
     img.style.zIndex = Math.round(1000 - z);
   });
 }
-
+window.addEventListener('load', () => {
+  positionImagesMobilePortrait();
+});
     function animate() {
       if (autoRotate && !isDragging) {
         angle += 0.1;// 👉 diminuez cette valeur, ex. 0.1 pour ralentir*/
