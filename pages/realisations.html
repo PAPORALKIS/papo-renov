@@ -218,6 +218,8 @@ nav ul li a.active {
     height: 100vh;
     overflow: hidden;
     position: relative;
+     touch-action: none; /* empêche le scroll natif pour gérer le drag tactile */
+  }
   }
 
   .carousel {
@@ -413,9 +415,8 @@ nav ul li a.active {
     { src: '../img/velaux3.jpg', theme: 'autre', comment: 'Velaux 3' }
     ];
 
-    let angle = 0;
-    let autoRotate = true;
-    let isDragging = false;
+    
+    
     let startX = 0;
     let dragged = false;
 
@@ -432,13 +433,13 @@ nav ul li a.active {
     let rotateY = 0;
 
     carousel.addEventListener('touchstart', (e) => {
-      isDragging = true;
-      startX = e.touches[0].clientX;
-      startY = e.touches[0].clientY;
-    });
+    isDragging = true;
+    startX = e.touches[0].clientX;
+    startY = e.touches[0].clientY;
+  });
 
     carousel.addEventListener('touchmove', (e) => {
-      if (!isDragging) return;
+    if (!isDragging) return;
 
       const currentX = e.touches[0].clientX;
       const currentY = e.touches[0].clientY;
@@ -449,20 +450,20 @@ nav ul li a.active {
       rotateY += deltaX * 0.3;
       rotateX -= deltaY * 0.3;
 
-      // Limite l'angle X pour éviter de retourner complètement la sphère
-      rotateX = Math.max(Math.min(rotateX, 90), -90);
+      // Limite X entre -90° et +90° pour rester réaliste
+    rotateX = Math.max(Math.min(rotateX, 90), -90);
 
-      carousel.style.setProperty('--rotateX', `${rotateX}deg`);
-      carousel.style.setProperty('--rotateY', `${rotateY}deg`);
+    carousel.style.setProperty('--rotateX', `${rotateX}deg`);
+    carousel.style.setProperty('--rotateY', `${rotateY}deg`);
 
-      startX = currentX;
-      startY = currentY;
-    });
+    startX = currentX;
+    startY = currentY;
+  });
 
-    carousel.addEventListener('touchend', () => {
-      isDragging = false;
-    });
-  }
+  carousel.addEventListener('touchend', () => {
+    isDragging = false;
+  });
+}
 
     function generateImages(filter = 'all') {
       carousel.innerHTML = '';
