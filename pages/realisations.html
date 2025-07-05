@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -6,150 +7,100 @@
   <title>Mes Réalisations - Carrousel 3D</title>
   <style>
     :root {
-      --img-size: min(20vw, 150px);/* 👉 taille des images : modifiez ici */
-      --translateZ: 490px;/* 👉 plus grand = images plus éloignées entre elles */
-      --perspective: 2200px;/* 👉 augmentez à 2500px, 3000px... pour éloigner le carrousel */
+      --img-size: min(20vw, 150px);
+      --translateZ: 490px;
+      --perspective: 2200px;
     }
-    @media (max-width: 768px) {
-      :root {
-        --img-size: 24vw;
-        --translateZ: 300px;
-      }
-    }
-    @media (max-width: 500px) {
-      :root {
-        --img-size: 28vw;
-        --translateZ: 240px;
-      }
-    }
-    @media (max-width: 768px) {
-  .page-title {
-    font-size: 1.6em;
-    padding: 8px 16px;
-  }
-}
 
-@media (max-width: 500px) {
-  .page-title {
-    font-size: 1.4em;
-    padding: 6px 12px;
-  }
-}
     html, body {
-    
-  margin: 0;
-  padding: 0;
-  height: 100%;
-  font-family: 'Poppins', sans-serif;
-  background: #fdfdfd url('../img/fond-outils-filigrane.jpg');
-  background-repeat: repeat;
-  background-size: 400px auto;
-  background-attachment: fixed;
-  background-position: center;
-  opacity: 1;
-}
-   :root {
-  --bg-fond: url('chemin/vers/subtle-tools.jpg'), #f8f8f8; /* 👈 valeur par défaut (Proposition 1) */
-}
-    /* === Header === */
-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background-color: white;
-  padding: 4px 10px;
-  border-bottom: 1px solid #ddd;
-  position: sticky;
-  top: 0;
-  z-index: 1000;
-  flex-wrap: nowrap;
-  overflow-x: auto;
-}
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      font-family: 'Poppins', sans-serif;
+      background: #fdfdfd url('../img/fond-outils-filigrane.jpg');
+      background-repeat: repeat;
+      background-size: 400px auto;
+      background-attachment: fixed;
+      background-position: center;
+    }
 
-.logo {
-  flex: 0 0 auto;
-  margin-right: 10px;
-}
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background-color: white;
+      padding: 4px 10px;
+      border-bottom: 1px solid #ddd;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      flex-wrap: nowrap;
+      overflow-x: auto;
+    }
 
-.logo img {
-  height: 40px;
-  max-width: 80%;
-  object-fit: contain;
-}
+    .logo img {
+      height: 40px;
+      max-width: 80%;
+      object-fit: contain;
+    }
 
-/* === Navigation === */
-nav {
-  flex: 1 1 auto;
-  overflow-x: auto;
-}
+    nav {
+      flex: 1 1 auto;
+      overflow-x: auto;
+    }
 
-nav ul {
-  list-style: none;
-  display: flex;
-  gap: 3px;
-  padding: 0;
-  margin: 0;
-  flex-wrap: nowrap;
-  white-space: nowrap;
-  justify-content: flex-end;
-}
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 3px;
+      padding: 0;
+      margin: 0;
+      flex-wrap: nowrap;
+      white-space: nowrap;
+      justify-content: flex-end;
+    }
 
-nav ul::-webkit-scrollbar {
-  display: none;
-}
+    nav ul li a {
+      text-decoration: none;
+      color: #333;
+      font-weight: 600;
+      padding: 6px 8px;
+      font-size: 12px;
+      display: inline-block;
+      transition: color 0.3s ease;
+    }
 
-nav ul li {
-  white-space: nowrap;
-}
+    nav ul li a:hover,
+    nav ul li a.active {
+      color: #007bff;
+      border-bottom: 2px solid #007bff;
+    }
 
-nav ul li a {
-  text-decoration: none;
-  color: #333;
-  font-weight: 600;
-  padding: 6px 8px;
-  font-size: 12px;/* ← C’est cette ligne qui définit la taille du texte */
-  display: inline-block;
-  transition: color 0.3s ease;
-}
+    .page-title {
+      color: #003366;
+      text-align: center;
+      font-size: 1.8em;
+      margin-top: 25px;
+      padding: 10px 20px;
+    }
 
-nav ul li a:hover,
-nav ul li a.active {
-  color: #007bff;
-  border-bottom: 2px solid #007bff;
-}
-    /* ajout titre page */
-.page-title {
-  color: #003366; /* même couleur que le texte des boutons */
-  text-align: center;
-  font-size: 1.8em;
-  margin-top: 25px;
-  position: relative;
-  z-index: 10; /* Assure qu'il passe devant le fond */
-  background: none;
-  padding: 10px 20px;
-  border-radius: 8px;
-}
-    /* ajout titre page */
     .filters {
       text-align: center;
       margin: 10px auto;
     }
+
     .filters button {
       margin: 4px;
       padding: 6px 12px;
       font-size: 0.9em;
       border-radius: 6px;
-      border: 1px solid #003366; /* ✅ contour de la même couleur que le texte */
+      border: 1px solid #003366;
       background-color: #ffffff;
       color: #003366;
       cursor: pointer;
-       /* ✅ Ombre subtile pour effet de profondeur */
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     }
-    .filters button:hover {
-      background-color: #f0f0f0;
-      color: #003366;
-    }
+
     .carousel-container {
       position: fixed;
       top: 40%;
@@ -163,6 +114,7 @@ nav ul li a.active {
       align-items: center;
       pointer-events: none;
     }
+
     .carousel {
       position: relative;
       transform-style: preserve-3d;
@@ -170,6 +122,7 @@ nav ul li a.active {
       pointer-events: auto;
       cursor: grab;
     }
+
     .carousel img {
       position: absolute;
       width: var(--img-size);
@@ -181,6 +134,7 @@ nav ul li a.active {
       z-index: 1;
       user-select: none;
     }
+
     .zoom-viewer {
       position: fixed;
       top: 0; left: 0;
@@ -192,17 +146,20 @@ nav ul li a.active {
       flex-direction: column;
       z-index: 100;
     }
+
     .zoom-viewer img {
-      max-width: 90vw;/* 👉 largeur maximale de l’image zoomée = 90% de la largeur de la fenêtre */
-      max-height: 70vh;/* 👉 hauteur maximale = 80% de la hauteur de la fenêtre */
+      max-width: 90vw;
+      max-height: 70vh;
       border-radius: 10px;
     }
+
     .zoom-comment {
       color: white;
       margin-top: 10px;
       text-align: center;
       font-size: 1.1em;
     }
+
     .close-btn {
       position: absolute;
       top: 20px;
@@ -212,150 +169,63 @@ nav ul li a.active {
       cursor: pointer;
     }
 
-@media (max-width: 768px) and (orientation: portrait) {
-  .carousel-container {
-    perspective: 1200px;
-    height: 100vh;
-    overflow: hidden;
-    position: relative;
-     touch-action: none; /* empêche le scroll natif pour gérer le drag tactile */
-  }
-  }
-
-  .carousel {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  transform-style: preserve-3d;
-  transform-origin: 50% 60%;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%) scale(0.95) rotateX(var(--rotateX, 0deg)) rotateY(var(--rotateY, 0deg));
-}
-  .carousel img {
-    position: absolute;
-    width: 60px;
-    height: 60px;
-    object-fit: cover;
-    left: 50%;
-    top: 30%;
-    transform-style: preserve-3d;
-    transform: translate(-50%, -50%);
-  }
-
-  /* Positionner les 40 images en 5 cercles de 8 images */
-  /* 
-
-✅ rotateY(0deg)
-  Effet : Rotation autour de l’axe vertical (Y).
-  0° = pas de rotation.
-  Si tu mets rotateY(90deg) → l’image tourne de 90° sur l’axe vertical (comme tourner la tête vers la droite).
-  Incidence : détermine la position autour du cercle horizontal (comme les heures sur une horloge).
-  
-✅ rotateX(0deg)
-  Effet : Rotation autour de l’axe horizontal (X).
-  0° = pas de basculement.
-  Si tu mets rotateX(20deg) → l’image bascule vers l’arrière.
-  Incidence : permet de créer plusieurs couches verticales (comme des étages), pour former un globe ou une sphère.
-
-✅ translateZ(200px)
-  Effet : Décale l’image vers l’avant (positif) ou l’arrière (négatif) par rapport à l’axe Z (profondeur 3D).
-  200px = pousse l’image devant la caméra de 200px.
-  Si tu mets translateZ(100px) → image plus proche du centre (donc plus serrée avec les autres).
-  Si tu mets translateZ(400px) → image plus éloignée (donc plus espacé visuellement dans le cercle).
-
- */
-/* Ligne 1 – rotateX: 20deg */
-.carousel img:nth-child(1)  { transform: rotateY(0deg)   rotateX(40deg) translateZ(150px); }
-.carousel img:nth-child(2)  { transform: rotateY(45deg)  rotateX(40deg) translateZ(150px); }
-.carousel img:nth-child(3)  { transform: rotateY(90deg)  rotateX(40deg) translateZ(150px); }
-.carousel img:nth-child(4)  { transform: rotateY(135deg) rotateX(40deg) translateZ(150px); }
-.carousel img:nth-child(5)  { transform: rotateY(180deg) rotateX(40deg) translateZ(150px); }
-.carousel img:nth-child(6)  { transform: rotateY(225deg) rotateX(40deg) translateZ(150px); }
-.carousel img:nth-child(7)  { transform: rotateY(270deg) rotateX(40deg) translateZ(150px); }
-.carousel img:nth-child(8)  { transform: rotateY(315deg) rotateX(40deg) translateZ(150px); }
-
-/* Ligne 2 – rotateX: 40deg */
-.carousel img:nth-child(9)  { transform: rotateY(0deg)   rotateX(180deg) translateZ(150px); }
-.carousel img:nth-child(10) { transform: rotateY(45deg)  rotateX(180deg) translateZ(150px); }
-.carousel img:nth-child(11) { transform: rotateY(90deg)  rotateX(180deg) translateZ(150px); }
-.carousel img:nth-child(12) { transform: rotateY(135deg) rotateX(180deg) translateZ(150px); }
-.carousel img:nth-child(13) { transform: rotateY(180deg) rotateX(180deg) translateZ(150px); }
-.carousel img:nth-child(14) { transform: rotateY(225deg) rotateX(180deg) translateZ(150px); }
-.carousel img:nth-child(15) { transform: rotateY(270deg) rotateX(180deg) translateZ(150px); }
-.carousel img:nth-child(16) { transform: rotateY(315deg) rotateX(180deg) translateZ(150px); }
-
-/* Ligne 3 – rotateX: 60deg */
-.carousel img:nth-child(17) { transform: rotateY(0deg)   rotateX(60deg) translateZ(150px); }
-.carousel img:nth-child(18) { transform: rotateY(45deg)  rotateX(60deg) translateZ(150px); }
-.carousel img:nth-child(19) { transform: rotateY(90deg)  rotateX(60deg) translateZ(150px); }
-.carousel img:nth-child(20) { transform: rotateY(135deg) rotateX(60deg) translateZ(150px); }
-.carousel img:nth-child(21) { transform: rotateY(180deg) rotateX(60deg) translateZ(150px); }
-.carousel img:nth-child(22) { transform: rotateY(225deg) rotateX(60deg) translateZ(150px); }
-.carousel img:nth-child(23) { transform: rotateY(270deg) rotateX(60deg) translateZ(150px); }
-.carousel img:nth-child(24) { transform: rotateY(315deg) rotateX(60deg) translateZ(150px); }
-
-/* Ligne 4 – rotateX: 80deg */
-.carousel img:nth-child(25) { transform: rotateY(0deg)   rotateX(-180deg) translateZ(150px); }
-.carousel img:nth-child(26) { transform: rotateY(45deg)  rotateX(-180deg) translateZ(150px); }
-.carousel img:nth-child(27) { transform: rotateY(90deg)  rotateX(-180deg) translateZ(150px); }
-.carousel img:nth-child(28) { transform: rotateY(135deg) rotateX(-180deg) translateZ(150px); }
-.carousel img:nth-child(29) { transform: rotateY(180deg) rotateX(-180deg) translateZ(150px); }
-.carousel img:nth-child(30) { transform: rotateY(225deg) rotateX(-180deg) translateZ(150px); }
-.carousel img:nth-child(31) { transform: rotateY(270deg) rotateX(-180deg) translateZ(150px); }
-.carousel img:nth-child(32) { transform: rotateY(315deg) rotateX(-180deg) translateZ(150px); }
-
-/* Ligne 5 – rotateX: 100deg */
-.carousel img:nth-child(33) { transform: rotateY(0deg)   rotateX(-90deg) translateZ(150px); }
-.carousel img:nth-child(34) { transform: rotateY(45deg)  rotateX(-90deg) translateZ(150px); }
-.carousel img:nth-child(35) { transform: rotateY(90deg)  rotateX(-90deg) translateZ(150px); }
-.carousel img:nth-child(36) { transform: rotateY(135deg) rotateX(-90deg) translateZ(150px); }
-.carousel img:nth-child(37) { transform: rotateY(180deg) rotateX(-90deg) translateZ(150px); }
-.carousel img:nth-child(38) { transform: rotateY(225deg) rotateX(-90deg) translateZ(150px); }
-.carousel img:nth-child(39) { transform: rotateY(270deg) rotateX(-90deg) translateZ(150px); }
-.carousel img:nth-child(40) { transform: rotateY(315deg) rotateX(-90deg) translateZ(150px); }
-
-.carousel img:nth-child(41)  { transform: rotateY(0deg)   rotateX(-120deg) translateZ(150px); }
-.carousel img:nth-child(42)  { transform: rotateY(0deg)   rotateX(-120deg) translateZ(150px); }
-.carousel img:nth-child(43)  { transform: rotateY(0deg)   rotateX(-120deg) translateZ(150px); }
-.carousel img:nth-child(44)  { transform: rotateY(0deg)   rotateX(-120deg) translateZ(150px); }
-
-.carousel img:nth-child(45)  { transform: rotateY(0deg)   rotateX(-120deg) translateZ(150px); }
-.carousel img:nth-child(46)  { transform: rotateY(0deg)   rotateX(-120eg) translateZ(150px); }
-.carousel img:nth-child(47)  { transform: rotateY(0deg)   rotateX(-120deg) translateZ(150px); }
-.carousel img:nth-child(48)  { transform: rotateY(0deg)   rotateX(-120deg) translateZ(150px); }
-.carousel img:nth-child(48)  { transform: rotateY(0deg)   rotateX(-120deg) translateZ(150px); }
-  @keyframes spinVertical {
-    from {
-      transform: rotateY(0deg) rotateX(0deg);
+    body.mobile-portrait .carousel-container {
+      perspective: 1200px;
+      height: 100vh;
+      overflow: hidden;
+      position: relative;
+      touch-action: none;
     }
-    to {
-      transform: rotateY(360deg) rotateX(360deg);
+
+    body.mobile-portrait .carousel {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      transform-style: preserve-3d;
+      transform-origin: 50% 60%;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0.95) rotateX(var(--rotateX, 0deg)) rotateY(var(--rotateY, 0deg));
     }
-  }
-}
 
-
+    body.mobile-portrait .carousel img {
+      position: absolute;
+      width: 60px;
+      height: 60px;
+      object-fit: cover;
+      left: 50%;
+      top: 30%;
+      transform-style: preserve-3d;
+      transform: translate(-50%, -50%);
+    }
   </style>
 </head>
+
 <body>
+  <script>
+    function isSmartphonePortrait() {
+      return /Mobi|Android|iPhone/i.test(navigator.userAgent) &&
+             window.matchMedia("(orientation: portrait)").matches;
+    }
+    if (isSmartphonePortrait()) {
+      document.body.classList.add("mobile-portrait");
+    }
+  </script>
+
   <header>
-  <div class="logo">
-    <img src="../img/logo.png" alt="Logo">
-  </div>
-  <nav>
-    <ul>
-      <li><a href="index.html">Accueil</a></li>
-      <li><a href="tarifs.html">Tarifs</a></li>
-      <li><a href="realisations.html" class="active">Réalisations</a></li>
-      <li><a href="devis.html">Demande de devis</a></li>
-      <li><a href="contact.html">Contact</a></li>
-    </ul>
-  </nav>
-</header>
+    <div class="logo"><img src="../img/logo.png" alt="Logo"></div>
+    <nav>
+      <ul>
+        <li><a href="index.html">Accueil</a></li>
+        <li><a href="tarifs.html">Tarifs</a></li>
+        <li><a href="realisations.html" class="active">Réalisations</a></li>
+        <li><a href="devis.html">Demande de devis</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
 
   <div class="page-title">Mes réalisations</div>
-
   <div class="filters">
     <button data-theme="all">Tous</button>
     <button data-theme="sdb">Salle de bain</button>
@@ -365,9 +235,7 @@ nav ul li a.active {
     <button data-theme="autre">Autres</button>
   </div>
 
-  <div class="carousel-container">
-    <div class="carousel" id="carousel"></div>
-  </div>
+  <div class="carousel-container"><div class="carousel" id="carousel"></div></div>
 
   <div class="zoom-viewer" id="zoomViewer">
     <span class="close-btn" onclick="closeZoom()">&times;</span>
