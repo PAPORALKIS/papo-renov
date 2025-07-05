@@ -518,11 +518,13 @@ zoomViewer.addEventListener('click', function (e) {
     
   
   <script>
+<script>
 function isMobilePortrait() {
   return window.innerWidth <= 768 && window.innerHeight > window.innerWidth;
 }
 
-function setupMobileCarouselControls() {
+function setupMobilePortraitSphereControl() {
+  // Vérifie mobile portrait uniquement
   if (!isMobilePortrait()) return;
 
   const carousel = document.querySelector('.carousel');
@@ -537,7 +539,9 @@ function setupMobileCarouselControls() {
   let lastRotationX = 0;
   let animationActive = true;
 
+  // Gère l'arrêt de l'animation au touch
   carousel.addEventListener('touchstart', (e) => {
+    if (!isMobilePortrait()) return;
     isDragging = true;
     startX = e.touches[0].clientX;
     startY = e.touches[0].clientY;
@@ -545,8 +549,9 @@ function setupMobileCarouselControls() {
     animationActive = false;
   });
 
+  // Gère le mouvement vertical + horizontal
   carousel.addEventListener('touchmove', (e) => {
-    if (!isDragging) return;
+    if (!isDragging || !isMobilePortrait()) return;
 
     const x = e.touches[0].clientX;
     const y = e.touches[0].clientY;
@@ -554,34 +559,41 @@ function setupMobileCarouselControls() {
     const deltaX = x - startX;
     const deltaY = y - startY;
 
-    currentRotationY = lastRotationY + deltaX * 0.3;
-    currentRotationX = lastRotationX - deltaY * 0.3; // négatif = intuitif (glisser vers le haut => tourner vers le haut)
+    currentRotationY = lastRotationY + deltaX * 0.3; // horizontal → rotationY
+    currentRotationX = lastRotationX - deltaY * 0.3; // vertical → rotationX
 
     carousel.style.transform = `rotateX(${currentRotationX}deg) rotateY(${currentRotationY}deg)`;
   });
 
+  // Fin du drag
   carousel.addEventListener('touchend', () => {
+    if (!isMobilePortrait()) return;
     isDragging = false;
     lastRotationY = currentRotationY;
     lastRotationX = currentRotationX;
   });
 
-  // Redémarre animation après 10s d'inactivité
+  // Redémarre l’animation après 10s d’inactivité
   setInterval(() => {
-    if (!animationActive && !isDragging) {
+    if (isMobilePortrait() && !animationActive && !isDragging) {
       carousel.style.animation = 'spinY 30s linear infinite';
       animationActive = true;
-      currentRotationX = 0;
-      currentRotationY = 0;
       lastRotationX = 0;
       lastRotationY = 0;
+      currentRotationX = 0;
+      currentRotationY = 0;
     }
   }, 10000);
 }
 
-// Initialisation
-setupMobileCarouselControls();
-window.addEventListener('resize', setupMobileCarouselControls);
+// Initialiser au chargement
+setupMobilePortraitSphereControl();
+
+// Réinitialise sur resize (ex : tourner le tel)
+window.addEventListener('resize', () => {
+  setupMobilePortraitSphereControl();
+});
+</script>
 </script>
   </script>
 </body>
