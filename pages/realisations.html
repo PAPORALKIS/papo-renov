@@ -39,7 +39,8 @@
     
   margin: 0;
   padding: 0;
-  height: 100%;
+  min-height: 100vh; /* ✅ autorise le contenu plus long que la vue */
+  height: auto;       /* ✅ utile pour autoriser le scroll */
   font-family: 'Poppins', sans-serif;
   background: #fdfdfd url('../img/fond-outils-filigrane.jpg');
   background-repeat: repeat;
@@ -47,6 +48,10 @@
   background-attachment: fixed;
   background-position: center;
   opacity: 1;
+      overflow-x: auto;  /* ✅ horizontal si nécessaire */
+  overflow-y: auto;  /* ✅ vertical */
+  overscroll-behavior-y: contain; /* ✅ empêche pull-to-refresh sur mobile */
+
 }
    :root {
   --bg-fond: url('chemin/vers/subtle-tools.jpg'), #f8f8f8; /* 👈 valeur par défaut (Proposition 1) */
