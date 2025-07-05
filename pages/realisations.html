@@ -517,86 +517,72 @@ zoomViewer.addEventListener('click', function (e) {
     animate();
     
   
-  function isMobilePortrait() {
-    return window.innerWidth <= 768 && window.innerHeight > window.innerWidth;
-  }
-
-  if (isMobilePortrait()) {
-    const carousel = document.querySelector('.carousel');
-
-    let isDragging = false;
-    let startX;
-    let currentRotationY = 0;
-    let lastRotationY = 0;
-    let animationActive = true;
-
-    // Stop auto-rotation au touch
-    carousel.addEventListener('touchstart', (e) => {
-      isDragging = true;
-      startX = e.touches[0].clientX;
-      carousel.style.animation = 'none';
-      animationActive = false;
-    });
-
-    carousel.addEventListener('touchmove', (e) => {
-      if (!isDragging) return;
-      const x = e.touches[0].clientX;
-      const delta = x - startX;
-
-      currentRotationY = lastRotationY + delta * 0.3;
-      carousel.style.transform = `rotateY(${currentRotationY}deg)`;
-    });
-
-    carousel.addEventListener('touchend', () => {
-      isDragging = false;
-      lastRotationY = currentRotationY;
-    });
-
-    // Relancer l’animation après 10s d’inactivité
-    setInterval(() => {
-      if (!animationActive && !isDragging) {
-        carousel.style.animation = 'spinY 30s linear infinite';
-        animationActive = true;
-        lastRotationY = 0;
-        currentRotationY = 0;
-      }
-    }, 10000);
-  }
-
-  // Scroll vertical + horizontal en mobile portrait
-function enableMobilePortraitScroll() {
-  if (isMobilePortrait()) {
-    document.documentElement.style.overflow = 'auto';
-    document.body.style.overflow = 'auto';
-
-    if (!document.getElementById('mobile-scroll-section')) {
-      const scrollSection = document.createElement('section');
-      scrollSection.id = 'mobile-scroll-section';
-      scrollSection.style.padding = '100px 20px';
-      scrollSection.style.width = '1500px'; // force scroll horizontal
-      scrollSection.style.minHeight = '250vh'; // force scroll vertical
-      scrollSection.style.background = '#f0f0f0';
-      scrollSection.innerHTML = `
-        <h2>Scroll mobile portrait</h2>
-        <div style="width: 1200px; height: 200px; background: #ccc; margin: 20px 0;">Zone horizontale large</div>
-        <div style="height: 100vh; background: #ddd; margin: 20px 0;">Zone verticale haute</div>
-      `;
-      document.body.appendChild(scrollSection);
-    }
-
-    setupCarouselMobilePortrait();
-  } else {
-    document.body.style.overflow = '';
-    document.documentElement.style.overflow = '';
-
-    const existing = document.getElementById('mobile-scroll-section');
-    if (existing) existing.remove();
-  }
+  <script>
+function isMobilePortrait() {
+  return window.innerWidth <= 768 && window.innerHeight > window.innerWidth;
 }
 
-// Initial call
-enableMobilePortraitScroll();
-window.addEventListener('resize', enableMobilePortraitScroll);
+function setupMobileCarouselControls() {
+  if (!isMobilePortrait()) return;
+
+  const carousel = document.querySelector('.carousel');
+  if (!carousel) return;
+
+  let isDragging = false;
+  let startX = 0;
+  let startY = 0;
+  let currentRotationY = 0;
+  let currentRotationX = 0;
+  let lastRotationY = 0;
+  let lastRotationX = 0;
+  let animationActive = true;
+
+  carousel.addEventListener('touchstart', (e) => {
+    isDragging = true;
+    startX = e.touches[0].clientX;
+    startY = e.touches[0].clientY;
+    carousel.style.animation = 'none';
+    animationActive = false;
+  });
+
+  carousel.addEventListener('touchmove', (e) => {
+    if (!isDragging) return;
+
+    const x = e.touches[0].clientX;
+    const y = e.touches[0].clientY;
+
+    const deltaX = x - startX;
+    const deltaY = y - startY;
+
+    currentRotationY = lastRotationY + deltaX * 0.3;
+    currentRotationX = lastRotationX - deltaY * 0.3; // négatif = intuitif (glisser vers le haut => tourner vers le haut)
+
+    carousel.style.transform = `rotateX(${currentRotationX}deg) rotateY(${currentRotationY}deg)`;
+  });
+
+  carousel.addEventListener('touchend', () => {
+    isDragging = false;
+    lastRotationY = currentRotationY;
+    lastRotationX = currentRotationX;
+  });
+
+  // Redémarre animation après 10s d'inactivité
+  setInterval(() => {
+    if (!animationActive && !isDragging) {
+      carousel.style.animation = 'spinY 30s linear infinite';
+      animationActive = true;
+      currentRotationX = 0;
+      currentRotationY = 0;
+      lastRotationX = 0;
+      lastRotationY = 0;
+    }
+  }, 10000);
+}
+
+// Initialisation
+setupMobileCarouselControls();
+window.addEventListener('resize', setupMobileCarouselControls);
+</script>
   </script>
 </body>
 </html>
