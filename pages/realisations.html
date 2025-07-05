@@ -558,7 +558,32 @@ zoomViewer.addEventListener('click', function (e) {
       }
     }, 10000);
   }
+// Active scroll vertical uniquement en mobile portrait
+function enableMobileScroll() {
+  const isPortraitMobile = window.innerWidth <= 768 && window.innerHeight > window.innerWidth;
+  if (!isPortraitMobile) return;
 
+  // Active le scroll vertical
+  document.body.style.overflowY = 'scroll';
+  document.documentElement.style.overflowY = 'scroll';
+
+  // Crée et affiche la section scrollable si pas déjà présente
+  if (!document.getElementById('mobile-scroll-section')) {
+    const scrollSection = document.createElement('section');
+    scrollSection.id = 'mobile-scroll-section';
+    scrollSection.style.padding = '100px 20px';
+    scrollSection.style.fontSize = '1.2rem';
+    scrollSection.innerHTML = `
+      <h2>Autres réalisations & informations</h2>
+      <p>Cette section n’apparaît qu’en mode portrait sur mobile.</p>
+      <p>Ajoute ici des détails, explications, ou toute autre info utile.</p>
+      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus. Suspendisse lectus tortor...</p>
+    `;
+    document.body.appendChild(scrollSection);
+  }
+}
+
+enableMobileScroll(); // Appel au chargement
   </script>
 </body>
 </html>
