@@ -510,6 +510,55 @@ zoomViewer.addEventListener('click', function (e) {
 
     generateImages();
     animate();
+    
+  function isMobilePortrait() {
+    return window.innerWidth <= 768 && window.matchMedia("(orientation: portrait)").matches;
+  }
+
+  if (isMobilePortrait()) {
+    const carousel = document.querySelector('.carousel');
+
+    let isDragging = false;
+    let startX;
+    let currentRotationY = 0;
+    let lastRotationY = 0;
+    let animationActive = true;
+
+    // Stop auto-rotation au touch
+    carousel.addEventListener('touchstart', (e) => {
+      isDragging = true;
+      startX = e.touches[0].clientX;
+
+      // Stop animation CSS
+      carousel.style.animation = 'none';
+      animationActive = false;
+    });
+
+    carousel.addEventListener('touchmove', (e) => {
+      if (!isDragging) return;
+      const x = e.touches[0].clientX;
+      const delta = x - startX;
+
+      currentRotationY = lastRotationY + delta * 0.3;
+      carousel.style.transform = `rotateY(${currentRotationY}deg)`;
+    });
+
+    carousel.addEventListener('touchend', () => {
+      isDragging = false;
+      lastRotationY = currentRotationY;
+    });
+
+    // Relancer l’animation après 10s d’inactivité (facultatif)
+    setInterval(() => {
+      if (!animationActive && !isDragging) {
+        carousel.style.animation = 'spinY 30s linear infinite';
+        animationActive = true;
+        lastRotationY = 0;
+        currentRotationY = 0;
+      }
+    }, 10000);
+  }
+
   </script>
 </body>
 </html>
