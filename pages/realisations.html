@@ -519,10 +519,16 @@ zoomViewer.addEventListener('click', function (e) {
   
   
 
+
 (function () {
   function isMobilePortrait() {
     return window.innerWidth <= 768 && window.innerHeight > window.innerWidth;
   }
+
+  if (!isMobilePortrait()) return;
+
+  const carousel = document.querySelector('.carousel');
+  if (!carousel) return;
 
   let isDragging = false;
   let startX = 0;
@@ -530,73 +536,48 @@ zoomViewer.addEventListener('click', function (e) {
   let currentRotationY = 0;
   let lastRotationY = 0;
   let animationActive = true;
-  let carousel;
 
-  function setupFixedAxisRotation() {
-    if (!isMobilePortrait()) return;
+  // Touch start
+  carousel.addEventListener('touchstart', (e) => {
+    isDragging = true;
+    startX = e.touches[0].clientX;
+    startY = e.touches[0].clientY;
+    carousel.style.animation = 'none';
+    animationActive = false;
+  }, { passive: true });
 
-    carousel = document.querySelector('.carousel');
-    if (!carousel) return;
+  // Touch move : glissement vertical ET horizontal → rotation Y
+  carousel.addEventListener('touchmove', (e) => {
+    if (!isDragging) return;
 
-    // Start touch
-    const onTouchStart = (e) => {
-      if (!isMobilePortrait()) return;
-      isDragging = true;
-      startX = e.touches[0].clientX;
-      startY = e.touches[0].clientY;
-      carousel.style.animation = 'none';
-      animationActive = false;
-    };
+    const x = e.touches[0].clientX;
+    const y = e.touches[0].clientY;
+    const deltaX = x - startX;
+    const deltaY = y - startY;
 
-    // Move touch — les deux directions pilotent rotateY uniquement
-    const onTouchMove = (e) => {
-      if (!isDragging || !isMobilePortrait()) return;
+    // Combine les deux mouvements pour toujours tourner sur l'axe Y
+    const combinedDelta = deltaX + deltaY;
 
-      const x = e.touches[0].clientX;
-      const y = e.touches[0].clientY;
-      const deltaX = x - startX;
-      const deltaY = y - startY;
+    currentRotationY = lastRotationY + combinedDelta * 0.3;
+    carousel.style.transform = `rotateY(${currentRotationY}deg)`;
+  }, { passive: true });
 
-      const delta = deltaX - deltaY; // combine les 2 glissements
-      currentRotationY = lastRotationY + delta * 0.3;
+  // Touch end
+  carousel.addEventListener('touchend', () => {
+    isDragging = false;
+    lastRotationY = currentRotationY;
+  });
 
-      carousel.style.transform = `rotateY(${currentRotationY}deg)`;
-    };
+  // Relance animation auto après 10 sec
+  setInterval(() => {
+    if (!animationActive && !isDragging) {
+      carousel.style.animation = 'spinY 30s linear infinite';
+      animationActive = true;
+      currentRotationY = 0;
+      lastRotationY = 0;
+    }
+  }, 10000);
 
-    const onTouchEnd = () => {
-      if (!isMobilePortrait()) return;
-      isDragging = false;
-      lastRotationY = currentRotationY;
-    };
-
-    const restartInterval = setInterval(() => {
-      if (!isMobilePortrait()) return;
-      if (!animationActive && !isDragging && carousel) {
-        carousel.style.animation = 'spinY 30s linear infinite';
-        animationActive = true;
-        currentRotationY = 0;
-        lastRotationY = 0;
-      }
-    }, 10000);
-
-    // Bind
-    carousel.addEventListener('touchstart', onTouchStart, { passive: true });
-    carousel.addEventListener('touchmove', onTouchMove, { passive: true });
-    carousel.addEventListener('touchend', onTouchEnd);
-
-    // Cleanup on resize
-    window.addEventListener('resize', () => {
-      if (!isMobilePortrait() && carousel) {
-        carousel.removeEventListener('touchstart', onTouchStart);
-        carousel.removeEventListener('touchmove', onTouchMove);
-        carousel.removeEventListener('touchend', onTouchEnd);
-      } else if (isMobilePortrait()) {
-        setupFixedAxisRotation();
-      }
-    });
-  }
-
-  if (isMobilePortrait()) setupFixedAxisRotation();
 })();
 
   </script>
