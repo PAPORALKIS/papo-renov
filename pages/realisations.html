@@ -517,16 +517,11 @@ zoomViewer.addEventListener('click', function (e) {
     animate();
     
   
-  <script>
-function isMobilePortrait() {
-  return window.innerWidth <= 768 && window.innerHeight > window.innerWidth;
-}
-
-function setupMobileCarouselControls() {
-  if (!isMobilePortrait()) return;
-
-  const carousel = document.querySelector('.carousel');
-  if (!carousel) return;
+  
+(function () {
+  function isMobilePortrait() {
+    return window.innerWidth <= 768 && window.innerHeight > window.innerWidth;
+  }
 
   let isDragging = false;
   let startX = 0;
@@ -537,52 +532,80 @@ function setupMobileCarouselControls() {
   let lastRotationX = 0;
   let animationActive = true;
 
-  carousel.addEventListener('touchstart', (e) => {
-    isDragging = true;
-    startX = e.touches[0].clientX;
-    startY = e.touches[0].clientY;
-    carousel.style.animation = 'none';
-    animationActive = false;
-  });
+  let carousel;
 
-  carousel.addEventListener('touchmove', (e) => {
-    if (!isDragging) return;
+  function addMobileTouchEvents() {
+    if (!isMobilePortrait()) return;
 
-    const x = e.touches[0].clientX;
-    const y = e.touches[0].clientY;
+    carousel = document.querySelector('.carousel');
+    if (!carousel) return;
 
-    const deltaX = x - startX;
-    const deltaY = y - startY;
+    // Stoppe l'animation auto au toucher
+    const onTouchStart = (e) => {
+      if (!isMobilePortrait()) return;
+      isDragging = true;
+      startX = e.touches[0].clientX;
+      startY = e.touches[0].clientY;
+      carousel.style.animation = 'none';
+      animationActive = false;
+    };
 
-    currentRotationY = lastRotationY + deltaX * 0.3;
-    currentRotationX = lastRotationX - deltaY * 0.3; // négatif = intuitif (glisser vers le haut => tourner vers le haut)
+    const onTouchMove = (e) => {
+      if (!isDragging || !isMobilePortrait()) return;
 
-    carousel.style.transform = `rotateX(${currentRotationX}deg) rotateY(${currentRotationY}deg)`;
-  });
+      const x = e.touches[0].clientX;
+      const y = e.touches[0].clientY;
 
-  carousel.addEventListener('touchend', () => {
-    isDragging = false;
-    lastRotationY = currentRotationY;
-    lastRotationX = currentRotationX;
-  });
+      const deltaX = x - startX;
+      const deltaY = y - startY;
 
-  // Redémarre animation après 10s d'inactivité
-  setInterval(() => {
-    if (!animationActive && !isDragging) {
-      carousel.style.animation = 'spinY 30s linear infinite';
-      animationActive = true;
-      currentRotationX = 0;
-      currentRotationY = 0;
-      lastRotationX = 0;
-      lastRotationY = 0;
-    }
-  }, 10000);
-}
+      currentRotationY = lastRotationY + deltaX * 0.3;
+      currentRotationX = lastRotationX - deltaY * 0.3;
 
-// Initialisation
-setupMobileCarouselControls();
-window.addEventListener('resize', setupMobileCarouselControls);
-</script>
+      carousel.style.transform = `rotateX(${currentRotationX}deg) rotateY(${currentRotationY}deg)`;
+    };
+
+    const onTouchEnd = () => {
+      if (!isMobilePortrait()) return;
+      isDragging = false;
+      lastRotationY = currentRotationY;
+      lastRotationX = currentRotationX;
+    };
+
+    // Auto-rotation relancée après 10s
+    const restartInterval = setInterval(() => {
+      if (!isMobilePortrait()) return;
+      if (!animationActive && !isDragging && carousel) {
+        carousel.style.animation = 'spinY 30s linear infinite';
+        animationActive = true;
+        currentRotationX = 0;
+        currentRotationY = 0;
+        lastRotationX = 0;
+        lastRotationY = 0;
+      }
+    }, 10000);
+
+    // Ajoute les écouteurs uniquement sur mobile portrait
+    carousel.addEventListener('touchstart', onTouchStart, { passive: true });
+    carousel.addEventListener('touchmove', onTouchMove, { passive: true });
+    carousel.addEventListener('touchend', onTouchEnd);
+
+    // Supprime les écouteurs si la rotation est plus en portrait
+    window.addEventListener('resize', () => {
+      if (!isMobilePortrait() && carousel) {
+        carousel.removeEventListener('touchstart', onTouchStart);
+        carousel.removeEventListener('touchmove', onTouchMove);
+        carousel.removeEventListener('touchend', onTouchEnd);
+      } else if (isMobilePortrait() && !carousel) {
+        addMobileTouchEvents(); // rebind si redevenu portrait
+      }
+    });
+  }
+
+  // Lancer uniquement si en portrait au début
+  if (isMobilePortrait()) addMobileTouchEvents();
+})();
+
   </script>
 </body>
 </html>
