@@ -511,8 +511,9 @@ zoomViewer.addEventListener('click', function (e) {
     generateImages();
     animate();
     
+  
   function isMobilePortrait() {
-    return window.innerWidth <= 768 && window.matchMedia("(orientation: portrait)").matches;
+    return window.innerWidth <= 768 && window.innerHeight > window.innerWidth;
   }
 
   if (isMobilePortrait()) {
@@ -528,8 +529,6 @@ zoomViewer.addEventListener('click', function (e) {
     carousel.addEventListener('touchstart', (e) => {
       isDragging = true;
       startX = e.touches[0].clientX;
-
-      // Stop animation CSS
       carousel.style.animation = 'none';
       animationActive = false;
     });
@@ -548,7 +547,7 @@ zoomViewer.addEventListener('click', function (e) {
       lastRotationY = currentRotationY;
     });
 
-    // Relancer l’animation après 10s d’inactivité (facultatif)
+    // Relancer l’animation après 10s d’inactivité
     setInterval(() => {
       if (!animationActive && !isDragging) {
         carousel.style.animation = 'spinY 30s linear infinite';
@@ -558,68 +557,43 @@ zoomViewer.addEventListener('click', function (e) {
       }
     }, 10000);
   }
-// Active scroll vertical uniquement en mobile portrait
-function enableMobileScroll() {
-  const isPortraitMobile = window.innerWidth <= 768 && window.innerHeight > window.innerWidth;
-  if (!isPortraitMobile) return;
 
-  // Active le scroll vertical
-  document.body.style.overflowY = 'scroll';
-  document.documentElement.style.overflowY = 'scroll';
+  // Scroll vertical + horizontal en mobile portrait
+  function enableMobilePortraitScroll() {
+    if (isMobilePortrait()) {
+      document.body.style.overflowY = 'scroll';
+      document.body.style.overflowX = 'scroll';
+      document.documentElement.style.overflowY = 'scroll';
+      document.documentElement.style.overflowX = 'scroll';
 
-  // Crée et affiche la section scrollable si pas déjà présente
-  if (!document.getElementById('mobile-scroll-section')) {
-    const scrollSection = document.createElement('section');
-    scrollSection.id = 'mobile-scroll-section';
-    scrollSection.style.padding = '100px 20px';
-    scrollSection.style.fontSize = '1.2rem';
-    scrollSection.innerHTML =`;
-    document.body.appendChild(scrollSection);
-  }
-}
+      if (!document.getElementById('mobile-scroll-section')) {
+        const scrollSection = document.createElement('section');
+        scrollSection.id = 'mobile-scroll-section';
+        scrollSection.style.padding = '100px 20px';
+        scrollSection.style.width = '1500px'; // Force scroll horizontal
+        scrollSection.style.background = '#f0f0f0';
+        scrollSection.innerHTML = `
+          <h2>Scroll mobile portrait</h2>
+          <p>Cette zone permet de tester le scroll vertical et horizontal.</p>
+          <div style="width: 1200px; height: 200px; background: #ccc; margin: 20px 0;">Zone horizontale large</div>
+          <p>Ajoute ici du contenu utile, des informations supplémentaires, etc.</p>
+          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus. Suspendisse lectus tortor...</p>
+        `;
+        document.body.appendChild(scrollSection);
+      }
+    } else {
+      document.body.style.overflowX = '';
+      document.body.style.overflowY = '';
+      document.documentElement.style.overflowX = '';
+      document.documentElement.style.overflowY = '';
 
-enableMobileScroll(); // Appel au chargement
-function enableMobilePortraitScroll() {
-  const isPortraitMobile = window.innerWidth <= 768 && window.innerHeight > window.innerWidth;
-
-  if (isPortraitMobile) {
-    // Active scroll vertical et horizontal
-    document.body.style.overflowY = 'scroll';
-    document.body.style.overflowX = 'scroll';
-    document.documentElement.style.overflowY = 'scroll';
-    document.documentElement.style.overflowX = 'scroll';
-
-    // Ajoute une section pour tester vertical scroll (si pas déjà là)
-    if (!document.getElementById('mobile-scroll-section')) {
-      const scrollSection = document.createElement('section');
-      scrollSection.id = 'mobile-scroll-section';
-      scrollSection.style.padding = '100px 20px';
-      scrollSection.style.width = '1500px'; // pour forcer le scroll horizontal
-      scrollSection.style.background = '#f0f0f0';
-      scrollSection.innerHTML = `
-        <h2>Scroll mobile portrait</h2>
-        <p>Cette zone permet de tester le scroll vertical et horizontal.</p>
-        <div style="width: 1200px; height: 200px; background: #ccc; margin: 20px 0;">Zone horizontale large</div>
-        <p>Ajoute ici du contenu utile, des informations supplémentaires, etc.</p>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus. Suspendisse lectus tortor...</p>
-      `;
-      document.body.appendChild(scrollSection);
+      const existing = document.getElementById('mobile-scroll-section');
+      if (existing) existing.remove();
     }
-  } else {
-    // Si pas en portrait mobile, on désactive le scroll forcé
-    document.body.style.overflowX = '';
-    document.body.style.overflowY = '';
-    document.documentElement.style.overflowX = '';
-    document.documentElement.style.overflowY = '';
-
-    // Et on supprime la section si présente
-    const existing = document.getElementById('mobile-scroll-section');
-    if (existing) existing.remove();
   }
-}
 
-enableMobilePortraitScroll(); // Initial
-window.addEventListener('resize', enableMobilePortraitScroll); // Dynamique
-  </script>
+  enableMobilePortraitScroll(); // Initial
+  window.addEventListener('resize', enableMobilePortraitScroll); // Dynamique
+</script>
 </body>
 </html>
