@@ -564,38 +564,39 @@ zoomViewer.addEventListener('click', function (e) {
   }
 
   // Scroll vertical + horizontal en mobile portrait
-  function enableMobilePortraitScroll() {
+function enableMobilePortraitScroll() {
   if (isMobilePortrait()) {
-    document.body.style.overflowY = 'scroll';
-    document.body.style.overflowX = 'scroll';
-    document.documentElement.style.overflowY = 'scroll';
-    document.documentElement.style.overflowX = 'scroll';
+    document.documentElement.style.overflow = 'auto';
+    document.body.style.overflow = 'auto';
 
     if (!document.getElementById('mobile-scroll-section')) {
       const scrollSection = document.createElement('section');
       scrollSection.id = 'mobile-scroll-section';
       scrollSection.style.padding = '100px 20px';
-      scrollSection.style.width = '1500px'; // Pour forcer le scroll horizontal
-      scrollSection.style.minHeight = '200vh'; // Pour forcer le scroll vertical
+      scrollSection.style.width = '1500px'; // force scroll horizontal
+      scrollSection.style.minHeight = '250vh'; // force scroll vertical
       scrollSection.style.background = '#f0f0f0';
       scrollSection.innerHTML = `
         <h2>Scroll mobile portrait</h2>
         <div style="width: 1200px; height: 200px; background: #ccc; margin: 20px 0;">Zone horizontale large</div>
+        <div style="height: 100vh; background: #ddd; margin: 20px 0;">Zone verticale haute</div>
       `;
       document.body.appendChild(scrollSection);
     }
+
+    setupCarouselMobilePortrait();
   } else {
-    document.body.style.overflowX = '';
-    document.body.style.overflowY = '';
-    document.documentElement.style.overflowX = '';
-    document.documentElement.style.overflowY = '';
+    document.body.style.overflow = '';
+    document.documentElement.style.overflow = '';
 
     const existing = document.getElementById('mobile-scroll-section');
     if (existing) existing.remove();
   }
 }
-  enableMobilePortraitScroll(); // Initial
-  window.addEventListener('resize', enableMobilePortraitScroll); // Dynamique
-</script>
+
+// Initial call
+enableMobilePortraitScroll();
+window.addEventListener('resize', enableMobilePortraitScroll);
+  </script>
 </body>
 </html>
