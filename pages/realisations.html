@@ -579,6 +579,47 @@ function enableMobileScroll() {
 }
 
 enableMobileScroll(); // Appel au chargement
+function enableMobilePortraitScroll() {
+  const isPortraitMobile = window.innerWidth <= 768 && window.innerHeight > window.innerWidth;
+
+  if (isPortraitMobile) {
+    // Active scroll vertical et horizontal
+    document.body.style.overflowY = 'scroll';
+    document.body.style.overflowX = 'scroll';
+    document.documentElement.style.overflowY = 'scroll';
+    document.documentElement.style.overflowX = 'scroll';
+
+    // Ajoute une section pour tester vertical scroll (si pas déjà là)
+    if (!document.getElementById('mobile-scroll-section')) {
+      const scrollSection = document.createElement('section');
+      scrollSection.id = 'mobile-scroll-section';
+      scrollSection.style.padding = '100px 20px';
+      scrollSection.style.width = '1500px'; // pour forcer le scroll horizontal
+      scrollSection.style.background = '#f0f0f0';
+      scrollSection.innerHTML = `
+        <h2>Scroll mobile portrait</h2>
+        <p>Cette zone permet de tester le scroll vertical et horizontal.</p>
+        <div style="width: 1200px; height: 200px; background: #ccc; margin: 20px 0;">Zone horizontale large</div>
+        <p>Ajoute ici du contenu utile, des informations supplémentaires, etc.</p>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus. Suspendisse lectus tortor...</p>
+      `;
+      document.body.appendChild(scrollSection);
+    }
+  } else {
+    // Si pas en portrait mobile, on désactive le scroll forcé
+    document.body.style.overflowX = '';
+    document.body.style.overflowY = '';
+    document.documentElement.style.overflowX = '';
+    document.documentElement.style.overflowY = '';
+
+    // Et on supprime la section si présente
+    const existing = document.getElementById('mobile-scroll-section');
+    if (existing) existing.remove();
+  }
+}
+
+enableMobilePortraitScroll(); // Initial
+window.addEventListener('resize', enableMobilePortraitScroll); // Dynamique
   </script>
 </body>
 </html>
