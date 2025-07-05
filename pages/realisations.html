@@ -6,100 +6,150 @@
   <title>Mes Réalisations - Carrousel 3D</title>
   <style>
     :root {
-      --img-size: min(20vw, 150px);
-      --translateZ: 490px;
-      --perspective: 2200px;
+      --img-size: min(20vw, 150px);/* 👉 taille des images : modifiez ici */
+      --translateZ: 490px;/* 👉 plus grand = images plus éloignées entre elles */
+      --perspective: 2200px;/* 👉 augmentez à 2500px, 3000px... pour éloigner le carrousel */
     }
+    @media (max-width: 768px) {
+      :root {
+        --img-size: 24vw;
+        --translateZ: 300px;
+      }
+    }
+    @media (max-width: 500px) {
+      :root {
+        --img-size: 28vw;
+        --translateZ: 240px;
+      }
+    }
+    @media (max-width: 768px) {
+  .page-title {
+    font-size: 1.6em;
+    padding: 8px 16px;
+  }
+}
 
+@media (max-width: 500px) {
+  .page-title {
+    font-size: 1.4em;
+    padding: 6px 12px;
+  }
+}
     html, body {
-      margin: 0;
-      padding: 0;
-      height: 100%;
-      font-family: 'Poppins', sans-serif;
-      background: #fdfdfd url('../img/fond-outils-filigrane.jpg');
-      background-repeat: repeat;
-      background-size: 400px auto;
-      background-attachment: fixed;
-      background-position: center;
-    }
+    
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family: 'Poppins', sans-serif;
+  background: #fdfdfd url('../img/fond-outils-filigrane.jpg');
+  background-repeat: repeat;
+  background-size: 400px auto;
+  background-attachment: fixed;
+  background-position: center;
+  opacity: 1;
+}
+   :root {
+  --bg-fond: url('chemin/vers/subtle-tools.jpg'), #f8f8f8; /* 👈 valeur par défaut (Proposition 1) */
+}
+    /* === Header === */
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: white;
+  padding: 4px 10px;
+  border-bottom: 1px solid #ddd;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+}
 
-    header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      background-color: white;
-      padding: 4px 10px;
-      border-bottom: 1px solid #ddd;
-      position: sticky;
-      top: 0;
-      z-index: 1000;
-      flex-wrap: nowrap;
-      overflow-x: auto;
-    }
+.logo {
+  flex: 0 0 auto;
+  margin-right: 10px;
+}
 
-    .logo img {
-      height: 40px;
-      max-width: 80%;
-      object-fit: contain;
-    }
+.logo img {
+  height: 40px;
+  max-width: 80%;
+  object-fit: contain;
+}
 
-    nav {
-      flex: 1 1 auto;
-      overflow-x: auto;
-    }
+/* === Navigation === */
+nav {
+  flex: 1 1 auto;
+  overflow-x: auto;
+}
 
-    nav ul {
-      list-style: none;
-      display: flex;
-      gap: 3px;
-      padding: 0;
-      margin: 0;
-      flex-wrap: nowrap;
-      white-space: nowrap;
-      justify-content: flex-end;
-    }
+nav ul {
+  list-style: none;
+  display: flex;
+  gap: 3px;
+  padding: 0;
+  margin: 0;
+  flex-wrap: nowrap;
+  white-space: nowrap;
+  justify-content: flex-end;
+}
 
-    nav ul li a {
-      text-decoration: none;
-      color: #333;
-      font-weight: 600;
-      padding: 6px 8px;
-      font-size: 12px;
-      display: inline-block;
-      transition: color 0.3s ease;
-    }
+nav ul::-webkit-scrollbar {
+  display: none;
+}
 
-    nav ul li a:hover,
-    nav ul li a.active {
-      color: #007bff;
-      border-bottom: 2px solid #007bff;
-    }
+nav ul li {
+  white-space: nowrap;
+}
 
-    .page-title {
-      color: #003366;
-      text-align: center;
-      font-size: 1.8em;
-      margin-top: 25px;
-      padding: 10px 20px;
-    }
+nav ul li a {
+  text-decoration: none;
+  color: #333;
+  font-weight: 600;
+  padding: 6px 8px;
+  font-size: 12px;/* ← C’est cette ligne qui définit la taille du texte */
+  display: inline-block;
+  transition: color 0.3s ease;
+}
 
+nav ul li a:hover,
+nav ul li a.active {
+  color: #007bff;
+  border-bottom: 2px solid #007bff;
+}
+    /* ajout titre page */
+.page-title {
+  color: #003366; /* même couleur que le texte des boutons */
+  text-align: center;
+  font-size: 1.8em;
+  margin-top: 25px;
+  position: relative;
+  z-index: 10; /* Assure qu'il passe devant le fond */
+  background: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+}
+    /* ajout titre page */
     .filters {
       text-align: center;
       margin: 10px auto;
     }
-
     .filters button {
       margin: 4px;
       padding: 6px 12px;
       font-size: 0.9em;
       border-radius: 6px;
-      border: 1px solid #003366;
+      border: 1px solid #003366; /* ✅ contour de la même couleur que le texte */
       background-color: #ffffff;
       color: #003366;
       cursor: pointer;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+       /* ✅ Ombre subtile pour effet de profondeur */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     }
-
+    .filters button:hover {
+      background-color: #f0f0f0;
+      color: #003366;
+    }
     .carousel-container {
       position: fixed;
       top: 40%;
@@ -113,27 +163,24 @@
       align-items: center;
       pointer-events: none;
     }
-
-.carousel {
-  position: relative;
-  transform-style: preserve-3d;
-  transform: rotateX(-4deg);
-  pointer-events: auto;
-  cursor: grab;
-}
-
-.carousel img {
-  position: absolute;
-  width: var(--img-size);
-  height: var(--img-size);
-  object-fit: cover;
-  border-radius: 12px;
-  box-shadow: 0 0 14px rgba(0,0,0,0.7);
-  transition: transform 0.6s, z-index 0.6s;
-  z-index: 1;
-  user-select: none;
-}
-
+    .carousel {
+      position: relative;
+      transform-style: preserve-3d;
+      transform: rotateX(-4deg);
+      pointer-events: auto;
+      cursor: grab;
+    }
+    .carousel img {
+      position: absolute;
+      width: var(--img-size);
+      height: var(--img-size);
+      object-fit: cover;
+      border-radius: 12px;
+      box-shadow: 0 0 14px rgba(0,0,0,0.7);
+      transition: transform 0.6s, z-index 0.6s;
+      z-index: 1;
+      user-select: none;
+    }
     .zoom-viewer {
       position: fixed;
       top: 0; left: 0;
@@ -145,20 +192,17 @@
       flex-direction: column;
       z-index: 100;
     }
-
     .zoom-viewer img {
-      max-width: 90vw;
-      max-height: 70vh;
+      max-width: 90vw;/* 👉 largeur maximale de l’image zoomée = 90% de la largeur de la fenêtre */
+      max-height: 70vh;/* 👉 hauteur maximale = 80% de la hauteur de la fenêtre */
       border-radius: 10px;
     }
-
     .zoom-comment {
       color: white;
       margin-top: 10px;
       text-align: center;
       font-size: 1.1em;
     }
-
     .close-btn {
       position: absolute;
       top: 20px;
@@ -168,88 +212,108 @@
       cursor: pointer;
     }
 
-    body.mobile-portrait .carousel-container {
-      perspective: 1200px;
-      height: 100vh;
-      overflow: hidden;
-      position: relative;
-      touch-action: none;
-    }
+@media (max-width: 768px) and (orientation: portrait) {
+  .carousel-container {
+    perspective: 1200px;
+    height: 100vh;
+    overflow: hidden;
+  }
 
-    body.mobile-portrait .carousel {
-      position: relative;
-      width: 100%;
-      height: 100%;
-      transform-style: preserve-3d;
-      transform-origin: 50% 60%;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%) scale(0.95) rotateX(var(--rotateX, 0deg)) rotateY(var(--rotateY, 0deg));
-    }
+  .carousel {
+    width: 100%;
+    height: 100%;
+    transform-style: preserve-3d;
+    animation: spinVertical 30s infinite linear;
+    position: relative;
+  }
 
-    body.mobile-portrait .carousel img {
-      position: absolute;
-      width: 60px;
-      height: 60px;
-      object-fit: cover;
-      left: 50%;
-      top: 30%;
-      transform-style: preserve-3d;
-      transform: translate(-50%, -50%);
+  .carousel img {
+    position: absolute;
+    width: 120px;
+    height: 90px;
+    object-fit: cover;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  /* Positionner les 40 images en 5 cercles de 8 images */
+  .carousel img:nth-child(1)  { transform: rotateY(0deg)   rotateX(0deg)   translateZ(300px); }
+  .carousel img:nth-child(2)  { transform: rotateY(45deg)  rotateX(0deg)   translateZ(300px); }
+  .carousel img:nth-child(3)  { transform: rotateY(90deg)  rotateX(0deg)   translateZ(300px); }
+  .carousel img:nth-child(4)  { transform: rotateY(135deg) rotateX(0deg)   translateZ(300px); }
+  .carousel img:nth-child(5)  { transform: rotateY(180deg) rotateX(0deg)   translateZ(300px); }
+  .carousel img:nth-child(6)  { transform: rotateY(225deg) rotateX(0deg)   translateZ(300px); }
+  .carousel img:nth-child(7)  { transform: rotateY(270deg) rotateX(0deg)   translateZ(300px); }
+  .carousel img:nth-child(8)  { transform: rotateY(315deg) rotateX(0deg)   translateZ(300px); }
+
+  .carousel img:nth-child(9)  { transform: rotateY(0deg)   rotateX(20deg)  translateZ(300px); }
+  .carousel img:nth-child(10) { transform: rotateY(45deg)  rotateX(20deg)  translateZ(300px); }
+  .carousel img:nth-child(11) { transform: rotateY(90deg)  rotateX(20deg)  translateZ(300px); }
+  .carousel img:nth-child(12) { transform: rotateY(135deg) rotateX(20deg)  translateZ(300px); }
+  .carousel img:nth-child(13) { transform: rotateY(180deg) rotateX(20deg)  translateZ(300px); }
+  .carousel img:nth-child(14) { transform: rotateY(225deg) rotateX(20deg)  translateZ(300px); }
+  .carousel img:nth-child(15) { transform: rotateY(270deg) rotateX(20deg)  translateZ(300px); }
+  .carousel img:nth-child(16) { transform: rotateY(315deg) rotateX(20deg)  translateZ(300px); }
+
+  .carousel img:nth-child(17) { transform: rotateY(0deg)   rotateX(40deg)  translateZ(300px); }
+  .carousel img:nth-child(18) { transform: rotateY(45deg)  rotateX(40deg)  translateZ(300px); }
+  .carousel img:nth-child(19) { transform: rotateY(90deg)  rotateX(40deg)  translateZ(300px); }
+  .carousel img:nth-child(20) { transform: rotateY(135deg) rotateX(40deg)  translateZ(300px); }
+  .carousel img:nth-child(21) { transform: rotateY(180deg) rotateX(40deg)  translateZ(300px); }
+  .carousel img:nth-child(22) { transform: rotateY(225deg) rotateX(40deg)  translateZ(300px); }
+  .carousel img:nth-child(23) { transform: rotateY(270deg) rotateX(40deg)  translateZ(300px); }
+  .carousel img:nth-child(24) { transform: rotateY(315deg) rotateX(40deg)  translateZ(300px); }
+
+  .carousel img:nth-child(25) { transform: rotateY(0deg)   rotateX(60deg)  translateZ(300px); }
+  .carousel img:nth-child(26) { transform: rotateY(45deg)  rotateX(60deg)  translateZ(300px); }
+  .carousel img:nth-child(27) { transform: rotateY(90deg)  rotateX(60deg)  translateZ(300px); }
+  .carousel img:nth-child(28) { transform: rotateY(135deg) rotateX(60deg)  translateZ(300px); }
+  .carousel img:nth-child(29) { transform: rotateY(180deg) rotateX(60deg)  translateZ(300px); }
+  .carousel img:nth-child(30) { transform: rotateY(225deg) rotateX(60deg)  translateZ(300px); }
+  .carousel img:nth-child(31) { transform: rotateY(270deg) rotateX(60deg)  translateZ(300px); }
+  .carousel img:nth-child(32) { transform: rotateY(315deg) rotateX(60deg)  translateZ(300px); }
+
+  .carousel img:nth-child(33) { transform: rotateY(0deg)   rotateX(80deg)  translateZ(300px); }
+  .carousel img:nth-child(34) { transform: rotateY(45deg)  rotateX(80deg)  translateZ(300px); }
+  .carousel img:nth-child(35) { transform: rotateY(90deg)  rotateX(80deg)  translateZ(300px); }
+  .carousel img:nth-child(36) { transform: rotateY(135deg) rotateX(80deg)  translateZ(300px); }
+  .carousel img:nth-child(37) { transform: rotateY(180deg) rotateX(80deg)  translateZ(300px); }
+  .carousel img:nth-child(38) { transform: rotateY(225deg) rotateX(80deg)  translateZ(300px); }
+  .carousel img:nth-child(39) { transform: rotateY(270deg) rotateX(80deg)  translateZ(300px); }
+  .carousel img:nth-child(40) { transform: rotateY(315deg) rotateX(80deg)  translateZ(300px); }
+
+  @keyframes spinVertical {
+    from {
+      transform: rotateY(0deg) rotateX(0deg);
     }
-    body.mobile-portrait .carousel-container {
-  perspective: 1200px;
-  height: 100vh;
-  overflow: hidden;
-  position: relative;
-  touch-action: none;
+    to {
+      transform: rotateY(360deg) rotateX(360deg);
+    }
+  }
 }
 
-body.mobile-portrait .carousel {
-  width: 100%;
-  height: 100%;
-  transform-origin: 50% 60%;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%) scale(0.95)
-             rotateX(var(--rotateX, 0deg)) rotateY(var(--rotateY, 0deg));
-}
 
-body.mobile-portrait .carousel img {
-  width: 60px;
-  height: 60px;
-  left: 50%;
-  top: 30%;
-  transform: translate(-50%, -50%);
-}
   </style>
 </head>
-
 <body>
-  <script>
-    function isSmartphonePortrait() {
-      return /Mobi|Android|iPhone/i.test(navigator.userAgent) &&
-             window.matchMedia("(orientation: portrait)").matches;
-    }
-    if (isSmartphonePortrait()) {
-      document.body.classList.add("mobile-portrait");
-    }
-  </script>
-
   <header>
-    <div class="logo"><img src="../img/logo.png" alt="Logo"></div>
-    <nav>
-      <ul>
-        <li><a href="index.html">Accueil</a></li>
-        <li><a href="tarifs.html">Tarifs</a></li>
-        <li><a href="realisations.html" class="active">Réalisations</a></li>
-        <li><a href="devis.html">Demande de devis</a></li>
-        <li><a href="contact.html">Contact</a></li>
-      </ul>
-    </nav>
-  </header>
+  <div class="logo">
+    <img src="../img/logo.png" alt="Logo">
+  </div>
+  <nav>
+    <ul>
+      <li><a href="index.html">Accueil</a></li>
+      <li><a href="tarifs.html">Tarifs</a></li>
+      <li><a href="realisations.html" class="active">Réalisations</a></li>
+      <li><a href="devis.html">Demande de devis</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+  </nav>
+</header>
 
   <div class="page-title">Mes réalisations</div>
+
   <div class="filters">
     <button data-theme="all">Tous</button>
     <button data-theme="sdb">Salle de bain</button>
@@ -259,7 +323,9 @@ body.mobile-portrait .carousel img {
     <button data-theme="autre">Autres</button>
   </div>
 
-  <div class="carousel-container"><div class="carousel" id="carousel"></div></div>
+  <div class="carousel-container">
+    <div class="carousel" id="carousel"></div>
+  </div>
 
   <div class="zoom-viewer" id="zoomViewer">
     <span class="close-btn" onclick="closeZoom()">&times;</span>
@@ -273,8 +339,8 @@ body.mobile-portrait .carousel img {
     const zoomImage = document.getElementById("zoomImage");
     const zoomComment = document.getElementById("zoomComment");
 
-    const imagesData = 
-{ src: '../img/CHBR0.jpg', theme: 'chambre', comment: 'Chambre 1' },
+    const imagesData = [
+      { src: '../img/CHBR0.jpg', theme: 'chambre', comment: 'Chambre 1' },
     { src: '../img/CHBR1.jpg', theme: 'chambre', comment: 'Chambre 2' },
     { src: '../img/CUIEXT.jpg', theme: 'cuisine', comment: 'Cuisine + extension' },
     { src: '../img/CUIEXT1.jpg', theme: 'cuisine', comment: 'Cuisine extérieure vue 1' },
@@ -317,51 +383,17 @@ body.mobile-portrait .carousel img {
     { src: '../img/velaux2.jpg', theme: 'autre', comment: 'Velaux 2' },
     { src: '../img/velaux3.jpg', theme: 'autre', comment: 'Velaux 3' }
     ];
+
     let angle = 0;
+    let autoRotate = true;
     let isDragging = false;
     let startX = 0;
     let dragged = false;
 
-    
-  function isSmartphonePortrait() {
-    return /Mobi|Android|iPhone/i.test(navigator.userAgent) &&
-           window.matchMedia("(orientation: portrait)").matches;
-  }
-  if (isSmartphonePortrait()) {
-    document.body.classList.add("mobile-portrait");
-  }
-
-
-      carousel.addEventListener('touchstart', (e) => {
-        isDragging = true;
-        startX = e.touches[0].clientX;
-        startY = e.touches[0].clientY;
-      });
-
-      carousel.addEventListener('touchmove', (e) => {
-        if (!isDragging) return;
-        const currentX = e.touches[0].clientX;
-        const currentY = e.touches[0].clientY;
-        const deltaX = currentX - startX;
-        const deltaY = currentY - startY;
-        rotateY += deltaX * 0.3;
-        rotateX -= deltaY * 0.3;
-        rotateX = Math.max(Math.min(rotateX, 90), -90);
-        carousel.style.setProperty('--rotateX', `${rotateX}deg`);
-        carousel.style.setProperty('--rotateY', `${rotateY}deg`);
-        startX = currentX;
-        startY = currentY;
-      });
-
-      carousel.addEventListener('touchend', () => {
-        isDragging = false;
-      });
-    }
-
     function generateImages(filter = 'all') {
       carousel.innerHTML = '';
       const filtered = filter === 'all' ? imagesData : imagesData.filter(img => img.theme === filter);
-      filtered.forEach((data) => {
+      filtered.forEach((data, i) => {
         const img = document.createElement('img');
         img.src = data.src;
         img.setAttribute('data-theme', data.theme);
@@ -370,28 +402,30 @@ body.mobile-portrait .carousel img {
         carousel.appendChild(img);
       });
       positionImages();
+      
     }
 
     function positionImages() {
-      if (isSmartphonePortrait()) return;
-      const images = carousel.querySelectorAll('img');
-      const total = images.length;
-      const step = 360 / total;
-      const z = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--translateZ'));
-      images.forEach((img, i) => {
-        const theta = i * step + angle;
-        const rad = theta * Math.PI / 180;
-        const x = Math.sin(rad) * z;
-        const zPos = Math.cos(rad) * z;
-        const isFront = Math.abs(theta % 360) < step / 2;
-        img.style.transform = `translateX(${x}px) translateZ(${zPos}px)` + (isFront ? ' scale(1.9)' : '');
-        img.style.zIndex = Math.round(1000 - Math.abs(theta % 360));
-      });
-    }
+  // Bloque tout repositionnement sur mobile portrait
+  if (window.innerWidth <= 768 && window.innerHeight > window.innerWidth) return;
+
+  const images = carousel.querySelectorAll('img');
+  const total = images.length;
+  const step = 360 / total;
+  images.forEach((img, i) => {
+    const theta = i * step + angle;
+    const rad = theta * Math.PI / 180;
+    const x = Math.sin(rad) * parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--translateZ'));
+    const z = Math.cos(rad) * parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--translateZ'));
+    const isFront = Math.abs(theta % 360) < step / 2;
+    img.style.transform = `translateX(${x}px) translateZ(${z}px)` + (isFront ? ' scale(1.9)' : '');
+    img.style.zIndex = Math.round(1000 - Math.abs(theta % 360));
+  });
+}
 
     function animate() {
-      if (!isDragging) {
-        angle += 0.1;
+      if (autoRotate && !isDragging) {
+        angle += 0.1;// 👉 diminuez cette valeur, ex. 0.1 pour ralentir*/
         positionImages();
       }
       requestAnimationFrame(animate);
@@ -403,12 +437,55 @@ body.mobile-portrait .carousel img {
       zoomViewer.style.display = 'flex';
     }
 
+zoomViewer.addEventListener('click', function (e) {
+
+  if (e.target === zoomViewer || e.target === zoomComment) {
+    closeZoom();
+  }
+   }); 
     function closeZoom() {
       zoomViewer.style.display = 'none';
     }
 
-    zoomViewer.addEventListener('click', (e) => {
-      if (e.target === zoomViewer || e.target === zoomComment) closeZoom();
+    // Drag souris
+    carousel.addEventListener('mousedown', e => {
+      isDragging = true;
+      dragged = false;
+      startX = e.clientX;
+      autoRotate = false;
+    });
+    document.addEventListener('mouseup', () => {
+      isDragging = false;
+      autoRotate = true;
+      setTimeout(() => { dragged = false; }, 50);
+    });
+    document.addEventListener('mousemove', e => {
+      if (isDragging) {
+        const dx = e.clientX - startX;
+        angle += dx * 0.3;
+        startX = e.clientX;
+        dragged = true;
+        positionImages();
+      }
+    });
+
+    // Drag tactile
+    carousel.addEventListener('touchstart', e => {
+      isDragging = true;
+      startX = e.touches[0].clientX;
+      autoRotate = false;
+    });
+    carousel.addEventListener('touchend', () => {
+      isDragging = false;
+      autoRotate = true;
+    });
+    carousel.addEventListener('touchmove', e => {
+      if (isDragging) {
+        const dx = e.touches[0].clientX - startX;
+        angle += dx * 0.3;
+        startX = e.touches[0].clientX;
+        positionImages();
+      }
     });
 
     document.querySelectorAll('.filters button').forEach(btn => {
@@ -420,8 +497,3 @@ body.mobile-portrait .carousel img {
   </script>
 </body>
 </html>
-
-  
-
-    
-    
