@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -249,8 +248,8 @@
     const zoomImage = document.getElementById("zoomImage");
     const zoomComment = document.getElementById("zoomComment");
 
-    const imagesData = [
-      { src: '../img/CHBR0.jpg', theme: 'chambre', comment: 'Chambre 1' },
+    const imagesData = [/*... ton tableau comme avant ...*/];
+{ src: '../img/CHBR0.jpg', theme: 'chambre', comment: 'Chambre 1' },
     { src: '../img/CHBR1.jpg', theme: 'chambre', comment: 'Chambre 2' },
     { src: '../img/CUIEXT.jpg', theme: 'cuisine', comment: 'Cuisine + extension' },
     { src: '../img/CUIEXT1.jpg', theme: 'cuisine', comment: 'Cuisine extérieure vue 1' },
@@ -293,61 +292,51 @@
     { src: '../img/velaux2.jpg', theme: 'autre', comment: 'Velaux 2' },
     { src: '../img/velaux3.jpg', theme: 'autre', comment: 'Velaux 3' }
     ];
-
-    
-    
+    let angle = 0;
+    let isDragging = false;
     let startX = 0;
     let dragged = false;
 
-  // Exécute uniquement si on est en mobile portrait
-  function isMobilePortrait() {
-    return window.matchMedia("(max-width: 768px) and (orientation: portrait)").matches;
-  }
+    function isSmartphonePortrait() {
+      return /Mobi|Android|iPhone/i.test(navigator.userAgent) &&
+             window.matchMedia("(orientation: portrait)").matches;
+    }
 
-  if (isMobilePortrait()) {
-    const carousel = document.querySelector('.carousel');
-    let isDragging = false;
-    let startX, startY;
-    let rotateX = 0;
-    let rotateY = 0;
+    if (isSmartphonePortrait()) {
+      let rotateX = 0;
+      let rotateY = 0;
+      let startY = 0;
 
-    carousel.addEventListener('touchstart', (e) => {
-    isDragging = true;
-    startX = e.touches[0].clientX;
-    startY = e.touches[0].clientY;
-  });
+      carousel.addEventListener('touchstart', (e) => {
+        isDragging = true;
+        startX = e.touches[0].clientX;
+        startY = e.touches[0].clientY;
+      });
 
-    carousel.addEventListener('touchmove', (e) => {
-    if (!isDragging) return;
+      carousel.addEventListener('touchmove', (e) => {
+        if (!isDragging) return;
+        const currentX = e.touches[0].clientX;
+        const currentY = e.touches[0].clientY;
+        const deltaX = currentX - startX;
+        const deltaY = currentY - startY;
+        rotateY += deltaX * 0.3;
+        rotateX -= deltaY * 0.3;
+        rotateX = Math.max(Math.min(rotateX, 90), -90);
+        carousel.style.setProperty('--rotateX', `${rotateX}deg`);
+        carousel.style.setProperty('--rotateY', `${rotateY}deg`);
+        startX = currentX;
+        startY = currentY;
+      });
 
-      const currentX = e.touches[0].clientX;
-      const currentY = e.touches[0].clientY;
-
-      const deltaX = currentX - startX;
-      const deltaY = currentY - startY;
-
-      rotateY += deltaX * 0.3;
-      rotateX -= deltaY * 0.3;
-
-      // Limite X entre -90° et +90° pour rester réaliste
-    rotateX = Math.max(Math.min(rotateX, 90), -90);
-
-    carousel.style.setProperty('--rotateX', `${rotateX}deg`);
-    carousel.style.setProperty('--rotateY', `${rotateY}deg`);
-
-    startX = currentX;
-    startY = currentY;
-  });
-
-  carousel.addEventListener('touchend', () => {
-    isDragging = false;
-  });
-}
+      carousel.addEventListener('touchend', () => {
+        isDragging = false;
+      });
+    }
 
     function generateImages(filter = 'all') {
       carousel.innerHTML = '';
       const filtered = filter === 'all' ? imagesData : imagesData.filter(img => img.theme === filter);
-      filtered.forEach((data, i) => {
+      filtered.forEach((data) => {
         const img = document.createElement('img');
         img.src = data.src;
         img.setAttribute('data-theme', data.theme);
@@ -356,30 +345,28 @@
         carousel.appendChild(img);
       });
       positionImages();
-      
     }
 
     function positionImages() {
-  // Bloque tout repositionnement sur mobile portrait
-  if (window.innerWidth <= 768 && window.innerHeight > window.innerWidth) return;
-
-  const images = carousel.querySelectorAll('img');
-  const total = images.length;
-  const step = 360 / total;
-  images.forEach((img, i) => {
-    const theta = i * step + angle;
-    const rad = theta * Math.PI / 180;
-    const x = Math.sin(rad) * parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--translateZ'));
-    const z = Math.cos(rad) * parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--translateZ'));
-    const isFront = Math.abs(theta % 360) < step / 2;
-    img.style.transform = `translateX(${x}px) translateZ(${z}px)` + (isFront ? ' scale(1.9)' : '');
-    img.style.zIndex = Math.round(1000 - Math.abs(theta % 360));
-  });
-}
+      if (isSmartphonePortrait()) return;
+      const images = carousel.querySelectorAll('img');
+      const total = images.length;
+      const step = 360 / total;
+      const z = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--translateZ'));
+      images.forEach((img, i) => {
+        const theta = i * step + angle;
+        const rad = theta * Math.PI / 180;
+        const x = Math.sin(rad) * z;
+        const zPos = Math.cos(rad) * z;
+        const isFront = Math.abs(theta % 360) < step / 2;
+        img.style.transform = `translateX(${x}px) translateZ(${zPos}px)` + (isFront ? ' scale(1.9)' : '');
+        img.style.zIndex = Math.round(1000 - Math.abs(theta % 360));
+      });
+    }
 
     function animate() {
-      if (autoRotate && !isDragging) {
-        angle += 0.1;// 👉 diminuez cette valeur, ex. 0.1 pour ralentir*/
+      if (!isDragging) {
+        angle += 0.1;
         positionImages();
       }
       requestAnimationFrame(animate);
@@ -391,55 +378,12 @@
       zoomViewer.style.display = 'flex';
     }
 
-zoomViewer.addEventListener('click', function (e) {
-
-  if (e.target === zoomViewer || e.target === zoomComment) {
-    closeZoom();
-  }
-   }); 
     function closeZoom() {
       zoomViewer.style.display = 'none';
     }
 
-    // Drag souris
-    carousel.addEventListener('mousedown', e => {
-      isDragging = true;
-      dragged = false;
-      startX = e.clientX;
-      autoRotate = false;
-    });
-    document.addEventListener('mouseup', () => {
-      isDragging = false;
-      autoRotate = true;
-      setTimeout(() => { dragged = false; }, 50);
-    });
-    document.addEventListener('mousemove', e => {
-      if (isDragging) {
-        const dx = e.clientX - startX;
-        angle += dx * 0.3;
-        startX = e.clientX;
-        dragged = true;
-        positionImages();
-      }
-    });
-
-    // Drag tactile
-    carousel.addEventListener('touchstart', e => {
-      isDragging = true;
-      startX = e.touches[0].clientX;
-      autoRotate = false;
-    });
-    carousel.addEventListener('touchend', () => {
-      isDragging = false;
-      autoRotate = true;
-    });
-    carousel.addEventListener('touchmove', e => {
-      if (isDragging) {
-        const dx = e.touches[0].clientX - startX;
-        angle += dx * 0.3;
-        startX = e.touches[0].clientX;
-        positionImages();
-      }
+    zoomViewer.addEventListener('click', (e) => {
+      if (e.target === zoomViewer || e.target === zoomComment) closeZoom();
     });
 
     document.querySelectorAll('.filters button').forEach(btn => {
@@ -451,3 +395,8 @@ zoomViewer.addEventListener('click', function (e) {
   </script>
 </body>
 </html>
+
+  
+
+    
+    
