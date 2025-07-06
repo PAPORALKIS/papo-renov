@@ -495,7 +495,40 @@ zoomViewer.addEventListener('click', function (e) {
       }
     });
 
-    
+    // Drag tactile (mobile portrait uniquement)
+carousel.addEventListener('touchstart', e => {
+  if (window.innerWidth <= 768 && window.innerHeight > window.innerWidth) {
+    isDragging = true;
+    startX = e.touches[0].clientX;
+    startY = e.touches[0].clientY;
+    autoRotate = false;
+  }
+});
+
+carousel.addEventListener('touchend', () => {
+  if (window.innerWidth <= 768 && window.innerHeight > window.innerWidth) {
+    isDragging = false;
+    autoRotate = true;
+  }
+});
+
+carousel.addEventListener('touchmove', (e) => {
+  if (!isDragging || !(window.innerWidth <= 768 && window.innerHeight > window.innerWidth)) return;
+
+  e.preventDefault(); // 👈 bloque le scroll de la page !
+
+  const dx = e.touches[0].clientX - startX;
+  const dy = e.touches[0].clientY - startY;
+  const combined = dx + dy;
+
+  angle += combined * 0.3;
+  startX = e.touches[0].clientX;
+  startY = e.touches[0].clientY;
+
+  positionImages();
+}, { passive: false }); // 👈 important pour autoriser preventDefault
+  
+
     document.querySelectorAll('.filters button').forEach(btn => {
       btn.addEventListener('click', () => generateImages(btn.dataset.theme));
     });
@@ -505,7 +538,6 @@ zoomViewer.addEventListener('click', function (e) {
     
   
   
-
 
 
 (function () {
@@ -520,50 +552,54 @@ zoomViewer.addEventListener('click', function (e) {
 
   let isDragging = false;
   let startX = 0;
-  let animationPaused = false;
-  let resumeTimeout = null;
+  let startY = 0;
+  let currentRotationY = 0;
+  let lastRotationY = 0;
+  let animationActive = true;
 
-  // Touch start : stop animation + drag begin
+  // Touch start
   carousel.addEventListener('touchstart', (e) => {
     isDragging = true;
     startX = e.touches[0].clientX;
-
+    startY = e.touches[0].clientY;
     carousel.style.animation = 'none';
-    animationPaused = true;
-    autoRotate = false; // ✅ Stop rotation JS
+    animationActive = false;
+  }, { passive: true });
 
-    if (resumeTimeout) clearTimeout(resumeTimeout);
-
-    e.preventDefault();
-  }, { passive: false });
-
-  // Touch move : rotation Y avec le doigt
+  // Touch move : glissement vertical ET horizontal → rotation Y
   carousel.addEventListener('touchmove', (e) => {
     if (!isDragging) return;
 
-    const dx = e.touches[0].clientX - startX;
-    angle += dx * 0.3;
-    startX = e.touches[0].clientX;
+    const x = e.touches[0].clientX;
+    const y = e.touches[0].clientY;
+    const deltaX = x - startX;
+    const deltaY = y - startY;
 
-    positionImages();
+    // Combine les deux mouvements pour toujours tourner sur l'axe Y
+    const combinedDelta = deltaX + deltaY;
 
-    e.preventDefault();
-  }, { passive: false });
+    currentRotationY = lastRotationY + combinedDelta * 0.3;
+    carousel.style.transform = `rotateY(${currentRotationY}deg)`;
+  }, { passive: true });
 
-  // Touch end : redemarrage retardé de la rotation automatique
+  // Touch end
   carousel.addEventListener('touchend', () => {
     isDragging = false;
-
-    resumeTimeout = setTimeout(() => {
-      carousel.style.animation = 'spinY 30s linear infinite';
-      autoRotate = true; // ✅ Redémarre la rotation automatique JS
-      animationPaused = false;
-    }, 5000);
+    lastRotationY = currentRotationY;
   });
+
+  // Relance animation auto après 10 sec
+  setInterval(() => {
+    if (!animationActive && !isDragging) {
+      carousel.style.animation = 'spinY 30s linear infinite';
+      animationActive = true;
+      currentRotationY = 0;
+      lastRotationY = 0;
+    }
+  }, 10000);
+
 })();
 
-
-  
   </script>
 </body>
 </html>
