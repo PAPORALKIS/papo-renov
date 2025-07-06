@@ -507,6 +507,7 @@ zoomViewer.addEventListener('click', function (e) {
   
 
 
+
 (function () {
   function isMobilePortrait() {
     return window.innerWidth <= 768 && window.innerHeight > window.innerWidth;
@@ -522,46 +523,45 @@ zoomViewer.addEventListener('click', function (e) {
   let animationPaused = false;
   let resumeTimeout = null;
 
-  // Au toucher
+  // Touch start : stop animation + drag begin
   carousel.addEventListener('touchstart', (e) => {
     isDragging = true;
     startX = e.touches[0].clientX;
 
-    // stop l’animation automatique
     carousel.style.animation = 'none';
     animationPaused = true;
+    autoRotate = false; // ✅ Stop rotation JS
 
-    // empêche le scroll vertical de la page pendant le drag
-    e.preventDefault();
-
-    // stop timeout précédent
     if (resumeTimeout) clearTimeout(resumeTimeout);
+
+    e.preventDefault();
   }, { passive: false });
 
-  // Pendant le glissement horizontal
+  // Touch move : rotation Y avec le doigt
   carousel.addEventListener('touchmove', (e) => {
     if (!isDragging) return;
 
     const dx = e.touches[0].clientX - startX;
     angle += dx * 0.3;
     startX = e.touches[0].clientX;
+
     positionImages();
 
-    e.preventDefault(); // bloque le scroll
+    e.preventDefault();
   }, { passive: false });
 
-  // À la fin du toucher
+  // Touch end : redemarrage retardé de la rotation automatique
   carousel.addEventListener('touchend', () => {
     isDragging = false;
 
-    // Redémarre l’animation après 5 secondes d’inactivité
     resumeTimeout = setTimeout(() => {
       carousel.style.animation = 'spinY 30s linear infinite';
+      autoRotate = true; // ✅ Redémarre la rotation automatique JS
       animationPaused = false;
     }, 5000);
   });
-
 })();
+
 
   
   </script>
