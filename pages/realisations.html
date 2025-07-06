@@ -552,41 +552,48 @@ carousel.addEventListener('touchmove', (e) => {
 
   let isDragging = false;
   let startX = 0;
-  let startY = 0;
-  let animationActive = true;
+  let animationPaused = false;
+  let resumeTimeout = null;
 
-  // Rotation autour de Y uniquement (comme dans ton système original)
+  // Au toucher
   carousel.addEventListener('touchstart', (e) => {
     isDragging = true;
     startX = e.touches[0].clientX;
-    startY = e.touches[0].clientY;
-    carousel.style.animation = 'none';
-    animationActive = false;
-  }, { passive: true });
 
+    // stop l’animation automatique
+    carousel.style.animation = 'none';
+    animationPaused = true;
+
+    // empêche le scroll vertical de la page pendant le drag
+    e.preventDefault();
+
+    // stop timeout précédent
+    if (resumeTimeout) clearTimeout(resumeTimeout);
+  }, { passive: false });
+
+  // Pendant le glissement horizontal
   carousel.addEventListener('touchmove', (e) => {
     if (!isDragging) return;
 
-    e.preventDefault(); // Bloque le scroll vertical de la page
-
     const dx = e.touches[0].clientX - startX;
     angle += dx * 0.3;
-
     startX = e.touches[0].clientX;
-    positionImages(); // recalcule la position des images (comme avant)
+    positionImages();
+
+    e.preventDefault(); // bloque le scroll
   }, { passive: false });
 
+  // À la fin du toucher
   carousel.addEventListener('touchend', () => {
     isDragging = false;
+
+    // Redémarre l’animation après 5 secondes d’inactivité
+    resumeTimeout = setTimeout(() => {
+      carousel.style.animation = 'spinY 30s linear infinite';
+      animationPaused = false;
+    }, 5000);
   });
 
-  // Redémarre l’animation automatique au bout de 10 sec
-  setTimeout(() => {
-    if (!isDragging && !animationActive) {
-      carousel.style.animation = 'spinY 30s linear infinite';
-      animationActive = true;
-    }
-  }, 10000);
 })();
 
   
