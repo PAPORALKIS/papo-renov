@@ -512,21 +512,22 @@ carousel.addEventListener('touchend', () => {
   }
 });
 
-carousel.addEventListener('touchmove', e => {
-  if (isDragging && window.innerWidth <= 768 && window.innerHeight > window.innerWidth) {
-    const dx = e.touches[0].clientX - startX;
-    const dy = e.touches[0].clientY - startY;
+carousel.addEventListener('touchmove', (e) => {
+  if (!isDragging || !(window.innerWidth <= 768 && window.innerHeight > window.innerWidth)) return;
 
-    const combined = dx + dy; // Combine horizontal + vertical
+  e.preventDefault(); // 👈 bloque le scroll de la page !
 
-    angle += combined * 0.3;
+  const dx = e.touches[0].clientX - startX;
+  const dy = e.touches[0].clientY - startY;
+  const combined = dx + dy;
 
-    startX = e.touches[0].clientX;
-    startY = e.touches[0].clientY;
+  angle += combined * 0.3;
+  startX = e.touches[0].clientX;
+  startY = e.touches[0].clientY;
 
-    positionImages();
-  }
-});
+  positionImages();
+}, { passive: false }); // 👈 important pour autoriser preventDefault
+  
 
     document.querySelectorAll('.filters button').forEach(btn => {
       btn.addEventListener('click', () => generateImages(btn.dataset.theme));
