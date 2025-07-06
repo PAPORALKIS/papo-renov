@@ -553,8 +553,8 @@ carousel.addEventListener('touchmove', (e) => {
   let isDragging = false;
   let startX = 0;
   let startY = 0;
-  let currentRotationY = 0;
-  let lastRotationY = 0;
+  let rotationX = -4; // Valeur initiale d'inclinaison (déjà présente dans ton CSS)
+  let rotationY = 0;
   let animationActive = true;
 
   // Touch start
@@ -566,27 +566,43 @@ carousel.addEventListener('touchmove', (e) => {
     animationActive = false;
   }, { passive: true });
 
-  // Touch move : glissement vertical ET horizontal → rotation Y
+  // Touch move : rotation X (haut/bas) et Y (gauche/droite)
   carousel.addEventListener('touchmove', (e) => {
     if (!isDragging) return;
 
+    e.preventDefault(); // Bloque le scroll de la page
     const x = e.touches[0].clientX;
     const y = e.touches[0].clientY;
     const deltaX = x - startX;
     const deltaY = y - startY;
 
-    // Combine les deux mouvements pour toujours tourner sur l'axe Y
-    const combinedDelta = deltaX + deltaY;
+    rotationY += deltaX * 0.3;
+    rotationX -= deltaY * 0.3; // Sens vertical inversé (optionnel)
 
-    currentRotationY = lastRotationY + combinedDelta * 0.3;
-    carousel.style.transform = `rotateY(${currentRotationY}deg)`;
-  }, { passive: true });
+    // Limite l'inclinaison X pour éviter des retournements
+    rotationX = Math.max(Math.min(rotationX, 75), -75);
+
+    carousel.style.transform = `rotateX(${rotationX}deg) rotateY(${rotationY}deg)`;
+
+    startX = x;
+    startY = y;
+  }, { passive: false });
 
   // Touch end
   carousel.addEventListener('touchend', () => {
     isDragging = false;
-    lastRotationY = currentRotationY;
   });
+
+  // Relance l’animation auto après 10 sec (optionnel)
+  setInterval(() => {
+    if (!animationActive && !isDragging) {
+      carousel.style.animation = 'spinY 30s linear infinite';
+      animationActive = true;
+      rotationX = -4;
+      rotationY = 0;
+    }
+  }, 10000);
+})();
 
   // Relance animation auto après 10 sec
   setInterval(() => {
