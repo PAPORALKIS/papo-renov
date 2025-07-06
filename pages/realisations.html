@@ -553,11 +553,9 @@ carousel.addEventListener('touchmove', (e) => {
   let isDragging = false;
   let startX = 0;
   let startY = 0;
-  let rotationX = -4; // Valeur initiale d'inclinaison (déjà présente dans ton CSS)
-  let rotationY = 0;
   let animationActive = true;
 
-  // Touch start
+  // Rotation autour de Y uniquement (comme dans ton système original)
   carousel.addEventListener('touchstart', (e) => {
     isDragging = true;
     startX = e.touches[0].clientX;
@@ -566,56 +564,32 @@ carousel.addEventListener('touchmove', (e) => {
     animationActive = false;
   }, { passive: true });
 
-  // Touch move : rotation X (haut/bas) et Y (gauche/droite)
   carousel.addEventListener('touchmove', (e) => {
     if (!isDragging) return;
 
-    e.preventDefault(); // Bloque le scroll de la page
-    const x = e.touches[0].clientX;
-    const y = e.touches[0].clientY;
-    const deltaX = x - startX;
-    const deltaY = y - startY;
+    e.preventDefault(); // Bloque le scroll vertical de la page
 
-    rotationY += deltaX * 0.3;
-    rotationX -= deltaY * 0.3; // Sens vertical inversé (optionnel)
+    const dx = e.touches[0].clientX - startX;
+    angle += dx * 0.3;
 
-    // Limite l'inclinaison X pour éviter des retournements
-    rotationX = Math.max(Math.min(rotationX, 75), -75);
-
-    carousel.style.transform = `rotateX(${rotationX}deg) rotateY(${rotationY}deg)`;
-
-    startX = x;
-    startY = y;
+    startX = e.touches[0].clientX;
+    positionImages(); // recalcule la position des images (comme avant)
   }, { passive: false });
 
-  // Touch end
   carousel.addEventListener('touchend', () => {
     isDragging = false;
   });
 
-  // Relance l’animation auto après 10 sec (optionnel)
-  setInterval(() => {
-    if (!animationActive && !isDragging) {
+  // Redémarre l’animation automatique au bout de 10 sec
+  setTimeout(() => {
+    if (!isDragging && !animationActive) {
       carousel.style.animation = 'spinY 30s linear infinite';
       animationActive = true;
-      rotationX = -4;
-      rotationY = 0;
     }
   }, 10000);
 })();
 
-  // Relance animation auto après 10 sec
-  setInterval(() => {
-    if (!animationActive && !isDragging) {
-      carousel.style.animation = 'spinY 30s linear infinite';
-      animationActive = true;
-      currentRotationY = 0;
-      lastRotationY = 0;
-    }
-  }, 10000);
-
-})();
-
+  
   </script>
 </body>
 </html>
