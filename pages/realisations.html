@@ -486,7 +486,7 @@ zoomViewer.addEventListener('click', function (e) {
     document.addEventListener('mousemove', e => {
       if (isDragging) {
         const dx = e.clientX - startX;
-        angle += dx * 0.3;
+        angle += dx * 0.1;
         startX = e.clientX;
         dragged = true;
         positionImages();
@@ -561,7 +561,7 @@ carousel.addEventListener('touchmove', (e) => {
     if (!isDragging) return;
 
     const dx = e.touches[0].clientX - startX;
-    angle += dx * 0.3;
+    angle += dx * 0.1;
     startX = e.touches[0].clientX;
 
     positionImages();
