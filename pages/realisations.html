@@ -538,65 +538,61 @@ carousel.addEventListener('touchmove', (e) => {
   
 
 
+
 (function () {
-  function isMobilePortrait() {
-    return window.innerWidth <= 768 && window.innerHeight > window.innerWidth;
-  }
-
-  if (!isMobilePortrait()) return;
-
   const carousel = document.querySelector('.carousel');
   if (!carousel) return;
 
   let isDragging = false;
   let startX = 0;
-  let startY = 0;
-  let currentRotationY = 0;
-  let lastRotationY = 0;
-  let animationActive = true;
+  let animationPaused = false;
+  let resumeTimeout = null;
 
-  // Touch start
+  // Fonction rotation standard (mobile portrait ou non)
+  const isMobilePortrait = () => window.innerWidth <= 768 && window.innerHeight > window.innerWidth;
+
+  // Touch start : stop animation + drag begin
   carousel.addEventListener('touchstart', (e) => {
     isDragging = true;
     startX = e.touches[0].clientX;
-    startY = e.touches[0].clientY;
-    carousel.style.animation = 'none';
-    animationActive = false;
-  }, { passive: true });
 
-  // Touch move : glissement vertical ET horizontal → rotation Y
+    carousel.style.animation = 'none';
+    animationPaused = true;
+    autoRotate = false;
+
+    if (resumeTimeout) clearTimeout(resumeTimeout);
+
+    e.preventDefault();
+  }, { passive: false });
+
+  // Touch move : rotation Y + scroll horizontal (pour tous formats)
   carousel.addEventListener('touchmove', (e) => {
     if (!isDragging) return;
 
-    const x = e.touches[0].clientX;
-    const y = e.touches[0].clientY;
-    const deltaX = x - startX;
-    const deltaY = y - startY;
+    const dx = e.touches[0].clientX - startX;
+    angle += dx * 0.3;
+    startX = e.touches[0].clientX;
 
-    // Combine les deux mouvements pour toujours tourner sur l'axe Y
-    const combinedDelta = deltaX + deltaY;
+    positionImages();
 
-    currentRotationY = lastRotationY + combinedDelta * 0.3;
-    carousel.style.transform = `rotateY(${currentRotationY}deg)`;
-  }, { passive: true });
+    // Scroll horizontal si nécessaire
+    window.scrollBy({ left: -dx, behavior: 'auto' });
 
-  // Touch end
+    e.preventDefault();
+  }, { passive: false });
+
+  // Touch end : relance auto-rotation
   carousel.addEventListener('touchend', () => {
     isDragging = false;
-    lastRotationY = currentRotationY;
-  });
 
-  // Relance animation auto après 10 sec
-  setInterval(() => {
-    if (!animationActive && !isDragging) {
+    resumeTimeout = setTimeout(() => {
       carousel.style.animation = 'spinY 30s linear infinite';
-      animationActive = true;
-      currentRotationY = 0;
-      lastRotationY = 0;
-    }
-  }, 10000);
-
+      autoRotate = true;
+      animationPaused = false;
+    }, 5000);
+  });
 })();
+
 
   </script>
 </body>
