@@ -535,10 +535,6 @@ carousel.addEventListener('touchmove', (e) => {
     animate();
     
   
-  
-
-
-
 (function () {
   const carousel = document.querySelector('.carousel');
   if (!carousel) return;
@@ -548,10 +544,7 @@ carousel.addEventListener('touchmove', (e) => {
   let animationPaused = false;
   let resumeTimeout = null;
 
-  // Fonction rotation standard (mobile portrait ou non)
-  const isMobilePortrait = () => window.innerWidth <= 768 && window.innerHeight > window.innerWidth;
-
-  // Touch start : stop animation + drag begin
+  // Touch start
   carousel.addEventListener('touchstart', (e) => {
     isDragging = true;
     startX = e.touches[0].clientX;
@@ -561,11 +554,9 @@ carousel.addEventListener('touchmove', (e) => {
     autoRotate = false;
 
     if (resumeTimeout) clearTimeout(resumeTimeout);
+  }, { passive: true }); // passive: true pour autoriser le scroll
 
-    e.preventDefault();
-  }, { passive: false });
-
-  // Touch move : rotation Y + scroll horizontal (pour tous formats)
+  // Touch move
   carousel.addEventListener('touchmove', (e) => {
     if (!isDragging) return;
 
@@ -575,13 +566,10 @@ carousel.addEventListener('touchmove', (e) => {
 
     positionImages();
 
-    // Scroll horizontal si nécessaire
-    window.scrollBy({ left: -dx, behavior: 'auto' });
+    // Laisse le scroll natif actif (pas de preventDefault)
+  }, { passive: true });
 
-    e.preventDefault();
-  }, { passive: false });
-
-  // Touch end : relance auto-rotation
+  // Touch end
   carousel.addEventListener('touchend', () => {
     isDragging = false;
 
@@ -592,8 +580,6 @@ carousel.addEventListener('touchmove', (e) => {
     }, 5000);
   });
 })();
-
-
-  </script>
+</script>
 </body>
 </html>
