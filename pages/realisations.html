@@ -510,14 +510,20 @@ zoomViewer.addEventListener('click', function (e) {
 
   let isDragging = false;
   let startX = 0;
+  let startY = 0;
+  let angleStart = 0;
   let animationPaused = false;
   let resumeTimeout = null;
 
   carousel.addEventListener('touchstart', (e) => {
+    if (e.touches.length !== 1) return;
+
     isDragging = true;
     startX = e.touches[0].clientX;
+    startY = e.touches[0].clientY;
+    angleStart = angle;
+
     carousel.style.animation = 'none';
-    animationPaused = true;
     autoRotate = false;
     if (resumeTimeout) clearTimeout(resumeTimeout);
   }, { passive: true });
@@ -525,10 +531,14 @@ zoomViewer.addEventListener('click', function (e) {
   carousel.addEventListener('touchmove', (e) => {
     if (!isDragging) return;
     const dx = e.touches[0].clientX - startX;
-    angle += dx * 0.1;
-    startX = e.touches[0].clientX;
-    positionImages();
-    // Ne bloque pas le scroll vertical (pas de preventDefault ici)
+    const dy = e.touches[0].clientY - startY;
+
+    // Seulement si geste horizontal net
+    if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 5) {
+      angle = angleStart + dx * 0.3;
+      positionImages();
+      // Pas de preventDefault → le scroll vertical reste autorisé
+    }
   }, { passive: true });
 
   carousel.addEventListener('touchend', () => {
@@ -536,7 +546,6 @@ zoomViewer.addEventListener('click', function (e) {
     resumeTimeout = setTimeout(() => {
       carousel.style.animation = 'spinY 30s linear infinite';
       autoRotate = true;
-      animationPaused = false;
     }, 5000);
   });
 })();
