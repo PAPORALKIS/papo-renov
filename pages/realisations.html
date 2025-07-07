@@ -535,8 +535,10 @@ zoomViewer.addEventListener('click', function (e) {
 
     positionImages();
 
-    // Laisse le scroll natif actif (pas de preventDefault)
-  }, { passive: true });
+  if (Math.abs(dx) > 10) {
+    e.preventDefault();
+  }
+}, { passive: false }); // ← important
 
   // Touch end
   carousel.addEventListener('touchend', () => {
