@@ -493,38 +493,7 @@ zoomViewer.addEventListener('click', function (e) {
       }
     });
 
-    // Drag tactile (mobile portrait uniquement)
-carousel.addEventListener('touchstart', e => {
-  if (window.innerWidth <= 768 && window.innerHeight > window.innerWidth) {
-    isDragging = true;
-    startX = e.touches[0].clientX;
-    startY = e.touches[0].clientY;
-    autoRotate = false;
-  }
-});
-
-carousel.addEventListener('touchend', () => {
-  if (window.innerWidth <= 768 && window.innerHeight > window.innerWidth) {
-    isDragging = false;
-    autoRotate = true;
-  }
-});
-
-carousel.addEventListener('touchmove', (e) => {
-  if (!isDragging || !(window.innerWidth <= 768 && window.innerHeight > window.innerWidth)) return;
-
-  e.preventDefault(); // 👈 bloque le scroll de la page !
-
-  const dx = e.touches[0].clientX - startX;
-  const dy = e.touches[0].clientY - startY;
-  const combined = dx + dy;
-
-  angle += combined * 0.3;
-  startX = e.touches[0].clientX;
-  startY = e.touches[0].clientY;
-
-  positionImages();
-}, { passive: false }); // 👈 important pour autoriser preventDefault
+    
   
 
     document.querySelectorAll('.filters button').forEach(btn => {
