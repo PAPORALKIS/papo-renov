@@ -431,8 +431,7 @@ nav ul li a.active {
 
     function positionImages() {
   // Bloque tout repositionnement sur mobile portrait
-  if (window.innerWidth <= 768 && window.innerHeight > window.innerWidth) return;
-
+  
   const images = carousel.querySelectorAll('img');
   const total = images.length;
   const step = 360 / total;
