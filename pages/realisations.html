@@ -563,9 +563,11 @@ carousel.addEventListener('touchmove', (e) => {
     angleStart = angle;
     draggingHorizontally = false;
 
-    carousel.style.animation = 'none';
-    autoRotate = false;
-    animationActive = false;
+    if (!(window.innerWidth <= 768 && window.innerHeight > window.innerWidth)) {
+  carousel.style.animation = 'none';
+  autoRotate = false;
+  animationActive = false;
+}
 
     if (resumeTimeout) clearTimeout(resumeTimeout);
   }, { passive: true });
