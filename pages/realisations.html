@@ -510,19 +510,7 @@ carousel.addEventListener('touchend', () => {
   }
 });
 
-carousel.addEventListener('touchmove', (e) => {
-  if (!isDragging || !(window.innerWidth <= 768 && window.innerHeight > window.innerWidth)) return;
 
-  
-
-  const dx = e.touches[0].clientX - startX;
-  const dy = e.touches[0].clientY - startY;
-  const combined = dx + dy;
-
-  angle += dx * 0.3;
-carousel.style.transform = `rotateY(${angle}deg)`; // ✅ ajoute cette ligne
-  startX = e.touches[0].clientX;
-  startY = e.touches[0].clientY;
 
   
   
@@ -583,10 +571,14 @@ carousel.style.transform = `rotateY(${angle}deg)`; // ✅ ajoute cette ligne
 }
 
     if (draggingHorizontally) {
-      angle = angleStart + dx * 0.3;
-      positionImages();
-    }
-  }, { passive: true });
+  angle = angleStart + dx * 0.3;
+  if (isMobilePortrait()) {
+    carousel.style.transform = `rotateY(${angle}deg)`;
+  } else {
+    positionImages();
+  }
+}
+}, { passive: true }); // ✅ n’oublie pas de fermer ici !
 
   // Touch end
   carousel.addEventListener('touchend', () => {
