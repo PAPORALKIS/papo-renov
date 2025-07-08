@@ -579,14 +579,14 @@ carousel.addEventListener('touchmove', (e) => {
     // Ne déclenche rotation que si mouvement horizontal > vertical
     if (!draggingHorizontally && Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 10) {
       draggingHorizontally = true;
-      e.preventDefault(); // bloque scroll uniquement si c'est horizontal
+      
     }
 
     if (draggingHorizontally) {
       angle = angleStart + dx * 0.3;
       positionImages();
     }
-  }, { passive: false });
+  }, { passive: true });
 
   // Touch end
   carousel.addEventListener('touchend', () => {
