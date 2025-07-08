@@ -494,13 +494,14 @@ let angle = 0;
         }
 
         if (draggingHorizontally) {
-          angle = angleStart + dx * 0.3;
-          if (isMobilePortrait()) {
-            carousel.style.transform = `rotateY(${angle}deg)`;
-          } else {
-            positionImages();
-          }
-        }
+  angle = angleStart + dx * 0.3;
+  if (isMobilePortrait()) {
+    carousel.style.animation = 'none'; // ✅ Stop rotation auto pendant le geste
+    carousel.style.transform = `rotateY(${angle}deg)`;
+  } else {
+    positionImages();
+  }
+}
       }, { passive: true });
 
       carousel.addEventListener('touchend', () => {
