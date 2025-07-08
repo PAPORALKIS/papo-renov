@@ -431,7 +431,8 @@ nav ul li a.active {
 
     function positionImages() {
   // Bloque tout repositionnement sur mobile portrait
-  
+  if (window.innerWidth <= 768 && window.innerHeight > window.innerWidth) return;
+
   const images = carousel.querySelectorAll('img');
   const total = images.length;
   const step = 360 / total;
@@ -518,12 +519,12 @@ carousel.addEventListener('touchmove', (e) => {
   const dy = e.touches[0].clientY - startY;
   const combined = dx + dy;
 
-  angle += combined * 0.3;
+  angle += dx * 0.3;
+carousel.style.transform = `rotateY(${angle}deg)`; // ✅ ajoute cette ligne
   startX = e.touches[0].clientX;
   startY = e.touches[0].clientY;
 
-  positionImages();
-}, { passive: true }); // 👈 important pour autoriser preventDefault
+  
   
 
     document.querySelectorAll('.filters button').forEach(btn => {
