@@ -3,162 +3,117 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Mes Réalisations - Carrousel 3D</title>
+  <title>Mes Réalisations - Sphère 3D</title>
   <style>
     :root {
-      --img-size: min(20vw, 150px);/* 👉 taille des images : modifiez ici */
-      --translateZ: 490px;/* 👉 plus grand = images plus éloignées entre elles */
-      --perspective: 2200px;/* 👉 augmentez à 2500px, 3000px... pour éloigner le carrousel */
+      --img-size: min(20vw, 150px);
+      --translateZ: 490px;
+      --perspective: 2200px;
     }
+
     @media (max-width: 768px) {
       :root {
         --img-size: 24vw;
         --translateZ: 300px;
       }
     }
+
     @media (max-width: 500px) {
       :root {
         --img-size: 28vw;
         --translateZ: 240px;
       }
     }
-    @media (max-width: 768px) {
-  .page-title {
-    font-size: 1.6em;
-    padding: 8px 16px;
-  }
-}
 
-@media (max-width: 500px) {
-  .page-title {
-    font-size: 1.4em;
-    padding: 6px 12px;
-  }
-}
     html, body {
-    
-  margin: 0;
-  padding: 0;
-  min-height: 100vh; /* ✅ autorise le contenu plus long que la vue */
-  height: auto;       /* ✅ utile pour autoriser le scroll */
-  font-family: 'Poppins', sans-serif;
-  background: #fdfdfd url('../img/fond-outils-filigrane.jpg');
-  background-repeat: repeat;
-  background-size: 400px auto;
-  background-attachment: fixed;
-  background-position: center;
-  opacity: 1;
-      overflow-x: auto;  /* ✅ horizontal si nécessaire */
-  overflow-y: auto;  /* ✅ vertical */
-  overscroll-behavior-y: contain; /* ✅ empêche pull-to-refresh sur mobile */
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      font-family: 'Poppins', sans-serif;
+      background: #fdfdfd url('../img/fond-outils-filigrane.jpg');
+      background-repeat: repeat;
+      background-size: 400px auto;
+      background-attachment: fixed;
+      background-position: center;
+      overflow-x: auto;
+      overflow-y: auto;
+      overscroll-behavior-y: contain;
+    }
 
-}
-   :root {
-  --bg-fond: url('chemin/vers/subtle-tools.jpg'), #f8f8f8; /* 👈 valeur par défaut (Proposition 1) */
-}
-    /* === Header === */
-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background-color: white;
-  padding: 4px 10px;
-  border-bottom: 1px solid #ddd;
-  position: sticky;
-  top: 0;
-  z-index: 1000;
-  flex-wrap: nowrap;
-  overflow-x: auto;
-}
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background-color: white;
+      padding: 4px 10px;
+      border-bottom: 1px solid #ddd;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      flex-wrap: nowrap;
+      overflow-x: auto;
+    }
 
-.logo {
-  flex: 0 0 auto;
-  margin-right: 10px;
-}
+    .logo img {
+      height: 40px;
+      object-fit: contain;
+    }
 
-.logo img {
-  height: 40px;
-  max-width: 80%;
-  object-fit: contain;
-}
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 3px;
+      margin: 0;
+      padding: 0;
+      flex-wrap: nowrap;
+      white-space: nowrap;
+    }
 
-/* === Navigation === */
-nav {
-  flex: 1 1 auto;
-  overflow-x: auto;
-}
+    nav ul li a {
+      text-decoration: none;
+      color: #333;
+      font-weight: 600;
+      padding: 6px 8px;
+      font-size: 12px;
+      display: inline-block;
+      transition: color 0.3s ease;
+    }
 
-nav ul {
-  list-style: none;
-  display: flex;
-  gap: 3px;
-  padding: 0;
-  margin: 0;
-  flex-wrap: nowrap;
-  white-space: nowrap;
-  justify-content: flex-end;
-}
+    nav ul li a:hover,
+    nav ul li a.active {
+      color: #007bff;
+      border-bottom: 2px solid #007bff;
+    }
 
-nav ul::-webkit-scrollbar {
-  display: none;
-}
+    .page-title {
+      color: #003366;
+      text-align: center;
+      font-size: 1.8em;
+      margin-top: 25px;
+      padding: 10px 20px;
+    }
 
-nav ul li {
-  white-space: nowrap;
-}
-
-nav ul li a {
-  text-decoration: none;
-  color: #333;
-  font-weight: 600;
-  padding: 6px 8px;
-  font-size: 12px;/* ← C’est cette ligne qui définit la taille du texte */
-  display: inline-block;
-  transition: color 0.3s ease;
-}
-
-nav ul li a:hover,
-nav ul li a.active {
-  color: #007bff;
-  border-bottom: 2px solid #007bff;
-}
-    /* ajout titre page */
-.page-title {
-  color: #003366; /* même couleur que le texte des boutons */
-  text-align: center;
-  font-size: 1.8em;
-  margin-top: 25px;
-  position: relative;
-  z-index: 10; /* Assure qu'il passe devant le fond */
-  background: none;
-  padding: 10px 20px;
-  border-radius: 8px;
-}
-    /* ajout titre page */
     .filters {
       text-align: center;
       margin: 10px auto;
     }
+
     .filters button {
       margin: 4px;
       padding: 6px 12px;
       font-size: 0.9em;
       border-radius: 6px;
-      border: 1px solid #003366; /* ✅ contour de la même couleur que le texte */
+      border: 1px solid #003366;
       background-color: #ffffff;
       color: #003366;
       cursor: pointer;
-       /* ✅ Ombre subtile pour effet de profondeur */
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     }
-    .filters button:hover {
-      background-color: #f0f0f0;
-      color: #003366;
-    }
+
     .carousel-container {
       position: fixed;
-      top: 40%;
-      left: 45%;
+      top: 50%;
+      left: 50%;
       transform: translate(-50%, -50%);
       perspective: var(--perspective);
       width: 100vw;
@@ -168,13 +123,14 @@ nav ul li a.active {
       align-items: center;
       pointer-events: none;
     }
+
     .carousel {
       position: relative;
       transform-style: preserve-3d;
-      transform: rotateX(-4deg);
       pointer-events: auto;
       cursor: grab;
     }
+
     .carousel img {
       position: absolute;
       width: var(--img-size);
@@ -186,6 +142,7 @@ nav ul li a.active {
       z-index: 1;
       user-select: none;
     }
+
     .zoom-viewer {
       position: fixed;
       top: 0; left: 0;
@@ -197,17 +154,20 @@ nav ul li a.active {
       flex-direction: column;
       z-index: 100;
     }
+
     .zoom-viewer img {
-      max-width: 90vw;/* 👉 largeur maximale de l’image zoomée = 90% de la largeur de la fenêtre */
-      max-height: 70vh;/* 👉 hauteur maximale = 80% de la hauteur de la fenêtre */
+      max-width: 90vw;
+      max-height: 70vh;
       border-radius: 10px;
     }
+
     .zoom-comment {
       color: white;
       margin-top: 10px;
       text-align: center;
       font-size: 1.1em;
     }
+
     .close-btn {
       position: absolute;
       top: 20px;
@@ -217,35 +177,38 @@ nav ul li a.active {
       cursor: pointer;
     }
 
-@media (max-width: 768px) and (orientation: portrait) {
-  .carousel-container {
-    left:50%;
-    top:55%;
-    transform: translate(-50%,-50%);
-    perspective: 1600px;
-    height: 100vh;
-    overflow: hidden;
-  }
+    @keyframes spinY {
+      from { transform: rotateY(0deg); }
+      to { transform: rotateY(360deg); }
+    }
 
-  .carousel {
-    width: 100%;
-    height: 100%;
-    transform-style: preserve-3d;
-    transform-origin: center 50%; /* point de rotation au centre */
-     animation: spinY 30s linear infinite; /* Rotation uniquement sur Y */
-    position: relative;
-  }
+    @media (max-width: 768px) and (orientation: portrait) {
+      .carousel-container {
+        left: 50%;
+        top: 55%;
+        transform: translate(-50%, -50%);
+        perspective: 1600px;
+        height: 100vh;
+        overflow: hidden;
+      }
 
-  .carousel img {
-    position: absolute;
-    width: 100px;
-    height: 75px;
-    object-fit: cover;
-    left: 50%;
-    top: 55%;
-    transform: translate(-50%, -50%);
-  }
+      .carousel {
+        width: 100%;
+        height: 100%;
+        transform-style: preserve-3d;
+        transform-origin: center 50%;
+        animation: spinY 30s linear infinite;
+      }
 
+      .carousel img {
+        position: absolute;
+        width: 100px;
+        height: 75px;
+        object-fit: cover;
+        left: 50%;
+        top: 55%;
+        transform: translate(-50%, -50%);
+      }
   /* Positionner les 40 images en 5 cercles de 8 images */
 /* Cercle 1 : rotateX(-75°), 6 images  */
 .carousel img:nth-child(1)  { transform: rotateY(0deg)    rotateX(65deg) translateZ(220px); }
@@ -317,25 +280,21 @@ nav ul li a.active {
   }
 }
 
-
-
   </style>
 </head>
 <body>
   <header>
-  <div class="logo">
-    <img src="../img/logo.png" alt="Logo">
-  </div>
-  <nav>
-    <ul>
-      <li><a href="index.html">Accueil</a></li>
-      <li><a href="tarifs.html">Tarifs</a></li>
-      <li><a href="realisations.html" class="active">Réalisations</a></li>
-      <li><a href="devis.html">Demande de devis</a></li>
-      <li><a href="contact.html">Contact</a></li>
-    </ul>
-  </nav>
-</header>
+    <div class="logo"><img src="../img/logo.png" alt="Logo"></div>
+    <nav>
+      <ul>
+        <li><a href="index.html">Accueil</a></li>
+        <li><a href="tarifs.html">Tarifs</a></li>
+        <li><a href="realisations.html" class="active">Réalisations</a></li>
+        <li><a href="devis.html">Demande de devis</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
 
   <div class="page-title">Mes réalisations</div>
 
@@ -364,8 +323,8 @@ nav ul li a.active {
     const zoomImage = document.getElementById("zoomImage");
     const zoomComment = document.getElementById("zoomComment");
 
-    const imagesData = [
-    { src: '../img/CHBR1.jpg', theme: 'chambre', comment: 'Chambre 2' },
+    const imagesData = [ 
+      { src: '../img/CHBR1.jpg', theme: 'chambre', comment: 'Chambre 2' },
     { src: '../img/CUIEXT2.jpg', theme: 'cuisine', comment: 'Cuisine extérieure vue 2' },
     { src: '../img/CUIEXT4.jpg', theme: 'cuisine', comment: 'Cuisine extérieure vue 4' },
     { src: '../img/CUIEXT5.jpg', theme: 'cuisine', comment: 'Cuisine extérieure vue 5' },
@@ -408,12 +367,12 @@ nav ul li a.active {
     { src: '../img/velaux3.jpg', theme: 'autre', comment: 'Velaux 3' }
     ];
 
-    let angle = 0;
+let angle = 0;
     let autoRotate = true;
     let isDragging = false;
     let startX = 0;
     let dragged = false;
-
+    
     function generateImages(filter = 'all') {
       carousel.innerHTML = '';
       const filtered = filter === 'all' ? imagesData : imagesData.filter(img => img.theme === filter);
@@ -426,31 +385,32 @@ nav ul li a.active {
         carousel.appendChild(img);
       });
       positionImages();
-      
     }
 
     function positionImages() {
-  // Bloque tout repositionnement sur mobile portrait
-  if (window.innerWidth <= 768 && window.innerHeight > window.innerWidth) return;
-
-  const images = carousel.querySelectorAll('img');
-  const total = images.length;
-  const step = 360 / total;
-  images.forEach((img, i) => {
-    const theta = i * step + angle;
-    const rad = theta * Math.PI / 180;
-    const x = Math.sin(rad) * parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--translateZ'));
-    const z = Math.cos(rad) * parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--translateZ'));
-    const isFront = Math.abs(theta % 360) < step / 2;
-    img.style.transform = `translateX(${x}px) translateZ(${z}px)` + (isFront ? ' scale(1.9)' : '');
-    img.style.zIndex = Math.round(1000 - Math.abs(theta % 360));
-  });
-}
+      if (window.innerWidth <= 768 && window.innerHeight > window.innerWidth) return;
+      const images = carousel.querySelectorAll('img');
+      const total = images.length;
+      const step = 360 / total;
+      images.forEach((img, i) => {
+        const theta = i * step + angle;
+        const rad = theta * Math.PI / 180;
+        const x = Math.sin(rad) * parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--translateZ'));
+        const z = Math.cos(rad) * parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--translateZ'));
+        const isFront = Math.abs(theta % 360) < step / 2;
+        img.style.transform = `translateX(${x}px) translateZ(${z}px)` + (isFront ? ' scale(1.9)' : '');
+        img.style.zIndex = Math.round(1000 - Math.abs(theta % 360));
+      });
+    }
 
     function animate() {
       if (autoRotate && !isDragging) {
-        angle += 0.1;// 👉 diminuez cette valeur, ex. 0.1 pour ralentir*/
-        positionImages();
+        angle += 0.1;
+        if (window.innerWidth <= 768 && window.innerHeight > window.innerWidth) {
+          carousel.style.transform = `rotateY(${angle}deg)`;
+        } else {
+          positionImages();
+        }
       }
       requestAnimationFrame(animate);
     }
@@ -461,15 +421,13 @@ nav ul li a.active {
       zoomViewer.style.display = 'flex';
     }
 
-zoomViewer.addEventListener('click', function (e) {
-
-  if (e.target === zoomViewer || e.target === zoomComment) {
-    closeZoom();
-  }
-   }); 
     function closeZoom() {
       zoomViewer.style.display = 'none';
     }
+
+    document.querySelectorAll('.filters button').forEach(btn => {
+      btn.addEventListener('click', () => generateImages(btn.dataset.theme));
+    });
 
     // Drag souris
     carousel.addEventListener('mousedown', e => {
@@ -478,11 +436,13 @@ zoomViewer.addEventListener('click', function (e) {
       startX = e.clientX;
       autoRotate = false;
     });
+
     document.addEventListener('mouseup', () => {
       isDragging = false;
       autoRotate = true;
       setTimeout(() => { dragged = false; }, 50);
     });
+
     document.addEventListener('mousemove', e => {
       if (isDragging) {
         const dx = e.clientX - startX;
@@ -493,99 +453,78 @@ zoomViewer.addEventListener('click', function (e) {
       }
     });
 
+    // Gestion tactile (rotation sphère mobile portrait)
+    (function () {
+      if (!carousel) return;
 
+      let draggingHorizontally = false;
+      let startY = 0;
+      let resumeTimeout = null;
+      let animationActive = true;
+      let angleStart = 0;
 
+      function isMobilePortrait() {
+        return window.innerWidth <= 768 && window.innerHeight > window.innerWidth;
+      }
 
+      carousel.addEventListener('touchstart', (e) => {
+        if (e.touches.length !== 1) return;
+        isDragging = true;
+        startX = e.touches[0].clientX;
+        startY = e.touches[0].clientY;
+        angleStart = angle;
+        draggingHorizontally = false;
 
-  
-  
+        if (!isMobilePortrait()) {
+          carousel.style.animation = 'none';
+          autoRotate = false;
+          animationActive = false;
+        }
 
-    document.querySelectorAll('.filters button').forEach(btn => {
-      btn.addEventListener('click', () => generateImages(btn.dataset.theme));
-    });
+        if (resumeTimeout) clearTimeout(resumeTimeout);
+      }, { passive: true });
+
+      carousel.addEventListener('touchmove', (e) => {
+        if (!isDragging) return;
+        const dx = e.touches[0].clientX - startX;
+        const dy = e.touches[0].clientY - startY;
+
+        if (!draggingHorizontally && Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 10) {
+          draggingHorizontally = true;
+        }
+
+        if (draggingHorizontally) {
+          angle = angleStart + dx * 0.3;
+          if (isMobilePortrait()) {
+            carousel.style.transform = `rotateY(${angle}deg)`;
+          } else {
+            positionImages();
+          }
+        }
+      }, { passive: true });
+
+      carousel.addEventListener('touchend', () => {
+        isDragging = false;
+        draggingHorizontally = false;
+
+        resumeTimeout = setTimeout(() => {
+          carousel.style.animation = 'spinY 30s linear infinite';
+          autoRotate = true;
+          animationActive = true;
+        }, 5000);
+      });
+
+      setInterval(() => {
+        if (!animationActive && !isDragging) {
+          carousel.style.animation = 'spinY 30s linear infinite';
+          autoRotate = true;
+          animationActive = true;
+        }
+      }, 10000);
+    })();
 
     generateImages();
     animate();
-    
-  
-  
-
-
-(function () {
-  const carousel = document.querySelector('.carousel');
-  if (!carousel) return;
-
-  let isDragging = false;
-  let startX = 0;
-  let startY = 0;
-  let draggingHorizontally = false;
-  let resumeTimeout = null;
-  let animationActive = true;
-  let angleStart = 0;
-
-  function isMobilePortrait() {
-    return window.innerWidth <= 768 && window.innerHeight > window.innerWidth;
-  }
-
-  // Touch start
-  carousel.addEventListener('touchstart', (e) => {
-    if (e.touches.length !== 1) return;
-    isDragging = true;
-    startX = e.touches[0].clientX;
-    startY = e.touches[0].clientY;
-    angleStart = angle;
-    draggingHorizontally = false;
-
-    if (!(window.innerWidth <= 768 && window.innerHeight > window.innerWidth)) {
-  carousel.style.animation = 'none';
-  autoRotate = false;
-  animationActive = false;
-}
-
-    if (resumeTimeout) clearTimeout(resumeTimeout);
-  }, { passive: true });
-
-  // Touch move
-  carousel.addEventListener('touchmove', (e) => {
-    if (!isDragging) return;
-    const dx = e.touches[0].clientX - startX;
-    const dy = e.touches[0].clientY - startY;
-
-    if (!draggingHorizontally && Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 10) {
-  draggingHorizontally = true;
-}
-
-    if (draggingHorizontally) {
-  angle = angleStart + dx * 0.3;
-  if (isMobilePortrait()) {
-    carousel.style.transform = `rotateY(${angle}deg)`;
-  } else {
-    positionImages();
-  }
-}
-}, { passive: true }); // ✅ n’oublie pas de fermer ici !
-
-  // Touch end
-  carousel.addEventListener('touchend', () => {
-    isDragging = false;
-    draggingHorizontally = false;
-
-    resumeTimeout = setTimeout(() => {
-      carousel.style.animation = 'spinY 30s linear infinite';
-      autoRotate = true;
-      animationActive = true;
-    }, 5000);
-  });
-
-  // Reprise auto si blocage prolongé
-  setInterval(() => {
-    if (!animationActive && !isDragging) {
-      carousel.style.animation = 'spinY 30s linear infinite';
-      autoRotate = true;
-      animationActive = true;
-    }
-  }, 10000);
-})();
   </script>
 </body>
 </html>
