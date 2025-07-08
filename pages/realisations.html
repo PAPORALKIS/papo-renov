@@ -493,22 +493,7 @@ zoomViewer.addEventListener('click', function (e) {
       }
     });
 
-    // Drag tactile (mobile portrait uniquement)
-carousel.addEventListener('touchstart', e => {
-  if (window.innerWidth <= 768 && window.innerHeight > window.innerWidth) {
-    isDragging = true;
-    startX = e.touches[0].clientX;
-    startY = e.touches[0].clientY;
-    autoRotate = false;
-  }
-});
 
-carousel.addEventListener('touchend', () => {
-  if (window.innerWidth <= 768 && window.innerHeight > window.innerWidth) {
-    isDragging = false;
-    autoRotate = true;
-  }
-});
 
 
 
