@@ -523,7 +523,14 @@ let angle = 0;
         }
       }, 10000);
     })();
-
+    
+// Permet de fermer le zoom lorsqu'on clique sur l'image déjà agrandie ou le fond noir
+zoomViewer.addEventListener('click', (e) => {
+  // Ne ferme que si on clique sur le fond noir ou sur l'image elle-même
+  if (e.target === zoomViewer || e.target === zoomImage) {
+    closeZoom();
+  }
+});
     generateImages();
     animate();
   </script>
