@@ -370,6 +370,10 @@
 
 let angle = 0;
     let autoRotate = true;
+    // Désactiver la rotation automatique en mobile portrait dès le chargement
+if (window.innerWidth <= 768 && window.innerHeight > window.innerWidth) {
+  autoRotate = false;
+}
     let isDragging = false;
     let startX = 0;
     let dragged = false;
@@ -525,13 +529,17 @@ let angle = 0;
       }, 10000);
     })();
     
-// Permet de fermer le zoom lorsqu'on clique sur l'image déjà agrandie ou le fond noir
-zoomViewer.addEventListener('click', (e) => {
-  // Ne ferme que si on clique sur le fond noir ou sur l'image elle-même
-  if (e.target === zoomViewer || e.target === zoomImage) {
-    closeZoom();
-  }
-});
+})();
+
+    // Permet de fermer le zoom lorsqu'on clique...
+    zoomViewer.addEventListener(...);
+
+    // Supprimer l'animation CSS spinY + JS si mobile portrait
+    if (window.innerWidth <= 768 && window.innerHeight > window.innerWidth) {
+      autoRotate = false;
+      carousel.style.animation = 'none';
+    }
+
     generateImages();
     animate();
   </script>
