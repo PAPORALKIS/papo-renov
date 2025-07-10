@@ -183,33 +183,42 @@
     }
 
     @media (max-width: 768px) and (orientation: portrait) {
-      .carousel-container {
-        left: 50%;
-        top: 55%;
-        transform: translate(-50%, -50%);
-        perspective: 1600px;
-        height: 100vh;
-        overflow: hidden;
-      }
+  .carousel-container {
+    position: fixed; /* au cas où ce serait manquant */
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    perspective: 1600px;
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    pointer-events: none;
+  }
 
-      .carousel {
-        width: 100%;
-        height: 100%;
-        transform-style: preserve-3d;
-        transform-origin: center center;
-        animation: spinY 30s linear infinite;
-        margin: 0 auto;
-      }
+  .carousel {
+    width: 100%;
+    height: 100%;
+    transform-style: preserve-3d;
+    transform-origin: center center; /* ← axe bien au centre */
+    animation: spinY 30s linear infinite;
+    margin: 0 auto; /* ← recentrage horizontal */
+    pointer-events: auto;
+    position: relative;
+  }
 
-      .carousel img {
-        position: absolute;
-        width: 100px;
-        height: 75px;
-        object-fit: cover;
-        left: 50%;
-        top: 55%;
-        transform: translate(-50%, -50%);
-      }
+  .carousel img {
+    position: absolute;
+    width: 100px;
+    height: 75px;
+    object-fit: cover;
+    transform: none; /* ← suppression du translate qui décalait tout */
+    left: unset;
+    top: unset;
+  }
+
   /* Positionner les 40 images en 5 cercles de 8 images */
 /* Cercle 1 : rotateX(-75°), 6 images  */
 .carousel img:nth-child(1)  { transform: rotateY(0deg)    rotateX(65deg) translateZ(210px); }
