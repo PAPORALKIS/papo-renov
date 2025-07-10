@@ -392,23 +392,22 @@ let angle = 0;
     }
 
     function positionImages() {
-      if (window.innerWidth <= 768 && window.innerHeight > window.innerWidth) return;
-      const images = carousel.querySelectorAll('img');
-      const total = images.length;
-      const step = 360 / total;
-      images.forEach((img, i) => {
-        const theta = i * step + angle;
-        const rad = theta * Math.PI / 180;
-        const x = Math.sin(rad) * parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--translateZ'));
-        const z = Math.cos(rad) * parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--translateZ'));
-        const isFront = Math.abs(theta % 360) < step / 2;
-        img.style.transform = `translateX(${x}px) translateZ(${z}px)` + (isFront ? ' scale(1.9)' : '');
-        img.style.zIndex = Math.round(1000 - Math.abs(theta % 360));
-      });
-    }
+  const images = carousel.querySelectorAll('img');
+  const total = images.length;
+  const step = 360 / total;
+  const depth = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--translateZ'));
 
-    function animate() {
-  if (window.innerWidth <= 768 && window.innerHeight > window.innerWidth) return;
+  images.forEach((img, i) => {
+    const theta = i * step + angle;
+    const rad = theta * Math.PI / 180;
+    const x = Math.sin(rad) * depth;
+    const z = Math.cos(rad) * depth;
+    const isFront = Math.abs(theta % 360) < step / 2;
+    img.style.transform = `translateX(${x}px) translateZ(${z}px)` + (isFront ? ' scale(1.9)' : '');
+    img.style.zIndex = Math.round(1000 - Math.abs(theta % 360));
+  });
+}
+function animate() {
   if (autoRotate && !isDragging) {
     angle += 0.1;
     positionImages();
