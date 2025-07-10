@@ -182,9 +182,9 @@
       to { transform: rotateY(360deg); }
     }
 
-    @media (max-width: 768px) and (orientation: portrait) {
+ @media (max-width: 768px) and (orientation: portrait) {
   .carousel-container {
-    position: fixed; /* au cas où ce serait manquant */
+    position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
@@ -201,12 +201,12 @@
   .carousel {
     width: 100%;
     height: 100%;
-    transform-style: preserve-3d;
-    transform-origin: center center; /* ← axe bien au centre */
-    animation: spinY 30s linear infinite;
-    margin: 0 auto; /* ← recentrage horizontal */
-    pointer-events: auto;
     position: relative;
+    transform-style: preserve-3d;
+    transform-origin: center center; /* ← centrage parfait de l’axe de rotation */
+    animation: spinY 30s linear infinite;
+    margin: 0 auto;
+    pointer-events: auto;
   }
 
   .carousel img {
@@ -214,10 +214,12 @@
     width: 100px;
     height: 75px;
     object-fit: cover;
-    transform: none; /* ← suppression du translate qui décalait tout */
-    left: unset;
-    top: unset;
+
+    /* On ne modifie PAS transform ici */
+    /* Car chaque image a déjà un transform via :nth-child(...) */
+    /* Pas de translate(-50%, -50%) ici non plus */
   }
+
 
   /* Positionner les 40 images en 5 cercles de 8 images */
 /* Cercle 1 : rotateX(-75°), 6 images  */
