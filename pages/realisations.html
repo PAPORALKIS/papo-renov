@@ -211,7 +211,7 @@
         object-fit: cover;
         left: 50%;
         top: 55%;
-        transform: translate(-50%, -50%);
+       
       }
   /* Positionner les 40 images en 5 cercles de 8 images */
 /* Cercle 1 : rotateX(-75°), 6 images  */
@@ -392,22 +392,23 @@ let angle = 0;
     }
 
     function positionImages() {
+  if (window.innerWidth <= 768 && window.innerHeight > window.innerWidth) return;
+
   const images = carousel.querySelectorAll('img');
   const total = images.length;
   const step = 360 / total;
-  const depth = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--translateZ'));
-
   images.forEach((img, i) => {
     const theta = i * step + angle;
     const rad = theta * Math.PI / 180;
-    const x = Math.sin(rad) * depth;
-    const z = Math.cos(rad) * depth;
+    const x = Math.sin(rad) * parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--translateZ'));
+    const z = Math.cos(rad) * parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--translateZ'));
     const isFront = Math.abs(theta % 360) < step / 2;
     img.style.transform = `translateX(${x}px) translateZ(${z}px)` + (isFront ? ' scale(1.9)' : '');
     img.style.zIndex = Math.round(1000 - Math.abs(theta % 360));
   });
 }
 function animate() {
+  if (window.innerWidth <= 768 && window.innerHeight > window.innerWidth) return; // blocage mobile portrait
   if (autoRotate && !isDragging) {
     angle += 0.1;
     positionImages();
