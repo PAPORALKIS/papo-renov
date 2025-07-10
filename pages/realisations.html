@@ -197,7 +197,7 @@
         height: 100%;
         transform-style: preserve-3d;
         transform-origin: center center;
-        animation: none;
+        animation: spinY 30s linear infinite;
         margin: 0 auto;
       }
 
@@ -370,10 +370,6 @@
 
 let angle = 0;
     let autoRotate = true;
-    // Désactiver la rotation automatique en mobile portrait dès le chargement
-if (window.innerWidth <= 768 && window.innerHeight > window.innerWidth) {
-  autoRotate = false;
-}
     let isDragging = false;
     let startX = 0;
     let dragged = false;
@@ -529,17 +525,13 @@ if (window.innerWidth <= 768 && window.innerHeight > window.innerWidth) {
       }, 10000);
     })();
     
-})();
-
-    // Permet de fermer le zoom lorsqu'on clique...
-    zoomViewer.addEventListener(...);
-
-    // Supprimer l'animation CSS spinY + JS si mobile portrait
-    if (window.innerWidth <= 768 && window.innerHeight > window.innerWidth) {
-      autoRotate = false;
-      carousel.style.animation = 'none';
-    }
-
+// Permet de fermer le zoom lorsqu'on clique sur l'image déjà agrandie ou le fond noir
+zoomViewer.addEventListener('click', (e) => {
+  // Ne ferme que si on clique sur le fond noir ou sur l'image elle-même
+  if (e.target === zoomViewer || e.target === zoomImage) {
+    closeZoom();
+  }
+});
     generateImages();
     animate();
   </script>
