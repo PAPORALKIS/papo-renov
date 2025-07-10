@@ -197,7 +197,7 @@
         height: 100%;
         transform-style: preserve-3d;
         transform-origin: center center;
-        animation: spinY 30s linear infinite;
+         /* animation: spinY 30s linear infinite;*/
         margin: 0 auto;
       }
 
@@ -407,8 +407,9 @@ let angle = 0;
     function animate() {
       if (autoRotate && !isDragging) {
         angle += 0.1;
-        if (window.innerWidth <= 768 && window.innerHeight > window.innerWidth) {
-          carousel.style.transform = `rotateY(${angle}deg)`;
+       /* if (window.innerWidth <= 768 && window.innerHeight > window.innerWidth) {
+          carousel.style.transform = `rotateY(${angle}deg)`;*/
+          /* animation: spinY 30s linear infinite;*/
         } else {
           positionImages();
         }
