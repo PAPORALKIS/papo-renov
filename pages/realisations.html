@@ -569,10 +569,11 @@ zoomViewer.addEventListener('click', (e) => {
     animate();
 
     // Réapplique le positionnement quand on tourne l'écran (ou redimensionne)
-window.addEventListener("resize", () => {
-  positionImages();
-});
-    
+    window.addEventListener("resize", () => {
+      positionImages();
+      document.querySelector('.carousel-container').style.perspective =
+        getComputedStyle(document.documentElement).getPropertyValue('--perspective');
+    });
   </script>
 </body>
 </html>
