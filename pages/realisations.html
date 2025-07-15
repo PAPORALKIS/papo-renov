@@ -141,6 +141,7 @@
       transition: transform 0.6s, z-index 0.6s;
       z-index: 1;
       user-select: none;
+      will-change: transform;
     }
 
     .zoom-viewer {
@@ -436,8 +437,9 @@ let angle = 0;
     const x = Math.sin(rad) * parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--translateZ'));
     const z = Math.cos(rad) * parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--translateZ'));
     const isFront = Math.abs(theta % 360) < step / 2;
-    img.style.transform = `translateX(${x}px) translateZ(${z}px)` + (isFront ? ' scale(1.9)' : '');
-    img.style.zIndex = Math.round(1000 - Math.abs(theta % 360));
+
+img.style.transform = `translateX(${x}px) translateZ(${z}px)`; // plus de scale
+img.style.zIndex = isFront ? 2 : 1; // plus de recalcul violent
   });
 }
 function animate() {
