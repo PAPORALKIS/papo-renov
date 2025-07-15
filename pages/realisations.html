@@ -302,15 +302,12 @@
   }
 
   .carousel img {
-    width: var(--img-size);
-    height: var(--img-size);
-    object-fit: cover;
-    position: absolute;
-    /* 👇 supprime les lignes suivantes si elles existent ailleurs */
-    /* top: 50%; */
-    /* left: 50%; */
-    /* transform: translate(-50%, -50%); */
-  }
+  width: var(--img-size);
+  height: var(--img-size);
+  object-fit: cover;
+  position: absolute;
+  will-change: transform;
+}
 }
       
 }
