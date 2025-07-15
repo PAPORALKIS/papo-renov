@@ -440,7 +440,7 @@ img.style.zIndex = isFront ? 2 : 1; // plus de recalcul violent
 function animate() {
   if (window.innerWidth <= 768 && window.innerHeight > window.innerWidth) return; // blocage mobile portrait
   if (autoRotate && !isDragging) {
-    angle += 0.15;/* Vitesse de rotation du carrousel */
+    angle += 0.10;/* Vitesse de rotation du carrousel */
     
     positionImages();
   }
