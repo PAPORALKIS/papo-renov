@@ -567,6 +567,12 @@ zoomViewer.addEventListener('click', (e) => {
 });
     generateImages();
     animate();
+
+    // Réapplique le positionnement quand on tourne l'écran (ou redimensionne)
+window.addEventListener("resize", () => {
+  positionImages();
+});
+    
   </script>
 </body>
 </html>
