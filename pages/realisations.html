@@ -424,6 +424,7 @@ let angle = 0;
     }
 
     function positionImages() {
+  // Si en mode mobile portrait : ne rien faire (car CSS gère)
   if (window.innerWidth <= 768 && window.innerHeight > window.innerWidth) return;
 
   const images = carousel.querySelectorAll('img');
