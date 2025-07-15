@@ -283,7 +283,7 @@
 
 @media (max-width: 768px) and (orientation: landscape) {
   :root {
-    --translateZ: 300px;       /* recule la caméra pour compenser écran étroit */
+    --translateZ: 900px;       /* recule la caméra pour compenser écran étroit */
     --perspective: 1000px;
     --img-size: 10vw;
   }
@@ -445,7 +445,7 @@ img.style.zIndex = isFront ? 2 : 1; // plus de recalcul violent
 function animate() {
   if (window.innerWidth <= 768 && window.innerHeight > window.innerWidth) return; // blocage mobile portrait
   if (autoRotate && !isDragging) {
-    angle += 0.3;/* Vitesse de rotation du carrousel */
+    angle += 0.15;/* Vitesse de rotation du carrousel */
     
     positionImages();
   }
