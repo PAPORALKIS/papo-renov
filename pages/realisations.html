@@ -179,11 +179,14 @@
       cursor: pointer;
     }
 
-    @keyframes spinY {
-      from { transform: rotateY(0deg); }
-      to { transform: rotateY(360deg); }
+      @keyframes spinY {
+    from {
+      transform: rotateY(0deg);
     }
-
+    to {
+      transform: rotateY(360deg);
+    }
+  }
 
     
     @media (max-width: 768px) and (orientation: portrait) {
@@ -270,16 +273,9 @@
     .carousel img:nth-child(44) { transform: rotateY(144deg) rotateX(-65deg) translateZ(var(--translateZ)); }
     .carousel img:nth-child(45) { transform: rotateY(216deg) rotateX(-65deg) translateZ(var(--translateZ)); }
     .carousel img:nth-child(46) { transform: rotateY(288deg) rotateX(-65deg) translateZ(var(--translateZ)); }
-
+}
   /* Animation uniquement sur l'axe Y */
-  @keyframes spinY {
-    from {
-      transform: rotateY(0deg);
-    }
-    to {
-      transform: rotateY(360deg);
-    }
-  }
+
 
 @media (max-width: 768px) and (orientation: landscape) {
   :root {
