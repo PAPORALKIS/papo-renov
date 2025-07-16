@@ -319,8 +319,11 @@
    @media (orientation: landscape) and (max-height: 500px) {
   :root {
     --img-size: 12vw;
-    --translateZ: 200px;
+     /* ↔ Taille des images : assez petite pour afficher plus d’éléments */
+    --translateZ: 250px;
+     /* ↔ Distance entre les images et le centre du carrousel */
     --perspective: 2900px;
+     /* ↔ Vision reculée : effet 3D doux, car peu de déformation */
   }
 
   .carousel-container {
