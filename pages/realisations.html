@@ -282,35 +282,43 @@
   }
 
 @media (max-width: 768px) and (orientation: landscape) {
-  translateZ: 1880px; /* Ajuste ici pour éloigner ou rapprocher */
+  :root {
+    --img-size: 17vw;
+    --translateZ: 1200px;
+    --perspective: 1400px;
   }
-      .carousel-container {
-        left: 50%;
-        top: 55%;
-        transform: translate(-50%, -50%);
-        perspective: 1600px;
-        height: 100vh;
-        overflow: hidden;
-      }
 
-      .carousel {
-        width: 100%;
-        height: 100%;
-        transform-style: preserve-3d;
-        transform-origin: 50% center;
-        
-        margin: 0 auto;
-      }
+  .carousel-container {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    perspective: var(--perspective);
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    pointer-events: none;
+  }
 
-      .carousel img {
-        position: absolute;
-        width: 9px;
-        height: 6px;
-        object-fit: cover;
-        left: 40%;
-        top: 55%;
-       
-      }
+  .carousel {
+    transform-style: preserve-3d;
+    pointer-events: auto;
+    cursor: grab;
+  }
+
+  .carousel img {
+    position: absolute;
+    width: var(--img-size);
+    height: var(--img-size);
+    object-fit: cover;
+    border-radius: 12px;
+    box-shadow: 0 0 14px rgba(0, 0, 0, 0.7);
+    transition: transform 0.6s, z-index 0.6s;
+    z-index: 1;
+    user-select: none;
+    will-change: transform;
+  }
 }
       
 }
