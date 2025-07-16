@@ -478,22 +478,17 @@ let angle = 0;
     let dragged = false;
     
     function generateImages(filter = 'all') {
-  carousel.innerHTML = '';
-  const filtered = filter === 'all' ? imagesData : imagesData.filter(img => img.theme === filter);
-  filtered.forEach((data, i) => {
-    const img = document.createElement('img');
-    img.src = data.src;
-    img.setAttribute('data-theme', data.theme);
-    img.setAttribute('data-comment', data.comment);
-    img.addEventListener('click', () => { if (!dragged) showZoom(data); });
-    carousel.appendChild(img);
-  });
-
-  // Forcer un recalcul même si JS ne repositionne pas
-  carousel.offsetHeight;
-
-  positionImages();
-}
+      carousel.innerHTML = '';
+      const filtered = filter === 'all' ? imagesData : imagesData.filter(img => img.theme === filter);
+      filtered.forEach((data, i) => {
+        const img = document.createElement('img');
+        img.src = data.src;
+        img.setAttribute('data-theme', data.theme);
+        img.setAttribute('data-comment', data.comment);
+        img.addEventListener('click', () => { if (!dragged) showZoom(data); });
+        carousel.appendChild(img);
+      });
+      positionImages();
     }
 
     function positionImages() {
