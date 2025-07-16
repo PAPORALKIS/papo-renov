@@ -640,12 +640,24 @@ zoomViewer.addEventListener('click', (e) => {
     generateImages();
     animate();
 
-    // Réapplique le positionnement quand on tourne l'écran (ou redimensionne)
-    window.addEventListener("resize", () => {
-      positionImages();
-      document.querySelector('.carousel-container').style.perspective =
-        getComputedStyle(document.documentElement).getPropertyValue('--perspective');
-    });
+    // Réapplique le positionnement quand on tourne l'écran ou redimensionne
+let previousOrientation = window.innerHeight > window.innerWidth ? "portrait" : "landscape";
+
+window.addEventListener("resize", () => {
+  const isPortrait = window.innerHeight > window.innerWidth;
+  const currentOrientation = isPortrait ? "portrait" : "landscape";
+
+  // Si on passe de portrait à paysage ou l'inverse
+  if (currentOrientation !== previousOrientation) {
+    previousOrientation = currentOrientation;
+    generateImages();  // ✅ Recharge la sphère ou le carrousel selon l'orientation
+  }
+
+  // Dans tous les cas, on met à jour la perspective
+  positionImages();
+  document.querySelector('.carousel-container').style.perspective =
+    getComputedStyle(document.documentElement).getPropertyValue('--perspective');
+});
   </script>
 </body>
 </html>
