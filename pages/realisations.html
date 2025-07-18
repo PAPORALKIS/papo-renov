@@ -534,24 +534,8 @@ let angle = 0;
   const step = 360 / total;
   const isMobilePortrait = window.innerWidth <= 768 && window.innerHeight > window.innerWidth;
 
-  // ✅ Cas mobile portrait : juste gérer l'opacité (pas de repositionnement)
-  if (isMobilePortrait) {
-    images.forEach((img, i) => {
-      const theta = (i * step + angle) % 360;
-      const normalizedTheta = (theta + 360) % 360;
-
-      if (normalizedTheta < 20 || normalizedTheta > 340) {
-        img.classList.add('visible');
-      } else {
-        img.classList.remove('visible');
-      }
-    });
-    return; // ⛔ Pas de repositionnement JS en mobile portrait
-  }
-
-  // ✅ Cas normal (desktop/tablette/paysage) : positionnement 3D standard
   images.forEach((img, i) => {
-    const theta = i * step + angle;
+    const theta = (i * step + angle) % 360;
     const rad = theta * Math.PI / 180;
 
     const x = Math.sin(rad) * parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--translateZ'));
@@ -560,10 +544,19 @@ let angle = 0;
     img.style.transform = `translateX(${x}px) translateZ(${z}px)`;
     img.style.zIndex = z > 0 ? 2 : 1;
 
-    // Nettoyage si visible reste depuis portrait
-    img.classList.remove('visible');
+    // 🔄 Transparence dynamique uniquement en mobile portrait
+    if (isMobilePortrait) {
+      const normalizedTheta = (theta + 360) % 360;
+      if (normalizedTheta < 20 || normalizedTheta > 340) {
+        img.classList.add('visible');
+      } else {
+        img.classList.remove('visible');
+      }
+    } else {
+      
+  img.classList.remove('visible');
+    }
   });
-}
 }
     
 function animate() {
