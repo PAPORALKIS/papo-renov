@@ -219,8 +219,11 @@
         object-fit: cover;
         left: 40%;
         top: 55%;
-         opacity: 0.2; /* ↘️ Rend toutes les images très discrètes */
-    transition: opacity 0.4s ease;
+         opacity: 0.1; /* ↘️ Rend toutes les images très discrètes */
+    transition: opacity 0.3s ease;
+  }
+       .carousel img.visible {
+    opacity: 1;
   }
 
   /* ↗️ Surligne les images proches de la vue centrale */
