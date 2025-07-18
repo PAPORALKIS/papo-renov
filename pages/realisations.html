@@ -548,10 +548,10 @@ let angle = 0;
     // 🔄 Transparence dynamique uniquement en mobile portrait
    if (isMobilePortrait) {
   const normalizedTheta = (theta + 360) % 360;
-  const zThreshold = translateZ * 0.2; // 70 % de profondeur max vers l'avant
-  const isInFront = normalizedTheta < 90 || normalizedTheta > 300;
+  const zThreshold = translateZ * 0.2;
+  const angleZone = 90;
 
-  if (isInFront && z > zThreshold) {
+  if ((normalizedTheta < angleZone || normalizedTheta > 360 - angleZone) && z > zThreshold) {
     img.classList.add('visible');
   } else {
     img.classList.remove('visible');
