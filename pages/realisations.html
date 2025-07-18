@@ -529,6 +529,7 @@ let angle = 0;
     }
 
     function positionImages() {
+      if (window.innerWidth <= 768 && window.innerHeight > window.innerWidth) return;
   const images = carousel.querySelectorAll('img');
   const total = images.length;
   const step = 360 / total;
