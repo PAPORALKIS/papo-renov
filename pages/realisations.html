@@ -219,7 +219,30 @@
         object-fit: cover;
         left: 40%;
         top: 55%;
-       
+         opacity: 0.2; /* ↘️ Rend toutes les images très discrètes */
+    transition: opacity 0.4s ease;
+  }
+
+  /* ↗️ Surligne les images proches de la vue centrale */
+  .carousel img:nth-child(24),
+  .carousel img:nth-child(25),
+  .carousel img:nth-child(26),
+  .carousel img:nth-child(27),
+  .carousel img:nth-child(28),
+  .carousel img:nth-child(29),
+  .carousel img:nth-child(30),
+  .carousel img:nth-child(31),
+  .carousel img:nth-child(32),
+  .carousel img:nth-child(45),
+  .carousel img:nth-child(46),
+  .carousel img:nth-child(47),
+  .carousel img:nth-child(40),
+  .carousel img:nth-child(12),
+  .carousel img:nth-child(22),
+  .carousel img:nth-child(23),
+  .carousel img:nth-child(48) {
+    opacity: 1; /* ↗️ Images du premier plan restent visibles */
+  
       }
   /* Positionner les 40 images en 5 cercles de 8 images */
 /* Cercle 1 : rotateX(-75°), 6 images  */
