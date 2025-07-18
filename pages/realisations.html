@@ -546,14 +546,17 @@ let angle = 0;
     img.style.zIndex = z > 0 ? 2 : 1;
 
     // 🔄 Transparence dynamique uniquement en mobile portrait
-    if (isMobilePortrait) {
-      const normalizedTheta = (theta + 360) % 360;
-      if (normalizedTheta < 20 || normalizedTheta > 340) {
-        img.classList.add('visible');
-      } else {
-        img.classList.remove('visible');
-      }
-    } else {
+   if (isMobilePortrait) {
+  const normalizedTheta = (theta + 360) % 360;
+  const zThreshold = translateZ * 0.7; // 70 % de profondeur max vers l'avant
+  const isInFront = normalizedTheta < 60 || normalizedTheta > 300;
+
+  if (isInFront && z > zThreshold) {
+    img.classList.add('visible');
+  } else {
+    img.classList.remove('visible');
+  }
+   } else {
       
   img.classList.remove('visible');
     }
