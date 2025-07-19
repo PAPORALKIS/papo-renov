@@ -161,6 +161,7 @@
       max-width: 90vw;
       max-height: 70vh;
       border-radius: 10px;
+    /*  l’image agrandie prend au maximum 90% de la largeur de l’écran et 70% de la hauteur*/
     }
 
     .zoom-comment {
@@ -188,10 +189,11 @@
     }
   }
 
+    
     @media (max-width: 768px) and (orientation: portrait) {
       :root {
-        --translateZ: 250px;
-      }
+    --translateZ: 180px; /* Ajuste ici pour éloigner ou rapprocher */
+  }
       .carousel-container {
         left: 50%;
         top: 55%;
@@ -206,7 +208,7 @@
         height: 100%;
         transform-style: preserve-3d;
         transform-origin: 50% center;
-        transform: rotateX(0deg);
+        transform: none;
         margin: 0 auto;
       }
 
@@ -217,8 +219,72 @@
         object-fit: cover;
         left: 40%;
         top: 55%;
+       
       }
+  /* Positionner les 40 images en 5 cercles de 8 images */
+/* Cercle 1 : rotateX(-75°), 6 images  */
+ .carousel img:nth-child(1)  { transform: rotateY(0deg) rotateX(65deg) translateZ(var(--translateZ)); }
+    .carousel img:nth-child(2)  { transform: rotateY(72deg) rotateX(65deg) translateZ(var(--translateZ)); }
+    .carousel img:nth-child(3)  { transform: rotateY(144deg) rotateX(65deg) translateZ(var(--translateZ)); }
+    .carousel img:nth-child(4)  { transform: rotateY(216deg) rotateX(65deg) translateZ(var(--translateZ)); }
+    .carousel img:nth-child(5)  { transform: rotateY(288deg) rotateX(65deg) translateZ(var(--translateZ)); }
+
+    .carousel img:nth-child(6)  { transform: rotateY(0deg) rotateX(41deg) translateZ(var(--translateZ)); }
+    .carousel img:nth-child(7)  { transform: rotateY(45deg) rotateX(41deg) translateZ(var(--translateZ)); }
+    .carousel img:nth-child(8)  { transform: rotateY(90deg) rotateX(41deg) translateZ(var(--translateZ)); }
+    .carousel img:nth-child(9)  { transform: rotateY(135deg) rotateX(41deg) translateZ(var(--translateZ)); }
+    .carousel img:nth-child(10) { transform: rotateY(180deg) rotateX(41deg) translateZ(var(--translateZ)); }
+    .carousel img:nth-child(11) { transform: rotateY(225deg) rotateX(41deg) translateZ(var(--translateZ)); }
+    .carousel img:nth-child(12) { transform: rotateY(270deg) rotateX(41deg) translateZ(var(--translateZ)); }
+    .carousel img:nth-child(13) { transform: rotateY(315deg) rotateX(41deg) translateZ(var(--translateZ)); }
+
+    .carousel img:nth-child(14) { transform: rotateY(0deg) rotateX(18deg) translateZ(var(--translateZ)); }
+    .carousel img:nth-child(15) { transform: rotateY(36deg) rotateX(18deg) translateZ(var(--translateZ)); }
+    .carousel img:nth-child(16) { transform: rotateY(72deg) rotateX(18deg) translateZ(var(--translateZ)); }
+    .carousel img:nth-child(17) { transform: rotateY(108deg) rotateX(18deg) translateZ(var(--translateZ)); }
+    .carousel img:nth-child(18) { transform: rotateY(144deg) rotateX(18deg) translateZ(var(--translateZ)); }
+    .carousel img:nth-child(19) { transform: rotateY(180deg) rotateX(18deg) translateZ(var(--translateZ)); }
+    .carousel img:nth-child(20) { transform: rotateY(216deg) rotateX(18deg) translateZ(var(--translateZ)); }
+    .carousel img:nth-child(21) { transform: rotateY(252deg) rotateX(18deg) translateZ(var(--translateZ)); }
+    .carousel img:nth-child(22) { transform: rotateY(288deg) rotateX(18deg) translateZ(var(--translateZ)); }
+    .carousel img:nth-child(23) { transform: rotateY(324deg) rotateX(18deg) translateZ(var(--translateZ)); }
+
+    .carousel img:nth-child(24) { transform: rotateY(0deg) rotateX(-18deg) translateZ(var(--translateZ)); }
+    .carousel img:nth-child(25) { transform: rotateY(36deg) rotateX(-18deg) translateZ(var(--translateZ)); }
+    .carousel img:nth-child(26) { transform: rotateY(72deg) rotateX(-18deg) translateZ(var(--translateZ)); }
+    .carousel img:nth-child(27) { transform: rotateY(108deg) rotateX(-18deg) translateZ(var(--translateZ)); }
+    .carousel img:nth-child(28) { transform: rotateY(144deg) rotateX(-18deg) translateZ(var(--translateZ)); }
+    .carousel img:nth-child(29) { transform: rotateY(180deg) rotateX(-18deg) translateZ(var(--translateZ)); }
+    .carousel img:nth-child(30) { transform: rotateY(216deg) rotateX(-18deg) translateZ(var(--translateZ)); }
+    .carousel img:nth-child(31) { transform: rotateY(252deg) rotateX(-18deg) translateZ(var(--translateZ)); }
+    .carousel img:nth-child(32) { transform: rotateY(288deg) rotateX(-18deg) translateZ(var(--translateZ)); }
+    .carousel img:nth-child(33) { transform: rotateY(324deg) rotateX(-18deg) translateZ(var(--translateZ)); }
+
+    .carousel img:nth-child(34) { transform: rotateY(0deg) rotateX(-41deg) translateZ(var(--translateZ)); }
+    .carousel img:nth-child(35) { transform: rotateY(45deg) rotateX(-41deg) translateZ(var(--translateZ)); }
+    .carousel img:nth-child(36) { transform: rotateY(90deg) rotateX(-41deg) translateZ(var(--translateZ)); }
+    .carousel img:nth-child(37) { transform: rotateY(135deg) rotateX(-41deg) translateZ(var(--translateZ)); }
+    .carousel img:nth-child(38) { transform: rotateY(180deg) rotateX(-41deg) translateZ(var(--translateZ)); }
+    .carousel img:nth-child(39) { transform: rotateY(225deg) rotateX(-41deg) translateZ(var(--translateZ)); }
+    .carousel img:nth-child(40) { transform: rotateY(270deg) rotateX(-41deg) translateZ(var(--translateZ)); }
+    .carousel img:nth-child(41) { transform: rotateY(315deg) rotateX(-41deg) translateZ(var(--translateZ)); }
+
+    .carousel img:nth-child(42) { transform: rotateY(0deg) rotateX(-65deg) translateZ(var(--translateZ)); }
+    .carousel img:nth-child(43) { transform: rotateY(72deg) rotateX(-65deg) translateZ(var(--translateZ)); }
+    .carousel img:nth-child(44) { transform: rotateY(144deg) rotateX(-65deg) translateZ(var(--translateZ)); }
+    .carousel img:nth-child(45) { transform: rotateY(216deg) rotateX(-65deg) translateZ(var(--translateZ)); }
+    .carousel img:nth-child(46) { transform: rotateY(288deg) rotateX(-65deg) translateZ(var(--translateZ)); }
+
+    .carousel img:nth-child(47) { transform: rotateY(0deg) rotateX(0deg) translateZ(var(--translateZ)); }
+    .carousel img:nth-child(48) { transform: rotateY(36deg) rotateX(0deg) translateZ(var(--translateZ)); }
+    .carousel img:nth-child(49) { transform: rotateY(72deg) rotateX(0deg) translateZ(var(--translateZ)); }
+    .carousel img:nth-child(50) { transform: rotateY(108deg) rotateX(0deg) translateZ(var(--translateZ)); }
+    .carousel img:nth-child(51) { transform: rotateY(144deg) rotateX(0deg) translateZ(var(--translateZ)); }
+    .carousel img:nth-child(52) { transform: rotateY(180deg) rotateX(0deg) translateZ(var(--translateZ)); }
+    
     }
+  /* Animation uniquement sur l'axe Y */
+
 
 @media (max-width: 768px) and (orientation: landscape) {
   :root {
@@ -261,9 +327,9 @@
 }
    @media (orientation: landscape) and (max-height: 500px) {
   :root {
-    --img-size: 12vw;
-    --translateZ: 370px;
-    --perspective: 4200px;
+    --img-size: 12vw;         /* ↔ Taille des images */
+    --translateZ: 370px;      /* ↔ Distance entre images et centre */
+    --perspective: 4200px;    /* ↔ Vision reculée */
   }
 
   .carousel-container {
@@ -319,12 +385,13 @@
     padding: 4px 10px;
   }
      .filters button {
-  font-size: 0.7em;
-  padding: 4px 8px;
-  margin: 2px;
+  font-size: 0.7em;     /* ↘️ Réduit la taille du texte */
+  padding: 4px 8px;     /* ↘️ Réduit l’espace interne */
+  margin: 2px;          /* ↘️ Resserre l’espacement entre les boutons */
 }
 }
 }
+
   </style>
 </head>
 <body>
@@ -415,10 +482,10 @@
     { src: '../img/renoperier3.jpg', theme: 'cuisine', comment: 'renovation studio Marseille' },
     { src: '../img/renoperier4.jpg', theme: 'cuisine', comment: 'renovation studio Marseille' },
     { src: '../img/renoperier5.jpg', theme: 'cuisine', comment: 'renovation studio Marseille' },
-    { src: '../img/renoperier6.jpg', theme: 'cuisine', comment: 'renovation studio Marseille' }
+    { src: '../img/renoperier6.jpg', theme: 'cuisine', comment: 'renovation studio Marseille' },
     ];
 
-    let angle = 0;
+let angle = 0;
     let autoRotate = true;
     let isDragging = false;
     let startX = 0;
@@ -438,56 +505,33 @@
       positionImages();
     }
 
-
     function positionImages() {
-      const images = carousel.querySelectorAll('img');
-      const total = images.length;
-      const step = 360 / total;
-      
-      let rotationY = angle;
+  // Si en mode mobile portrait : ne rien faire (car CSS gère)
+  if (window.innerWidth <= 768 && window.innerHeight > window.innerWidth) return;
 
-      // Logique de drag applicable à tous les écrans
-      const transform = window.getComputedStyle(carousel).transform;
-      if (transform && transform !== 'none') {
-        const values = transform.split('(')[1].split(')')[0].split(',');
-        const a = parseFloat(values[0]);
-        const b = parseFloat(values[2]);
-        const rad = Math.atan2(b, a);
-        rotationY = rad * (180 / Math.PI);
-      }
+  const images = carousel.querySelectorAll('img');
+  const total = images.length;
+  const step = 360 / total;
+  images.forEach((img, i) => {
+    const theta = i * step + angle;
+    const rad = theta * Math.PI / 180;
+    const x = Math.sin(rad) * parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--translateZ'));
+    const z = Math.cos(rad) * parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--translateZ'));
+    const isFront = Math.abs(theta % 360) < step / 2;
 
-      images.forEach((img, i) => {
-        let imgAngle = step * i;
-        const rad = (imgAngle + rotationY) * Math.PI / 180;
-        const translateZ = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--translateZ'));
-        const x = Math.sin(rad) * translateZ;
-        const z = Math.cos(rad) * translateZ;
-        
-        // Positionnement en un seul cercle pour tous les cas
-        img.style.transform = `translateX(${x}px) translateZ(${z}px) rotateY(${imgAngle}deg)`;
-
-        // Calcul de la visibilité, opacité et flou (le même pour tous)
-        const theta = (imgAngle + rotationY) % 360;
-        const normalized = (theta + 360) % 360;
-        const visibilityFactor = Math.cos(normalized * Math.PI / 180);
-        const visible = Math.max(0, visibilityFactor);
-        const opacity = 0.2 + 0.8 * visible;
-        const blur = (1 - visible) * 2.5;
-
-        img.style.opacity = opacity.toFixed(2);
-        img.style.filter = `brightness(${opacity.toFixed(2)}) blur(${blur.toFixed(2)}px)`;
-        img.style.zIndex = Math.round(opacity * 10);
-      });
-    }
-
-    function animate() {
-      // S'assure que l'animation ne se lance que si ce n'est pas le carrousel qui est glissé
-      if (autoRotate && !isDragging) {
-        angle += 0.10;
-        positionImages();
-      }
-      requestAnimationFrame(animate);
-    }
+img.style.transform = `translateX(${x}px) translateZ(${z}px)`; // plus de scale
+img.style.zIndex = isFront ? 2 : 1; // plus de recalcul violent
+  });
+}
+function animate() {
+  if (window.innerWidth <= 768 && window.innerHeight > window.innerWidth) return; // blocage mobile portrait
+  if (autoRotate && !isDragging) {
+    angle += 0.10;/* Vitesse de rotation du carrousel */
+    
+    positionImages();
+  }
+  requestAnimationFrame(animate);
+}
 
     function showZoom(data) {
       zoomImage.src = data.src;
@@ -527,7 +571,7 @@
       }
     });
 
-    // Gestion tactile (rotation pour tous les appareils tactiles)
+    // Gestion tactile (rotation sphère mobile portrait)
     (function () {
       if (!carousel) return;
 
@@ -537,6 +581,10 @@
       let animationActive = true;
       let angleStart = 0;
 
+      function isMobilePortrait() {
+        return window.innerWidth <= 768 && window.innerHeight > window.innerWidth;
+      }
+
       carousel.addEventListener('touchstart', (e) => {
         if (e.touches.length !== 1) return;
         isDragging = true;
@@ -545,9 +593,11 @@
         angleStart = angle;
         draggingHorizontally = false;
 
-        carousel.style.animation = 'none';
-        autoRotate = false;
-        animationActive = false;
+        if (!isMobilePortrait()) {
+          carousel.style.animation = 'none';
+          autoRotate = false;
+          animationActive = false;
+        }
 
         if (resumeTimeout) clearTimeout(resumeTimeout);
       }, { passive: true });
@@ -562,57 +612,66 @@
         }
 
         if (draggingHorizontally) {
-          angle = angleStart + dx * 0.3;
-          positionImages();
-        }
+  angle = angleStart + dx * 0.3;
+  if (isMobilePortrait()) {
+    carousel.style.animation = 'none'; // ✅ Stop rotation auto pendant le geste
+    carousel.style.transform = `rotateY(${angle}deg)`;
+  } else {
+    positionImages();
+  }
+}
       }, { passive: true });
 
       carousel.addEventListener('touchend', () => {
         isDragging = false;
         draggingHorizontally = false;
 
-        resumeTimeout = setTimeout(() => {
-          carousel.style.animation = 'spinY 30s linear infinite';
-          autoRotate = true;
-          animationActive = true;
-        }, 5000);
+        if (!isMobilePortrait()) {
+  resumeTimeout = setTimeout(() => {
+    carousel.style.animation = 'spinY 30s linear infinite';
+    autoRotate = true;
+    animationActive = true;
+  }, 5000);
+}
       });
 
       setInterval(() => {
-        if (!animationActive && !isDragging) {
-          carousel.style.animation = 'spinY 30s linear infinite';
-          autoRotate = true;
-          animationActive = true;
-        }
-      }, 10000);
+  if (!isMobilePortrait() && !animationActive && !isDragging) {
+    carousel.style.animation = 'spinY 30s linear infinite';
+    autoRotate = true;
+    animationActive = true;
+  }
+}, 10000);
     })();
-
-    // Permet de fermer le zoom lorsqu'on clique sur l'image déjà agrandie ou le fond noir
-    zoomViewer.addEventListener('click', (e) => {
-      if (e.target === zoomViewer || e.target === zoomImage) {
-        closeZoom();
-      }
-    });
-        
+    
+// Permet de fermer le zoom lorsqu'on clique sur l'image déjà agrandie ou le fond noir
+zoomViewer.addEventListener('click', (e) => {
+  // Ne ferme que si on clique sur le fond noir ou sur l'image elle-même
+  if (e.target === zoomViewer || e.target === zoomImage) {
+    closeZoom();
+  }
+});
     generateImages();
     animate();
 
     // Réapplique le positionnement quand on tourne l'écran ou redimensionne
-    let previousOrientation = window.innerHeight > window.innerWidth ? "portrait" : "landscape";
+let previousOrientation = window.innerHeight > window.innerWidth ? "portrait" : "landscape";
 
-    window.addEventListener("resize", () => {
-      const isPortrait = window.innerHeight > window.innerWidth;
-      const currentOrientation = isPortrait ? "portrait" : "landscape";
+window.addEventListener("resize", () => {
+  const isPortrait = window.innerHeight > window.innerWidth;
+  const currentOrientation = isPortrait ? "portrait" : "landscape";
 
-      if (currentOrientation !== previousOrientation) {
-        previousOrientation = currentOrientation;
-        generateImages();
-      }
+  // Si on passe de portrait à paysage ou l'inverse
+  if (currentOrientation !== previousOrientation) {
+    previousOrientation = currentOrientation;
+    generateImages();  // ✅ Recharge la sphère ou le carrousel selon l'orientation
+  }
 
-      positionImages();
-      document.querySelector('.carousel-container').style.perspective =
-        getComputedStyle(document.documentElement).getPropertyValue('--perspective');
-    });
+  // Dans tous les cas, on met à jour la perspective
+  positionImages();
+  document.querySelector('.carousel-container').style.perspective =
+    getComputedStyle(document.documentElement).getPropertyValue('--perspective');
+});
   </script>
 </body>
 </html>
