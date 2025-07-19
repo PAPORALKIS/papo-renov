@@ -561,14 +561,12 @@ function positionImages() {
   });
 }
 function animate() {
-  if (!(window.innerWidth <= 768 && window.innerHeight > window.innerWidth)) {
-    if (autoRotate && !isDragging) {
-      angle += 0.10; // Vitesse de rotation
-    }
+  if (window.innerWidth <= 768 && window.innerHeight > window.innerWidth) return; // blocage mobile portrait
+  if (autoRotate && !isDragging) {
+    angle += 0.10;/* Vitesse de rotation du carrousel */
+    
+    positionImages();
   }
-
-  positionImages(); // ✅ Toujours appeler pour mettre à jour les opacités/flous
-}
   requestAnimationFrame(animate);
 }
 
