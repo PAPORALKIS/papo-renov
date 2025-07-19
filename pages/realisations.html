@@ -188,8 +188,7 @@
       }
     }
 
-    /* Le positionnement en mode portrait est maintenant géré par le JavaScript de manière dynamique.
-       Les règles CSS statiques avec :nth-child ont été supprimées car elles ne fonctionnaient pas avec les filtres. */
+    /* Ajustements pour le mode mobile portrait */
     @media (max-width: 768px) and (orientation: portrait) {
       :root {
         --translateZ: 200px;
@@ -214,11 +213,11 @@
 
       .carousel img {
         position: absolute;
-        width: 90px;
-        height: 63px;
+        width: 100px; /* Taille réduite */
+        height: 70px;
         object-fit: cover;
-        left: 40%;
-        top: 55%;
+        left: 50%;
+        top: 50%;
       }
     }
 
@@ -371,52 +370,52 @@
 
     const imagesData = [ 
       { src: '../img/CHBR1.jpg', theme: 'autre', comment: 'Chambre 2' },
-    { src: '../img/CUIEXT2.jpg', theme: 'cuisine', comment: 'Cuisine extérieure vue 2' },
-    { src: '../img/CUIEXT4.jpg', theme: 'cuisine', comment: 'Cuisine extérieure vue 4' },
-    { src: '../img/CUIEXT5.jpg', theme: 'cuisine', comment: 'Cuisine extérieure vue 5' },
-    { src: '../img/CUIEXT6.jpg', theme: 'cuisine', comment: 'Cuisine extérieure vue 6' },
-    { src: '../img/CUIMARS1.jpg', theme: 'cuisine', comment: 'Cuisine Mars vue 1' },
-    { src: '../img/CUIMARS2.jpg', theme: 'cuisine', comment: 'Cuisine Mars vue 2' },
-    { src: '../img/CUIMARS3.jpg', theme: 'cuisine', comment: 'Cuisine Mars vue 3' },
-    { src: '../img/CUIMARS4.jpg', theme: 'cuisine', comment: 'Cuisine Mars vue 4' },
-    { src: '../img/DRESSMARS1.jpg', theme: 'dressing', comment: 'Cuisine Mars vue 4' },
-    { src: '../img/DRESSMARS2.jpg', theme: 'dressing', comment: 'Cuisine Mars vue 4' },
-    { src: '../img/DRESSMARS3.jpg', theme: 'dressing', comment: 'Cuisine Mars vue 4' },
-    { src: '../img/DRESSMARS4.jpg', theme: 'dressing', comment: 'Cuisine Mars vue 4' },
-    { src: '../img/iso1.jpg', theme: 'autre', comment: 'Isolation 2' },
-    { src: '../img/Iso2.jpg', theme: 'autre', comment: 'Isolation 2' },
-    { src: '../img/Iso3.jpg', theme: 'autre', comment: 'Isolation 3' },
-    { src: '../img/Iso4.jpg', theme: 'autre', comment: 'Isolation 4' },
-    { src: '../img/Iso5.jpg', theme: 'autre', comment: 'Isolation 5' },
-    { src: '../img/Iso6.jpg', theme: 'autre', comment: 'Isolation 6' },
-    { src: '../img/SDB1.jpg', theme: 'sdb', comment: 'Salle de bain 1' },
-    { src: '../img/SDB2.jpg', theme: 'sdb', comment: 'Salle de bain 2' },
-    { src: '../img/SDB3.jpg', theme: 'sdb', comment: 'Salle de bain 3' },
-    { src: '../img/SDB4.jpg', theme: 'sdb', comment: 'Salle de bain 4' },
-    { src: '../img/SDB5.jpg', theme: 'sdb', comment: 'Salle de bain 5' },
-    { src: '../img/WC2.jpg', theme: 'sdb', comment: 'WC stylé' },
-    { src: '../img/ext1.jpg', theme: 'exterieur', comment: 'Extérieur 1' },
-    { src: '../img/ext2.jpg', theme: 'exterieur', comment: 'Extérieur 2' },
-    { src: '../img/meuble-laura-1.jpg', theme: 'dressing', comment: 'Dressing Laura 1' },
-    { src: '../img/meuble-laura-2.jpg', theme: 'dressing', comment: 'Dressing Laura 2' },
-    { src: '../img/meuble-laura-3.jpg', theme: 'dressing', comment: 'Dressing Laura 3' },
-    { src: '../img/martegauxavant1.jpg', theme: 'exterieur', comment: 'Avant Martegaux 1' },
-    { src: '../img/martegauxavant2.jpg', theme: 'exterieur', comment: 'Avant Martegaux 2' },
-    { src: '../img/martegauxavant3.jpg', theme: 'exterieur', comment: 'Avant Martegaux 3' },
-    { src: '../img/martegauxB.jpg', theme: 'exterieur', comment: 'Martegaux B' },
-    { src: '../img/martegauxC.jpg', theme: 'exterieur', comment: 'Martegaux C' },
-    { src: '../img/martegauxD.jpg', theme: 'exterieur', comment: 'Martegaux D' },
-    { src: '../img/martegauxE.jpg', theme: 'exterieur', comment: 'Martegaux E' },
-    { src: '../img/velaux0.jpg', theme: 'exterieur', comment: 'Velaux 0' },
-    { src: '../img/velaux1.jpg', theme: 'exterieur', comment: 'Velaux 1' },
-    { src: '../img/velaux2.jpg', theme: 'exterieur', comment: 'Velaux 2' },
-    { src: '../img/velaux3.jpg', theme: 'exterieur', comment: 'Velaux 3' },
-    { src: '../img/renoperier1.jpg', theme: 'cuisine', comment: 'renovation studio Marseille' },
-    { src: '../img/renoperier2.jpg', theme: 'cuisine', comment: 'renovation studio Marseille' },
-    { src: '../img/renoperier3.jpg', theme: 'cuisine', comment: 'renovation studio Marseille' },
-    { src: '../img/renoperier4.jpg', theme: 'cuisine', comment: 'renovation studio Marseille' },
-    { src: '../img/renoperier5.jpg', theme: 'cuisine', comment: 'renovation studio Marseille' },
-    { src: '../img/renoperier6.jpg', theme: 'cuisine', comment: 'renovation studio Marseille' },
+      { src: '../img/CUIEXT2.jpg', theme: 'cuisine', comment: 'Cuisine extérieure vue 2' },
+      { src: '../img/CUIEXT4.jpg', theme: 'cuisine', comment: 'Cuisine extérieure vue 4' },
+      { src: '../img/CUIEXT5.jpg', theme: 'cuisine', comment: 'Cuisine extérieure vue 5' },
+      { src: '../img/CUIEXT6.jpg', theme: 'cuisine', comment: 'Cuisine extérieure vue 6' },
+      { src: '../img/CUIMARS1.jpg', theme: 'cuisine', comment: 'Cuisine Mars vue 1' },
+      { src: '../img/CUIMARS2.jpg', theme: 'cuisine', comment: 'Cuisine Mars vue 2' },
+      { src: '../img/CUIMARS3.jpg', theme: 'cuisine', comment: 'Cuisine Mars vue 3' },
+      { src: '../img/CUIMARS4.jpg', theme: 'cuisine', comment: 'Cuisine Mars vue 4' },
+      { src: '../img/DRESSMARS1.jpg', theme: 'dressing', comment: 'Cuisine Mars vue 4' },
+      { src: '../img/DRESSMARS2.jpg', theme: 'dressing', comment: 'Cuisine Mars vue 4' },
+      { src: '../img/DRESSMARS3.jpg', theme: 'dressing', comment: 'Cuisine Mars vue 4' },
+      { src: '../img/DRESSMARS4.jpg', theme: 'dressing', comment: 'Cuisine Mars vue 4' },
+      { src: '../img/iso1.jpg', theme: 'autre', comment: 'Isolation 2' },
+      { src: '../img/Iso2.jpg', theme: 'autre', comment: 'Isolation 2' },
+      { src: '../img/Iso3.jpg', theme: 'autre', comment: 'Isolation 3' },
+      { src: '../img/Iso4.jpg', theme: 'autre', comment: 'Isolation 4' },
+      { src: '../img/Iso5.jpg', theme: 'autre', comment: 'Isolation 5' },
+      { src: '../img/Iso6.jpg', theme: 'autre', comment: 'Isolation 6' },
+      { src: '../img/SDB1.jpg', theme: 'sdb', comment: 'Salle de bain 1' },
+      { src: '../img/SDB2.jpg', theme: 'sdb', comment: 'Salle de bain 2' },
+      { src: '../img/SDB3.jpg', theme: 'sdb', comment: 'Salle de bain 3' },
+      { src: '../img/SDB4.jpg', theme: 'sdb', comment: 'Salle de bain 4' },
+      { src: '../img/SDB5.jpg', theme: 'sdb', comment: 'Salle de bain 5' },
+      { src: '../img/WC2.jpg', theme: 'sdb', comment: 'WC stylé' },
+      { src: '../img/ext1.jpg', theme: 'exterieur', comment: 'Extérieur 1' },
+      { src: '../img/ext2.jpg', theme: 'exterieur', comment: 'Extérieur 2' },
+      { src: '../img/meuble-laura-1.jpg', theme: 'dressing', comment: 'Dressing Laura 1' },
+      { src: '../img/meuble-laura-2.jpg', theme: 'dressing', comment: 'Dressing Laura 2' },
+      { src: '../img/meuble-laura-3.jpg', theme: 'dressing', comment: 'Dressing Laura 3' },
+      { src: '../img/martegauxavant1.jpg', theme: 'exterieur', comment: 'Avant Martegaux 1' },
+      { src: '../img/martegauxavant2.jpg', theme: 'exterieur', comment: 'Avant Martegaux 2' },
+      { src: '../img/martegauxavant3.jpg', theme: 'exterieur', comment: 'Avant Martegaux 3' },
+      { src: '../img/martegauxB.jpg', theme: 'exterieur', comment: 'Martegaux B' },
+      { src: '../img/martegauxC.jpg', theme: 'exterieur', comment: 'Martegaux C' },
+      { src: '../img/martegauxD.jpg', theme: 'exterieur', comment: 'Martegaux D' },
+      { src: '../img/martegauxE.jpg', theme: 'exterieur', comment: 'Martegaux E' },
+      { src: '../img/velaux0.jpg', theme: 'exterieur', comment: 'Velaux 0' },
+      { src: '../img/velaux1.jpg', theme: 'exterieur', comment: 'Velaux 1' },
+      { src: '../img/velaux2.jpg', theme: 'exterieur', comment: 'Velaux 2' },
+      { src: '../img/velaux3.jpg', theme: 'exterieur', comment: 'Velaux 3' },
+      { src: '../img/renoperier1.jpg', theme: 'cuisine', comment: 'renovation studio Marseille' },
+      { src: '../img/renoperier2.jpg', theme: 'cuisine', comment: 'renovation studio Marseille' },
+      { src: '../img/renoperier3.jpg', theme: 'cuisine', comment: 'renovation studio Marseille' },
+      { src: '../img/renoperier4.jpg', theme: 'cuisine', comment: 'renovation studio Marseille' },
+      { src: '../img/renoperier5.jpg', theme: 'cuisine', comment: 'renovation studio Marseille' },
+      { src: '../img/renoperier6.jpg', theme: 'cuisine', comment: 'renovation studio Marseille' },
     ];
 
     let angle = 0;
@@ -424,8 +423,10 @@
     let isDragging = false;
     let startX = 0;
     let dragged = false;
+    let currentFilter = 'all';
 
     function generateImages(filter = 'all') {
+      currentFilter = filter;
       carousel.innerHTML = '';
       const filtered = filter === 'all' ? imagesData : imagesData.filter(img => img.theme === filter);
       filtered.forEach((data, i) => {
@@ -444,11 +445,9 @@
       const total = images.length;
       const isPortraitMobile = window.innerWidth <= 768 && window.innerHeight > window.innerWidth;
       
-      // On récupère la valeur de base pour translateZ
       const translateZ = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--translateZ'));
 
       if (!isPortraitMobile) {
-        // Logique pour le carrousel classique sur desktop/mobile paysage
         const step = 360 / total;
         images.forEach((img, i) => {
           let imgAngle = step * i;
@@ -458,7 +457,6 @@
           
           img.style.transform = `translateX(${x}px) translateZ(${z}px) rotateY(${imgAngle}deg)`;
 
-          // Effets visuels (flou, transparence)
           const brightness = Math.min(1, Math.max(0.4, (z / translateZ)));
           const blur = Math.max(0, (1 - (z / translateZ)) * 2);
           const opacity = Math.min(1, Math.max(0.2, (z / translateZ)));
@@ -469,32 +467,27 @@
         });
 
       } else {
-        // NOUVELLE LOGIQUE POUR LA SPHÈRE EN MODE MOBILE PORTRAIT
-        // Cette logique gère la sphère dynamiquement et est plus simple.
         const numImages = images.length;
-        const radius = translateZ * 1.5; // Ajuste le rayon de la sphère
-        const sphereScaleFactor = 0.8; // Pour un effet plus compact
-
+        const sphereRadius = 200; // Rayon plus petit pour mieux s'adapter à l'écran
+        
         images.forEach((img, i) => {
             const lat = Math.acos(-1 + (2 * i) / (numImages - 1));
             const lon = Math.sqrt(numImages * Math.PI) * lat;
             
-            const x = radius * Math.cos(lon) * Math.sin(lat);
-            const y = radius * Math.sin(lon) * Math.sin(lat);
-            const z = radius * Math.cos(lat);
+            const x = sphereRadius * Math.cos(lon) * Math.sin(lat);
+            const y = sphereRadius * Math.sin(lon) * Math.sin(lat);
+            const z = sphereRadius * Math.cos(lat);
             
-            // Appliquer la rotation globale de la sphère
             const rotAngleRad = angle * Math.PI / 180;
             const xRot = x * Math.cos(rotAngleRad) - z * Math.sin(rotAngleRad);
             const yRot = y;
             const zRot = x * Math.sin(rotAngleRad) + z * Math.cos(rotAngleRad);
 
-            // Calculer les effets visuels basés sur la distance (z)
             const scaledZ = zRot + translateZ;
             const opacity = Math.min(1, Math.max(0.1, (scaledZ / translateZ) * 0.8 + 0.2));
             const blur = Math.max(0, (1 - (scaledZ / translateZ)) * 2);
 
-            img.style.transform = `translateX(${xRot}px) translateY(${yRot}px) translateZ(${zRot}px) scale(${sphereScaleFactor})`;
+            img.style.transform = `translateX(${xRot}px) translateY(${yRot}px) translateZ(${zRot}px)`;
             img.style.opacity = opacity.toFixed(2);
             img.style.filter = `blur(${blur.toFixed(2)}px)`;
             img.style.zIndex = Math.round(opacity * 10);
@@ -521,7 +514,9 @@
     }
 
     document.querySelectorAll('.filters button').forEach(btn => {
-      btn.addEventListener('click', () => generateImages(btn.dataset.theme));
+      btn.addEventListener('click', () => {
+        generateImages(btn.dataset.theme);
+      });
     });
 
     // Drag souris
@@ -551,7 +546,6 @@
     // Gestion tactile
     (function () {
       if (!carousel) return;
-
       let draggingHorizontally = false;
       let startY = 0;
       let resumeTimeout = null;
@@ -575,7 +569,6 @@
           autoRotate = false;
           animationActive = false;
         }
-
         if (resumeTimeout) clearTimeout(resumeTimeout);
       }, { passive: true });
 
@@ -597,7 +590,6 @@
       carousel.addEventListener('touchend', () => {
         isDragging = false;
         draggingHorizontally = false;
-
         if (!isMobilePortrait()) {
           resumeTimeout = setTimeout(() => {
             carousel.style.animation = 'spinY 30s linear infinite';
@@ -633,7 +625,7 @@
 
       if (currentOrientation !== previousOrientation) {
         previousOrientation = currentOrientation;
-        generateImages();
+        generateImages(currentFilter);
       }
       positionImages();
     });
