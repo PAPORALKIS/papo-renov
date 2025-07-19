@@ -515,10 +515,9 @@ function positionImages() {
     const theta = (step * i + angle) % 360;
     const normalized = (theta + 360) % 360;
 
-    // 🌕 Définir un facteur de visibilité selon face caméra (0° = pleine lumière)
-    // Entre 0 et 180 → visible ; 180 à 360 → derrière
-    const visibilityFactor = Math.cos(normalized * Math.PI / 180); // de 1 (face) à -1 (dos)
-    const visible = Math.max(0, visibilityFactor); // on garde uniquement face visible
+    // 👉 Éclairage dynamique : images derrière atténuées
+    const visibilityFactor = Math.cos(normalized * Math.PI / 180); // -1 (dos) à 1 (face)
+    const visible = Math.max(0, visibilityFactor); // 0 à 1
     const opacity = 0.2 + 0.8 * visible;
     const blur = (1 - visible) * 2.5;
 
@@ -526,7 +525,7 @@ function positionImages() {
     img.style.filter = `brightness(${opacity.toFixed(2)}) blur(${blur.toFixed(2)}px)`;
     img.style.zIndex = Math.round(opacity * 10);
 
-    // Ne pas repositionner les images en mobile portrait
+    // 👉 Ne repositionne que hors mobile portrait
     if (!isPortraitMobile) {
       const rad = (theta * Math.PI) / 180;
       const translateZ = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--translateZ'));
@@ -536,7 +535,6 @@ function positionImages() {
     }
   });
 }
-    
 function animate() {
   if (window.innerWidth <= 768 && window.innerHeight > window.innerWidth) return; // blocage mobile portrait
   if (autoRotate && !isDragging) {
