@@ -511,7 +511,7 @@ let angle = 0;
   images.forEach((img, i) => {
     const theta = i * step + angle;
 
-    // 👉 Repositionne seulement si ce n’est pas le mobile portrait
+    // Ne modifie pas la position CSS en mobile portrait, laisse les nth-child faire leur job
     if (!(window.innerWidth <= 768 && window.innerHeight > window.innerWidth)) {
       const rad = theta * Math.PI / 180;
       const x = Math.sin(rad) * parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--translateZ'));
@@ -519,16 +519,16 @@ let angle = 0;
       img.style.transform = `translateX(${x}px) translateZ(${z}px)`;
     }
 
-    // 🌗 Toujours appliquer l’atténuation visuelle (même en mobile portrait)
+    // 🌗 Appliquer l’opacité selon l’angle pour tous les formats (y compris mobile portrait)
     const visible = (theta % 360 + 360) % 360;
     const visibilityFactor = Math.cos(visible * Math.PI / 180); // -1 à 1
-    const opacity = 0.2 + 0.8 * Math.max(0, visibilityFactor); // min 0.2, max 1
+    const opacity = 0.2 + 0.8 * Math.max(0, visibilityFactor);
 
     img.style.opacity = opacity.toFixed(2);
     img.style.filter = `brightness(${opacity.toFixed(2)})`;
     img.style.zIndex = Math.round(opacity * 10);
   });
-}
+    }
     
 function animate() {
   if (window.innerWidth <= 768 && window.innerHeight > window.innerWidth) return; // blocage mobile portrait
