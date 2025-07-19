@@ -504,20 +504,45 @@ let angle = 0;
     }
 
 
+
 function positionImages() {
   const images = carousel.querySelectorAll('img');
   const total = images.length;
   const step = 360 / total;
-
   const isPortraitMobile = window.innerWidth <= 768 && window.innerHeight > window.innerWidth;
 
+  let rotationY = angle; // Valeur par défaut
+  if (isPortraitMobile) {
+    // Extraire l'angle de rotation Y de la transform de .carousel
+    const transform = window.getComputedStyle(carousel).transform;
+    if (transform && transform !== 'none') {
+      const values = transform.split('(')[1].split(')')[0].split(',');
+      const a = parseFloat(values[0]);
+      const b = parseFloat(values[2]);
+      const rad = Math.atan2(b, a);
+      rotationY = rad * (180 / Math.PI);
+    }
+  }
+
   images.forEach((img, i) => {
-    const theta = (step * i + angle) % 360;
+    let imgAngle = step * i;
+
+    if (isPortraitMobile) {
+      // Tenter de lire l’angle via transform: rotateY(...) appliqué en CSS
+      const match = img.style.transform.match(/rotateY\(([-0-9.]+)deg\)/);
+      if (match) {
+        imgAngle = parseFloat(match[1]);
+      } else {
+        // fallback : on suppose un placement régulier si transform inline absent
+        imgAngle = step * i;
+      }
+    }
+
+    const theta = (imgAngle + rotationY) % 360;
     const normalized = (theta + 360) % 360;
 
-    // 👉 Éclairage dynamique : images derrière atténuées
-    const visibilityFactor = Math.cos(normalized * Math.PI / 180); // -1 (dos) à 1 (face)
-    const visible = Math.max(0, visibilityFactor); // 0 à 1
+    const visibilityFactor = Math.cos(normalized * Math.PI / 180); // de 1 à -1
+    const visible = Math.max(0, visibilityFactor);
     const opacity = 0.2 + 0.8 * visible;
     const blur = (1 - visible) * 2.5;
 
@@ -525,9 +550,9 @@ function positionImages() {
     img.style.filter = `brightness(${opacity.toFixed(2)}) blur(${blur.toFixed(2)}px)`;
     img.style.zIndex = Math.round(opacity * 10);
 
-    // 👉 Ne repositionne que hors mobile portrait
+    // Hors portrait mobile : repositionne comme avant
     if (!isPortraitMobile) {
-      const rad = (theta * Math.PI) / 180;
+      const rad = (imgAngle + angle) * Math.PI / 180;
       const translateZ = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--translateZ'));
       const x = Math.sin(rad) * translateZ;
       const z = Math.cos(rad) * translateZ;
