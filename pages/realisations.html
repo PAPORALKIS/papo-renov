@@ -191,7 +191,7 @@
     /* Ajustements pour le mode mobile portrait */
     @media (max-width: 768px) and (orientation: portrait) {
       :root {
-        --translateZ: 200px;
+        --img-size: 30vw;
       }
       .carousel-container {
         left: 50%;
@@ -213,11 +213,12 @@
 
       .carousel img {
         position: absolute;
-        width: 100px; /* Taille réduite */
-        height: 70px;
+        width: var(--img-size);
+        height: var(--img-size);
         object-fit: cover;
         left: 50%;
         top: 50%;
+        transform: translate(-50%, -50%);
       }
     }
 
@@ -448,6 +449,7 @@
       const translateZ = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--translateZ'));
 
       if (!isPortraitMobile) {
+        // Logique pour le carrousel classique sur desktop/mobile paysage
         const step = 360 / total;
         images.forEach((img, i) => {
           let imgAngle = step * i;
@@ -467,27 +469,27 @@
         });
 
       } else {
+        // NOUVELLE LOGIQUE POUR UN CARROUSEL EN FORME DE CYLINDRE EN MODE MOBILE PORTRAIT
         const numImages = images.length;
-        const sphereRadius = 200; // Rayon plus petit pour mieux s'adapter à l'écran
+        const radius = 250; // Un rayon plus grand pour un effet de tube
+        const verticalStep = 100; // Espace entre les images verticalement
+        const totalHeight = (numImages - 1) * verticalStep;
         
         images.forEach((img, i) => {
-            const lat = Math.acos(-1 + (2 * i) / (numImages - 1));
-            const lon = Math.sqrt(numImages * Math.PI) * lat;
+            const angleStep = 360 / numImages;
+            const imgAngle = angleStep * i;
+            const rad = (imgAngle + angle) * Math.PI / 180;
             
-            const x = sphereRadius * Math.cos(lon) * Math.sin(lat);
-            const y = sphereRadius * Math.sin(lon) * Math.sin(lat);
-            const z = sphereRadius * Math.cos(lat);
+            const x = radius * Math.cos(rad);
+            const z = radius * Math.sin(rad);
+            const y = (i / numImages - 0.5) * totalHeight; // Positionnement vertical
+
+            img.style.transform = `translateX(${x}px) translateY(${y}px) translateZ(${z}px) rotateY(${90 - imgAngle}deg)`;
             
-            const rotAngleRad = angle * Math.PI / 180;
-            const xRot = x * Math.cos(rotAngleRad) - z * Math.sin(rotAngleRad);
-            const yRot = y;
-            const zRot = x * Math.sin(rotAngleRad) + z * Math.cos(rotAngleRad);
-
-            const scaledZ = zRot + translateZ;
-            const opacity = Math.min(1, Math.max(0.1, (scaledZ / translateZ) * 0.8 + 0.2));
-            const blur = Math.max(0, (1 - (scaledZ / translateZ)) * 2);
-
-            img.style.transform = `translateX(${xRot}px) translateY(${yRot}px) translateZ(${zRot}px)`;
+            // Effets visuels basés sur la distance (z)
+            const opacity = Math.min(1, Math.max(0.1, (z + radius) / (2 * radius)));
+            const blur = Math.max(0, (1 - (z + radius) / (2 * radius)) * 2);
+            
             img.style.opacity = opacity.toFixed(2);
             img.style.filter = `blur(${blur.toFixed(2)}px)`;
             img.style.zIndex = Math.round(opacity * 10);
