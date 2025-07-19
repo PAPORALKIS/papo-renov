@@ -418,7 +418,7 @@
     { src: '../img/renoperier6.jpg', theme: 'cuisine', comment: 'renovation studio Marseille' }
     ];
 
-let angle = 0;
+    let angle = 0;
     let autoRotate = true;
     let isDragging = false;
     let startX = 0;
@@ -439,220 +439,180 @@ let angle = 0;
     }
 
 
-function positionImages() {
-  const images = carousel.querySelectorAll('img');
-  const total = images.length;
-  const isPortraitMobile = window.innerWidth <= 768 && window.innerHeight > window.innerWidth;
-  
-  let rotationY = angle;
-  let transform = window.getComputedStyle(carousel).transform;
-
-  if (transform && transform !== 'none' && isPortraitMobile) {
-    const values = transform.split('(')[1].split(')')[0].split(',');
-    const a = parseFloat(values[0]);
-    const b = parseFloat(values[2]);
-    const rad = Math.atan2(b, a);
-    rotationY = rad * (180 / Math.PI);
-  }
-
-  images.forEach((img, i) => {
-    let imgAngle;
-    let rotateX = 0;
-    const translateZ = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--translateZ'));
-
-    if (isPortraitMobile) {
-      // Logique pour la sphère sur mobile portrait
-      const imagesPerRing = [6, 12, 12, 12, 6];
-      const rotateXAngles = [-66, -43, 0, 43, 66];
-      let ringIndex = 0;
-      let imgInRingIndex = i;
-
-      for (let j = 0; j < imagesPerRing.length; j++) {
-        if (imgInRingIndex < imagesPerRing[j]) {
-          ringIndex = j;
-          break;
-        }
-        imgInRingIndex -= imagesPerRing[j];
-      }
-      
-      const currentRingTotal = imagesPerRing[ringIndex];
-      imgAngle = (360 / currentRingTotal) * imgInRingIndex;
-      rotateX = rotateXAngles[ringIndex];
-      
-      img.style.transform = `rotateX(${rotateX}deg) rotateY(${imgAngle}deg) translateZ(${translateZ}px)`;
-
-    } else {
-      // Logique pour le carrousel classique sur desktop/mobile paysage
+    function positionImages() {
+      const images = carousel.querySelectorAll('img');
+      const total = images.length;
       const step = 360 / total;
-      imgAngle = step * i;
-      const rad = (imgAngle + rotationY) * Math.PI / 180;
-      const x = Math.sin(rad) * translateZ;
-      const z = Math.cos(rad) * translateZ;
-      img.style.transform = `translateX(${x}px) translateZ(${z}px) rotateY(${imgAngle}deg)`;
+      
+      let rotationY = angle;
+
+      // Logique de drag applicable à tous les écrans
+      const transform = window.getComputedStyle(carousel).transform;
+      if (transform && transform !== 'none') {
+        const values = transform.split('(')[1].split(')')[0].split(',');
+        const a = parseFloat(values[0]);
+        const b = parseFloat(values[2]);
+        const rad = Math.atan2(b, a);
+        rotationY = rad * (180 / Math.PI);
+      }
+
+      images.forEach((img, i) => {
+        let imgAngle = step * i;
+        const rad = (imgAngle + rotationY) * Math.PI / 180;
+        const translateZ = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--translateZ'));
+        const x = Math.sin(rad) * translateZ;
+        const z = Math.cos(rad) * translateZ;
+        
+        // Positionnement en un seul cercle pour tous les cas
+        img.style.transform = `translateX(${x}px) translateZ(${z}px) rotateY(${imgAngle}deg)`;
+
+        // Calcul de la visibilité, opacité et flou (le même pour tous)
+        const theta = (imgAngle + rotationY) % 360;
+        const normalized = (theta + 360) % 360;
+        const visibilityFactor = Math.cos(normalized * Math.PI / 180);
+        const visible = Math.max(0, visibilityFactor);
+        const opacity = 0.2 + 0.8 * visible;
+        const blur = (1 - visible) * 2.5;
+
+        img.style.opacity = opacity.toFixed(2);
+        img.style.filter = `brightness(${opacity.toFixed(2)}) blur(${blur.toFixed(2)}px)`;
+        img.style.zIndex = Math.round(opacity * 10);
+      });
     }
 
-    // Calcul de la visibilité, opacité et flou pour tous les modes
-    const theta = (imgAngle + rotationY) % 360;
-    const normalized = (theta + 360) % 360;
-    const visibilityFactor = Math.cos(normalized * Math.PI / 180);
-    const visible = Math.max(0, visibilityFactor);
-    const opacity = 0.2 + 0.8 * visible;
-    const blur = (1 - visible) * 2.5;
-
-    img.style.opacity = opacity.toFixed(2);
-    img.style.filter = `brightness(${opacity.toFixed(2)}) blur(${blur.toFixed(2)}px)`;
-    img.style.zIndex = Math.round(opacity * 10);
-  });
-}
-
-function animate() {
-  const isPortraitMobile = window.innerWidth <= 768 && window.innerHeight > window.innerWidth;
-
-  if (!isPortraitMobile && autoRotate && !isDragging) {
-    angle += 0.10;
-    positionImages();
-  }
-  
-  requestAnimationFrame(animate);
-}
-
-function showZoom(data) {
-  zoomImage.src = data.src;
-  zoomComment.textContent = data.comment;
-  zoomViewer.style.display = 'flex';
-}
-
-function closeZoom() {
-  zoomViewer.style.display = 'none';
-}
-
-document.querySelectorAll('.filters button').forEach(btn => {
-  btn.addEventListener('click', () => generateImages(btn.dataset.theme));
-});
-
-// Drag souris
-carousel.addEventListener('mousedown', e => {
-  isDragging = true;
-  dragged = false;
-  startX = e.clientX;
-  autoRotate = false;
-});
-
-document.addEventListener('mouseup', () => {
-  isDragging = false;
-  autoRotate = true;
-  setTimeout(() => { dragged = false; }, 50);
-});
-
-document.addEventListener('mousemove', e => {
-  if (isDragging) {
-    const dx = e.clientX - startX;
-    angle += dx * 0.3;
-    startX = e.clientX;
-    dragged = true;
-    positionImages();
-  }
-});
-
-// Gestion tactile (rotation sphère mobile portrait)
-(function () {
-  if (!carousel) return;
-
-  let draggingHorizontally = false;
-  let startY = 0;
-  let resumeTimeout = null;
-  let animationActive = true;
-  let angleStart = 0;
-
-  function isMobilePortrait() {
-    return window.innerWidth <= 768 && window.innerHeight > window.innerWidth;
-  }
-
-  carousel.addEventListener('touchstart', (e) => {
-    if (e.touches.length !== 1) return;
-    isDragging = true;
-    startX = e.touches[0].clientX;
-    startY = e.touches[0].clientY;
-    angleStart = angle;
-    draggingHorizontally = false;
-
-    if (!isMobilePortrait()) {
-      carousel.style.animation = 'none';
-      autoRotate = false;
-      animationActive = false;
-    }
-
-    if (resumeTimeout) clearTimeout(resumeTimeout);
-  }, { passive: true });
-
-  carousel.addEventListener('touchmove', (e) => {
-    if (!isDragging) return;
-    const dx = e.touches[0].clientX - startX;
-    const dy = e.touches[0].clientY - startY;
-
-    if (!draggingHorizontally && Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 10) {
-      draggingHorizontally = true;
-    }
-
-    if (draggingHorizontally) {
-      angle = angleStart + dx * 0.3;
-      if (isMobilePortrait()) {
-        carousel.style.animation = 'none';
-        carousel.style.transform = `rotateY(${angle}deg)`;
-      } else {
+    function animate() {
+      // S'assure que l'animation ne se lance que si ce n'est pas le carrousel qui est glissé
+      if (autoRotate && !isDragging) {
+        angle += 0.10;
         positionImages();
       }
+      requestAnimationFrame(animate);
     }
-  }, { passive: true });
 
-  carousel.addEventListener('touchend', () => {
-    isDragging = false;
-    draggingHorizontally = false;
-
-    if (!isMobilePortrait()) {
-      resumeTimeout = setTimeout(() => {
-        carousel.style.animation = 'spinY 30s linear infinite';
-        autoRotate = true;
-        animationActive = true;
-      }, 5000);
+    function showZoom(data) {
+      zoomImage.src = data.src;
+      zoomComment.textContent = data.comment;
+      zoomViewer.style.display = 'flex';
     }
-  });
 
-  setInterval(() => {
-    if (!isMobilePortrait() && !animationActive && !isDragging) {
-      carousel.style.animation = 'spinY 30s linear infinite';
+    function closeZoom() {
+      zoomViewer.style.display = 'none';
+    }
+
+    document.querySelectorAll('.filters button').forEach(btn => {
+      btn.addEventListener('click', () => generateImages(btn.dataset.theme));
+    });
+
+    // Drag souris
+    carousel.addEventListener('mousedown', e => {
+      isDragging = true;
+      dragged = false;
+      startX = e.clientX;
+      autoRotate = false;
+    });
+
+    document.addEventListener('mouseup', () => {
+      isDragging = false;
       autoRotate = true;
-      animationActive = true;
-    }
-  }, 10000);
-})();
+      setTimeout(() => { dragged = false; }, 50);
+    });
 
-// Permet de fermer le zoom lorsqu'on clique sur l'image déjà agrandie ou le fond noir
-zoomViewer.addEventListener('click', (e) => {
-  if (e.target === zoomViewer || e.target === zoomImage) {
-    closeZoom();
-  }
-});
-    
-generateImages();
-animate();
+    document.addEventListener('mousemove', e => {
+      if (isDragging) {
+        const dx = e.clientX - startX;
+        angle += dx * 0.3;
+        startX = e.clientX;
+        dragged = true;
+        positionImages();
+      }
+    });
 
-// Réapplique le positionnement quand on tourne l'écran ou redimensionne
-let previousOrientation = window.innerHeight > window.innerWidth ? "portrait" : "landscape";
+    // Gestion tactile (rotation pour tous les appareils tactiles)
+    (function () {
+      if (!carousel) return;
 
-window.addEventListener("resize", () => {
-  const isPortrait = window.innerHeight > window.innerWidth;
-  const currentOrientation = isPortrait ? "portrait" : "landscape";
+      let draggingHorizontally = false;
+      let startY = 0;
+      let resumeTimeout = null;
+      let animationActive = true;
+      let angleStart = 0;
 
-  if (currentOrientation !== previousOrientation) {
-    previousOrientation = currentOrientation;
+      carousel.addEventListener('touchstart', (e) => {
+        if (e.touches.length !== 1) return;
+        isDragging = true;
+        startX = e.touches[0].clientX;
+        startY = e.touches[0].clientY;
+        angleStart = angle;
+        draggingHorizontally = false;
+
+        carousel.style.animation = 'none';
+        autoRotate = false;
+        animationActive = false;
+
+        if (resumeTimeout) clearTimeout(resumeTimeout);
+      }, { passive: true });
+
+      carousel.addEventListener('touchmove', (e) => {
+        if (!isDragging) return;
+        const dx = e.touches[0].clientX - startX;
+        const dy = e.touches[0].clientY - startY;
+
+        if (!draggingHorizontally && Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 10) {
+          draggingHorizontally = true;
+        }
+
+        if (draggingHorizontally) {
+          angle = angleStart + dx * 0.3;
+          positionImages();
+        }
+      }, { passive: true });
+
+      carousel.addEventListener('touchend', () => {
+        isDragging = false;
+        draggingHorizontally = false;
+
+        resumeTimeout = setTimeout(() => {
+          carousel.style.animation = 'spinY 30s linear infinite';
+          autoRotate = true;
+          animationActive = true;
+        }, 5000);
+      });
+
+      setInterval(() => {
+        if (!animationActive && !isDragging) {
+          carousel.style.animation = 'spinY 30s linear infinite';
+          autoRotate = true;
+          animationActive = true;
+        }
+      }, 10000);
+    })();
+
+    // Permet de fermer le zoom lorsqu'on clique sur l'image déjà agrandie ou le fond noir
+    zoomViewer.addEventListener('click', (e) => {
+      if (e.target === zoomViewer || e.target === zoomImage) {
+        closeZoom();
+      }
+    });
+        
     generateImages();
-  }
+    animate();
 
-  positionImages();
-  document.querySelector('.carousel-container').style.perspective =
-    getComputedStyle(document.documentElement).getPropertyValue('--perspective');
-});
+    // Réapplique le positionnement quand on tourne l'écran ou redimensionne
+    let previousOrientation = window.innerHeight > window.innerWidth ? "portrait" : "landscape";
+
+    window.addEventListener("resize", () => {
+      const isPortrait = window.innerHeight > window.innerWidth;
+      const currentOrientation = isPortrait ? "portrait" : "landscape";
+
+      if (currentOrientation !== previousOrientation) {
+        previousOrientation = currentOrientation;
+        generateImages();
+      }
+
+      positionImages();
+      document.querySelector('.carousel-container').style.perspective =
+        getComputedStyle(document.documentElement).getPropertyValue('--perspective');
+    });
   </script>
 </body>
 </html>
