@@ -504,41 +504,36 @@ let angle = 0;
     }
 
 function positionImages() {
+function positionImages() {
   const images = carousel.querySelectorAll('img');
+  const total = images.length;
+  const step = 360 / total;
 
   const isPortraitMobile = window.innerWidth <= 768 && window.innerHeight > window.innerWidth;
 
-  const translateZ = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--translateZ'));
-
   images.forEach((img, i) => {
-    const theta = (360 / images.length) * i + angle;
+    const theta = (step * i + angle) % 360;
+    const normalized = (theta + 360) % 360;
 
-    // 👉 Ne repositionne que si ce n’est PAS mobile portrait (car CSS sphère gère les positions)
+    // 🌕 Définir un facteur de visibilité selon face caméra (0° = pleine lumière)
+    // Entre 0 et 180 → visible ; 180 à 360 → derrière
+    const visibilityFactor = Math.cos(normalized * Math.PI / 180); // de 1 (face) à -1 (dos)
+    const visible = Math.max(0, visibilityFactor); // on garde uniquement face visible
+    const opacity = 0.2 + 0.8 * visible;
+    const blur = (1 - visible) * 2.5;
+
+    img.style.opacity = opacity.toFixed(2);
+    img.style.filter = `brightness(${opacity.toFixed(2)}) blur(${blur.toFixed(2)}px)`;
+    img.style.zIndex = Math.round(opacity * 10);
+
+    // Ne pas repositionner les images en mobile portrait
     if (!isPortraitMobile) {
-      const rad = theta * Math.PI / 180;
+      const rad = (theta * Math.PI) / 180;
+      const translateZ = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--translateZ'));
       const x = Math.sin(rad) * translateZ;
       const z = Math.cos(rad) * translateZ;
       img.style.transform = `translateX(${x}px) translateZ(${z}px)`;
     }
-
-    // 🌗 Lire la transformation actuelle (CSS ou JS) pour obtenir le Z
-    const style = getComputedStyle(img);
-    const transform = style.transform;
-    let z = 0;
-
-    if (transform && transform.startsWith('matrix3d')) {
-      const values = transform.match(/matrix3d\(([^)]+)\)/)[1].split(',').map(parseFloat);
-      z = values[14];
-    }
-
-    // 🌕 Calcule l'effet de lumière selon la profondeur Z
-    const visibilityFactor = Math.max(0, 1 - Math.abs(z) / 3000); // adapte le 3000 si besoin
-    const opacity = 0.2 + 0.8 * visibilityFactor;
-    const blurAmount = (1 - visibilityFactor) * 2.5;
-
-    img.style.opacity = opacity.toFixed(2);
-    img.style.filter = `brightness(${opacity.toFixed(2)}) blur(${blurAmount.toFixed(2)}px)`;
-    img.style.zIndex = Math.round(opacity * 10);
   });
 }
     
