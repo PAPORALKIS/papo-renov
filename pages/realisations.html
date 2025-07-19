@@ -504,16 +504,16 @@ let angle = 0;
     }
 
 
-
 function positionImages() {
   const images = carousel.querySelectorAll('img');
   const total = images.length;
   const step = 360 / total;
   const isPortraitMobile = window.innerWidth <= 768 && window.innerHeight > window.innerWidth;
+  
+  let rotationY = angle;
 
-  let rotationY = angle; // Valeur par défaut
+  // En mobile portrait, on extrait l'angle de rotation Y pour gérer les rotations tactiles.
   if (isPortraitMobile) {
-    // Extraire l'angle de rotation Y de la transform de .carousel
     const transform = window.getComputedStyle(carousel).transform;
     if (transform && transform !== 'none') {
       const values = transform.split('(')[1].split(')')[0].split(',');
@@ -526,22 +526,22 @@ function positionImages() {
 
   images.forEach((img, i) => {
     let imgAngle = step * i;
-
+    
+    // Tenter de lire l'angle via transform: rotateY(...) appliqué en CSS sur mobile portrait
     if (isPortraitMobile) {
-      // Tenter de lire l’angle via transform: rotateY(...) appliqué en CSS
       const match = img.style.transform.match(/rotateY\(([-0-9.]+)deg\)/);
       if (match) {
         imgAngle = parseFloat(match[1]);
       } else {
-        // fallback : on suppose un placement régulier si transform inline absent
+        // fallback si transform n'est pas présent
         imgAngle = step * i;
       }
     }
 
+    // Le calcul de la visibilité, de l'opacité et du flou reste le même pour tous les cas
     const theta = (imgAngle + rotationY) % 360;
     const normalized = (theta + 360) % 360;
-
-    const visibilityFactor = Math.cos(normalized * Math.PI / 180); // de 1 à -1
+    const visibilityFactor = Math.cos(normalized * Math.PI / 180);
     const visible = Math.max(0, visibilityFactor);
     const opacity = 0.2 + 0.8 * visible;
     const blur = (1 - visible) * 2.5;
@@ -550,25 +550,36 @@ function positionImages() {
     img.style.filter = `brightness(${opacity.toFixed(2)}) blur(${blur.toFixed(2)}px)`;
     img.style.zIndex = Math.round(opacity * 10);
 
-    // Hors portrait mobile : repositionne comme avant
-    if (!isPortraitMobile) {
-      const rad = (imgAngle + angle) * Math.PI / 180;
+    // Gère la transformation 3D ou 2D selon la condition
+    if (isPortraitMobile) {
+      // Version Sphère : on applique la transformation 3D
+      const rad = (imgAngle + rotationY) * Math.PI / 180;
       const translateZ = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--translateZ'));
       const x = Math.sin(rad) * translateZ;
       const z = Math.cos(rad) * translateZ;
-      img.style.transform = `translateX(${x}px) translateZ(${z}px)`;
+      img.style.transform = `translateX(${x}px) translateZ(${z}px) rotateY(${imgAngle}deg)`;
+    } else {
+      // Version 2D : on supprime les transformations 3D
+      img.style.transform = ``;
     }
   });
 }
+
 function animate() {
-  if (window.innerWidth <= 768 && window.innerHeight > window.innerWidth) ; // blocage mobile portrait
-  if (autoRotate && !isDragging) {
-    angle += 0.10;/* Vitesse de rotation du carrousel */
-    
+  const isPortraitMobile = window.innerWidth <= 768 && window.innerHeight > window.innerWidth;
+
+  // L'animation automatique ne se lance que si on n'est pas en mobile portrait
+  if (!isPortraitMobile && autoRotate && !isDragging) {
+    angle += 0.10;
     positionImages();
   }
+  
   requestAnimationFrame(animate);
 }
+
+// Assurez-vous d'appeler la fonction animate() une première fois pour démarrer l'animation
+
+
 
     function showZoom(data) {
       zoomImage.src = data.src;
