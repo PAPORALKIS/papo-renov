@@ -503,27 +503,26 @@ let angle = 0;
       positionImages();
     }
 
-    function positionImages() {
+function positionImages() {
   const images = carousel.querySelectorAll('img');
-  const total = images.length;
-  const step = 360 / total;
 
-  images.forEach((img, i) => {
-    const theta = i * step + angle;
-    const rad = theta * Math.PI / 180;
+  images.forEach((img) => {
+    // Récupère la matrice de transformation 3D appliquée par le CSS
+    const style = getComputedStyle(img);
+    const transform = style.transform;
 
-    // ↪ Récupérer le rayon (translateZ défini en CSS root)
-    const translateZ = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--translateZ'));
-    const x = Math.sin(rad) * translateZ;
-    const z = Math.cos(rad) * translateZ;
+    let z = 0;
 
-    // 📍 Positionne uniquement si ce n’est pas mobile portrait
-    if (!(window.innerWidth <= 768 && window.innerHeight > window.innerWidth)) {
-      img.style.transform = `translateX(${x}px) translateZ(${z}px)`;
+    if (transform && transform.startsWith('matrix3d')) {
+      const values = transform.match(/matrix3d\(([^)]+)\)/)[1].split(',').map(parseFloat);
+      z = values[14]; // Valeur Z dans la matrice 3D
+    } else if (transform && transform.startsWith('matrix')) {
+      // fallback 2D matrix (pas utilisé ici normalement)
+      z = 0;
     }
 
-    // 🌗 Atténuation basée sur la profondeur z : devant = z > 0
-    const visibilityFactor = Math.max(0, z / translateZ); // de 0 (derrière) à 1 (devant)
+    // Applique l’opacité selon z : plus z est grand (proche de la caméra), plus l’image est visible
+    const visibilityFactor = Math.max(0, 1 - Math.abs(z) / 3000); // 3000 = distance arbitraire à ajuster
     const opacity = 0.2 + 0.8 * visibilityFactor;
 
     img.style.opacity = opacity.toFixed(2);
