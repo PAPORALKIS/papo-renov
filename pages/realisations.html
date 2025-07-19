@@ -188,11 +188,10 @@
     }
   }
 
-    
     @media (max-width: 768px) and (orientation: portrait) {
       :root {
-    --translateZ: 180px;
-  }
+        --translateZ: 250px;
+      }
       .carousel-container {
         left: 50%;
         top: 55%;
@@ -207,7 +206,7 @@
         height: 100%;
         transform-style: preserve-3d;
         transform-origin: 50% center;
-        transform: none;
+        transform: rotateX(0deg);
         margin: 0 auto;
       }
 
@@ -218,70 +217,8 @@
         object-fit: cover;
         left: 40%;
         top: 55%;
-       
       }
-  /* Positionner les 40 images en 5 cercles de 8 images */
-/* Cercle 1 : rotateX(-75°), 6 images  */
- .carousel img:nth-child(1)  { transform: rotateY(0deg) rotateX(66deg) translateZ(var(--translateZ)); }
-    .carousel img:nth-child(2)  { transform: rotateY(90deg) rotateX(66deg) translateZ(var(--translateZ)); }
-    .carousel img:nth-child(3)  { transform: rotateY(180deg) rotateX(66deg) translateZ(var(--translateZ)); }
-    .carousel img:nth-child(4)  { transform: rotateY(260deg) rotateX(66deg) translateZ(var(--translateZ)); }
-
-    .carousel img:nth-child(5)  { transform: rotateY(0deg) rotateX(43deg) translateZ(var(--translateZ)); }
-    .carousel img:nth-child(6)  { transform: rotateY(51deg) rotateX(43deg) translateZ(var(--translateZ)); }
-    .carousel img:nth-child(7)  { transform: rotateY(102deg) rotateX(43deg) translateZ(var(--translateZ)); }
-    .carousel img:nth-child(8)  { transform: rotateY(153deg) rotateX(43deg) translateZ(var(--translateZ)); }
-    .carousel img:nth-child(9) { transform: rotateY(204deg) rotateX(43deg) translateZ(var(--translateZ)); }
-    .carousel img:nth-child(10) { transform: rotateY(255deg) rotateX(43deg) translateZ(var(--translateZ)); }
-    .carousel img:nth-child(11) { transform: rotateY(306deg) rotateX(43deg) translateZ(var(--translateZ)); }
-    
-
-    .carousel img:nth-child(13) { transform: rotateY(0deg) rotateX(20deg) translateZ(var(--translateZ)); }
-    .carousel img:nth-child(14) { transform: rotateY(40deg) rotateX(20deg) translateZ(var(--translateZ)); }
-    .carousel img:nth-child(15) { transform: rotateY(80deg) rotateX(20deg) translateZ(var(--translateZ)); }
-    .carousel img:nth-child(16) { transform: rotateY(120deg) rotateX(20deg) translateZ(var(--translateZ)); }
-    .carousel img:nth-child(17) { transform: rotateY(160deg) rotateX(20deg) translateZ(var(--translateZ)); }
-    .carousel img:nth-child(18) { transform: rotateY(200deg) rotateX(20deg) translateZ(var(--translateZ)); }
-    .carousel img:nth-child(19) { transform: rotateY(240deg) rotateX(20deg) translateZ(var(--translateZ)); }
-    .carousel img:nth-child(20) { transform: rotateY(280deg) rotateX(20deg) translateZ(var(--translateZ)); }
-    .carousel img:nth-child(21) { transform: rotateY(320deg) rotateX(20deg) translateZ(var(--translateZ)); }
-    
-    .carousel img:nth-child(24) { transform: rotateY(0deg) rotateX(-20deg) translateZ(var(--translateZ)); }
-    .carousel img:nth-child(25) { transform: rotateY(40deg) rotateX(-20deg) translateZ(var(--translateZ)); }
-    .carousel img:nth-child(26) { transform: rotateY(80deg) rotateX(-20deg) translateZ(var(--translateZ)); }
-    .carousel img:nth-child(27) { transform: rotateY(120deg) rotateX(-20deg) translateZ(var(--translateZ)); }
-    .carousel img:nth-child(28) { transform: rotateY(160deg) rotateX(-20deg) translateZ(var(--translateZ)); }
-    .carousel img:nth-child(29) { transform: rotateY(200deg) rotateX(-20deg) translateZ(var(--translateZ)); }
-    .carousel img:nth-child(30) { transform: rotateY(240deg) rotateX(-20deg) translateZ(var(--translateZ)); }
-    .carousel img:nth-child(31) { transform: rotateY(280deg) rotateX(-20deg) translateZ(var(--translateZ)); }
-    .carousel img:nth-child(32) { transform: rotateY(320deg) rotateX(-20deg) translateZ(var(--translateZ)); }
-
-    .carousel img:nth-child(33) { transform: rotateY(0deg) rotateX(-43deg) translateZ(var(--translateZ)); }
-    .carousel img:nth-child(34) { transform: rotateY(51deg) rotateX(-43deg) translateZ(var(--translateZ)); }
-    .carousel img:nth-child(35) { transform: rotateY(102deg) rotateX(-43deg) translateZ(var(--translateZ)); }
-    .carousel img:nth-child(36) { transform: rotateY(153deg) rotateX(-43deg) translateZ(var(--translateZ)); }
-    .carousel img:nth-child(37) { transform: rotateY(204deg) rotateX(-43deg) translateZ(var(--translateZ)); }
-    .carousel img:nth-child(38) { transform: rotateY(255deg) rotateX(-43deg) translateZ(var(--translateZ)); }
-    .carousel img:nth-child(39) { transform: rotateY(306deg) rotateX(-43deg) translateZ(var(--translateZ)); }
-    
-    .carousel img:nth-child(41) { transform: rotateY(0deg) rotateX(-66deg) translateZ(var(--translateZ)); }
-    .carousel img:nth-child(42) { transform: rotateY(90deg) rotateX(-66deg) translateZ(var(--translateZ)); }
-    .carousel img:nth-child(43) { transform: rotateY(180deg) rotateX(-66deg) translateZ(var(--translateZ)); }
-    .carousel img:nth-child(44) { transform: rotateY(260deg) rotateX(-66deg) translateZ(var(--translateZ)); }
-
-    .carousel img:nth-child(45)  { transform: rotateY(0deg) rotateX(0deg) translateZ(var(--translateZ)); }
-    .carousel img:nth-child(46) { transform: rotateY(45deg) rotateX(0deg) translateZ(var(--translateZ)); }
-    .carousel img:nth-child(47) { transform: rotateY(90deg) rotateX(0deg) translateZ(var(--translateZ)); }
-    .carousel img:nth-child(40) { transform: rotateY(135deg) rotateX(0deg) translateZ(var(--translateZ)); }
-    .carousel img:nth-child(12) { transform: rotateY(180deg) rotateX(0deg) translateZ(var(--translateZ)); }
-    .carousel img:nth-child(22) { transform: rotateY(225deg) rotateX(0deg) translateZ(var(--translateZ)); }
-    .carousel img:nth-child(23) { transform: rotateY(270deg) rotateX(0deg) translateZ(var(--translateZ)); }
-    .carousel img:nth-child(48) { transform: rotateY(315deg) rotateX(0deg) translateZ(var(--translateZ)); }
-   
-    
     }
-  /* Animation uniquement sur l'axe Y */
-
 
 @media (max-width: 768px) and (orientation: landscape) {
   :root {
@@ -324,9 +261,9 @@
 }
    @media (orientation: landscape) and (max-height: 500px) {
   :root {
-    --img-size: 12vw;         /* ↔ Taille des images */
-    --translateZ: 370px;      /* ↔ Distance entre images et centre */
-    --perspective: 4200px;    /* ↔ Vision reculée */
+    --img-size: 12vw;
+    --translateZ: 370px;
+    --perspective: 4200px;
   }
 
   .carousel-container {
@@ -382,13 +319,12 @@
     padding: 4px 10px;
   }
      .filters button {
-  font-size: 0.7em;     /* ↘️ Réduit la taille du texte */
-  padding: 4px 8px;     /* ↘️ Réduit l’espace interne */
-  margin: 2px;          /* ↘️ Resserre l’espacement entre les boutons */
+  font-size: 0.7em;
+  padding: 4px 8px;
+  margin: 2px;
 }
 }
 }
-
   </style>
 </head>
 <body>
@@ -506,37 +442,56 @@ let angle = 0;
 function positionImages() {
   const images = carousel.querySelectorAll('img');
   const total = images.length;
-  const step = 360 / total;
   const isPortraitMobile = window.innerWidth <= 768 && window.innerHeight > window.innerWidth;
   
   let rotationY = angle;
+  let transform = window.getComputedStyle(carousel).transform;
 
-  // En mobile portrait, on extrait l'angle de rotation Y pour gérer les rotations tactiles.
-  if (isPortraitMobile) {
-    const transform = window.getComputedStyle(carousel).transform;
-    if (transform && transform !== 'none') {
-      const values = transform.split('(')[1].split(')')[0].split(',');
-      const a = parseFloat(values[0]);
-      const b = parseFloat(values[2]);
-      const rad = Math.atan2(b, a);
-      rotationY = rad * (180 / Math.PI);
-    }
+  if (transform && transform !== 'none' && isPortraitMobile) {
+    const values = transform.split('(')[1].split(')')[0].split(',');
+    const a = parseFloat(values[0]);
+    const b = parseFloat(values[2]);
+    const rad = Math.atan2(b, a);
+    rotationY = rad * (180 / Math.PI);
   }
 
   images.forEach((img, i) => {
-    let imgAngle = step * i;
-    
-    // Tenter de lire l'angle via transform: rotateY(...) appliqué en CSS sur mobile portrait
+    let imgAngle;
+    let rotateX = 0;
+    const translateZ = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--translateZ'));
+
     if (isPortraitMobile) {
-      const match = img.style.transform.match(/rotateY\(([-0-9.]+)deg\)/);
-      if (match) {
-        imgAngle = parseFloat(match[1]);
-      } else {
-        // fallback si transform n'est pas présent
-        imgAngle = step * i;
+      // Logique pour la sphère sur mobile portrait
+      const imagesPerRing = [6, 12, 12, 12, 6];
+      const rotateXAngles = [-66, -43, 0, 43, 66];
+      let ringIndex = 0;
+      let imgInRingIndex = i;
+
+      for (let j = 0; j < imagesPerRing.length; j++) {
+        if (imgInRingIndex < imagesPerRing[j]) {
+          ringIndex = j;
+          break;
+        }
+        imgInRingIndex -= imagesPerRing[j];
       }
+      
+      const currentRingTotal = imagesPerRing[ringIndex];
+      imgAngle = (360 / currentRingTotal) * imgInRingIndex;
+      rotateX = rotateXAngles[ringIndex];
+      
+      img.style.transform = `rotateX(${rotateX}deg) rotateY(${imgAngle}deg) translateZ(${translateZ}px)`;
+
+    } else {
+      // Logique pour le carrousel classique sur desktop/mobile paysage
+      const step = 360 / total;
+      imgAngle = step * i;
+      const rad = (imgAngle + rotationY) * Math.PI / 180;
+      const x = Math.sin(rad) * translateZ;
+      const z = Math.cos(rad) * translateZ;
+      img.style.transform = `translateX(${x}px) translateZ(${z}px) rotateY(${imgAngle}deg)`;
     }
 
+    // Calcul de la visibilité, opacité et flou pour tous les modes
     const theta = (imgAngle + rotationY) % 360;
     const normalized = (theta + 360) % 360;
     const visibilityFactor = Math.cos(normalized * Math.PI / 180);
@@ -547,15 +502,6 @@ function positionImages() {
     img.style.opacity = opacity.toFixed(2);
     img.style.filter = `brightness(${opacity.toFixed(2)}) blur(${blur.toFixed(2)}px)`;
     img.style.zIndex = Math.round(opacity * 10);
-
-    // Gère la transformation 3D pour le carrousel classique
-    if (!isPortraitMobile) {
-      const rad = (imgAngle + rotationY) * Math.PI / 180;
-      const translateZ = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--translateZ'));
-      const x = Math.sin(rad) * translateZ;
-      const z = Math.cos(rad) * translateZ;
-      img.style.transform = `translateX(${x}px) translateZ(${z}px)`;
-    }
   });
 }
 
