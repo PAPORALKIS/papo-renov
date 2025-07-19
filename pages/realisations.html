@@ -510,25 +510,27 @@ let angle = 0;
 
   images.forEach((img, i) => {
     const theta = i * step + angle;
+    const rad = theta * Math.PI / 180;
 
-    // Ne modifie pas la position CSS en mobile portrait, laisse les nth-child faire leur job
+    // ↪ Récupérer le rayon (translateZ défini en CSS root)
+    const translateZ = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--translateZ'));
+    const x = Math.sin(rad) * translateZ;
+    const z = Math.cos(rad) * translateZ;
+
+    // 📍 Positionne uniquement si ce n’est pas mobile portrait
     if (!(window.innerWidth <= 768 && window.innerHeight > window.innerWidth)) {
-      const rad = theta * Math.PI / 180;
-      const x = Math.sin(rad) * parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--translateZ'));
-      const z = Math.cos(rad) * parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--translateZ'));
       img.style.transform = `translateX(${x}px) translateZ(${z}px)`;
     }
 
-    // 🌗 Appliquer l’opacité selon l’angle pour tous les formats (y compris mobile portrait)
-    const visible = (theta % 360 + 360) % 360;
-    const visibilityFactor = Math.cos(visible * Math.PI / 180); // -1 à 1
-    const opacity = 0.2 + 0.8 * Math.max(0, visibilityFactor);
+    // 🌗 Atténuation basée sur la profondeur z : devant = z > 0
+    const visibilityFactor = Math.max(0, z / translateZ); // de 0 (derrière) à 1 (devant)
+    const opacity = 0.2 + 0.8 * visibilityFactor;
 
     img.style.opacity = opacity.toFixed(2);
     img.style.filter = `brightness(${opacity.toFixed(2)})`;
     img.style.zIndex = Math.round(opacity * 10);
   });
-    }
+}
     
 function animate() {
   if (window.innerWidth <= 768 && window.innerHeight > window.innerWidth) return; // blocage mobile portrait
