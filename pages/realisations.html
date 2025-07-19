@@ -504,34 +504,32 @@ let angle = 0;
     }
 
     function positionImages() {
-  // Si en mode mobile portrait : ne rien faire (car CSS gère)
-  if (window.innerWidth <= 768 && window.innerHeight > window.innerWidth) return;
-
   const images = carousel.querySelectorAll('img');
   const total = images.length;
   const step = 360 / total;
+
   images.forEach((img, i) => {
     const theta = i * step + angle;
-    const rad = theta * Math.PI / 180;
-    const x = Math.sin(rad) * parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--translateZ'));
-    const z = Math.cos(rad) * parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--translateZ'));
-    const isFront = Math.abs(theta % 360) < step / 2;
 
-img.style.transform = `translateX(${x}px) translateZ(${z}px)`;
+    // 👉 Repositionne seulement si ce n’est pas le mobile portrait
+    if (!(window.innerWidth <= 768 && window.innerHeight > window.innerWidth)) {
+      const rad = theta * Math.PI / 180;
+      const x = Math.sin(rad) * parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--translateZ'));
+      const z = Math.cos(rad) * parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--translateZ'));
+      img.style.transform = `translateX(${x}px) translateZ(${z}px)`;
+    }
 
-// Calcule un facteur de visibilité (1 = devant, 0 = derrière)
-const visible = (theta % 360 + 360) % 360;
-const visibilityFactor = Math.cos(visible * Math.PI / 180); // -1 (dos) à 1 (face)
+    // 🌗 Toujours appliquer l’atténuation visuelle (même en mobile portrait)
+    const visible = (theta % 360 + 360) % 360;
+    const visibilityFactor = Math.cos(visible * Math.PI / 180); // -1 à 1
+    const opacity = 0.2 + 0.8 * Math.max(0, visibilityFactor); // min 0.2, max 1
 
-// Transforme en opacité : face avant = 1, arrière = 0.2 (ou comme tu veux)
-const opacity = 0.2 + 0.8 * Math.max(0, visibilityFactor); // min 0.2, max 1
-img.style.opacity = opacity.toFixed(2);
-
-// Optionnel : un filtre de fondu ou lumière
-img.style.filter = `brightness(${opacity.toFixed(2)})`;
-    img.style.zIndex = isFront ? 2 : 1; // plus de recalcul violent
+    img.style.opacity = opacity.toFixed(2);
+    img.style.filter = `brightness(${opacity.toFixed(2)})`;
+    img.style.zIndex = Math.round(opacity * 10);
   });
 }
+    
 function animate() {
   if (window.innerWidth <= 768 && window.innerHeight > window.innerWidth) return; // blocage mobile portrait
   if (autoRotate && !isDragging) {
