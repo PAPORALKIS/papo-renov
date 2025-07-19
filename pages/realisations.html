@@ -506,27 +506,38 @@ let angle = 0;
 function positionImages() {
   const images = carousel.querySelectorAll('img');
 
-  images.forEach((img) => {
-    // Récupère la matrice de transformation 3D appliquée par le CSS
+  const isPortraitMobile = window.innerWidth <= 768 && window.innerHeight > window.innerWidth;
+
+  const translateZ = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--translateZ'));
+
+  images.forEach((img, i) => {
+    const theta = (360 / images.length) * i + angle;
+
+    // 👉 Ne repositionne que si ce n’est PAS mobile portrait (car CSS sphère gère les positions)
+    if (!isPortraitMobile) {
+      const rad = theta * Math.PI / 180;
+      const x = Math.sin(rad) * translateZ;
+      const z = Math.cos(rad) * translateZ;
+      img.style.transform = `translateX(${x}px) translateZ(${z}px)`;
+    }
+
+    // 🌗 Lire la transformation actuelle (CSS ou JS) pour obtenir le Z
     const style = getComputedStyle(img);
     const transform = style.transform;
-
     let z = 0;
 
     if (transform && transform.startsWith('matrix3d')) {
       const values = transform.match(/matrix3d\(([^)]+)\)/)[1].split(',').map(parseFloat);
-      z = values[14]; // Valeur Z dans la matrice 3D
-    } else if (transform && transform.startsWith('matrix')) {
-      // fallback 2D matrix (pas utilisé ici normalement)
-      z = 0;
+      z = values[14];
     }
 
-    // Applique l’opacité selon z : plus z est grand (proche de la caméra), plus l’image est visible
-    const visibilityFactor = Math.max(0, 1 - Math.abs(z) / 3000); // 3000 = distance arbitraire à ajuster
+    // 🌕 Calcule l'effet de lumière selon la profondeur Z
+    const visibilityFactor = Math.max(0, 1 - Math.abs(z) / 3000); // adapte le 3000 si besoin
     const opacity = 0.2 + 0.8 * visibilityFactor;
+    const blurAmount = (1 - visibilityFactor) * 2.5;
 
     img.style.opacity = opacity.toFixed(2);
-    img.style.filter = `brightness(${opacity.toFixed(2)})`;
+    img.style.filter = `brightness(${opacity.toFixed(2)}) blur(${blurAmount.toFixed(2)}px)`;
     img.style.zIndex = Math.round(opacity * 10);
   });
 }
