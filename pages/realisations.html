@@ -529,49 +529,45 @@ let angle = 0;
     }
 
     function positionImages() {
-      if (window.innerWidth <= 768 && window.innerHeight > window.innerWidth) return;
   const images = carousel.querySelectorAll('img');
   const total = images.length;
   const step = 360 / total;
   const isMobilePortrait = window.innerWidth <= 768 && window.innerHeight > window.innerWidth;
+  const translateZ = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--translateZ'));
 
   images.forEach((img, i) => {
     const theta = (i * step + angle) % 360;
     const rad = theta * Math.PI / 180;
-
-    const x = Math.sin(rad) * parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--translateZ'));
-    const z = Math.cos(rad) * parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--translateZ'));
+    const x = Math.sin(rad) * translateZ;
+    const z = Math.cos(rad) * translateZ;
 
     img.style.transform = `translateX(${x}px) translateZ(${z}px)`;
     img.style.zIndex = z > 0 ? 2 : 1;
 
-    // 🔄 Transparence dynamique uniquement en mobile portrait
-   if (isMobilePortrait) {
-  const normalizedTheta = (theta + 360) % 360;
-  const zThreshold = translateZ * 0.2;
-  const angleZone = 90;
+    if (isMobilePortrait) {
+      const normalizedTheta = (theta + 360) % 360;
+      const zThreshold = translateZ * 0.1;
+      const angleZone = 110;
 
-  if ((normalizedTheta < angleZone || normalizedTheta > 360 - angleZone) && z > zThreshold) {
-    img.classList.add('visible');
-  } else {
-    img.classList.remove('visible');
-  }
-   } else {
-      
-  img.classList.remove('visible');
+      if ((normalizedTheta < angleZone || normalizedTheta > 360 - angleZone) && z > zThreshold) {
+        img.classList.add('visible');
+      } else {
+        img.classList.remove('visible');
+      }
+    } else {
+      img.classList.remove('visible');
     }
   });
 }
     
 function animate() {
-  if (window.innerWidth <= 768 && window.innerHeight > window.innerWidth) return; // blocage mobile portrait
   if (autoRotate && !isDragging) {
-    angle += 0.10;/* Vitesse de rotation du carrousel */
-    
-    positionImages();
+    angle += 0.10;
   }
+  positionImages(); // Toujours appelée, même en mobile portrait
   requestAnimationFrame(animate);
-}
+}  
+    
 
     function showZoom(data) {
       zoomImage.src = data.src;
