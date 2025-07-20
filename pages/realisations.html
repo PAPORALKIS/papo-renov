@@ -191,14 +191,14 @@
     /* Ajustements pour le mode mobile portrait */
     @media (max-width: 768px) and (orientation: portrait) {
       :root {
-        --img-size: 50vw;/* modifier taille images */
-        --translateZ: 12200px;
+        --img-size: 22vw;/* modifier taille images */
+        --translateZ: 1600px;
       }
       .carousel-container {
         left: 50%;
         top: 55%;
         transform: translate(-50%, -50%);
-        perspective: 17500px;
+        perspective: 6000px;
         /*eloigne la camera */
         height: 100vh;
         overflow: hidden;
@@ -470,7 +470,7 @@ img.style.zIndex = '1';
 
       } else {
         const numImages = images.length;
-        const sphereRadius = 600;
+        const sphereRadius = 750;
         /*eloigne les images du centre de la sphere */
         images.forEach((img, i) => {
             // Logique de la spirale dorée pour un remplissage de sphère uniforme
