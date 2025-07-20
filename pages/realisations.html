@@ -191,7 +191,7 @@
     /* Ajustements pour le mode mobile portrait */
    @media (max-width: 768px) and (orientation: portrait) {
       :root {
-        --img-size: 15vw;
+        --img-size: 25vw;
         --translateZ: 1200px;
       }
 
@@ -200,7 +200,7 @@
         left: 50%;
         top: 50%;
         transform: translate(-50%, -50%);
-        perspective: 50000px;
+        perspective: 6000px;
         width: 100vw;
         height: 100vh;
         overflow: hidden;
@@ -448,7 +448,7 @@
           img.style.transform = `translateX(${x}px) translateZ(${z}px) rotateY(${imgAngle}deg)`;
         });
       } else {
-        const sphereRadius = 300;
+        const sphereRadius = 250;
         images.forEach((img, i) => {
           const lat = Math.acos(-1 + (2 * i) / (total - 1));
           const lon = Math.sqrt(total * Math.PI) * lat;
