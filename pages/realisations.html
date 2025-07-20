@@ -448,7 +448,7 @@
           img.style.transform = `translateX(${x}px) translateZ(${z}px) rotateY(${imgAngle}deg)`;
         });
       } else {
-        const sphereRadius = 450;
+        const sphereRadius = 300;
         images.forEach((img, i) => {
           const lat = Math.acos(-1 + (2 * i) / (total - 1));
           const lon = Math.sqrt(total * Math.PI) * lat;
