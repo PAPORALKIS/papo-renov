@@ -462,7 +462,7 @@ function positionImages() {
       img.style.transform = `translateX(${x}px) translateZ(${z}px) rotateY(${imgAngle}deg)`;
     });
   } else {
-    const sphereRadius = 500; // 🔧 réduit pour être visible
+    const sphereRadius = 400; // 🔧 réduit pour être visible
     images.forEach((img, i) => {
       const lat = Math.acos(-1 + (2 * i) / (total - 1));
       const lon = Math.sqrt(total * Math.PI) * lat;
