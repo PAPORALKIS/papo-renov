@@ -190,39 +190,41 @@
 
     /* Ajustements pour le mode mobile portrait */
     @media (max-width: 768px) and (orientation: portrait) {
-      :root {
-        --img-size: 22vw;/* modifier taille images */
-        --translateZ: 1600px;
-      }
-      .carousel-container {
-        left: 50%;
-        top: 55%;
-        transform: translate(-50%, -50%);
-        perspective: 6000px;
-        /*eloigne la camera */
-        height: 100vh;
-        overflow: hidden;
-      }
+  :root {
+    --img-size: 22vw;
+    --translateZ: 1600px;
+  }
 
-      .carousel {
-        width: 100%;
-        height: 100%;
-        transform-style: preserve-3d;
-        transform-origin: 50% center;
-        transform: none;
-        margin: 0 auto;
-      }
+  .carousel-container {
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    perspective: 6000px;
+    height: 100vh;
+    overflow: hidden;
+  }
 
-      .carousel img {
-        position: absolute;
-        width: var(--img-size);
-        height: var(--img-size);
-        object-fit: cover;
-        left: 50%;
-        top: 50%;
-        transform: translate(-50%, -50%);
-      }
-    }
+  .carousel {
+    width: 100%;
+    height: 100%;
+    transform-style: preserve-3d;
+    transform: none;
+    margin: 0 auto;
+  }
+
+  .carousel img {
+    position: absolute;
+    width: var(--img-size);
+    height: var(--img-size);
+    object-fit: cover;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 1 !important;
+    filter: none !important;
+    z-index: 1 !important;
+  }
+}
 
     @media (max-width: 768px) and (orientation: landscape) {
       :root {
@@ -443,30 +445,45 @@
       positionImages();
     }
 
-    function positionImages() {
-      const images = carousel.querySelectorAll('img');
-      const total = images.length;
-      const isPortraitMobile = window.innerWidth <= 768 && window.innerHeight > window.innerWidth;
-      
-      const translateZ = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--translateZ'));
+function positionImages() {
+  const images = carousel.querySelectorAll('img');
+  const total = images.length;
+  const isPortraitMobile = window.innerWidth <= 768 && window.innerHeight > window.innerWidth;
 
-      if (!isPortraitMobile) {
-        const step = 360 / total;
-        images.forEach((img, i) => {
-          let imgAngle = step * i;
-          const rad = (imgAngle + angle) * Math.PI / 180;
-          const x = Math.sin(rad) * translateZ;
-          const z = Math.cos(rad) * translateZ;
-          
-          img.style.transform = `translateX(${x}px) translateZ(${z}px) rotateY(${imgAngle}deg)`;
+  const translateZ = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--translateZ'));
 
-          const brightness = Math.min(1, Math.max(0.4, (z / translateZ)));
-          const blur = Math.max(0, (1 - (z / translateZ)) * 2);
-          img.style.transform = `translateX(${xRot}px) translateY(${yRot}px) translateZ(${zRot}px)`;
-img.style.opacity = '1';
-img.style.filter = 'none';
-img.style.zIndex = '1';
-        });
+  if (!isPortraitMobile) {
+    const step = 360 / total;
+    images.forEach((img, i) => {
+      const imgAngle = step * i;
+      const rad = (imgAngle + angle) * Math.PI / 180;
+      const x = Math.sin(rad) * translateZ;
+      const z = Math.cos(rad) * translateZ;
+      img.style.transform = `translateX(${x}px) translateZ(${z}px) rotateY(${imgAngle}deg)`;
+    });
+    
+  } else {
+    const sphereRadius = 750;
+    images.forEach((img, i) => {
+      const lat = Math.acos(-1 + (2 * i) / (total - 1));
+      const lon = Math.sqrt(total * Math.PI) * lat;
+
+      const x = sphereRadius * Math.cos(lon) * Math.sin(lat);
+      const y = sphereRadius * Math.sin(lon) * Math.sin(lat);
+      const z = sphereRadius * Math.cos(lat);
+
+      const rotAngle = angle * Math.PI / 180;
+      const xRot = x * Math.cos(rotAngle) - z * Math.sin(rotAngle);
+      const yRot = y;
+      const zRot = x * Math.sin(rotAngle) + z * Math.cos(rotAngle);
+
+      img.style.transform = `translateX(${xRot}px) translateY(${yRot}px) translateZ(${zRot}px)`;
+      img.style.opacity = '1';
+      img.style.filter = 'none';
+      img.style.zIndex = '1';
+    });
+  }
+}
 
       } else {
         const numImages = images.length;
