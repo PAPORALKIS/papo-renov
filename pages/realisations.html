@@ -462,11 +462,10 @@
 
           const brightness = Math.min(1, Math.max(0.4, (z / translateZ)));
           const blur = Math.max(0, (1 - (z / translateZ)) * 2);
-          const opacity = Math.min(1, Math.max(0.2, (z / translateZ)));
-
-          img.style.opacity = opacity.toFixed(2);
-          img.style.filter = `blur(${blur.toFixed(2)}px)`;
-          img.style.zIndex = Math.round(opacity * 10);
+          img.style.transform = `translateX(${xRot}px) translateY(${yRot}px) translateZ(${zRot}px)`;
+img.style.opacity = '1';
+img.style.filter = 'none';
+img.style.zIndex = '1';
         });
 
       } else {
