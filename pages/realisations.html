@@ -485,37 +485,6 @@ function positionImages() {
 }
 
 
-      } else {
-        const numImages = images.length;
-        const sphereRadius = 750;
-        /*eloigne les images du centre de la sphere */
-        images.forEach((img, i) => {
-            // Logique de la spirale dorée pour un remplissage de sphère uniforme
-            const lat = Math.acos(-1 + (2 * i) / (numImages - 1));
-            const lon = Math.sqrt(numImages * Math.PI) * lat;
-            
-            const x = sphereRadius * Math.cos(lon) * Math.sin(lat);
-            const y = sphereRadius * Math.sin(lon) * Math.sin(lat);
-            const z = sphereRadius * Math.cos(lat);
-            
-            // Rotation de la sphère
-            const rotAngleRad = angle * Math.PI / 180;
-            const xRot = x * Math.cos(rotAngleRad) - z * Math.sin(rotAngleRad);
-            const yRot = y;
-            const zRot = x * Math.sin(rotAngleRad) + z * Math.cos(rotAngleRad);
-
-            const scaledZ = zRot + translateZ;
-            const opacity = Math.min(1, Math.max(0.1, (scaledZ / translateZ) * 0.8 + 0.2));
-            const blur = Math.max(0, (1 - (scaledZ / translateZ)) * 2);
-
-            img.style.transform = `translateX(${xRot}px) translateY(${yRot}px) translateZ(${zRot}px)`;
-            img.style.opacity = '1';
-            img.style.filter = 'none';
-            img.style.zIndex = '1';
-});
-      }
-    }
-
     function animate() {
       if (autoRotate && !isDragging) {
         angle += 0.10;
