@@ -432,20 +432,7 @@
     let dragged = false;
     let currentFilter = 'all';
 
-    function generateImages(filter = 'all') {
-      currentFilter = filter;
-      carousel.innerHTML = '';
-      const filtered = filter === 'all' ? imagesData : imagesData.filter(img => img.theme === filter);
-      filtered.forEach((data, i) => {
-        const img = document.createElement('img');
-        img.src = data.src;
-        img.setAttribute('data-theme', data.theme);
-        img.setAttribute('data-comment', data.comment);
-        img.addEventListener('click', () => { if (!dragged) showZoom(data); });
-        carousel.appendChild(img);
-      });
-      
-function positionImages() {
+    function positionImages() {
   const images = carousel.querySelectorAll('img');
   const total = images.length;
   const isPortraitMobile = window.innerWidth <= 768 && window.innerHeight > window.innerWidth;
@@ -482,6 +469,21 @@ function positionImages() {
     });
   }
 }
+    function generateImages(filter = 'all') {
+      currentFilter = filter;
+      carousel.innerHTML = '';
+      const filtered = filter === 'all' ? imagesData : imagesData.filter(img => img.theme === filter);
+      filtered.forEach((data, i) => {
+        const img = document.createElement('img');
+        img.src = data.src;
+        img.setAttribute('data-theme', data.theme);
+        img.setAttribute('data-comment', data.comment);
+        img.addEventListener('click', () => { if (!dragged) showZoom(data); });
+        carousel.appendChild(img);
+      });
+      
+      positionImages();
+    }
 
 
     function animate() {
