@@ -235,6 +235,27 @@
         filter: none;
         z-index: 1;
       }
+
+      /* NOUVEAUX AJUSTEMENTS POUR MOBILE PORTRAIT */
+      .page-title {
+        font-size: 1.4em; /* Police plus petite pour le titre */
+        margin-top: 15px; /* Réduire la marge supérieure */
+        padding: 5px 10px; /* Réduire le padding */
+      }
+
+      .filters {
+        margin: 5px auto; /* Réduire la marge des filtres */
+        padding: 0 5px; /* Ajouter un léger padding pour éviter que les boutons ne touchent les bords */
+        display: flex; /* Utiliser flexbox pour mieux gérer l'espacement */
+        flex-wrap: wrap; /* Permettre aux boutons de passer à la ligne */
+        justify-content: center; /* Centrer les boutons */
+      }
+
+      .filters button {
+        margin: 2px; /* Réduire l'espacement entre les boutons */
+        padding: 5px 8px; /* Réduire la taille des boutons */
+        font-size: 0.8em; /* Réduire la police des boutons */
+      }
     }
 
     @media (max-width: 768px) and (orientation: landscape) {
