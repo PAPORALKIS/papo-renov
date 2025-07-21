@@ -219,7 +219,7 @@
     /* Ajustements pour le mode mobile portrait */
    @media (max-width: 768px) and (orientation: portrait) {
       :root {
-        --img-size: 20vw;
+        --img-size: 25vw;
         --perspective: 800px;
         --sphere-radius-mobile-portrait: 270px;
       }
@@ -227,14 +227,10 @@
       .carousel-container {
         position: absolute;
         left: 50%;
-        /* MODIFICATIONS DÉBUT */
-        /* top: calc(230px + 2vh); Ancienne valeur */
         top: calc(150px + 2vh); /* Réduction de la valeur 'top' pour remonter la sphère */
         transform: translateX(-50%);
         width: 100vw;
-        /* height: calc(100vh - (230px + 2vh) - 20px); Ancienne valeur */
         height: calc(100vh - (150px + 2vh) - 20px); /* Ajusté en conséquence */
-        /* MODIFICATIONS FIN */
         overflow: hidden;
         display: flex;
         justify-content: center;
