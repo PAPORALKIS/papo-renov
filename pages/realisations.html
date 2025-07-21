@@ -532,13 +532,8 @@
             if (i === 0 || i === numRings - 1) { // Pôles Nord et Sud
                 if (imagesToPlaceInThisRing > 0) {
                     const img = images[currentImageIndex];
-                    // Pour les pôles, on simplifie la transformation pour assurer le centrage
-                    // et une orientation correcte sans décalage par translate(-50%, -50%).
-                    // translateZ est mis à 0 ou une valeur très petite si on veut légèrement le décoller
-                    // mais ici, le plus important est de s'assurer qu'il est sur l'axe Y et Z.
-                    // La rotation X doit "redresser" l'image pour qu'elle soit face à l'utilisateur
-                    // quand elle est vue du dessus ou du dessous de la sphère.
-                    img.style.transform = `translateX(0px) translateY(${y}px) translateZ(0px) rotateY(0deg) rotateX(${-latitudeAngleDeg}deg)`;
+                    // Modification ici : Ajout de translate(-50%, -50%) pour centrer l'image des pôles
+                    img.style.transform = `translateX(0px) translateY(${y}px) translateZ(0px) rotateY(0deg) rotateX(${-latitudeAngleDeg}deg) translate(-50%, -50%)`; 
                     img.style.opacity = '1';
                     img.style.filter = 'none';
                     img.style.zIndex = '1';
