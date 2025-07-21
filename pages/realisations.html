@@ -200,11 +200,9 @@
     /* Ajustements pour le mode mobile portrait */
    @media (max-width: 768px) and (orientation: portrait) {
       :root {
-        /* --img-size: 25vw;  Ancienne valeur */
-        --img-size: 25vw; /* Réduit la taille des images pour plus d'espace et moins de chevauchement */
+        --img-size: 25vw;
         --perspective: 1200px;
-        /* --sphere-radius-mobile-portrait: 250px; Ancienne valeur */
-        --sphere-radius-mobile-portrait: 270px; /* Augmenté légèrement le rayon de la sphère pour plus d'espace */
+        --sphere-radius-mobile-portrait: 270px;
       }
 
       .carousel-container {
@@ -451,7 +449,7 @@
     }
 
     function positionImages() {
-      const images = Array.from(carousel.querySelectorAll('img')); // Convertir en tableau pour pouvoir manipuler plus facilement
+      const images = Array.from(carousel.querySelectorAll('img'));
       const total = images.length;
       const isPortraitMobile = isMobilePortrait();
 
@@ -460,8 +458,6 @@
         : parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--sphere-radius-desktop'));
       
       const imgSizeCSS = getComputedStyle(document.documentElement).getPropertyValue('--img-size');
-      // Pour convertir '--img-size' (ex: '20vw') en pixels, nous avons besoin d'une image de référence temporaire
-      // pour obtenir sa largeur calculée. C'est un peu un hack, mais c'est le plus fiable pour les vw/vh.
       const tempImg = document.createElement('img');
       tempImg.style.visibility = 'hidden';
       tempImg.style.position = 'absolute';
@@ -470,10 +466,9 @@
       const imageWidthPx = tempImg.offsetWidth;
       document.body.removeChild(tempImg);
 
-      // Ajouter un petit espacement entre les images, en pourcentage de la taille de l'image
-      const spacingFactor = 1.1; // Réduit à 1.1 pour un espacement horizontal plus faible
-      const verticalSpacingMultiplier = 0.9; // Nouveau facteur pour rapprocher les anneaux verticalement
-
+      // Espace minimum requis par image (largeur de l'image + un peu d'espace)
+      const horizontalSpacing = imageWidthPx * 1.2; // Espace horizontal
+      const verticalSpacing = imageWidthPx * 1.0; // Espace vertical pour les anneaux
 
       if (!isPortraitMobile) {
         // Mode Bureau/Paysage : Arrangement cylindrique simple pour un effet de carrousel
@@ -490,91 +485,93 @@
         });
         carousel.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
       } else {
-        // Mode Portrait Mobile : Disposition en anneaux avec calcul dynamique du nombre d'images par anneau
+        // Mode Portrait Mobile : Disposition en anneaux harmonieuse
 
-        const rings = []; // Stockera les informations pour chaque anneau: {y, currentRingRadius, maxImages}
-
-        // Définir le nombre de tranches verticales (qui détermineront les anneaux)
-        // La hauteur de chaque "tranche" doit être au moins la taille de l'image plus un petit espacement.
-        const imageEffectiveHeight = imageWidthPx * spacingFactor * verticalSpacingMultiplier; // Utilise le nouveau multiplicateur vertical
-        const maxVerticalRings = Math.floor((2 * sphereRadius) / imageEffectiveHeight);
-        const numRingsToUse = Math.max(3, Math.min(maxVerticalRings, Math.ceil(Math.sqrt(total) * 0.85))); // Ajuste pour potentiellement moins d'images aux pôles
-
-        if (total === 0) { // Gérer le cas où il n'y a pas d'images filtrées
+        if (total === 0) {
             carousel.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
             return;
         }
 
-        // Calculer les propriétés de chaque anneau
-        for (let r = 0; r < numRingsToUse; r++) {
-            // Position Y de l'anneau (latitude)
-            const y = -sphereRadius + (r + 0.5) * (2 * sphereRadius / numRingsToUse);
+        let imagesToDistribute = [...images]; // Copie des images pour la distribution
 
-            // Rayon de l'anneau à cette hauteur Y
+        // 1. Positionner les images aux pôles (si disponibles)
+        if (imagesToDistribute.length > 0) {
+            // Pôle Nord
+            const poleNorthImg = imagesToDistribute.shift();
+            poleNorthImg.style.transform = `translateX(0px) translateY(${-sphereRadius}px) translateZ(0px) rotateX(90deg) translate(-50%, -50%)`;
+            poleNorthImg.style.opacity = '1';
+            poleNorthImg.style.filter = 'none';
+            poleNorthImg.style.zIndex = '1';
+        }
+        if (imagesToDistribute.length > 0) {
+            // Pôle Sud
+            const poleSouthImg = imagesToDistribute.shift();
+            poleSouthImg.style.transform = `translateX(0px) translateY(${sphereRadius}px) translateZ(0px) rotateX(-90deg) translate(-50%, -50%)`;
+            poleSouthImg.style.opacity = '1';
+            poleSouthImg.style.filter = 'none';
+            poleSouthImg.style.zIndex = '1';
+        }
+
+        // Calculer l'espace vertical disponible pour les anneaux intermédiaires
+        const remainingVerticalSpace = (2 * sphereRadius) - (poleNorthImg ? verticalSpacing : 0) - (poleSouthImg ? verticalSpacing : 0);
+        
+        // Déterminer le nombre d'anneaux intermédiaires
+        // Assurez-vous qu'il y a au moins un anneau central si des images sont restantes
+        let numRings = Math.max(1, Math.floor(remainingVerticalSpace / verticalSpacing));
+        
+        // Réajuster si trop peu d'anneaux pour toutes les images restantes
+        if (imagesToDistribute.length > 0) {
+            const minRingsNeeded = Math.ceil(imagesToDistribute.length / Math.floor((2 * Math.PI * sphereRadius) / horizontalSpacing));
+            numRings = Math.max(numRings, minRingsNeeded);
+        }
+
+        const rings = [];
+        for (let i = 0; i < numRings; i++) {
+            // Calculer la position Y de l'anneau pour un espacement uniforme
+            const y = -sphereRadius + (poleNorthImg ? verticalSpacing : 0) + (remainingVerticalSpace / numRings) * (i + 0.5);
+            
             const currentRingRadius = Math.sqrt(Math.max(0, sphereRadius * sphereRadius - y * y));
-
-            // Calculer le nombre maximum d'images pour cet anneau
-            // Circonférence de l'anneau = 2 * PI * rayon
-            // Nombre max d'images = Circonférence / (largeur image * spacingFactor)
+            
             let maxImagesOnRing = 0;
-            if (currentRingRadius > 0) {
-              maxImagesOnRing = Math.floor((2 * Math.PI * currentRingRadius) / (imageWidthPx * spacingFactor));
-              // Assurez-vous qu'il y a au moins 1 image si le rayon le permet
-              if (maxImagesOnRing === 0 && currentRingRadius > (imageWidthPx * spacingFactor / (2 * Math.PI))) {
-                  maxImagesOnRing = 1;
-              }
+            if (currentRingRadius > horizontalSpacing / (2 * Math.PI)) { // Minimum radius to fit at least one image
+                maxImagesOnRing = Math.floor((2 * Math.PI * currentRingRadius) / horizontalSpacing);
             }
-            // Réduire le nombre max d'images sur les anneaux supérieurs/inférieurs pour éviter le chevauchement
-            const poleFactor = 1 - Math.abs(y / sphereRadius); // Plus près des pôles, plus petit
-            maxImagesOnRing = Math.max(1, Math.floor(maxImagesOnRing * (poleFactor * 0.7 + 0.3))); // Ajustement pour les pôles, pour ne pas avoir 0 image
-
+            maxImagesOnRing = Math.max(0, maxImagesOnRing); // Ensure non-negative
+            
             rings.push({ y, currentRingRadius, maxImagesOnRing, assignedImages: [] });
         }
 
-        // Trier les anneaux par leur capacité à accueillir des images (les plus grands d'abord)
-        // Cela peut aider à remplir les anneaux les plus larges en premier, puis les plus petits.
-        rings.sort((a, b) => b.maxImagesOnRing - a.maxImagesOnRing);
+        // Filtrer les anneaux qui ne peuvent pas contenir d'images (rayons trop petits)
+        const usableRings = rings.filter(ring => ring.maxImagesOnRing > 0);
 
-        let imageIndex = 0;
-        let ringAssignments = new Array(numRingsToUse).fill(0); // Compteur d'images assignées par anneau
-
-        // Distribuer les images dans les anneaux de manière équilibrée
-        while (imageIndex < total) {
+        // Distribuer les images restantes aux anneaux utilisables
+        let currentImageIndex = 0;
+        while (currentImageIndex < imagesToDistribute.length) {
             let assigned = false;
-            // Essayer d'assigner à l'anneau qui a le plus de place disponible et le moins d'images assignées
-            // Ceci est une heuristique simple, peut être affinée.
-            let bestRingIndex = -1;
-            let minAssigned = Infinity;
+            // Trouver l'anneau qui a le plus de "capacité restante"
+            let bestRing = null;
+            let maxCapacity = -1;
 
-            // Trouver l'anneau avec le moins d'images assignées qui a encore de la place
-            for (let r = 0; r < rings.length; r++) {
-                if (ringAssignments[r] < rings[r].maxImagesOnRing) {
-                    if (ringAssignments[r] < minAssigned) {
-                        minAssigned = ringAssignments[r];
-                        bestRingIndex = r;
-                    }
+            usableRings.forEach(ring => {
+                const currentCapacity = ring.maxImagesOnRing - ring.assignedImages.length;
+                if (currentCapacity > maxCapacity) {
+                    maxCapacity = currentCapacity;
+                    bestRing = ring;
                 }
-            }
+            });
 
-            if (bestRingIndex !== -1) {
-                rings[bestRingIndex].assignedImages.push(images[imageIndex]);
-                ringAssignments[bestRingIndex]++;
-                imageIndex++;
+            if (bestRing && bestRing.assignedImages.length < bestRing.maxImagesOnRing) {
+                bestRing.assignedImages.push(imagesToDistribute[currentImageIndex]);
+                currentImageIndex++;
                 assigned = true;
             } else {
-                // Si aucune place n'est trouvée, cela signifie que toutes les images ne peuvent pas tenir.
-                // Cela ne devrait pas arriver si le nombre d'anneaux est bien calculé et qu'il y a assez de place globale.
-                // Pour éviter une boucle infinie, on sort si on ne peut plus assigner.
-                console.warn("Pas assez de place sur les anneaux pour toutes les images.");
-                break;
+                // Si on ne peut plus assigner, cela signifie qu'il n'y a plus de place
+                console.warn("Could not assign all remaining images to rings. Some images might be left out or overlap.");
+                break; 
             }
         }
         
-        // Repositionner les anneaux dans leur ordre vertical original pour l'affichage
-        rings.sort((a, b) => a.y - b.y);
-
-        // Positionner chaque image
-        let currentImageCounter = 0;
+        // Positionner chaque image dans son anneau assigné
         rings.forEach(ring => {
             const numImagesInThisRing = ring.assignedImages.length;
             const angleStep = numImagesInThisRing > 0 ? 360 / numImagesInThisRing : 0;
@@ -587,16 +584,16 @@
                 const z = Math.cos(rad) * ring.currentRingRadius;
 
                 // Calcul de la rotation pour que l'image fasse face à l'extérieur
-                const rotationYImg = Math.atan2(x, z) * 180 / Math.PI;
+                const rotationYImg = imgAngle; // Simple rotation autour de Y
                 const rotationXImg = Math.atan2(ring.y, Math.sqrt(x * x + z * z)) * 180 / Math.PI;
 
                 img.style.transform = `translateX(${x}px) translateY(${ring.y}px) translateZ(${z}px) rotateY(${rotationYImg}deg) rotateX(${-rotationXImg}deg) translate(-50%, -50%)`;
                 img.style.opacity = '1';
                 img.style.filter = 'none';
                 img.style.zIndex = '1';
-                currentImageCounter++;
             });
         });
+
         carousel.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
       }
     }
@@ -616,7 +613,7 @@
         });
         carousel.appendChild(img);
       });
-      positionImages(); // Appeler positionImages après avoir généré les images
+      positionImages();
     }
 
 
