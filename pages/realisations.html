@@ -210,10 +210,12 @@
       .carousel-container {
         position: absolute;
         left: 50%;
-        top: calc(150px + 10vh);
+        /* Adjusted top to position the sphere better below filters */
+        top: calc(150px + 5vh); /* Adjusted for better vertical placement */
         transform: translateX(-50%);
         width: 100vw;
-        height: calc(100vh - (150px + 10vh));
+        /* Increased height to give more space to the sphere */
+        height: calc(100vh - (150px + 5vh) - 20px); /* 20px buffer at bottom */
         overflow: hidden;
         display: flex;
         justify-content: center;
@@ -454,11 +456,13 @@
       const total = images.length;
       const isPortraitMobile = isMobilePortrait();
 
-      // Ajuster le rayon de la sphère pour le mode portrait mobile.
+      // Ajustement du rayon de la sphère pour le mode portrait mobile.
       // Une valeur plus petite rendra la sphère plus "dense" et plus visible.
       // Une valeur plus grande la rendra plus "lâche" et plus grande.
       // Il faut trouver un équilibre avec la perspective et la taille des images.
-      const sphereRadius = isPortraitMobile ? 160 : parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--translateZ')); /* */
+      // Pour une meilleure "rondeur" et visibilité:
+      // augmenter le rayon un peu et ajuster la perspective en conséquence.
+      const sphereRadius = isPortraitMobile ? 220 : parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--translateZ'));
 
 
       if (!isPortraitMobile) {
@@ -475,8 +479,9 @@
         // Logique pour la disposition en sphère pour le mode mobile portrait (Fibonacci Sphere)
         images.forEach((img, i) => {
             const totalImages = images.length;
-            const phi = Math.acos(1 - 2 * i / totalImages); // Angle polaire (latitude)
-            const theta = Math.PI * (1 + Math.sqrt(5)) * i; // Angle azimutal (longitude, basé sur l'angle d'or)
+            // Utilisation d'une petite valeur epsilon pour éviter les problèmes de précision avec acos(1)
+            const phi = Math.acos(1 - 2 * (i + 0.5) / totalImages); // Angle polaire (latitude), décalage pour une meilleure distribution
+            const theta = Math.PI * (1 + Math.sqrt(5)) * (i + 0.5); // Angle azimutal (longitude, basé sur l'angle d'or), décalage
 
             // Calcul des coordonnées cartésiennes sur la sphère
             const x = sphereRadius * Math.sin(phi) * Math.cos(theta);
