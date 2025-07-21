@@ -210,7 +210,7 @@
         width: 100%;
         height: 100%;
         transform-style: preserve-3d;
-        transform: none;
+        transform: none; /* Remplacé par transform: rotateX(0deg) rotateY(0deg); dans le script pour la rotation */
         margin: 0 auto;
       }
 
@@ -425,48 +425,58 @@
       { src: '../img/renoperier6.jpg', theme: 'cuisine', comment: 'renovation studio Marseille' },
     ];
 
-    let angle = 0;
+    // Variables pour la rotation de la sphère
+    let rotateX = -3;
+    let rotateY = 0;
     let autoRotate = true;
     let isDragging = false;
     let startX = 0;
+    let startY = 0;
     let dragged = false;
     let currentFilter = 'all';
+
+    function isMobilePortrait() {
+      return window.innerWidth <= 768 && window.innerHeight > window.innerWidth;
+    }
 
     function positionImages() {
       const images = carousel.querySelectorAll('img');
       const total = images.length;
-      const isPortraitMobile = window.innerWidth <= 768 && window.innerHeight > window.innerWidth;
+      const isPortraitMobile = isMobilePortrait();
       const translateZ = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--translateZ'));
 
       if (!isPortraitMobile) {
         const step = 360 / total;
         images.forEach((img, i) => {
           const imgAngle = step * i;
-          const rad = (imgAngle + angle) * Math.PI / 180;
+          const rad = (imgAngle + rotateY) * Math.PI / 180;
           const x = Math.sin(rad) * translateZ;
           const z = Math.cos(rad) * translateZ;
           img.style.transform = `translateX(${x}px) translateZ(${z}px) rotateY(${imgAngle}deg)`;
         });
       } else {
-        const sphereRadius = 230;
+        // Logique pour la disposition en sphère pour le mode mobile portrait
+        // Modifiez les valeurs pour ajuster la densité et le rayon de la sphère
+        const sphereRadius = 230; 
+        const total = images.length;
         images.forEach((img, i) => {
-          const lat = Math.acos(-1 + (2 * i) / (total - 1));
-          const lon = Math.sqrt(total * Math.PI) * lat;
-          const x = sphereRadius * Math.cos(lon) * Math.sin(lat);
-          const y = sphereRadius * Math.sin(lon) * Math.sin(lat);
-          const z = sphereRadius * Math.cos(lat);
-          const rotAngle = angle * Math.PI / 180;
-          const xRot = x * Math.cos(rotAngle) - z * Math.sin(rotAngle);
-          const yRot = y;
-          const zRot = x * Math.sin(rotAngle) + z * Math.cos(rotAngle);
-
-          img.style.transform = `translateX(${xRot}px) translateY(${yRot}px) translateZ(${zRot}px)`;
-          img.style.opacity = '1';
-          img.style.filter = 'none';
-          img.style.zIndex = '1';
+            const lat = Math.acos(-1 + (2 * i) / (total - 1));
+            const lon = Math.sqrt(total * Math.PI) * lat;
+            const x = sphereRadius * Math.sin(lat) * Math.cos(lon);
+            const y = sphereRadius * Math.sin(lat) * Math.sin(lon);
+            const z = sphereRadius * Math.cos(lat);
+            
+            // Appliquer la rotation de la sphère elle-même
+            img.style.transform = `translateX(${x}px) translateY(${y}px) translateZ(${z}px)`;
+            img.style.opacity = '1';
+            img.style.filter = 'none';
+            img.style.zIndex = '1';
         });
+        // Appliquer la rotation du carousel lui-même
+        carousel.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
       }
     }
+    
     function generateImages(filter = 'all') {
       currentFilter = filter;
       carousel.innerHTML = '';
@@ -486,7 +496,12 @@
 
     function animate() {
       if (autoRotate && !isDragging) {
-        angle += 0.10;
+        if (!isMobilePortrait()) {
+          rotateY += 0.10; // Rotation sur l'axe Y pour les autres modes
+        } else {
+          // Pour mobile portrait, vous pouvez désactiver la rotation automatique si vous le souhaitez
+          // ou l'ajouter ici
+        }
         positionImages();
       }
       requestAnimationFrame(animate);
@@ -513,6 +528,7 @@
       isDragging = true;
       dragged = false;
       startX = e.clientX;
+      startY = e.clientY;
       autoRotate = false;
     });
 
@@ -525,8 +541,18 @@
     document.addEventListener('mousemove', e => {
       if (isDragging) {
         const dx = e.clientX - startX;
-        angle += dx * 0.3;
+        const dy = e.clientY - startY;
+
+        if (!isMobilePortrait()) {
+          rotateY += dx * 0.3;
+        } else {
+          // Rotation sur l'axe X et Y pour le mode mobile portrait
+          rotateY += dx * 0.3;
+          rotateX -= dy * 0.3;
+        }
+        
         startX = e.clientX;
+        startY = e.clientY;
         dragged = true;
         positionImages();
       }
@@ -535,29 +561,22 @@
     // Gestion tactile
     (function () {
       if (!carousel) return;
-      let draggingHorizontally = false;
-      let startY = 0;
       let resumeTimeout = null;
       let animationActive = true;
-      let angleStart = 0;
-
-      function isMobilePortrait() {
-        return window.innerWidth <= 768 && window.innerHeight > window.innerWidth;
-      }
+      let angleStartX = rotateX;
+      let angleStartY = rotateY;
 
       carousel.addEventListener('touchstart', (e) => {
         if (e.touches.length !== 1) return;
         isDragging = true;
         startX = e.touches[0].clientX;
         startY = e.touches[0].clientY;
-        angleStart = angle;
-        draggingHorizontally = false;
+        angleStartX = rotateX;
+        angleStartY = rotateY;
+        
+        // Désactiver l'animation pour le drag
+        autoRotate = false;
 
-        if (!isMobilePortrait()) {
-          carousel.style.animation = 'none';
-          autoRotate = false;
-          animationActive = false;
-        }
         if (resumeTimeout) clearTimeout(resumeTimeout);
       }, { passive: true });
 
@@ -566,35 +585,25 @@
         const dx = e.touches[0].clientX - startX;
         const dy = e.touches[0].clientY - startY;
 
-        if (!draggingHorizontally && Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 10) {
-          draggingHorizontally = true;
+        if (!isMobilePortrait()) {
+          rotateY = angleStartY + dx * 0.3;
+        } else {
+          // Rotation sur l'axe X et Y pour le mode mobile portrait
+          rotateY = angleStartY + dx * 0.3;
+          rotateX = angleStartX - dy * 0.3;
         }
 
-        if (draggingHorizontally) {
-          angle = angleStart + dx * 0.3;
-          positionImages();
-        }
+        positionImages();
       }, { passive: true });
 
       carousel.addEventListener('touchend', () => {
         isDragging = false;
-        draggingHorizontally = false;
         if (!isMobilePortrait()) {
           resumeTimeout = setTimeout(() => {
-            carousel.style.animation = 'spinY 30s linear infinite';
             autoRotate = true;
-            animationActive = true;
           }, 5000);
         }
       });
-
-      setInterval(() => {
-        if (!isMobilePortrait() && !animationActive && !isDragging) {
-          carousel.style.animation = 'spinY 30s linear infinite';
-          autoRotate = true;
-          animationActive = true;
-        }
-      }, 10000);
     })();
 
     zoomViewer.addEventListener('click', (e) => {
