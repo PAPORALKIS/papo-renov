@@ -87,27 +87,46 @@
       color: #003366;
       text-align: center;
       font-size: 1.8em;
-      margin-top: 25px;
-      padding: 10px 20px;
+      margin-top: 25px; /* Marge supérieure d'origine */
+      padding: 10px 20px; /* Padding d'origine */
+      /* MODIFICATIONS DÉBUT */
+      margin-bottom: 5px; /* Réduire la marge sous le titre */
+      padding-top: 5px; /* Réduire le padding supérieur */
+      padding-bottom: 5px; /* Réduire le padding inférieur */
+      /* MODIFICATIONS FIN */
     }
 
     .filters {
       text-align: center;
-      margin: 10px auto;
+      margin: 10px auto; /* Marge d'origine */
       position: relative;
       z-index: 10;
+      /* MODIFICATIONS DÉBUT */
+      display: flex; /* Utiliser flexbox pour mieux gérer l'espacement */
+      flex-wrap: wrap; /* Permettre aux boutons de passer à la ligne */
+      justify-content: center; /* Centrer les boutons */
+      gap: 5px; /* Espace entre les boutons */
+      margin-top: 5px; /* Réduire la marge supérieure */
+      margin-bottom: 10px; /* Réduire la marge inférieure */
+      /* MODIFICATIONS FIN */
     }
 
     .filters button {
-      margin: 4px;
-      padding: 6px 12px;
-      font-size: 0.9em;
+      margin: 4px; /* Marge d'origine, sera écrasée par le 'gap' flexbox */
+      padding: 6px 12px; /* Padding d'origine */
+      font-size: 0.9em; /* Taille de police d'origine */
       border-radius: 6px;
       border: 1px solid #003366;
       background-color: #ffffff;
       color: #003366;
       cursor: pointer;
       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      /* MODIFICATIONS DÉBUT */
+      margin: 0; /* Supprimer la marge individuelle pour utiliser le gap du flexbox */
+      padding: 6px 10px; /* Légèrement réduire le padding */
+      font-size: 0.85em; /* Légèrement réduire la taille de la police */
+      white-space: nowrap; /* Empêche le texte des boutons de se briser sur plusieurs lignes */
+      /* MODIFICATIONS FIN */
     }
 
     .carousel-container {
@@ -208,10 +227,14 @@
       .carousel-container {
         position: absolute;
         left: 50%;
-        top: calc(230px + 2vh);
+        /* MODIFICATIONS DÉBUT */
+        /* top: calc(230px + 2vh); Ancienne valeur */
+        top: calc(150px + 2vh); /* Réduction de la valeur 'top' pour remonter la sphère */
         transform: translateX(-50%);
         width: 100vw;
-        height: calc(100vh - (230px + 2vh) - 20px);
+        /* height: calc(100vh - (230px + 2vh) - 20px); Ancienne valeur */
+        height: calc(100vh - (150px + 2vh) - 20px); /* Ajusté en conséquence */
+        /* MODIFICATIONS FIN */
         overflow: hidden;
         display: flex;
         justify-content: center;
@@ -238,9 +261,9 @@
 
       /* NOUVEAUX AJUSTEMENTS POUR MOBILE PORTRAIT */
       .page-title {
-        font-size: 1.4em; /* Police plus petite pour le titre */
-        margin-top: 15px; /* Réduire la marge supérieure */
-        padding: 5px 10px; /* Réduire le padding */
+        font-size: 1.3em; /* Police plus petite pour le titre (légèrement plus petite que 1.4em) */
+        margin-top: 10px; /* Réduire la marge supérieure */
+        padding: 4px 10px; /* Réduire le padding */
       }
 
       .filters {
@@ -249,12 +272,13 @@
         display: flex; /* Utiliser flexbox pour mieux gérer l'espacement */
         flex-wrap: wrap; /* Permettre aux boutons de passer à la ligne */
         justify-content: center; /* Centrer les boutons */
+        gap: 3px; /* Espacement réduit entre les boutons en mobile */
       }
 
       .filters button {
-        margin: 2px; /* Réduire l'espacement entre les boutons */
-        padding: 5px 8px; /* Réduire la taille des boutons */
-        font-size: 0.8em; /* Réduire la police des boutons */
+        margin: 0; /* Supprimer la marge individuelle (déjà fait, mais important de le maintenir) */
+        padding: 4px 6px; /* Réduire la taille des boutons */
+        font-size: 0.75em; /* Réduire la police des boutons (légèrement plus petite que 0.8em) */
       }
     }
 
