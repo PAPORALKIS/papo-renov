@@ -200,11 +200,9 @@
     /* Ajustements pour le mode mobile portrait */
    @media (max-width: 768px) and (orientation: portrait) {
       :root {
-        /* --img-size: 25vw;  Ancienne valeur */
-        --img-size: 25vw; /* Réduit la taille des images pour plus d'espace et moins de chevauchement */
+        --img-size: 25vw; /* Taille des images, à ajuster */
         --perspective: 1200px;
-        /* --sphere-radius-mobile-portrait: 250px; Ancienne valeur */
-        --sphere-radius-mobile-portrait: 270px; /* Augmenté légèrement le rayon de la sphère pour plus d'espace */
+        --sphere-radius-mobile-portrait: 270px; /* Rayon de la sphère, à ajuster */
       }
 
       .carousel-container {
@@ -451,7 +449,7 @@
     }
 
     function positionImages() {
-      const images = Array.from(carousel.querySelectorAll('img')); // Convertir en tableau pour pouvoir manipuler plus facilement
+      const images = Array.from(carousel.querySelectorAll('img'));
       const total = images.length;
       const isPortraitMobile = isMobilePortrait();
 
@@ -460,8 +458,6 @@
         : parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--sphere-radius-desktop'));
       
       const imgSizeCSS = getComputedStyle(document.documentElement).getPropertyValue('--img-size');
-      // Pour convertir '--img-size' (ex: '20vw') en pixels, nous avons besoin d'une image de référence temporaire
-      // pour obtenir sa largeur calculée. C'est un peu un hack, mais c'est le plus fiable pour les vw/vh.
       const tempImg = document.createElement('img');
       tempImg.style.visibility = 'hidden';
       tempImg.style.position = 'absolute';
@@ -470,13 +466,10 @@
       const imageWidthPx = tempImg.offsetWidth;
       document.body.removeChild(tempImg);
 
-      // Ajouter un petit espacement entre les images, en pourcentage de la taille de l'image
-      const spacingFactor = 1.1; // Réduit à 1.1 pour un espacement horizontal plus faible
-      const verticalSpacingMultiplier = 0.9; // Nouveau facteur pour rapprocher les anneaux verticalement
-
+      const spacingFactor = 1.1;
+      const verticalSpacingMultiplier = 0.9;
 
       if (!isPortraitMobile) {
-        // Mode Bureau/Paysage : Arrangement cylindrique simple pour un effet de carrousel
         const step = 360 / total;
         images.forEach((img, i) => {
           const imgAngle = step * i;
@@ -490,63 +483,65 @@
         });
         carousel.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
       } else {
-        // Mode Portrait Mobile : Disposition en anneaux avec calcul dynamique du nombre d'images par anneau
+        // --- Début des modifications pour les pôles ---
 
-        const rings = []; // Stockera les informations pour chaque anneau: {y, currentRingRadius, maxImages}
+        // Séparer les images pour les pôles
+        const poleImages = [];
+        const remainingImages = [...images];
 
-        // Définir le nombre de tranches verticales (qui détermineront les anneaux)
-        // La hauteur de chaque "tranche" doit être au moins la taille de l'image plus un petit espacement.
-        const imageEffectiveHeight = imageWidthPx * spacingFactor * verticalSpacingMultiplier; // Utilise le nouveau multiplicateur vertical
-        const maxVerticalRings = Math.floor((2 * sphereRadius) / imageEffectiveHeight);
-        const numRingsToUse = Math.max(3, Math.min(maxVerticalRings, Math.ceil(Math.sqrt(total) * 0.85))); // Ajuste pour potentiellement moins d'images aux pôles
+        if (total >= 2) {
+            poleImages.push(remainingImages.shift()); // Image pour le pôle nord
+            poleImages.push(remainingImages.shift()); // Image pour le pôle sud
+        } else if (total === 1) {
+            poleImages.push(remainingImages.shift()); // Juste une image si une seule disponible
+        }
+        // else if total is 0, nothing to do with pole images
 
-        if (total === 0) { // Gérer le cas où il n'y a pas d'images filtrées
+        const totalRemaining = remainingImages.length;
+
+        const rings = [];
+        const imageEffectiveHeight = imageWidthPx * spacingFactor * verticalSpacingMultiplier;
+
+        // Le nombre de "vraies" anneaux (sans compter les pôles)
+        // On assure qu'il y a au moins 1 anneau central si on a des images restantes
+        const minCentralRings = totalRemaining > 0 ? 1 : 0;
+        const numRingsToUse = Math.max(minCentralRings, Math.min(Math.floor((2 * sphereRadius - (poleImages.length > 0 ? imageEffectiveHeight * 2 : 0)) / imageEffectiveHeight), Math.ceil(Math.sqrt(totalRemaining) * 0.85)));
+
+        if (totalRemaining === 0 && poleImages.length === 0) {
             carousel.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
             return;
         }
 
-        // Calculer les propriétés de chaque anneau
+        // Calculer les propriétés de chaque anneau central
         for (let r = 0; r < numRingsToUse; r++) {
-            // Position Y de l'anneau (latitude)
-            const y = -sphereRadius + (r + 0.5) * (2 * sphereRadius / numRingsToUse);
+            // Ajustement de la position Y pour laisser de la place aux pôles
+            const yOffset = (poleImages.length > 0) ? imageEffectiveHeight : 0; // Décalage pour laisser la place aux pôles
+            const y = -sphereRadius + yOffset + (r + 0.5) * ((2 * sphereRadius - 2 * yOffset) / numRingsToUse);
 
-            // Rayon de l'anneau à cette hauteur Y
             const currentRingRadius = Math.sqrt(Math.max(0, sphereRadius * sphereRadius - y * y));
-
-            // Calculer le nombre maximum d'images pour cet anneau
-            // Circonférence de l'anneau = 2 * PI * rayon
-            // Nombre max d'images = Circonférence / (largeur image * spacingFactor)
             let maxImagesOnRing = 0;
             if (currentRingRadius > 0) {
               maxImagesOnRing = Math.floor((2 * Math.PI * currentRingRadius) / (imageWidthPx * spacingFactor));
-              // Assurez-vous qu'il y a au moins 1 image si le rayon le permet
               if (maxImagesOnRing === 0 && currentRingRadius > (imageWidthPx * spacingFactor / (2 * Math.PI))) {
                   maxImagesOnRing = 1;
               }
             }
-            // Réduire le nombre max d'images sur les anneaux supérieurs/inférieurs pour éviter le chevauchement
-            const poleFactor = 1 - Math.abs(y / sphereRadius); // Plus près des pôles, plus petit
-            maxImagesOnRing = Math.max(1, Math.floor(maxImagesOnRing * (poleFactor * 0.7 + 0.3))); // Ajustement pour les pôles, pour ne pas avoir 0 image
+            maxImagesOnRing = Math.max(1, maxImagesOnRing); // Au moins 1 image par anneau (si possible)
 
+            // Pas besoin d'ajuster les images aux pôles pour ces anneaux, ils sont "centraux"
             rings.push({ y, currentRingRadius, maxImagesOnRing, assignedImages: [] });
         }
 
-        // Trier les anneaux par leur capacité à accueillir des images (les plus grands d'abord)
-        // Cela peut aider à remplir les anneaux les plus larges en premier, puis les plus petits.
         rings.sort((a, b) => b.maxImagesOnRing - a.maxImagesOnRing);
 
         let imageIndex = 0;
-        let ringAssignments = new Array(numRingsToUse).fill(0); // Compteur d'images assignées par anneau
+        let ringAssignments = new Array(numRingsToUse).fill(0);
 
-        // Distribuer les images dans les anneaux de manière équilibrée
-        while (imageIndex < total) {
+        while (imageIndex < totalRemaining) {
             let assigned = false;
-            // Essayer d'assigner à l'anneau qui a le plus de place disponible et le moins d'images assignées
-            // Ceci est une heuristique simple, peut être affinée.
             let bestRingIndex = -1;
             let minAssigned = Infinity;
 
-            // Trouver l'anneau avec le moins d'images assignées qui a encore de la place
             for (let r = 0; r < rings.length; r++) {
                 if (ringAssignments[r] < rings[r].maxImagesOnRing) {
                     if (ringAssignments[r] < minAssigned) {
@@ -557,24 +552,44 @@
             }
 
             if (bestRingIndex !== -1) {
-                rings[bestRingIndex].assignedImages.push(images[imageIndex]);
+                rings[bestRingIndex].assignedImages.push(remainingImages[imageIndex]);
                 ringAssignments[bestRingIndex]++;
                 imageIndex++;
                 assigned = true;
             } else {
-                // Si aucune place n'est trouvée, cela signifie que toutes les images ne peuvent pas tenir.
-                // Cela ne devrait pas arriver si le nombre d'anneaux est bien calculé et qu'il y a assez de place globale.
-                // Pour éviter une boucle infinie, on sort si on ne peut plus assigner.
-                console.warn("Pas assez de place sur les anneaux pour toutes les images.");
+                console.warn("Pas assez de place sur les anneaux pour toutes les images restantes.");
                 break;
             }
         }
         
-        // Repositionner les anneaux dans leur ordre vertical original pour l'affichage
         rings.sort((a, b) => a.y - b.y);
 
-        // Positionner chaque image
-        let currentImageCounter = 0;
+        // Positionner l'image du pôle nord (si présente)
+        if (poleImages[0]) {
+            const img = poleImages[0];
+            const y = -sphereRadius; // Position Y pour le pôle nord
+            const x = 0;
+            const z = 0; // Au centre du pôle
+            img.style.transform = `translateX(${x}px) translateY(${y}px) translateZ(${z}px) rotateX(90deg) translate(-50%, -50%)`; // Rotation pour faire face "vers le haut"
+            img.style.opacity = '1';
+            img.style.filter = 'none';
+            img.style.zIndex = '1';
+        }
+
+        // Positionner l'image du pôle sud (si présente)
+        if (poleImages[1]) {
+            const img = poleImages[1];
+            const y = sphereRadius; // Position Y pour le pôle sud
+            const x = 0;
+            const z = 0; // Au centre du pôle
+            img.style.transform = `translateX(${x}px) translateY(${y}px) translateZ(${z}px) rotateX(-90deg) translate(-50%, -50%)`; // Rotation pour faire face "vers le bas"
+            img.style.opacity = '1';
+            img.style.filter = 'none';
+            img.style.zIndex = '1';
+        }
+
+
+        // Positionner les images des anneaux centraux
         rings.forEach(ring => {
             const numImagesInThisRing = ring.assignedImages.length;
             const angleStep = numImagesInThisRing > 0 ? 360 / numImagesInThisRing : 0;
@@ -586,7 +601,6 @@
                 const x = Math.sin(rad) * ring.currentRingRadius;
                 const z = Math.cos(rad) * ring.currentRingRadius;
 
-                // Calcul de la rotation pour que l'image fasse face à l'extérieur
                 const rotationYImg = Math.atan2(x, z) * 180 / Math.PI;
                 const rotationXImg = Math.atan2(ring.y, Math.sqrt(x * x + z * z)) * 180 / Math.PI;
 
@@ -594,7 +608,6 @@
                 img.style.opacity = '1';
                 img.style.filter = 'none';
                 img.style.zIndex = '1';
-                currentImageCounter++;
             });
         });
         carousel.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
@@ -605,7 +618,9 @@
       currentFilter = filter;
       carousel.innerHTML = '';
       const filtered = filter === 'all' ? imagesData : imagesData.filter(img => img.theme === filter);
-      filtered.forEach((data, i) => {
+
+      // Créer tous les éléments img d'abord
+      const imgElements = filtered.map(data => {
         const img = document.createElement('img');
         img.src = data.src;
         img.setAttribute('data-theme', data.theme);
@@ -614,8 +629,12 @@
             if (!dragged) showZoom(data);
             e.stopPropagation();
         });
-        carousel.appendChild(img);
+        return img;
       });
+
+      // Ajouter les images au carrousel
+      imgElements.forEach(img => carousel.appendChild(img));
+      
       positionImages(); // Appeler positionImages après avoir généré les images
     }
 
