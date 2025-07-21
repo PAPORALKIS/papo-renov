@@ -7,7 +7,7 @@
   <style>
     :root {
       --img-size: min(20vw, 150px);
-      --sphere-radius-desktop: 800px; /* Renamed for clarity in desktop */
+      --sphere-radius-desktop: 800px; /* Renommé pour plus de clarté en mode bureau */
       --perspective: 3500px;
     }
 
@@ -200,9 +200,9 @@
     /* Ajustements pour le mode mobile portrait */
    @media (max-width: 768px) and (orientation: portrait) {
       :root {
-        --img-size: 20vw; /* Taille des images pour le portrait mobile */
-        --perspective: 1000px; /* Perspective ajustée pour le portrait mobile */
-        --sphere-radius-mobile-portrait: 200px; /* Rayon de la sphère pour le portrait mobile */
+        --img-size: 18vw; /* Réduit pour éviter le chevauchement */
+        --perspective: 1200px; /* Légèrement augmenté pour une vue moins "zoomée" */
+        --sphere-radius-mobile-portrait: 230px; /* Augmenté pour espacer les images */
       }
 
       .carousel-container {
@@ -222,7 +222,6 @@
         width: 100%;
         height: 100%;
         transform-style: preserve-3d;
-        /* Le carousel lui-même n'a pas besoin d'un transform initial ici car les images sont positionnées de manière absolue */
       }
 
       .carousel img {
@@ -235,7 +234,6 @@
         opacity: 1; /* Assure que les images sont visibles */
         filter: none; /* Assure que les images ne sont pas grisées */
         z-index: 1; /* Assure que les images sont au-dessus */
-        /* Pas de translate(-50%, -50%) ici, il sera appliqué par JS pour centrer les images */
       }
     }
 
@@ -447,7 +445,6 @@
     let currentFilter = 'all';
 
     function isMobilePortrait() {
-      // A small buffer for width comparison to account for different device pixel ratios and browser inconsistencies
       return window.innerWidth <= 768 && window.innerHeight > window.innerWidth;
     }
 
@@ -456,13 +453,13 @@
       const total = images.length;
       const isPortraitMobile = isMobilePortrait();
 
-      // Determine sphere radius based on orientation
+      // Déterminer le rayon de la sphère en fonction de l'orientation
       const sphereRadius = isPortraitMobile
         ? parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--sphere-radius-mobile-portrait'))
         : parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--sphere-radius-desktop'));
 
       if (!isPortraitMobile) {
-        // Desktop/Landscape Mode: Simple cylindrical arrangement for a carousel-like feel
+        // Mode Bureau/Paysage : Arrangement cylindrique simple pour un effet de carrousel
         const step = 360 / total;
         images.forEach((img, i) => {
           const imgAngle = step * i;
@@ -476,30 +473,28 @@
         });
         carousel.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
       } else {
-        // Mobile Portrait Mode: Fibonacci Sphere Distribution for a perfect sphere
+        // Mode Portrait Mobile : Distribution en sphère de Fibonacci pour une sphère parfaite
         images.forEach((img, i) => {
-            // Fibonacci Sphere algorithm for even distribution
+            // Algorithme de sphère de Fibonacci pour une distribution uniforme
             const phi = Math.acos(1 - 2 * (i + 0.5) / total); // Angle polaire (latitude)
             const theta = Math.PI * (1 + Math.sqrt(5)) * (i + 0.5); // Angle azimutal (longitude, basé sur l'angle d'or)
 
-            // Convert spherical to Cartesian coordinates
+            // Conversion des coordonnées sphériques en coordonnées cartésiennes
             const x = sphereRadius * Math.sin(phi) * Math.cos(theta);
             const y = sphereRadius * Math.sin(phi) * Math.sin(theta);
             const z = sphereRadius * Math.cos(phi);
 
-            // Calculate rotation to make image face outwards
-            // The atan2(x, z) gives the rotation around the Y-axis.
-            // The atan2(y, sqrt(x*x + z*z)) gives the rotation around the X-axis.
+            // Calcul de la rotation pour que l'image fasse face à l'extérieur
             const rotationYImg = Math.atan2(x, z) * 180 / Math.PI;
             const rotationXImg = Math.atan2(y, Math.sqrt(x * x + z * z)) * 180 / Math.PI;
 
-            // Apply transformations. The translate(-50%, -50%) centers the image on the calculated point.
+            // Appliquer les transformations. Le translate(-50%, -50%) centre l'image sur le point calculé.
             img.style.transform = `translateX(${x}px) translateY(${y}px) translateZ(${z}px) rotateY(${rotationYImg}deg) rotateX(${-rotationXImg}deg) translate(-50%, -50%)`;
             img.style.opacity = '1';
             img.style.filter = 'none';
             img.style.zIndex = '1';
         });
-        // Apply the global rotations (rotateX and rotateY) to the carousel itself
+        // Appliquer les rotations globales (rotateX et rotateY) au carrousel lui-même
         carousel.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
       }
     }
@@ -519,7 +514,7 @@
         });
         carousel.appendChild(img);
       });
-      positionImages(); // Call positionImages after generating images
+      positionImages(); // Appeler positionImages après avoir généré les images
     }
 
 
@@ -549,7 +544,7 @@
       });
     });
 
-    // Initial active filter
+    // Filtre initial actif
     document.querySelector('.filters button[data-theme="all"]').classList.add('active');
 
 
@@ -605,7 +600,7 @@
 
       carousel.addEventListener('touchmove', (e) => {
         if (!isDragging) return;
-        // Prevent page scrolling on touchmove within the carousel on mobile portrait
+        // Empêcher le défilement de la page lors du touchmove dans le carrousel en mode portrait mobile
         if (isMobilePortrait()) {
             e.preventDefault();
         }
@@ -648,7 +643,7 @@
 
       if (currentOrientation !== previousOrientation) {
         previousOrientation = currentOrientation;
-        // Reset rotations when orientation changes to avoid weird jumps
+        // Réinitialiser les rotations lorsque l'orientation change pour éviter les sauts étranges
         rotateX = -3;
         rotateY = 0;
         generateImages(currentFilter);
