@@ -547,7 +547,16 @@
             const latitudeAngleDeg = 90 - (i * verticalStepAngle);
             const latitudeAngleRad = latitudeAngleDeg * Math.PI / 180;
 
-            const y = sphereRadius * Math.sin(latitudeAngleRad);
+            let y;
+            // Ajustement pour les pôles
+            if (i === 0) { // Pôle Nord (haut)
+                y = -sphereRadius + (imageWidthPx / 2) + 20; // Ajustement: sphereRadius négatif pour le haut, + offset
+            } else if (i === numRings - 1) { // Pôle Sud (bas)
+                y = sphereRadius - (imageWidthPx / 2) - 20; // Ajustement: sphereRadius positif pour le bas, - offset
+            } else { // Autres anneaux
+                y = sphereRadius * Math.sin(latitudeAngleRad);
+            }
+            
             const currentRingRadius = sphereRadius * Math.cos(latitudeAngleRad);
 
             const numImagesInThisRing = imagesPerRing[i];
