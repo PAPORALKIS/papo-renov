@@ -35,11 +35,9 @@
       background-size: 400px auto;
       background-attachment: fixed;
       background-position: center;
-      /* Empêche le défilement global de la page quand le contenu est suffisamment petit */
-      /* overflow: hidden; */ /* Ne pas mettre overflow: hidden sur html/body car cela peut casser le défilement si le contenu dépasse */
-      overflow-x: hidden; /* Empêche le défilement horizontal */
-      overflow-y: hidden; /* Empêche le défilement vertical, mais attention si vous avez du contenu en dessous */
-      overscroll-behavior: contain; /* Aide à empêcher le "rubber banding" sur certains navigateurs */
+      overflow-x: hidden;
+      overflow-y: hidden; /* Maintenu pour empêcher le défilement de la page entière si le contenu est plus grand */
+      overscroll-behavior: contain;
     }
 
     header {
@@ -98,6 +96,8 @@
     .filters {
       text-align: center;
       margin: 10px auto;
+      position: relative; /* Nécessaire pour que le z-index fonctionne si le carousel-container est fixed */
+      z-index: 10; /* Assure que les filtres sont au-dessus de la sphère */
     }
 
     .filters button {
@@ -115,7 +115,7 @@
     .carousel-container {
       position: fixed; /* Reste fixed pour être indépendant du défilement */
       top: 50%;
-      left: 45%;
+      left: 50%; /* Centrage horizontal */
       transform: translate(-50%, -50%);
       perspective: var(--perspective);
       width: 100vw;
@@ -124,9 +124,8 @@
       justify-content: center;
       align-items: center;
       pointer-events: none;
-      /* Important pour empêcher le défilement du conteneur en mode mobile portrait */
-      -ms-touch-action: none; /* IE/Edge */
-      touch-action: none; /* Tous les autres navigateurs */
+      -ms-touch-action: none;
+      touch-action: none;
     }
 
     .carousel {
@@ -135,8 +134,8 @@
       pointer-events: auto;
       cursor: grab;
       transform: rotateX(-3deg);
-      -ms-touch-action: none; /* IE/Edge */
-      touch-action: none; /* Tous les autres navigateurs */
+      -ms-touch-action: none;
+      touch-action: none;
     }
 
     .carousel img {
@@ -198,26 +197,29 @@
     /* Ajustements pour le mode mobile portrait */
    @media (max-width: 768px) and (orientation: portrait) {
       :root {
-        --img-size: 25vw;
+        --img-size: 20vw; /* Réduire la taille des images pour plus d'espace */
         --translateZ: 1200px;
       }
 
       .carousel-container {
-        position: absolute;
+        position: absolute; /* Changed to absolute to allow vertical positioning relative to content */
         left: 50%;
-        top: 50%;
-        transform: translate(-50%, -50%);
+        /* Positionner sous les filtres. Ajuster la valeur `top` */
+        /* La hauteur de l'en-tête + titre + filtres doit être prise en compte. */
+        /* Environ 40px (header) + 50px (title) + 60px (filters) = 150px. */
+        /* Vous devrez peut-être ajuster cette valeur après des tests réels. */
+        top: calc(150px + 10vh); /* Exemple: 150px sous le header/title/filters */
+        transform: translateX(-50%); /* Ajusté pour un top non centré verticalement */
         perspective: 9000px;
         width: 100vw;
-        height: 100vh;
-        overflow: hidden; /* Empêche le défilement du conteneur en mode portrait */
+        height: calc(100vh - (150px + 10vh)); /* Hauteur restante pour la sphère */
+        overflow: hidden;
       }
 
       .carousel {
         width: 100%;
         height: 100%;
         transform-style: preserve-3d;
-        /* Le transform est maintenant géré dynamiquement par JS pour la rotation globale */
         transform: rotateX(var(--rotateX, 0deg)) rotateY(var(--rotateY, 0deg));
         margin: 0 auto;
       }
@@ -229,7 +231,6 @@
         object-fit: cover;
         left: 50%;
         top: 50%;
-        /* Les images seront positionnées par JS dans la sphère */
         opacity: 1 !important;
         filter: none !important;
         z-index: 1 !important;
@@ -460,36 +461,26 @@
           const rad = (imgAngle + rotateY) * Math.PI / 180;
           const x = Math.sin(rad) * translateZ;
           const z = Math.cos(rad) * translateZ;
-          // Ajustez la rotationY de l'image pour qu'elle "regarde" vers le centre
           img.style.transform = `translateX(${x}px) translateZ(${z}px) rotateY(${imgAngle}deg)`;
         });
-        // Pour les autres modes, la rotation est appliquée directement au carousel
         carousel.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
       } else {
         // Logique pour la disposition en sphère pour le mode mobile portrait
-        // Modifiez les valeurs pour ajuster la densité et le rayon de la sphère
-        const sphereRadius = 230; 
+        // Réduire le rayon de la sphère pour éviter que les images ne se touchent
+        const sphereRadius = 180; /* Ajustez cette valeur pour éloigner ou rapprocher les images */
         
         images.forEach((img, i) => {
-            // Utilisation d'une distribution de points sur une sphère (Fibonacci Sphere ou Golden Spiral)
-            // Cela donne une distribution plus uniforme que les latitudes/longitudes simples.
-            // Ici, une version simplifiée pour répartir les images.
             const totalImages = images.length;
-            const phi = Math.acos(1 - 2 * i / totalImages); // Latitude
-            const theta = Math.PI * (1 + Math.sqrt(5)) * i; // Longitude (Golden angle)
+            const phi = Math.acos(1 - 2 * i / totalImages);
+            const theta = Math.PI * (1 + Math.sqrt(5)) * i;
 
             const x = sphereRadius * Math.sin(phi) * Math.cos(theta);
             const y = sphereRadius * Math.sin(phi) * Math.sin(theta);
             const z = sphereRadius * Math.cos(phi);
             
-            // Calculer la rotation de l'image pour qu'elle fasse face à l'extérieur de la sphère
-            // Cette partie est cruciale pour que les images ne soient pas "plates" et tournent avec la sphère
             const rotationYImg = Math.atan2(x, z) * 180 / Math.PI;
             const rotationXImg = Math.atan2(y, Math.sqrt(x * x + z * z)) * 180 / Math.PI;
 
-            // Appliquer la transformation pour positionner et orienter l'image
-            // L'ordre des transformations est important: translation, puis rotation locale pour faire face,
-            // puis la rotation globale de la sphère est appliquée au conteneur.
             img.style.transform = `translateX(${x}px) translateY(${y}px) translateZ(${z}px) rotateY(${rotationYImg}deg) rotateX(${-rotationXImg}deg)`;
             img.style.opacity = '1';
             img.style.filter = 'none';
@@ -510,13 +501,11 @@
         img.setAttribute('data-theme', data.theme);
         img.setAttribute('data-comment', data.comment);
         img.addEventListener('click', (e) => {
-            // Vérifier si un glissement a eu lieu avant le clic
             if (!dragged) showZoom(data);
-            e.stopPropagation(); // Empêche l'événement de se propager plus loin (ex: au document)
+            e.stopPropagation();
         });
         carousel.appendChild(img);
       });
-      
       positionImages();
     }
 
@@ -524,9 +513,9 @@
     function animate() {
       if (autoRotate && !isDragging) {
         if (!isMobilePortrait()) {
-          rotateY += 0.10; // Rotation sur l'axe Y pour les autres modes
+          rotateY += 0.10;
         } else {
-          // Pour mobile portrait, la rotation automatique peut être ajoutée ici si désiré
+          // Si vous voulez une rotation automatique en mode portrait, décommentez et ajustez ici
           // rotateY += 0.10; 
         }
         positionImages();
@@ -561,7 +550,7 @@
 
     document.addEventListener('mouseup', () => {
       isDragging = false;
-      autoRotate = true; // Réactive la rotation automatique après le relâchement
+      autoRotate = true;
       setTimeout(() => { dragged = false; }, 50);
     });
 
@@ -573,7 +562,6 @@
         if (!isMobilePortrait()) {
           rotateY += dx * 0.3;
         } else {
-          // Rotation sur l'axe X et Y pour le mode mobile portrait
           rotateY += dx * 0.3;
           rotateX -= dy * 0.3;
         }
@@ -595,22 +583,18 @@
       carousel.addEventListener('touchstart', (e) => {
         if (e.touches.length !== 1) return;
         isDragging = true;
-        dragged = false; // Reset dragged flag on touchstart
+        dragged = false;
         startX = e.touches[0].clientX;
         startY = e.touches[0].clientY;
         angleStartX = rotateX;
         angleStartY = rotateY;
         
-        // Désactiver l'animation pour le drag
         autoRotate = false;
-
         if (resumeTimeout) clearTimeout(resumeTimeout);
-      }, { passive: false }); /* Changez passive en false ici */
+      }, { passive: false });
 
       carousel.addEventListener('touchmove', (e) => {
         if (!isDragging) return;
-
-        // Empêche le défilement de la page si nous sommes en mode portrait mobile et en train de glisser
         if (isMobilePortrait()) {
             e.preventDefault(); 
         }
@@ -618,7 +602,6 @@
         const dx = e.touches[0].clientX - startX;
         const dy = e.touches[0].clientY - startY;
 
-        // Détecter un mouvement suffisant pour considérer comme un glissement
         if (Math.abs(dx) > 5 || Math.abs(dy) > 5) {
             dragged = true;
         }
@@ -626,20 +609,18 @@
         if (!isMobilePortrait()) {
           rotateY = angleStartY + dx * 0.3;
         } else {
-          // Rotation sur l'axe X et Y pour le mode mobile portrait
           rotateY = angleStartY + dx * 0.3;
           rotateX = angleStartX - dy * 0.3;
         }
 
         positionImages();
-      }, { passive: false }); /* Changez passive en false ici */
+      }, { passive: false });
 
       carousel.addEventListener('touchend', () => {
         isDragging = false;
-        // Réactive la rotation automatique après un court délai pour permettre le "fling"
         resumeTimeout = setTimeout(() => {
           autoRotate = true;
-        }, 500); // 500ms de délai pour relancer l'auto-rotation
+        }, 500);
       });
     })();
 
@@ -662,8 +643,6 @@
         previousOrientation = currentOrientation;
         generateImages(currentFilter);
       }
-      // La position des images doit toujours être mise à jour car la taille de l'écran ou l'orientation
-      // peut influencer les valeurs CSS et le calcul des positions.
       positionImages();
     });
   </script>
