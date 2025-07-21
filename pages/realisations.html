@@ -219,7 +219,7 @@
     /* Ajustements pour le mode mobile portrait */
    @media (max-width: 768px) and (orientation: portrait) {
       :root {
-        --img-size: 23vw;
+        --img-size: 25vw;
         --perspective: 800px;
         --sphere-radius-mobile-portrait: 270px;
       }
@@ -522,54 +522,60 @@
         });
         carousel.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
       } else {
-        // Mode Portrait Mobile : Disposition en 7 anneaux spécifiques
+        // Mode Portrait Mobile : Disposition manuelle des cercles/anneaux de la sphère
 
         if (total === 0) {
             carousel.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
             return;
         }
 
-        // Définir le nombre d'images par anneau comme demandé
-        const imagesPerRing = [1, 5, 10, 15, 10, 5, 1];
-        const numRings = imagesPerRing.length; // 7 anneaux
+        // --- DÉBUT DU BLOC DE GESTION MANUELLE DES CERCLES POUR MOBILE PORTRAIT ---
 
-        // Calculer les Y pour chaque anneau
-        const verticalStepAngle = 180 / (numRings - 1);
-        
+        // Définir les paramètres pour chaque anneau : [nb_images, rayon_relatif, y_offset_relatif_au_radius]
+        // Les valeurs de rayon_relatif et y_offset_relatif_au_radius sont à ajuster finement
+        // pour obtenir l'effet visuel désiré pour chaque cercle.
+        // rayon_relatif: 0.0 (pôle) à 1.0 (équateur)
+        // y_offset_relatif_au_radius: -1.0 (haut) à 1.0 (bas)
+        const ringConfigs = [
+            // Anneau 0 (Pôle Nord)
+            { numImages: 1, relativeRadius: 0.0, relativeYOffset: -1.0, adjustY: (imageWidthPx / 2) + 10 }, // Léger ajustement y pour centrer le pôle
+
+            // Anneau 1
+            { numImages: 5, relativeRadius: 0.3, relativeYOffset: -0.8 },
+
+            // Anneau 2
+            { numImages: 10, relativeRadius: 0.7, relativeYOffset: -0.4 },
+
+            // Anneau 3 (Équateur)
+            { numImages: 15, relativeRadius: 1.0, relativeYOffset: 0.0 },
+
+            // Anneau 4
+            { numImages: 10, relativeRadius: 0.7, relativeYOffset: 0.4 },
+
+            // Anneau 5
+            { numImages: 5, relativeRadius: 0.3, relativeYOffset: 0.8 },
+
+            // Anneau 6 (Pôle Sud)
+            { numImages: 1, relativeRadius: 0.0, relativeYOffset: 1.0, adjustY: -(imageWidthPx / 2) - 10 } // Léger ajustement y pour centrer le pôle
+        ];
+
         let currentImageIndex = 0;
         let assignedImagesCount = 0;
 
-        for (let i = 0; i < numRings; i++) {
-            const latitudeAngleDeg = 90 - (i * verticalStepAngle);
-            const latitudeAngleRad = latitudeAngleDeg * Math.PI / 180;
-
-            let y;
-            // Ajustement pour les pôles
-            if (i === 0) { // Pôle Nord (haut)
-                y = -sphereRadius + (imageWidthPx / 2) + 20; // Ajustement: sphereRadius négatif pour le haut, + offset
-            } else if (i === numRings - 1) { // Pôle Sud (bas)
-                y = sphereRadius - (imageWidthPx / 2) - 20; // Ajustement: sphereRadius positif pour le bas, - offset
-            } else { // Autres anneaux
-                y = sphereRadius * Math.sin(latitudeAngleRad);
-            }
-            
-            const currentRingRadius = sphereRadius * Math.cos(latitudeAngleRad);
-
-            const numImagesInThisRing = imagesPerRing[i];
+        ringConfigs.forEach((config, i) => {
+            const numImagesInThisRing = config.numImages;
             const imagesToPlaceInThisRing = Math.min(numImagesInThisRing, total - currentImageIndex);
 
-            if (i === 0 || i === numRings - 1) { // Pôles Nord et Sud
-                if (imagesToPlaceInThisRing > 0) {
-                    const img = images[currentImageIndex];
-                    // Modification ici : Ajout de translate(-50%, -50%) pour centrer l'image des pôles
-                    img.style.transform = `translateX(0px) translateY(${y}px) translateZ(0px) rotateY(0deg) rotateX(${-latitudeAngleDeg}deg) translate(-50%, -50%)`; 
-                    img.style.opacity = '1';
-                    img.style.filter = 'none';
-                    img.style.zIndex = '1';
-                    currentImageIndex++;
-                    assignedImagesCount++;
-                }
-            } else { // Autres anneaux
+            // Calcul du rayon de l'anneau
+            const currentRingRadius = sphereRadius * config.relativeRadius;
+
+            // Calcul de la position Y de l'anneau
+            let y = sphereRadius * config.relativeYOffset;
+            if (config.adjustY) { // Appliquer l'ajustement spécifique pour les pôles
+                y += config.adjustY;
+            }
+
+            if (imagesToPlaceInThisRing > 0) {
                 const angleStep = imagesToPlaceInThisRing > 0 ? 360 / imagesToPlaceInThisRing : 0;
                 for (let j = 0; j < imagesToPlaceInThisRing; j++) {
                     const img = images[currentImageIndex];
@@ -579,10 +585,15 @@
                     const x = Math.sin(rad) * currentRingRadius;
                     const z = Math.cos(rad) * currentRingRadius;
 
-                    // Rotation Y pour que l'image fasse face à l'extérieur (suive l'anneau)
-                    // Rotation X pour s'aligner avec la courbure de la sphère
+                    // Les rotations X et Y doivent tenir compte de la position sur la sphère
+                    // La rotation X est relative à la latitude de l'anneau pour un effet de courbure
+                    // La rotation Y fait que l'image "regarde" vers l'extérieur de l'anneau
                     const rotationYImg = imgAngle; 
-                    const rotationXImg = -latitudeAngleDeg; 
+                    
+                    // Calcul de la latitude basée sur la position Y relative pour la rotation X
+                    // Ceci est une approximation pour donner un effet de courbure
+                    const latitudeRatio = y / sphereRadius; // Entre -1 et 1
+                    const rotationXImg = -Math.asin(latitudeRatio) * 180 / Math.PI; // Convertir en degrés
 
                     img.style.transform = `translateX(${x}px) translateY(${y}px) translateZ(${z}px) rotateY(${rotationYImg}deg) rotateX(${rotationXImg}deg) translate(-50%, -50%)`;
                     img.style.opacity = '1';
@@ -592,9 +603,9 @@
                     assignedImagesCount++;
                 }
             }
-        }
+        });
 
-        // Cacher les images excédentaires s'il y en a (si total > 47)
+        // Cacher les images excédentaires s'il y en a
         for (let i = assignedImagesCount; i < total; i++) {
             images[i].style.opacity = '0';
             images[i].style.filter = 'grayscale(100%)';
@@ -602,6 +613,8 @@
         }
 
         carousel.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+
+        // --- FIN DU BLOC DE GESTION MANUELLE DES CERCLES POUR MOBILE PORTRAIT ---
       }
     }
 
