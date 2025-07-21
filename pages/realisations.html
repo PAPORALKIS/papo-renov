@@ -7,21 +7,19 @@
   <style>
     :root {
       --img-size: min(20vw, 150px);
-      --translateZ: 800px; /* Pour le mode desktop/landscape */
+      --sphere-radius-desktop: 800px; /* Renamed for clarity in desktop */
       --perspective: 3500px;
     }
 
     @media (max-width: 768px) {
       :root {
         --img-size: 10vw;
-        /* --translateZ: 2300px;  Ce n'est plus pertinent de le changer ici */
       }
     }
 
     @media (max-width: 500px) {
       :root {
         --img-size: 28vw;
-        /* --translateZ: 2400px; Ce n'est plus pertinent de le changer ici */
       }
     }
 
@@ -36,7 +34,7 @@
       background-attachment: fixed;
       background-position: center;
       overflow-x: hidden;
-      overflow-y: hidden; /* Maintenu pour empêcher le défilement de la page entière si le contenu est plus grand */
+      overflow-y: hidden;
       overscroll-behavior: contain;
     }
 
@@ -117,7 +115,7 @@
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      perspective: var(--perspective); /* La perspective est sur le conteneur du carousel */
+      perspective: var(--perspective);
       width: 100vw;
       height: 100vh;
       display: flex;
@@ -133,19 +131,18 @@
       transform-style: preserve-3d;
       pointer-events: auto;
       cursor: grab;
-      /* Initial transform, will be updated by JS */
-      transform: rotateX(-3deg) rotateY(0deg); /* Maintenu pour le desktop/landscape initial */
+      transform: rotateX(-3deg) rotateY(0deg);
       -ms-touch-action: none;
       touch-action: none;
-      width: 100%; /* Permet au carousel d'être une zone de glisser/déposer plus grande */
+      width: 100%;
       height: 100%;
-      display: flex; /* Utilisé pour centrer les images si elles n'étaient pas absolues, mais essentiel pour preserve-3d */
+      display: flex;
       justify-content: center;
       align-items: center;
     }
 
     .carousel img {
-      position: absolute; /* Les images sont positionnées absolument à l'intérieur du carousel */
+      position: absolute;
       width: var(--img-size);
       height: var(--img-size);
       object-fit: cover;
@@ -203,20 +200,19 @@
     /* Ajustements pour le mode mobile portrait */
    @media (max-width: 768px) and (orientation: portrait) {
       :root {
-        --img-size: 22vw; /* Augmenté pour des images plus grandes */
-        --perspective: 900px; /* Ajusté pour un effet plus "zoomé" et pour voir plus de la sphère */
+        --img-size: 20vw; /* Taille des images pour le portrait mobile */
+        --perspective: 1000px; /* Perspective ajustée pour le portrait mobile */
+        --sphere-radius-mobile-portrait: 200px; /* Rayon de la sphère pour le portrait mobile */
       }
 
       .carousel-container {
         position: absolute;
         left: 50%;
-        /* Adjusted top to position the sphere better below filters */
-        top: calc(230px + 2vh); /* Ajusté pour mieux positionner la sphère sous les filtres */
+        top: calc(230px + 2vh); /* Positionnement sous les filtres */
         transform: translateX(-50%);
         width: 100vw;
-        /* Increased height to give more space to the sphere */
-        height: calc(100vh - (230px + 2vh) - 20px); /* 20px buffer at bottom */
-        overflow: hidden;
+        height: calc(100vh - (230px + 2vh) - 20px);
+        overflow: hidden; /* Important pour cacher les débordements */
         display: flex;
         justify-content: center;
         align-items: center;
@@ -226,6 +222,7 @@
         width: 100%;
         height: 100%;
         transform-style: preserve-3d;
+        /* Le carousel lui-même n'a pas besoin d'un transform initial ici car les images sont positionnées de manière absolue */
       }
 
       .carousel img {
@@ -233,17 +230,19 @@
         width: var(--img-size);
         height: var(--img-size);
         object-fit: cover;
-        transform: translate(-50%, -50%); /* Base pour le positionnement de l'image */
-        opacity: 1 !important;
-        filter: none !important;
-        z-index: 1 !important;
+        border-radius: 12px;
+        box-shadow: 0 0 10px rgba(0,0,0,0.5); /* Ajustement de l'ombre */
+        opacity: 1; /* Assure que les images sont visibles */
+        filter: none; /* Assure que les images ne sont pas grisées */
+        z-index: 1; /* Assure que les images sont au-dessus */
+        /* Pas de translate(-50%, -50%) ici, il sera appliqué par JS pour centrer les images */
       }
     }
 
     @media (max-width: 768px) and (orientation: landscape) {
       :root {
         --img-size: 19vw;
-        --translateZ: 400px;
+        --sphere-radius-desktop: 400px; /* Adjust for landscape on mobile */
         --perspective: 3500px;
       }
 
@@ -283,7 +282,7 @@
     @media (orientation: landscape) and (max-height: 500px) {
       :root {
         --img-size: 12vw;
-        --translateZ: 370px;
+        --sphere-radius-desktop: 370px;
         --perspective: 4200px;
       }
 
@@ -448,6 +447,7 @@
     let currentFilter = 'all';
 
     function isMobilePortrait() {
+      // A small buffer for width comparison to account for different device pixel ratios and browser inconsistencies
       return window.innerWidth <= 768 && window.innerHeight > window.innerWidth;
     }
 
@@ -456,12 +456,13 @@
       const total = images.length;
       const isPortraitMobile = isMobilePortrait();
 
-      // Ajustement du rayon de la sphère pour le mode portrait mobile.
-      // Une valeur plus petite réduira l'espace entre les images, une valeur plus grande l'augmentera.
-      const sphereRadius = isPortraitMobile ? 160 : parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--translateZ')); // Réduire encore le rayon pour le mode portrait mobile
-
+      // Determine sphere radius based on orientation
+      const sphereRadius = isPortraitMobile
+        ? parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--sphere-radius-mobile-portrait'))
+        : parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--sphere-radius-desktop'));
 
       if (!isPortraitMobile) {
+        // Desktop/Landscape Mode: Simple cylindrical arrangement for a carousel-like feel
         const step = 360 / total;
         images.forEach((img, i) => {
           const imgAngle = step * i;
@@ -469,32 +470,36 @@
           const x = Math.sin(rad) * sphereRadius;
           const z = Math.cos(rad) * sphereRadius;
           img.style.transform = `translateX(${x}px) translateZ(${z}px) rotateY(${imgAngle}deg)`;
+          img.style.opacity = '1';
+          img.style.filter = 'none';
+          img.style.zIndex = '1';
         });
         carousel.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
       } else {
-        // Logique pour la disposition en sphère pour le mode mobile portrait (Fibonacci Sphere)
+        // Mobile Portrait Mode: Fibonacci Sphere Distribution for a perfect sphere
         images.forEach((img, i) => {
-            const totalImages = images.length;
-            const phi = Math.acos(1 - 2 * (i + 0.5) / totalImages); // Angle polaire (latitude), décalage pour une meilleure distribution
-            const theta = Math.PI * (1 + Math.sqrt(5)) * (i + 0.5); // Angle azimutal (longitude, basé sur l'angle d'or), décalage
+            // Fibonacci Sphere algorithm for even distribution
+            const phi = Math.acos(1 - 2 * (i + 0.5) / total); // Angle polaire (latitude)
+            const theta = Math.PI * (1 + Math.sqrt(5)) * (i + 0.5); // Angle azimutal (longitude, basé sur l'angle d'or)
 
-            // Calcul des coordonnées cartésiennes sur la sphère
+            // Convert spherical to Cartesian coordinates
             const x = sphereRadius * Math.sin(phi) * Math.cos(theta);
             const y = sphereRadius * Math.sin(phi) * Math.sin(theta);
             const z = sphereRadius * Math.cos(phi);
 
-            // Calcul de la rotation de l'image pour qu'elle "regarde" vers l'extérieur de la sphère
+            // Calculate rotation to make image face outwards
+            // The atan2(x, z) gives the rotation around the Y-axis.
+            // The atan2(y, sqrt(x*x + z*z)) gives the rotation around the X-axis.
             const rotationYImg = Math.atan2(x, z) * 180 / Math.PI;
             const rotationXImg = Math.atan2(y, Math.sqrt(x * x + z * z)) * 180 / Math.PI;
 
-            // Appliquer les transformations. Le translate(-50%, -50%) centre l'image sur le point calculé.
+            // Apply transformations. The translate(-50%, -50%) centers the image on the calculated point.
             img.style.transform = `translateX(${x}px) translateY(${y}px) translateZ(${z}px) rotateY(${rotationYImg}deg) rotateX(${-rotationXImg}deg) translate(-50%, -50%)`;
             img.style.opacity = '1';
             img.style.filter = 'none';
             img.style.zIndex = '1';
         });
-        // Appliquer les rotations globales (rotateX et rotateY) au carousel lui-même
-        // C'est le carousel qui tourne, et les images sont fixées à sa surface.
+        // Apply the global rotations (rotateX and rotateY) to the carousel itself
         carousel.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
       }
     }
@@ -514,7 +519,7 @@
         });
         carousel.appendChild(img);
       });
-      positionImages();
+      positionImages(); // Call positionImages after generating images
     }
 
 
@@ -538,9 +543,15 @@
 
     document.querySelectorAll('.filters button').forEach(btn => {
       btn.addEventListener('click', () => {
+        document.querySelector('.filters button.active')?.classList.remove('active');
+        btn.classList.add('active');
         generateImages(btn.dataset.theme);
       });
     });
+
+    // Initial active filter
+    document.querySelector('.filters button[data-theme="all"]').classList.add('active');
+
 
     // Drag souris
     carousel.addEventListener('mousedown', e => {
@@ -594,6 +605,7 @@
 
       carousel.addEventListener('touchmove', (e) => {
         if (!isDragging) return;
+        // Prevent page scrolling on touchmove within the carousel on mobile portrait
         if (isMobilePortrait()) {
             e.preventDefault();
         }
@@ -636,6 +648,9 @@
 
       if (currentOrientation !== previousOrientation) {
         previousOrientation = currentOrientation;
+        // Reset rotations when orientation changes to avoid weird jumps
+        rotateX = -3;
+        rotateY = 0;
         generateImages(currentFilter);
       } else {
         positionImages();
