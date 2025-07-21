@@ -204,7 +204,7 @@
         --img-size: 25vw; /* Réduit la taille des images pour plus d'espace et moins de chevauchement */
         --perspective: 800px;
         /* --sphere-radius-mobile-portrait: 250px; Ancienne valeur */
-        --sphere-radius-mobile-portrait: 270px; /* Augmenté légèrement le rayon de la sphère pour plus d'espace */
+        --sphere-radius-mobile-portrait: 230px; /* Augmenté légèrement le rayon de la sphère pour plus d'espace */
       }
 
       .carousel-container {
@@ -471,8 +471,8 @@
       document.body.removeChild(tempImg);
 
       // Ajouter un petit espacement entre les images, en pourcentage de la taille de l'image
-      const spacingFactor = 1.1; // Réduit à 1.1 pour un espacement horizontal plus faible
-      const verticalSpacingMultiplier = 0.9; // Nouveau facteur pour rapprocher les anneaux verticalement
+      const spacingFactor = 1; // Réduit à 1.1 pour un espacement horizontal plus faible
+      const verticalSpacingMultiplier = 0.8; // Nouveau facteur pour rapprocher les anneaux verticalement
 
 
       if (!isPortraitMobile) {
@@ -525,7 +525,7 @@
               }
             }
             // Réduire le nombre max d'images sur les anneaux supérieurs/inférieurs pour éviter le chevauchement
-            const poleFactor = 1 - Math.abs(y / sphereRadius); // Plus près des pôles, plus petit
+            const poleFactor = 0.8 - Math.abs(y / sphereRadius); // Plus près des pôles, plus petit
             maxImagesOnRing = Math.max(1, Math.floor(maxImagesOnRing * (poleFactor * 0.7 + 0.3))); // Ajustement pour les pôles, pour ne pas avoir 0 image
 
             rings.push({ y, currentRingRadius, maxImagesOnRing, assignedImages: [] });
