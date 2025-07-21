@@ -35,9 +35,11 @@
       background-size: 400px auto;
       background-attachment: fixed;
       background-position: center;
-      overflow-x: auto;
-      overflow-y: auto;
-      overscroll-behavior-y: contain;
+      /* Empêche le défilement global de la page quand le contenu est suffisamment petit */
+      /* overflow: hidden; */ /* Ne pas mettre overflow: hidden sur html/body car cela peut casser le défilement si le contenu dépasse */
+      overflow-x: hidden; /* Empêche le défilement horizontal */
+      overflow-y: hidden; /* Empêche le défilement vertical, mais attention si vous avez du contenu en dessous */
+      overscroll-behavior: contain; /* Aide à empêcher le "rubber banding" sur certains navigateurs */
     }
 
     header {
@@ -111,7 +113,7 @@
     }
 
     .carousel-container {
-      position: fixed;
+      position: fixed; /* Reste fixed pour être indépendant du défilement */
       top: 50%;
       left: 45%;
       transform: translate(-50%, -50%);
@@ -122,6 +124,9 @@
       justify-content: center;
       align-items: center;
       pointer-events: none;
+      /* Important pour empêcher le défilement du conteneur en mode mobile portrait */
+      -ms-touch-action: none; /* IE/Edge */
+      touch-action: none; /* Tous les autres navigateurs */
     }
 
     .carousel {
@@ -130,6 +135,8 @@
       pointer-events: auto;
       cursor: grab;
       transform: rotateX(-3deg);
+      -ms-touch-action: none; /* IE/Edge */
+      touch-action: none; /* Tous les autres navigateurs */
     }
 
     .carousel img {
@@ -203,7 +210,7 @@
         perspective: 9000px;
         width: 100vw;
         height: 100vh;
-        overflow: hidden;
+        overflow: hidden; /* Empêche le défilement du conteneur en mode portrait */
       }
 
       .carousel {
@@ -502,7 +509,11 @@
         img.src = data.src;
         img.setAttribute('data-theme', data.theme);
         img.setAttribute('data-comment', data.comment);
-        img.addEventListener('click', () => { if (!dragged) showZoom(data); });
+        img.addEventListener('click', (e) => {
+            // Vérifier si un glissement a eu lieu avant le clic
+            if (!dragged) showZoom(data);
+            e.stopPropagation(); // Empêche l'événement de se propager plus loin (ex: au document)
+        });
         carousel.appendChild(img);
       });
       
@@ -578,13 +589,13 @@
     (function () {
       if (!carousel) return;
       let resumeTimeout = null;
-      // let animationActive = true; // Cette variable n'est plus utilisée comme avant
       let angleStartX = rotateX;
       let angleStartY = rotateY;
 
       carousel.addEventListener('touchstart', (e) => {
         if (e.touches.length !== 1) return;
         isDragging = true;
+        dragged = false; // Reset dragged flag on touchstart
         startX = e.touches[0].clientX;
         startY = e.touches[0].clientY;
         angleStartX = rotateX;
@@ -594,12 +605,23 @@
         autoRotate = false;
 
         if (resumeTimeout) clearTimeout(resumeTimeout);
-      }, { passive: true });
+      }, { passive: false }); /* Changez passive en false ici */
 
       carousel.addEventListener('touchmove', (e) => {
         if (!isDragging) return;
+
+        // Empêche le défilement de la page si nous sommes en mode portrait mobile et en train de glisser
+        if (isMobilePortrait()) {
+            e.preventDefault(); 
+        }
+
         const dx = e.touches[0].clientX - startX;
         const dy = e.touches[0].clientY - startY;
+
+        // Détecter un mouvement suffisant pour considérer comme un glissement
+        if (Math.abs(dx) > 5 || Math.abs(dy) > 5) {
+            dragged = true;
+        }
 
         if (!isMobilePortrait()) {
           rotateY = angleStartY + dx * 0.3;
@@ -610,7 +632,7 @@
         }
 
         positionImages();
-      }, { passive: true });
+      }, { passive: false }); /* Changez passive en false ici */
 
       carousel.addEventListener('touchend', () => {
         isDragging = false;
