@@ -493,35 +493,31 @@
         const numRings = imagesPerRing.length; // 7 anneaux
 
         // Calculer les Y pour chaque anneau
-        // Les Y iront du pôle nord (haut) au pôle sud (bas)
-        // Les angles de latitude vont de +90 deg (Nord) à -90 deg (Sud)
-        // Nous allons répartir les 7 anneaux sur cette plage.
-        // Espacement entre les centres des anneaux : 180 / (numRings - 1)
         const verticalStepAngle = 180 / (numRings - 1);
         
         let currentImageIndex = 0;
-        let assignedImagesCount = 0; // Pour compter les images réellement assignées
+        let assignedImagesCount = 0;
 
         for (let i = 0; i < numRings; i++) {
-            // Angle de latitude pour cet anneau (en degrés, de 90 à -90)
             const latitudeAngleDeg = 90 - (i * verticalStepAngle);
             const latitudeAngleRad = latitudeAngleDeg * Math.PI / 180;
 
             const y = sphereRadius * Math.sin(latitudeAngleRad);
             const currentRingRadius = sphereRadius * Math.cos(latitudeAngleRad);
 
-            // Nombre d'images pour cet anneau selon votre spécification
             const numImagesInThisRing = imagesPerRing[i];
-
-            // S'assurer qu'on ne dépasse pas le nombre total d'images disponibles
             const imagesToPlaceInThisRing = Math.min(numImagesInThisRing, total - currentImageIndex);
 
-            // Si le rayon est très petit (pôles), et que numImagesInThisRing > 0, assurez-vous qu'il y en ait au moins 1
-            // Pour les pôles (rayons très faibles), placer une seule image exactement au pôle.
             if (i === 0 || i === numRings - 1) { // Pôles Nord et Sud
                 if (imagesToPlaceInThisRing > 0) {
                     const img = images[currentImageIndex];
-                    img.style.transform = `translateX(0px) translateY(${y}px) translateZ(${currentRingRadius}px) rotateY(0deg) rotateX(${latitudeAngleDeg}deg) translate(-50%, -50%)`;
+                    // Pour les pôles, on simplifie la transformation pour assurer le centrage
+                    // et une orientation correcte sans décalage par translate(-50%, -50%).
+                    // translateZ est mis à 0 ou une valeur très petite si on veut légèrement le décoller
+                    // mais ici, le plus important est de s'assurer qu'il est sur l'axe Y et Z.
+                    // La rotation X doit "redresser" l'image pour qu'elle soit face à l'utilisateur
+                    // quand elle est vue du dessus ou du dessous de la sphère.
+                    img.style.transform = `translateX(0px) translateY(${y}px) translateZ(0px) rotateY(0deg) rotateX(${-latitudeAngleDeg}deg)`;
                     img.style.opacity = '1';
                     img.style.filter = 'none';
                     img.style.zIndex = '1';
@@ -541,7 +537,7 @@
                     // Rotation Y pour que l'image fasse face à l'extérieur (suive l'anneau)
                     // Rotation X pour s'aligner avec la courbure de la sphère
                     const rotationYImg = imgAngle; 
-                    const rotationXImg = -latitudeAngleDeg; // Aligner avec la latitude
+                    const rotationXImg = -latitudeAngleDeg; 
 
                     img.style.transform = `translateX(${x}px) translateY(${y}px) translateZ(${z}px) rotateY(${rotationYImg}deg) rotateX(${rotationXImg}deg) translate(-50%, -50%)`;
                     img.style.opacity = '1';
