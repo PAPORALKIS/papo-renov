@@ -210,7 +210,8 @@
         width: 100%;
         height: 100%;
         transform-style: preserve-3d;
-        transform: none; /* Remplacé par transform: rotateX(0deg) rotateY(0deg); dans le script pour la rotation */
+        /* Le transform est maintenant géré dynamiquement par JS pour la rotation globale */
+        transform: rotateX(var(--rotateX, 0deg)) rotateY(var(--rotateY, 0deg));
         margin: 0 auto;
       }
 
@@ -221,7 +222,7 @@
         object-fit: cover;
         left: 50%;
         top: 50%;
-        transform: translate(-50%, -50%);
+        /* Les images seront positionnées par JS dans la sphère */
         opacity: 1 !important;
         filter: none !important;
         z-index: 1 !important;
@@ -452,27 +453,42 @@
           const rad = (imgAngle + rotateY) * Math.PI / 180;
           const x = Math.sin(rad) * translateZ;
           const z = Math.cos(rad) * translateZ;
+          // Ajustez la rotationY de l'image pour qu'elle "regarde" vers le centre
           img.style.transform = `translateX(${x}px) translateZ(${z}px) rotateY(${imgAngle}deg)`;
         });
+        // Pour les autres modes, la rotation est appliquée directement au carousel
+        carousel.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
       } else {
         // Logique pour la disposition en sphère pour le mode mobile portrait
         // Modifiez les valeurs pour ajuster la densité et le rayon de la sphère
         const sphereRadius = 230; 
-        const total = images.length;
+        
         images.forEach((img, i) => {
-            const lat = Math.acos(-1 + (2 * i) / (total - 1));
-            const lon = Math.sqrt(total * Math.PI) * lat;
-            const x = sphereRadius * Math.sin(lat) * Math.cos(lon);
-            const y = sphereRadius * Math.sin(lat) * Math.sin(lon);
-            const z = sphereRadius * Math.cos(lat);
+            // Utilisation d'une distribution de points sur une sphère (Fibonacci Sphere ou Golden Spiral)
+            // Cela donne une distribution plus uniforme que les latitudes/longitudes simples.
+            // Ici, une version simplifiée pour répartir les images.
+            const totalImages = images.length;
+            const phi = Math.acos(1 - 2 * i / totalImages); // Latitude
+            const theta = Math.PI * (1 + Math.sqrt(5)) * i; // Longitude (Golden angle)
+
+            const x = sphereRadius * Math.sin(phi) * Math.cos(theta);
+            const y = sphereRadius * Math.sin(phi) * Math.sin(theta);
+            const z = sphereRadius * Math.cos(phi);
             
-            // Appliquer la rotation de la sphère elle-même
-            img.style.transform = `translateX(${x}px) translateY(${y}px) translateZ(${z}px)`;
+            // Calculer la rotation de l'image pour qu'elle fasse face à l'extérieur de la sphère
+            // Cette partie est cruciale pour que les images ne soient pas "plates" et tournent avec la sphère
+            const rotationYImg = Math.atan2(x, z) * 180 / Math.PI;
+            const rotationXImg = Math.atan2(y, Math.sqrt(x * x + z * z)) * 180 / Math.PI;
+
+            // Appliquer la transformation pour positionner et orienter l'image
+            // L'ordre des transformations est important: translation, puis rotation locale pour faire face,
+            // puis la rotation globale de la sphère est appliquée au conteneur.
+            img.style.transform = `translateX(${x}px) translateY(${y}px) translateZ(${z}px) rotateY(${rotationYImg}deg) rotateX(${-rotationXImg}deg)`;
             img.style.opacity = '1';
             img.style.filter = 'none';
             img.style.zIndex = '1';
         });
-        // Appliquer la rotation du carousel lui-même
+        // Appliquer la rotation globale de la sphère au conteneur carousel
         carousel.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
       }
     }
@@ -499,8 +515,8 @@
         if (!isMobilePortrait()) {
           rotateY += 0.10; // Rotation sur l'axe Y pour les autres modes
         } else {
-          // Pour mobile portrait, vous pouvez désactiver la rotation automatique si vous le souhaitez
-          // ou l'ajouter ici
+          // Pour mobile portrait, la rotation automatique peut être ajoutée ici si désiré
+          // rotateY += 0.10; 
         }
         positionImages();
       }
@@ -534,7 +550,7 @@
 
     document.addEventListener('mouseup', () => {
       isDragging = false;
-      autoRotate = true;
+      autoRotate = true; // Réactive la rotation automatique après le relâchement
       setTimeout(() => { dragged = false; }, 50);
     });
 
@@ -562,7 +578,7 @@
     (function () {
       if (!carousel) return;
       let resumeTimeout = null;
-      let animationActive = true;
+      // let animationActive = true; // Cette variable n'est plus utilisée comme avant
       let angleStartX = rotateX;
       let angleStartY = rotateY;
 
@@ -598,11 +614,10 @@
 
       carousel.addEventListener('touchend', () => {
         isDragging = false;
-        if (!isMobilePortrait()) {
-          resumeTimeout = setTimeout(() => {
-            autoRotate = true;
-          }, 5000);
-        }
+        // Réactive la rotation automatique après un court délai pour permettre le "fling"
+        resumeTimeout = setTimeout(() => {
+          autoRotate = true;
+        }, 500); // 500ms de délai pour relancer l'auto-rotation
       });
     })();
 
@@ -625,6 +640,8 @@
         previousOrientation = currentOrientation;
         generateImages(currentFilter);
       }
+      // La position des images doit toujours être mise à jour car la taille de l'écran ou l'orientation
+      // peut influencer les valeurs CSS et le calcul des positions.
       positionImages();
     });
   </script>
