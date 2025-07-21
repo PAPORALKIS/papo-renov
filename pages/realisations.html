@@ -133,6 +133,7 @@
       transform-style: preserve-3d;
       pointer-events: auto;
       cursor: grab;
+      /* Initial transform, but in mobile portrait it will be updated by JS */
       transform: rotateX(-3deg);
       -ms-touch-action: none;
       touch-action: none;
@@ -198,30 +199,30 @@
    @media (max-width: 768px) and (orientation: portrait) {
       :root {
         --img-size: 20vw; /* Réduire la taille des images pour plus d'espace */
-        --translateZ: 1200px;
+        --translateZ: 1200px; /* Moins important si les images sont positionnées directement */
       }
 
       .carousel-container {
-        position: absolute; /* Changed to absolute to allow vertical positioning relative to content */
+        position: absolute; 
         left: 50%;
-        /* Positionner sous les filtres. Ajuster la valeur `top` */
-        /* La hauteur de l'en-tête + titre + filtres doit être prise en compte. */
-        /* Environ 40px (header) + 50px (title) + 60px (filters) = 150px. */
-        /* Vous devrez peut-être ajuster cette valeur après des tests réels. */
-        top: calc(150px + 10vh); /* Exemple: 150px sous le header/title/filters */
-        transform: translateX(-50%); /* Ajusté pour un top non centré verticalement */
-        perspective: 9000px;
+        top: calc(150px + 10vh); 
+        transform: translateX(-50%); 
+        perspective: 9000px; /* Augmenter la perspective pour un effet plus sphérique */
         width: 100vw;
-        height: calc(100vh - (150px + 10vh)); /* Hauteur restante pour la sphère */
+        height: calc(100vh - (150px + 10vh)); 
         overflow: hidden;
+        display: flex; /* Assurer que le carousel est centré dans son conteneur */
+        justify-content: center;
+        align-items: center;
       }
 
       .carousel {
-        width: 100%;
-        height: 100%;
+        width: 100%; /* Laisser le carousel prendre toute la largeur disponible dans son conteneur */
+        height: 100%; /* Laisser le carousel prendre toute la hauteur disponible */
         transform-style: preserve-3d;
-        transform: rotateX(var(--rotateX, 0deg)) rotateY(var(--rotateY, 0deg));
-        margin: 0 auto;
+        /* La rotation globale sera appliquée ici en JS */
+        /* IMPORTANT: Supprimez la ligne `transform: rotateX(var(--rotateX, 0deg)) rotateY(var(--rotateY, 0deg));` de cette section CSS */
+        /* Elle sera gérée entièrement par JS pour éviter les conflits */
       }
 
       .carousel img {
@@ -231,9 +232,11 @@
         object-fit: cover;
         left: 50%;
         top: 50%;
+        /* Les images seront positionnées et orientées par JS dans la sphère */
         opacity: 1 !important;
         filter: none !important;
         z-index: 1 !important;
+        transform: translate(-50%, -50%); /* Centrer l'image avant l'application des transformations sphériques */
       }
     } 
 
@@ -466,28 +469,45 @@
         carousel.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
       } else {
         // Logique pour la disposition en sphère pour le mode mobile portrait
-        // Réduire le rayon de la sphère pour éviter que les images ne se touchent
-        const sphereRadius = 180; /* Ajustez cette valeur pour éloigner ou rapprocher les images */
+        const sphereRadius = 180; /* Ajustez cette valeur si nécessaire */
         
         images.forEach((img, i) => {
             const totalImages = images.length;
             const phi = Math.acos(1 - 2 * i / totalImages);
             const theta = Math.PI * (1 + Math.sqrt(5)) * i;
 
-            const x = sphereRadius * Math.sin(phi) * Math.cos(theta);
-            const y = sphereRadius * Math.sin(phi) * Math.sin(theta);
-            const z = sphereRadius * Math.cos(phi);
+            // Calculate base coordinates on the sphere
+            const x_base = sphereRadius * Math.sin(phi) * Math.cos(theta);
+            const y_base = sphereRadius * Math.sin(phi) * Math.sin(theta);
+            const z_base = sphereRadius * Math.cos(phi);
             
+            // Apply global rotation to these coordinates
+            // Rotate around Y axis
+            let x_rotated_y = x_base * Math.cos(rotateY * Math.PI / 180) - z_base * Math.sin(rotateY * Math.PI / 180);
+            let z_rotated_y = x_base * Math.sin(rotateY * Math.PI / 180) + z_base * Math.cos(rotateY * Math.PI / 180);
+            
+            // Rotate around X axis (using the newly rotated y and z)
+            let y_rotated_x = y_base * Math.cos(rotateX * Math.PI / 180) - z_rotated_y * Math.sin(rotateX * Math.PI / 180);
+            let z_rotated_x = y_base * Math.sin(rotateX * Math.PI / 180) + z_rotated_y * Math.cos(rotateX * Math.PI / 180);
+            
+            // Final coordinates after both rotations
+            const x = x_rotated_y;
+            const y = y_rotated_x;
+            const z = z_rotated_x;
+
+            // Calculate the image's own rotation to face outwards
             const rotationYImg = Math.atan2(x, z) * 180 / Math.PI;
             const rotationXImg = Math.atan2(y, Math.sqrt(x * x + z * z)) * 180 / Math.PI;
 
-            img.style.transform = `translateX(${x}px) translateY(${y}px) translateZ(${z}px) rotateY(${rotationYImg}deg) rotateX(${-rotationXImg}deg)`;
+            // Apply the transformations. The `translate(-50%, -50%)` centers the image on its `left: 50%; top: 50%;`
+            img.style.transform = `translateX(${x}px) translateY(${y}px) translateZ(${z}px) rotateY(${rotationYImg}deg) rotateX(${-rotationXImg}deg) translate(-50%, -50%)`;
             img.style.opacity = '1';
             img.style.filter = 'none';
             img.style.zIndex = '1';
         });
-        // Appliquer la rotation globale de la sphère au conteneur carousel
-        carousel.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+        // IMPORTANT: Remove the global rotation from the carousel itself in mobile portrait
+        // The rotations are now applied directly to the image positions
+        carousel.style.transform = ''; 
       }
     }
     
@@ -515,8 +535,9 @@
         if (!isMobilePortrait()) {
           rotateY += 0.10;
         } else {
-          // Si vous voulez une rotation automatique en mode portrait, décommentez et ajustez ici
+          // Rotation automatique pour mobile portrait si désiré, à appliquer aux rotateX/Y
           // rotateY += 0.10; 
+          // rotateX += 0.05; // exemple de rotation sur X
         }
         positionImages();
       }
@@ -562,8 +583,9 @@
         if (!isMobilePortrait()) {
           rotateY += dx * 0.3;
         } else {
-          rotateY += dx * 0.3;
-          rotateX -= dy * 0.3;
+          // Changer la vitesse de rotation pour mobile portrait si nécessaire
+          rotateY += dx * 0.5; // Augmenter la sensibilité pour mobile
+          rotateX -= dy * 0.5; // Augmenter la sensibilité pour mobile
         }
         
         startX = e.clientX;
@@ -609,8 +631,9 @@
         if (!isMobilePortrait()) {
           rotateY = angleStartY + dx * 0.3;
         } else {
-          rotateY = angleStartY + dx * 0.3;
-          rotateX = angleStartX - dy * 0.3;
+          // Appliquer les rotations directement aux variables
+          rotateY = angleStartY + dx * 0.5; // Ajuster la sensibilité
+          rotateX = angleStartX - dy * 0.5; // Ajuster la sensibilité
         }
 
         positionImages();
