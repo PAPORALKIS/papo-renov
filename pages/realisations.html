@@ -200,9 +200,9 @@
     /* Ajustements pour le mode mobile portrait */
    @media (max-width: 768px) and (orientation: portrait) {
       :root {
-        --img-size: 18vw; /* Réduit pour éviter le chevauchement */
-        --perspective: 1200px; /* Légèrement augmenté pour une vue moins "zoomée" */
-        --sphere-radius-mobile-portrait: 230px; /* Augmenté pour espacer les images */
+        --img-size: 18vw; /* Réduit pour éviter le chevauchement, à ajuster */
+        --perspective: 1200px; /* Légèrement augmenté pour une vue moins "zoomée", à ajuster */
+        --sphere-radius-mobile-portrait: 230px; /* Augmenté pour espacer les images, à ajuster */
       }
 
       .carousel-container {
@@ -240,7 +240,7 @@
     @media (max-width: 768px) and (orientation: landscape) {
       :root {
         --img-size: 19vw;
-        --sphere-radius-desktop: 400px; /* Adjust for landscape on mobile */
+        --sphere-radius-desktop: 400px; /* Ajustement pour le paysage sur mobile */
         --perspective: 3500px;
       }
 
@@ -394,11 +394,11 @@
       { src: '../img/CUIMARS2.jpg', theme: 'cuisine', comment: 'Cuisine Mars vue 2' },
       { src: '../img/CUIMARS3.jpg', theme: 'cuisine', comment: 'Cuisine Mars vue 3' },
       { src: '../img/CUIMARS4.jpg', theme: 'cuisine', comment: 'Cuisine Mars vue 4' },
-      { src: '../img/DRESSMARS1.jpg', theme: 'dressing', comment: 'Cuisine Mars vue 4' },
-      { src: '../img/DRESSMARS2.jpg', theme: 'dressing', comment: 'Cuisine Mars vue 4' },
-      { src: '../img/DRESSMARS3.jpg', theme: 'dressing', comment: 'Cuisine Mars vue 4' },
-      { src: '../img/DRESSMARS4.jpg', theme: 'dressing', comment: 'Cuisine Mars vue 4' },
-      { src: '../img/iso1.jpg', theme: 'autre', comment: 'Isolation 2' },
+      { src: '../img/DRESSMARS1.jpg', theme: 'dressing', comment: 'Dressing Mars vue 1' },
+      { src: '../img/DRESSMARS2.jpg', theme: 'dressing', comment: 'Dressing Mars vue 2' },
+      { src: '../img/DRESSMARS3.jpg', theme: 'dressing', comment: 'Dressing Mars vue 3' },
+      { src: '../img/DRESSMARS4.jpg', theme: 'dressing', comment: 'Dressing Mars vue 4' },
+      { src: '../img/iso1.jpg', theme: 'autre', comment: 'Isolation 1' },
       { src: '../img/Iso2.jpg', theme: 'autre', comment: 'Isolation 2' },
       { src: '../img/Iso3.jpg', theme: 'autre', comment: 'Isolation 3' },
       { src: '../img/Iso4.jpg', theme: 'autre', comment: 'Isolation 4' },
@@ -426,12 +426,12 @@
       { src: '../img/velaux1.jpg', theme: 'exterieur', comment: 'Velaux 1' },
       { src: '../img/velaux2.jpg', theme: 'exterieur', comment: 'Velaux 2' },
       { src: '../img/velaux3.jpg', theme: 'exterieur', comment: 'Velaux 3' },
-      { src: '../img/renoperier1.jpg', theme: 'cuisine', comment: 'renovation studio Marseille' },
-      { src: '../img/renoperier2.jpg', theme: 'cuisine', comment: 'renovation studio Marseille' },
-      { src: '../img/renoperier3.jpg', theme: 'cuisine', comment: 'renovation studio Marseille' },
-      { src: '../img/renoperier4.jpg', theme: 'cuisine', comment: 'renovation studio Marseille' },
-      { src: '../img/renoperier5.jpg', theme: 'cuisine', comment: 'renovation studio Marseille' },
-      { src: '../img/renoperier6.jpg', theme: 'cuisine', comment: 'renovation studio Marseille' },
+      { src: '../img/renoperier1.jpg', theme: 'cuisine', comment: 'Rénovation studio Marseille 1' },
+      { src: '../img/renoperier2.jpg', theme: 'cuisine', comment: 'Rénovation studio Marseille 2' },
+      { src: '../img/renoperier3.jpg', theme: 'cuisine', comment: 'Rénovation studio Marseille 3' },
+      { src: '../img/renoperier4.jpg', theme: 'cuisine', comment: 'Rénovation studio Marseille 4' },
+      { src: '../img/renoperier5.jpg', theme: 'cuisine', comment: 'Rénovation studio Marseille 5' },
+      { src: '../img/renoperier6.jpg', theme: 'cuisine', comment: 'Rénovation studio Marseille 6' },
     ];
 
     // Variables pour la rotation de la sphère
@@ -445,6 +445,7 @@
     let currentFilter = 'all';
 
     function isMobilePortrait() {
+      // Une petite marge pour la comparaison de largeur afin de tenir compte des différents DPI des appareils et des incohérences des navigateurs
       return window.innerWidth <= 768 && window.innerHeight > window.innerWidth;
     }
 
@@ -473,28 +474,48 @@
         });
         carousel.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
       } else {
-        // Mode Portrait Mobile : Distribution en sphère de Fibonacci pour une sphère parfaite
-        images.forEach((img, i) => {
-            // Algorithme de sphère de Fibonacci pour une distribution uniforme
-            const phi = Math.acos(1 - 2 * (i + 0.5) / total); // Angle polaire (latitude)
-            const theta = Math.PI * (1 + Math.sqrt(5)) * (i + 0.5); // Angle azimutal (longitude, basé sur l'angle d'or)
+        // Mode Portrait Mobile : Disposition en anneaux (simule une sphère avec des couches)
 
-            // Conversion des coordonnées sphériques en coordonnées cartésiennes
-            const x = sphereRadius * Math.sin(phi) * Math.cos(theta);
-            const y = sphereRadius * Math.sin(phi) * Math.sin(theta);
-            const z = sphereRadius * Math.cos(phi);
+        // Paramètres pour la disposition en anneaux
+        const numRings = 4; // Nombre de "cercles" ou "anneaux" verticaux (latitude) - AJUSTER CETTE VALEUR
+        const imagesPerRing = Math.ceil(total / numRings); // Nombre d'images par anneau (peut varier pour le dernier anneau)
+        
+        // Espacement vertical entre les anneaux
+        // On divise la hauteur "utile" (2*radius) par le nombre d'espaces entre les anneaux + 1
+        const verticalStep = (2 * sphereRadius) / (numRings + 1);
+
+        images.forEach((img, i) => {
+            const ringIndex = Math.floor(i / imagesPerRing); // Anneau actuel
+            const indexInRing = i % imagesPerRing; // Index de l'image dans son anneau
+
+            // Calcul de la position Y (verticale)
+            // Centrer les anneaux autour de l'origine (0)
+            const y = -sphereRadius + (ringIndex + 0.5) * verticalStep;
+
+            // Calcul du rayon de l'anneau à cette hauteur Y (pour maintenir la forme sphérique)
+            const currentRingRadius = Math.sqrt(Math.max(0, sphereRadius * sphereRadius - y * y)); // Math.max(0, ...) pour éviter les racines de nombres négatifs
+
+            // Calcul de l'angle pour la distribution horizontale sur l'anneau
+            // S'assurer que angleStep n'est pas infini si imagesPerRing est 0 pour un anneau vide
+            const angleStep = imagesPerRing > 0 ? 360 / imagesPerRing : 0; 
+            const imgAngle = angleStep * indexInRing;
+            const rad = imgAngle * Math.PI / 180;
+
+            // Calcul des positions X et Z sur l'anneau
+            const x = Math.sin(rad) * currentRingRadius;
+            const z = Math.cos(rad) * currentRingRadius;
 
             // Calcul de la rotation pour que l'image fasse face à l'extérieur
             const rotationYImg = Math.atan2(x, z) * 180 / Math.PI;
+            // Rotation X ajustée pour simuler l'inclinaison sur la sphère (regarder vers le centre de la sphère)
             const rotationXImg = Math.atan2(y, Math.sqrt(x * x + z * z)) * 180 / Math.PI;
 
-            // Appliquer les transformations. Le translate(-50%, -50%) centre l'image sur le point calculé.
+
             img.style.transform = `translateX(${x}px) translateY(${y}px) translateZ(${z}px) rotateY(${rotationYImg}deg) rotateX(${-rotationXImg}deg) translate(-50%, -50%)`;
             img.style.opacity = '1';
             img.style.filter = 'none';
             img.style.zIndex = '1';
         });
-        // Appliquer les rotations globales (rotateX et rotateY) au carrousel lui-même
         carousel.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
       }
     }
