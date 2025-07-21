@@ -200,9 +200,10 @@
     /* Ajustements pour le mode mobile portrait */
    @media (max-width: 768px) and (orientation: portrait) {
       :root {
-        --img-size: 18vw; /* Réduit pour éviter le chevauchement, à ajuster */
-        --perspective: 1200px; /* Légèrement augmenté pour une vue moins "zoomée", à ajuster */
-        --sphere-radius-mobile-portrait: 230px; /* Augmenté pour espacer les images, à ajuster */
+        /* Ces valeurs sont maintenant des points de départ, ajustez-les pour un meilleur rendu */
+        --img-size: 20vw; /* Taille des images, à ajuster */
+        --perspective: 1200px; /* Perspective, à ajuster */
+        --sphere-radius-mobile-portrait: 250px; /* Rayon de la sphère, à ajuster */
       }
 
       .carousel-container {
@@ -445,19 +446,32 @@
     let currentFilter = 'all';
 
     function isMobilePortrait() {
-      // Une petite marge pour la comparaison de largeur afin de tenir compte des différents DPI des appareils et des incohérences des navigateurs
       return window.innerWidth <= 768 && window.innerHeight > window.innerWidth;
     }
 
     function positionImages() {
-      const images = carousel.querySelectorAll('img');
+      const images = Array.from(carousel.querySelectorAll('img')); // Convertir en tableau pour pouvoir manipuler plus facilement
       const total = images.length;
       const isPortraitMobile = isMobilePortrait();
 
-      // Déterminer le rayon de la sphère en fonction de l'orientation
       const sphereRadius = isPortraitMobile
         ? parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--sphere-radius-mobile-portrait'))
         : parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--sphere-radius-desktop'));
+      
+      const imgSizeCSS = getComputedStyle(document.documentElement).getPropertyValue('--img-size');
+      // Pour convertir '--img-size' (ex: '20vw') en pixels, nous avons besoin d'une image de référence temporaire
+      // pour obtenir sa largeur calculée. C'est un peu un hack, mais c'est le plus fiable pour les vw/vh.
+      const tempImg = document.createElement('img');
+      tempImg.style.visibility = 'hidden';
+      tempImg.style.position = 'absolute';
+      tempImg.style.width = imgSizeCSS;
+      document.body.appendChild(tempImg);
+      const imageWidthPx = tempImg.offsetWidth;
+      document.body.removeChild(tempImg);
+
+      // Ajouter un petit espacement entre les images, en pourcentage de la taille de l'image
+      const spacingFactor = 1.2; // 1.0 pour pas d'espace, 1.2 pour 20% d'espace entre les images
+
 
       if (!isPortraitMobile) {
         // Mode Bureau/Paysage : Arrangement cylindrique simple pour un effet de carrousel
@@ -467,54 +481,118 @@
           const rad = (imgAngle) * Math.PI / 180;
           const x = Math.sin(rad) * sphereRadius;
           const z = Math.cos(rad) * sphereRadius;
-          img.style.transform = `translateX(${x}px) translateZ(${z}px) rotateY(${imgAngle}deg)`;
+          img.style.transform = `translateX(${x}px) translateZ(${z}px) rotateY(${imgAngle}deg) translate(-50%, -50%)`;
           img.style.opacity = '1';
           img.style.filter = 'none';
           img.style.zIndex = '1';
         });
         carousel.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
       } else {
-        // Mode Portrait Mobile : Disposition en anneaux (simule une sphère avec des couches)
+        // Mode Portrait Mobile : Disposition en anneaux avec calcul dynamique du nombre d'images par anneau
 
-        // Paramètres pour la disposition en anneaux
-        const numRings = 4; // Nombre de "cercles" ou "anneaux" verticaux (latitude) - AJUSTER CETTE VALEUR
-        const imagesPerRing = Math.ceil(total / numRings); // Nombre d'images par anneau (peut varier pour le dernier anneau)
+        const rings = []; // Stockera les informations pour chaque anneau: {y, currentRingRadius, maxImages}
+
+        // Définir le nombre de tranches verticales (qui détermineront les anneaux)
+        // Commençons avec un nombre suffisant pour éviter un chevauchement vertical
+        // La hauteur de chaque "tranche" doit être au moins la taille de l'image plus un petit espacement.
+        const imageEffectiveHeight = imageWidthPx * spacingFactor; // On utilise la largeur pour la hauteur car les images sont carrées
+        const maxVerticalRings = Math.floor((2 * sphereRadius) / imageEffectiveHeight);
+        const numRingsToUse = Math.max(3, Math.min(maxVerticalRings, Math.ceil(Math.sqrt(total)))); // Adapte le nombre d'anneaux au nombre d'images, min 3
+
+        if (total === 0) { // Gérer le cas où il n'y a pas d'images filtrées
+            carousel.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+            return;
+        }
+
+        // Calculer les propriétés de chaque anneau
+        for (let r = 0; r < numRingsToUse; r++) {
+            // Position Y de l'anneau (latitude)
+            const y = -sphereRadius + (r + 0.5) * (2 * sphereRadius / numRingsToUse);
+
+            // Rayon de l'anneau à cette hauteur Y
+            const currentRingRadius = Math.sqrt(Math.max(0, sphereRadius * sphereRadius - y * y));
+
+            // Calculer le nombre maximum d'images pour cet anneau
+            // Circonférence de l'anneau = 2 * PI * rayon
+            // Nombre max d'images = Circonférence / (largeur image * spacingFactor)
+            let maxImagesOnRing = 0;
+            if (currentRingRadius > 0) {
+              maxImagesOnRing = Math.floor((2 * Math.PI * currentRingRadius) / (imageWidthPx * spacingFactor));
+              // Assurez-vous qu'il y a au moins 1 image si le rayon le permet
+              if (maxImagesOnRing === 0 && currentRingRadius > (imageWidthPx * spacingFactor / (2 * Math.PI))) {
+                  maxImagesOnRing = 1;
+              }
+            }
+            maxImagesOnRing = Math.max(1, maxImagesOnRing); // Au moins 1 image par anneau (si possible)
+
+            rings.push({ y, currentRingRadius, maxImagesOnRing, assignedImages: [] });
+        }
+
+        // Trier les anneaux par leur capacité à accueillir des images (les plus grands d'abord)
+        // Cela peut aider à remplir les anneaux les plus larges en premier, puis les plus petits.
+        rings.sort((a, b) => b.maxImagesOnRing - a.maxImagesOnRing);
+
+        let imageIndex = 0;
+        let ringAssignments = new Array(numRingsToUse).fill(0); // Compteur d'images assignées par anneau
+
+        // Distribuer les images dans les anneaux de manière équilibrée
+        while (imageIndex < total) {
+            let assigned = false;
+            // Essayer d'assigner à l'anneau qui a le plus de place disponible et le moins d'images assignées
+            // Ceci est une heuristique simple, peut être affinée.
+            let bestRingIndex = -1;
+            let minAssigned = Infinity;
+
+            // Trouver l'anneau avec le moins d'images assignées qui a encore de la place
+            for (let r = 0; r < rings.length; r++) {
+                if (ringAssignments[r] < rings[r].maxImagesOnRing) {
+                    if (ringAssignments[r] < minAssigned) {
+                        minAssigned = ringAssignments[r];
+                        bestRingIndex = r;
+                    }
+                }
+            }
+
+            if (bestRingIndex !== -1) {
+                rings[bestRingIndex].assignedImages.push(images[imageIndex]);
+                ringAssignments[bestRingIndex]++;
+                imageIndex++;
+                assigned = true;
+            } else {
+                // Si aucune place n'est trouvée, cela signifie que toutes les images ne peuvent pas tenir.
+                // Cela ne devrait pas arriver si le nombre d'anneaux est bien calculé et qu'il y a assez de place globale.
+                // Pour éviter une boucle infinie, on sort si on ne peut plus assigner.
+                console.warn("Pas assez de place sur les anneaux pour toutes les images.");
+                break;
+            }
+        }
         
-        // Espacement vertical entre les anneaux
-        // On divise la hauteur "utile" (2*radius) par le nombre d'espaces entre les anneaux + 1
-        const verticalStep = (2 * sphereRadius) / (numRings + 1);
+        // Repositionner les anneaux dans leur ordre vertical original pour l'affichage
+        rings.sort((a, b) => a.y - b.y);
 
-        images.forEach((img, i) => {
-            const ringIndex = Math.floor(i / imagesPerRing); // Anneau actuel
-            const indexInRing = i % imagesPerRing; // Index de l'image dans son anneau
+        // Positionner chaque image
+        let currentImageCounter = 0;
+        rings.forEach(ring => {
+            const numImagesInThisRing = ring.assignedImages.length;
+            const angleStep = numImagesInThisRing > 0 ? 360 / numImagesInThisRing : 0;
 
-            // Calcul de la position Y (verticale)
-            // Centrer les anneaux autour de l'origine (0)
-            const y = -sphereRadius + (ringIndex + 0.5) * verticalStep;
+            ring.assignedImages.forEach((img, idxInRing) => {
+                const imgAngle = angleStep * idxInRing;
+                const rad = imgAngle * Math.PI / 180;
 
-            // Calcul du rayon de l'anneau à cette hauteur Y (pour maintenir la forme sphérique)
-            const currentRingRadius = Math.sqrt(Math.max(0, sphereRadius * sphereRadius - y * y)); // Math.max(0, ...) pour éviter les racines de nombres négatifs
+                const x = Math.sin(rad) * ring.currentRingRadius;
+                const z = Math.cos(rad) * ring.currentRingRadius;
 
-            // Calcul de l'angle pour la distribution horizontale sur l'anneau
-            // S'assurer que angleStep n'est pas infini si imagesPerRing est 0 pour un anneau vide
-            const angleStep = imagesPerRing > 0 ? 360 / imagesPerRing : 0; 
-            const imgAngle = angleStep * indexInRing;
-            const rad = imgAngle * Math.PI / 180;
+                // Calcul de la rotation pour que l'image fasse face à l'extérieur
+                const rotationYImg = Math.atan2(x, z) * 180 / Math.PI;
+                const rotationXImg = Math.atan2(ring.y, Math.sqrt(x * x + z * z)) * 180 / Math.PI;
 
-            // Calcul des positions X et Z sur l'anneau
-            const x = Math.sin(rad) * currentRingRadius;
-            const z = Math.cos(rad) * currentRingRadius;
-
-            // Calcul de la rotation pour que l'image fasse face à l'extérieur
-            const rotationYImg = Math.atan2(x, z) * 180 / Math.PI;
-            // Rotation X ajustée pour simuler l'inclinaison sur la sphère (regarder vers le centre de la sphère)
-            const rotationXImg = Math.atan2(y, Math.sqrt(x * x + z * z)) * 180 / Math.PI;
-
-
-            img.style.transform = `translateX(${x}px) translateY(${y}px) translateZ(${z}px) rotateY(${rotationYImg}deg) rotateX(${-rotationXImg}deg) translate(-50%, -50%)`;
-            img.style.opacity = '1';
-            img.style.filter = 'none';
-            img.style.zIndex = '1';
+                img.style.transform = `translateX(${x}px) translateY(${ring.y}px) translateZ(${z}px) rotateY(${rotationYImg}deg) rotateX(${-rotationXImg}deg) translate(-50%, -50%)`;
+                img.style.opacity = '1';
+                img.style.filter = 'none';
+                img.style.zIndex = '1';
+                currentImageCounter++;
+            });
         });
         carousel.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
       }
