@@ -203,20 +203,20 @@
     /* Ajustements pour le mode mobile portrait */
    @media (max-width: 768px) and (orientation: portrait) {
       :root {
-        --img-size: 18vw; /* Réduire légèrement la taille des images pour qu'elles prennent moins de place */
-        --perspective: 900px; /* Réduire la perspective pour un effet plus "zoomé" et pour voir plus de la sphère */
+        --img-size: 20vw; /* Augmenter la taille des images pour qu'elles soient un peu plus grandes */
+        --perspective: 800px; /* Ajuster la perspective pour un effet plus "zoomé" et pour voir plus de la sphère */
       }
 
       .carousel-container {
         position: absolute;
         left: 50%;
-        /* Adjusted top to position the sphere better below filters */
-        top: calc(150px + 5vh); /* Adjusted for better vertical placement */
+        /* Ajusté pour positionner la sphère sous les filtres */
+        top: calc(150px + 10vh); /* Hauteur approximative du header + titre + filtres, ajusté */
         transform: translateX(-50%);
         width: 100vw;
-        /* Increased height to give more space to the sphere */
-        height: calc(100vh - (150px + 5vh) - 20px); /* 20px buffer at bottom */
-        overflow: hidden;
+        /* Hauteur pour que la sphère soit entièrement visible et ne déborde pas en bas */
+        height: calc(100vh - (150px + 10vh) - 20px); /* Laisse une petite marge en bas */
+        overflow: hidden; /* Important pour ne pas avoir de scrollbars dues à la sphère */
         display: flex;
         justify-content: center;
         align-items: center;
@@ -457,12 +457,10 @@
       const isPortraitMobile = isMobilePortrait();
 
       // Ajustement du rayon de la sphère pour le mode portrait mobile.
-      // Une valeur plus petite rendra la sphère plus "dense" et plus visible.
-      // Une valeur plus grande la rendra plus "lâche" et plus grande.
-      // Il faut trouver un équilibre avec la perspective et la taille des images.
-      // Pour une meilleure "rondeur" et visibilité:
-      // augmenter le rayon un peu et ajuster la perspective en conséquence.
-      const sphereRadius = isPortraitMobile ? 220 : parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--translateZ'));
+      // Une valeur plus petite réduira l'espace entre les images, une valeur plus grande l'augmentera.
+      // Nous voulons réduire l'espace, donc nous allons légèrement DIMINUER le rayon.
+      // Combinez cela avec une augmentation de la taille des images.
+      const sphereRadius = isPortraitMobile ? 180 : parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--translateZ'));
 
 
       if (!isPortraitMobile) {
@@ -479,7 +477,6 @@
         // Logique pour la disposition en sphère pour le mode mobile portrait (Fibonacci Sphere)
         images.forEach((img, i) => {
             const totalImages = images.length;
-            // Utilisation d'une petite valeur epsilon pour éviter les problèmes de précision avec acos(1)
             const phi = Math.acos(1 - 2 * (i + 0.5) / totalImages); // Angle polaire (latitude), décalage pour une meilleure distribution
             const theta = Math.PI * (1 + Math.sqrt(5)) * (i + 0.5); // Angle azimutal (longitude, basé sur l'angle d'or), décalage
 
