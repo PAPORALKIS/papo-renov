@@ -203,20 +203,20 @@
     /* Ajustements pour le mode mobile portrait */
    @media (max-width: 768px) and (orientation: portrait) {
       :root {
-        --img-size: 20vw; /* Augmenter la taille des images pour qu'elles soient un peu plus grandes */
-        --perspective: 800px; /* Ajuster la perspective pour un effet plus "zoomé" et pour voir plus de la sphère */
+        --img-size: 22vw; /* Augmenté pour des images plus grandes */
+        --perspective: 900px; /* Ajusté pour un effet plus "zoomé" et pour voir plus de la sphère */
       }
 
       .carousel-container {
         position: absolute;
         left: 50%;
-        /* Ajusté pour positionner la sphère sous les filtres */
-        top: calc(150px + 10vh); /* Hauteur approximative du header + titre + filtres, ajusté */
+        /* Adjusted top to position the sphere better below filters */
+        top: calc(230px + 2vh); /* Ajusté pour mieux positionner la sphère sous les filtres */
         transform: translateX(-50%);
         width: 100vw;
-        /* Hauteur pour que la sphère soit entièrement visible et ne déborde pas en bas */
-        height: calc(100vh - (150px + 10vh) - 20px); /* Laisse une petite marge en bas */
-        overflow: hidden; /* Important pour ne pas avoir de scrollbars dues à la sphère */
+        /* Increased height to give more space to the sphere */
+        height: calc(100vh - (230px + 2vh) - 20px); /* 20px buffer at bottom */
+        overflow: hidden;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -458,9 +458,7 @@
 
       // Ajustement du rayon de la sphère pour le mode portrait mobile.
       // Une valeur plus petite réduira l'espace entre les images, une valeur plus grande l'augmentera.
-      // Nous voulons réduire l'espace, donc nous allons légèrement DIMINUER le rayon.
-      // Combinez cela avec une augmentation de la taille des images.
-      const sphereRadius = isPortraitMobile ? 180 : parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--translateZ'));
+      const sphereRadius = isPortraitMobile ? 160 : parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--translateZ')); // Réduire encore le rayon pour le mode portrait mobile
 
 
       if (!isPortraitMobile) {
