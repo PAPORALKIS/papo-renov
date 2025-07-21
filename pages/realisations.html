@@ -200,10 +200,11 @@
     /* Ajustements pour le mode mobile portrait */
    @media (max-width: 768px) and (orientation: portrait) {
       :root {
-        /* Ces valeurs sont maintenant des points de départ, ajustez-les pour un meilleur rendu */
-        --img-size: 25vw; /* Taille des images, à ajuster */
-        --perspective: 1200px; /* Perspective, à ajuster */
-        --sphere-radius-mobile-portrait: 290px; /* Rayon de la sphère, à ajuster */
+        /* --img-size: 25vw;  Ancienne valeur */
+        --img-size: 22vw; /* Réduit la taille des images pour plus d'espace et moins de chevauchement */
+        --perspective: 1200px;
+        /* --sphere-radius-mobile-portrait: 250px; Ancienne valeur */
+        --sphere-radius-mobile-portrait: 270px; /* Augmenté légèrement le rayon de la sphère pour plus d'espace */
       }
 
       .carousel-container {
@@ -470,7 +471,8 @@
       document.body.removeChild(tempImg);
 
       // Ajouter un petit espacement entre les images, en pourcentage de la taille de l'image
-      const spacingFactor = 1.2; // 1.0 pour pas d'espace, 1.2 pour 20% d'espace entre les images
+      const spacingFactor = 1.1; // Réduit à 1.1 pour un espacement horizontal plus faible
+      const verticalSpacingMultiplier = 0.9; // Nouveau facteur pour rapprocher les anneaux verticalement
 
 
       if (!isPortraitMobile) {
@@ -493,11 +495,10 @@
         const rings = []; // Stockera les informations pour chaque anneau: {y, currentRingRadius, maxImages}
 
         // Définir le nombre de tranches verticales (qui détermineront les anneaux)
-        // Commençons avec un nombre suffisant pour éviter un chevauchement vertical
         // La hauteur de chaque "tranche" doit être au moins la taille de l'image plus un petit espacement.
-        const imageEffectiveHeight = imageWidthPx * spacingFactor; // On utilise la largeur pour la hauteur car les images sont carrées
+        const imageEffectiveHeight = imageWidthPx * spacingFactor * verticalSpacingMultiplier; // Utilise le nouveau multiplicateur vertical
         const maxVerticalRings = Math.floor((2 * sphereRadius) / imageEffectiveHeight);
-        const numRingsToUse = Math.max(3, Math.min(maxVerticalRings, Math.ceil(Math.sqrt(total)))); // Adapte le nombre d'anneaux au nombre d'images, min 3
+        const numRingsToUse = Math.max(3, Math.min(maxVerticalRings, Math.ceil(Math.sqrt(total) * 0.85))); // Ajuste pour potentiellement moins d'images aux pôles
 
         if (total === 0) { // Gérer le cas où il n'y a pas d'images filtrées
             carousel.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
@@ -523,7 +524,9 @@
                   maxImagesOnRing = 1;
               }
             }
-            maxImagesOnRing = Math.max(1, maxImagesOnRing); // Au moins 1 image par anneau (si possible)
+            // Réduire le nombre max d'images sur les anneaux supérieurs/inférieurs pour éviter le chevauchement
+            const poleFactor = 1 - Math.abs(y / sphereRadius); // Plus près des pôles, plus petit
+            maxImagesOnRing = Math.max(1, Math.floor(maxImagesOnRing * (poleFactor * 0.7 + 0.3))); // Ajustement pour les pôles, pour ne pas avoir 0 image
 
             rings.push({ y, currentRingRadius, maxImagesOnRing, assignedImages: [] });
         }
