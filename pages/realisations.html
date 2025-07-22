@@ -63,7 +63,7 @@
       .filters button {
         font-size: 0.75em;
         padding: 6px 10px;
-        margin: 3px;
+        margin: 3px; /* Réduit la marge pour un espacement plus serré */
         min-width: unset;
         flex-basis: auto;
         max-width: 100%;
@@ -498,28 +498,29 @@
         }
 
         let currentImageIndex = 0;
-        const totalConfiguredImages = mobilePortraitSphereConfig.rings.reduce((sum, ring) => sum + ring.numImages, 0);
+        // This variable is not strictly needed for the logic below, but kept for context.
+        // const totalConfiguredImages = mobilePortraitSphereConfig.rings.reduce((sum, ring) => sum + ring.numImages, 0);
 
         for (let i = 0; i < mobilePortraitSphereConfig.rings.length; i++) {
             const ringConfig = mobilePortraitSphereConfig.rings[i];
             const y = sphereRadius * ringConfig.verticalOffset;
             const currentRingRadius = sphereRadius * ringConfig.ringRadiusFactor;
-            const effectiveRingRadius = Math.max(0.1, currentRingRadius);
+            const effectiveRingRadius = Math.max(0.1, currentRingRadius); // Ensure radius is not zero
 
             let numImagesInThisRing = ringConfig.numImages;
 
-            // Ajustement pour les images restantes si le nombre total est supérieur à la configuration
-            // ou si on a trop peu d'images pour remplir les anneaux comme configuré.
+            // Adjust allocation for remaining images to ensure all are placed or hidden
             if (currentImageIndex + numImagesInThisRing > total && i < mobilePortraitSphereConfig.rings.length - 1) {
+                // If there are more images left than this ring's config, distribute them
                 const remainingImages = total - currentImageIndex;
                 const remainingRings = mobilePortraitSphereConfig.rings.length - i;
                 numImagesInThisRing = Math.ceil(remainingImages / remainingRings);
-                numImagesInThisRing = Math.min(numImagesInThisRing, ringConfig.numImages); // Ne pas dépasser le max de l'anneau
-            } else if (currentImageIndex + numImagesInThisRing > total && i === mobilePortraitSphereConfig.rings.length - 1) {
-                // Si c'est le dernier anneau, place toutes les images restantes ici
+                // Ensure we don't try to put more images than the ring was designed for, unless it's the last ring
+                numImagesInThisRing = Math.min(numImagesInThisRing, ringConfig.numImages);
+            } else if (i === mobilePortraitSphereConfig.rings.length - 1) {
+                // If it's the last ring, place all remaining images here
                 numImagesInThisRing = total - currentImageIndex;
             }
-
 
             const angleStep = numImagesInThisRing > 0 ? 360 / numImagesInThisRing : 0;
 
