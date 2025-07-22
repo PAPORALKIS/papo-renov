@@ -87,46 +87,27 @@
       color: #003366;
       text-align: center;
       font-size: 1.8em;
-      margin-top: 25px; /* Marge supérieure d'origine */
-      padding: 10px 20px; /* Padding d'origine */
-      /* MODIFICATIONS DÉBUT */
-      margin-bottom: 5px; /* Réduire la marge sous le titre */
-      padding-top: 5px; /* Réduire le padding supérieur */
-      padding-bottom: 5px; /* Réduire le padding inférieur */
-      /* MODIFICATIONS FIN */
+      margin-top: 25px;
+      padding: 10px 20px;
     }
 
     .filters {
       text-align: center;
-      margin: 10px auto; /* Marge d'origine */
+      margin: 10px auto;
       position: relative;
       z-index: 10;
-      /* MODIFICATIONS DÉBUT */
-      display: flex; /* Utiliser flexbox pour mieux gérer l'espacement */
-      flex-wrap: wrap; /* Permettre aux boutons de passer à la ligne */
-      justify-content: center; /* Centrer les boutons */
-      gap: 5px; /* Espace entre les boutons */
-      margin-top: 5px; /* Réduire la marge supérieure */
-      margin-bottom: 10px; /* Réduire la marge inférieure */
-      /* MODIFICATIONS FIN */
     }
 
     .filters button {
-      margin: 4px; /* Marge d'origine, sera écrasée par le 'gap' flexbox */
-      padding: 6px 12px; /* Padding d'origine */
-      font-size: 0.9em; /* Taille de police d'origine */
+      margin: 4px;
+      padding: 6px 12px;
+      font-size: 0.9em;
       border-radius: 6px;
       border: 1px solid #003366;
       background-color: #ffffff;
       color: #003366;
       cursor: pointer;
       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-      /* MODIFICATIONS DÉBUT */
-      margin: 0; /* Supprimer la marge individuelle pour utiliser le gap du flexbox */
-      padding: 6px 10px; /* Légèrement réduire le padding */
-      font-size: 0.85em; /* Légèrement réduire la taille de la police */
-      white-space: nowrap; /* Empêche le texte des boutons de se briser sur plusieurs lignes */
-      /* MODIFICATIONS FIN */
     }
 
     .carousel-container {
@@ -227,10 +208,10 @@
       .carousel-container {
         position: absolute;
         left: 50%;
-        top: calc(150px + 2vh); /* Réduction de la valeur 'top' pour remonter la sphère */
+        top: calc(230px + 2vh);
         transform: translateX(-50%);
         width: 100vw;
-        height: calc(100vh - (150px + 2vh) - 20px); /* Ajusté en conséquence */
+        height: calc(100vh - (230px + 2vh) - 20px);
         overflow: hidden;
         display: flex;
         justify-content: center;
@@ -253,28 +234,6 @@
         opacity: 1;
         filter: none;
         z-index: 1;
-      }
-
-      /* NOUVEAUX AJUSTEMENTS POUR MOBILE PORTRAIT */
-      .page-title {
-        font-size: 1.3em; /* Police plus petite pour le titre (légèrement plus petite que 1.4em) */
-        margin-top: 10px; /* Réduire la marge supérieure */
-        padding: 4px 10px; /* Réduire le padding */
-      }
-
-      .filters {
-        margin: 5px auto; /* Réduire la marge des filtres */
-        padding: 0 5px; /* Ajouter un léger padding pour éviter que les boutons ne touchent les bords */
-        display: flex; /* Utiliser flexbox pour mieux gérer l'espacement */
-        flex-wrap: wrap; /* Permettre aux boutons de passer à la ligne */
-        justify-content: center; /* Centrer les boutons */
-        gap: 3px; /* Espacement réduit entre les boutons en mobile */
-      }
-
-      .filters button {
-        margin: 0; /* Supprimer la marge individuelle (déjà fait, mais important de le maintenir) */
-        padding: 4px 6px; /* Réduire la taille des boutons */
-        font-size: 0.75em; /* Réduire la police des boutons (légèrement plus petite que 0.8em) */
       }
     }
 
@@ -522,60 +481,54 @@
         });
         carousel.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
       } else {
-        // Mode Portrait Mobile : Disposition manuelle des cercles/anneaux de la sphère
+        // Mode Portrait Mobile : Disposition en 7 anneaux spécifiques
 
         if (total === 0) {
             carousel.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
             return;
         }
 
-        // --- DÉBUT DU BLOC DE GESTION MANUELLE DES CERCLES POUR MOBILE PORTRAIT ---
+        // Définir le nombre d'images par anneau comme demandé
+        const imagesPerRing = [1, 5, 10, 15, 10, 5, 1];
+        const numRings = imagesPerRing.length; // 7 anneaux
 
-        // Définir les paramètres pour chaque anneau : [nb_images, rayon_relatif, y_offset_relatif_au_radius]
-        // Les valeurs de rayon_relatif et y_offset_relatif_au_radius sont à ajuster finement
-        // pour obtenir l'effet visuel désiré pour chaque cercle.
-        // rayon_relatif: 0.0 (pôle) à 1.0 (équateur)
-        // y_offset_relatif_au_radius: -1.0 (haut) à 1.0 (bas)
-        const ringConfigs = [
-            // Anneau 0 (Pôle Nord)
-            { numImages: 1, relativeRadius: 0.0, relativeYOffset: -1.0, adjustY: (imageWidthPx / 2) + 10 }, // Léger ajustement y pour centrer le pôle
-
-            // Anneau 1
-            { numImages: 5, relativeRadius: 0.3, relativeYOffset: -0.8 },
-
-            // Anneau 2
-            { numImages: 10, relativeRadius: 0.7, relativeYOffset: -0.4 },
-
-            // Anneau 3 (Équateur)
-            { numImages: 15, relativeRadius: 1.0, relativeYOffset: 0.0 },
-
-            // Anneau 4
-            { numImages: 10, relativeRadius: 0.7, relativeYOffset: 0.4 },
-
-            // Anneau 5
-            { numImages: 5, relativeRadius: 0.3, relativeYOffset: 0.8 },
-
-            // Anneau 6 (Pôle Sud)
-            { numImages: 1, relativeRadius: 0.0, relativeYOffset: 1.0, adjustY: -(imageWidthPx / 2) - 10 } // Léger ajustement y pour centrer le pôle
-        ];
-
+        // Calculer les Y pour chaque anneau
+        // Les Y iront du pôle nord (haut) au pôle sud (bas)
+        // Les angles de latitude vont de +90 deg (Nord) à -90 deg (Sud)
+        // Nous allons répartir les 7 anneaux sur cette plage.
+        // Espacement entre les centres des anneaux : 180 / (numRings - 1)
+        const verticalStepAngle = 180 / (numRings - 1);
+        
         let currentImageIndex = 0;
-        let assignedImagesCount = 0;
+        let assignedImagesCount = 0; // Pour compter les images réellement assignées
 
-        ringConfigs.forEach((config, i) => {
-            const numImagesInThisRing = config.numImages;
+        for (let i = 0; i < numRings; i++) {
+            // Angle de latitude pour cet anneau (en degrés, de 90 à -90)
+            const latitudeAngleDeg = 90 - (i * verticalStepAngle);
+            const latitudeAngleRad = latitudeAngleDeg * Math.PI / 180;
+
+            const y = sphereRadius * Math.sin(latitudeAngleRad);
+            const currentRingRadius = sphereRadius * Math.cos(latitudeAngleRad);
+
+            // Nombre d'images pour cet anneau selon votre spécification
+            const numImagesInThisRing = imagesPerRing[i];
+
+            // S'assurer qu'on ne dépasse pas le nombre total d'images disponibles
             const imagesToPlaceInThisRing = Math.min(numImagesInThisRing, total - currentImageIndex);
 
-            // Calcul du rayon de l'anneau
-            const currentRingRadius = sphereRadius * config.relativeRadius;
-
-            // Calcul de la position Y de l'anneau
-            let y = sphereRadius * config.relativeYOffset;
-            if (config.adjustY) { // Appliquer l'ajustement spécifique pour les pôles
-                y += config.adjustY;
-            }
-
-            if (imagesToPlaceInThisRing > 0) {
+            // Si le rayon est très petit (pôles), et que numImagesInThisRing > 0, assurez-vous qu'il y en ait au moins 1
+            // Pour les pôles (rayons très faibles), placer une seule image exactement au pôle.
+            if (i === 0 || i === numRings - 1) { // Pôles Nord et Sud
+                if (imagesToPlaceInThisRing > 0) {
+                    const img = images[currentImageIndex];
+                    img.style.transform = `translateX(0px) translateY(${y}px) translateZ(${currentRingRadius}px) rotateY(0deg) rotateX(${latitudeAngleDeg}deg) translate(-50%, -50%)`;
+                    img.style.opacity = '1';
+                    img.style.filter = 'none';
+                    img.style.zIndex = '1';
+                    currentImageIndex++;
+                    assignedImagesCount++;
+                }
+            } else { // Autres anneaux
                 const angleStep = imagesToPlaceInThisRing > 0 ? 360 / imagesToPlaceInThisRing : 0;
                 for (let j = 0; j < imagesToPlaceInThisRing; j++) {
                     const img = images[currentImageIndex];
@@ -585,15 +538,10 @@
                     const x = Math.sin(rad) * currentRingRadius;
                     const z = Math.cos(rad) * currentRingRadius;
 
-                    // Les rotations X et Y doivent tenir compte de la position sur la sphère
-                    // La rotation X est relative à la latitude de l'anneau pour un effet de courbure
-                    // La rotation Y fait que l'image "regarde" vers l'extérieur de l'anneau
+                    // Rotation Y pour que l'image fasse face à l'extérieur (suive l'anneau)
+                    // Rotation X pour s'aligner avec la courbure de la sphère
                     const rotationYImg = imgAngle; 
-                    
-                    // Calcul de la latitude basée sur la position Y relative pour la rotation X
-                    // Ceci est une approximation pour donner un effet de courbure
-                    const latitudeRatio = y / sphereRadius; // Entre -1 et 1
-                    const rotationXImg = -Math.asin(latitudeRatio) * 180 / Math.PI; // Convertir en degrés
+                    const rotationXImg = -latitudeAngleDeg; // Aligner avec la latitude
 
                     img.style.transform = `translateX(${x}px) translateY(${y}px) translateZ(${z}px) rotateY(${rotationYImg}deg) rotateX(${rotationXImg}deg) translate(-50%, -50%)`;
                     img.style.opacity = '1';
@@ -603,9 +551,9 @@
                     assignedImagesCount++;
                 }
             }
-        });
+        }
 
-        // Cacher les images excédentaires s'il y en a
+        // Cacher les images excédentaires s'il y en a (si total > 47)
         for (let i = assignedImagesCount; i < total; i++) {
             images[i].style.opacity = '0';
             images[i].style.filter = 'grayscale(100%)';
@@ -613,8 +561,6 @@
         }
 
         carousel.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
-
-        // --- FIN DU BLOC DE GESTION MANUELLE DES CERCLES POUR MOBILE PORTRAIT ---
       }
     }
 
