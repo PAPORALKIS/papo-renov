@@ -6,154 +6,24 @@
   <title>Mes Réalisations - Sphère 3D</title>
   <style>
     :root {
-      /* Taille des images (bulles) par défaut pour les grands écrans */
-      --img-size-desktop: 150px;
-      /* Rayon de la sphère par défaut pour les grands écrans */
+      --img-size: min(20vw, 150px);
       --sphere-radius-desktop: 800px;
-      /* Perspective pour l'effet 3D */
-      --perspective-desktop: 3500px;
-
-      /* Valeurs par défaut qui seront utilisées si aucune @media query ne s'applique */
-      --img-size: var(--img-size-desktop);
-      --sphere-radius: var(--sphere-radius-desktop);
-      --perspective: var(--perspective-desktop);
-
-      /* Variable pour ajuster la position verticale de la sphère en mode mobile portrait */
-      --filters-bottom-offset-mobile: 150px; /* Valeur par défaut, sera calculée par JS */
+      --perspective: 3500px;
+      --sphere-radius-mobile-portrait: 260px; /* Explicitly defined for mobile portrait */
     }
 
-    /* Media queries pour les ajustements responsifs */
-
-    /* Pour les écrans de moins de 768px (tablettes et mobiles) */
     @media (max-width: 768px) {
       :root {
-        --img-size: 10vw; /* Taille des images réduite */
+        --img-size: 10vw;
       }
     }
 
-    /* Pour les écrans de moins de 500px (smartphones) */
     @media (max-width: 500px) {
       :root {
-        --img-size: 28vw; /* Taille des images plus grande pour être visibles sur petits écrans */
+        --img-size: 28vw;
       }
     }
 
-    /* Mode mobile portrait spécifique */
-    @media (max-width: 768px) and (orientation: portrait) {
-      :root {
-        --img-size: 20vw; /* Taille des images pour mobile portrait */
-        --sphere-radius: 260px; /* Rayon de la sphère pour mobile portrait */
-        --perspective: 800px; /* Perspective pour mobile portrait */
-      }
-
-      .page-title {
-        font-size: 1.2em;
-        margin-top: 10px;
-        padding: 5px 10px;
-      }
-
-      .filters {
-        margin: 1px;
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-        padding: 0 5px;
-      }
-
-      .filters button {
-        font-size: 0.75em;
-        padding: 6px 10px;
-        margin: 1px; /* Réduit la marge pour un espacement plus serré */
-        min-width: unset;
-        flex-basis: auto;
-        max-width: 100%;
-      }
-
-      .carousel-container {
-        position: absolute; /* Change de fixed à absolute pour un positionnement relatif au flux du document après le header/filtres */
-        left: 50%;
-        top: var(--filters-bottom-offset-mobile); /* Utilise la variable calculée par JS */
-        transform: translateX(-50%); /* Centre horizontalement */
-        width: 100vw;
-        height: calc(100vh - var(--filters-bottom-offset-mobile) - 20px); /* Ajuste la hauteur disponible */
-        overflow: hidden;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        pointer-events: none;
-      }
-    }
-
-    /* Mode mobile paysage (plus large que haut) */
-    @media (max-width: 768px) and (orientation: landscape) {
-      :root {
-        --img-size: 19vw;
-        --sphere-radius: 400px; /* Rayon réduit pour le paysage sur petits écrans */
-        --perspective: 3500px;
-      }
-
-      .carousel-container {
-        top: 60%; /* Ajuste la position verticale pour le paysage */
-        left: 50%;
-        transform: translate(-50%, -50%);
-        perspective: var(--perspective);
-        height: 100vh;
-        width: 100vw;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        pointer-events: none;
-      }
-    }
-
-    /* Mode paysage très court (ex: certains smartphones en paysage) */
-    @media (orientation: landscape) and (max-height: 500px) {
-      :root {
-        --img-size: 12vw;
-        --sphere-radius: 370px; /* Encore plus réduit */
-        --perspective: 4200px;
-      }
-
-      .carousel-container {
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        perspective: var(--perspective);
-        height: 100vh;
-        width: 100vw;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        pointer-events: none;
-      }
-
-      .logo img {
-        height: 28px;
-      }
-
-      header {
-        padding: 2px 6px;
-        border-bottom: 1px solid #ccc;
-      }
-
-      nav ul li a {
-        font-size: 11px;
-        padding: 4px 6px;
-      }
-
-      .page-title {
-        font-size: 1.2em;
-        margin-top: 10px;
-        padding: 4px 10px;
-      }
-      .filters button {
-        font-size: 0.7em;
-        padding: 4px 8px;
-        margin: 2px;
-      }
-    }
-
-    /* Styles généraux */
     html, body {
       margin: 0;
       padding: 0;
@@ -165,8 +35,8 @@
       background-attachment: fixed;
       background-position: center;
       overflow-x: hidden;
-      overflow-y: hidden; /* Cache la scrollbar verticale */
-      overscroll-behavior: contain; /* Empêche le défilement de la page lors du glissement sur la sphère */
+      overflow-y: hidden;
+      overscroll-behavior: contain;
     }
 
     header {
@@ -227,10 +97,6 @@
       margin: 10px auto;
       position: relative;
       z-index: 10;
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      padding: 0 10px;
     }
 
     .filters button {
@@ -243,25 +109,14 @@
       color: #003366;
       cursor: pointer;
       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-      min-width: 120px;
-      flex-grow: 1;
-      max-width: 45%;
-      transition: background-color 0.3s, color 0.3s, box-shadow 0.3s;
-    }
-
-    .filters button:hover,
-    .filters button.active {
-      background-color: #003366;
-      color: #ffffff;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     }
 
     .carousel-container {
-      position: fixed; /* Par défaut, en fixed pour couvrir toute la page */
+      position: fixed;
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      perspective: var(--perspective); /* Utilise la variable dynamique */
+      perspective: var(--perspective);
       width: 100vw;
       height: 100vh;
       display: flex;
@@ -277,7 +132,7 @@
       transform-style: preserve-3d;
       pointer-events: auto;
       cursor: grab;
-      /* La rotation initiale est appliquée par JS maintenant */
+      transform: rotateX(-3deg) rotateY(0deg);
       -ms-touch-action: none;
       touch-action: none;
       width: 100%;
@@ -289,8 +144,8 @@
 
     .carousel img {
       position: absolute;
-      width: var(--img-size); /* Utilise la variable dynamique */
-      height: var(--img-size); /* Utilise la variable dynamique */
+      width: var(--img-size);
+      height: var(--img-size);
       object-fit: cover;
       border-radius: 12px;
       box-shadow: 0 0 14px rgba(0,0,0,0.7);
@@ -316,38 +171,188 @@
       max-width: 90vw;
       max-height: 70vh;
       border-radius: 10px;
-      box-shadow: 0 0 20px rgba(255, 255, 255, 0.5); /* Ombre plus visible pour le zoom */
     }
 
     .zoom-comment {
       color: white;
-      margin-top: 15px; /* Augmente la marge */
+      margin-top: 10px;
       text-align: center;
-      font-size: 1.2em; /* Augmente la taille de police */
-      padding: 0 20px; /* Ajoute du padding */
+      font-size: 1.1em;
     }
 
     .close-btn {
       position: absolute;
       top: 20px;
       right: 20px;
-      font-size: 2.5em; /* Rends le bouton plus grand */
+      font-size: 2em;
       color: white;
       cursor: pointer;
-      background: rgba(0,0,0,0.5); /* Fond semi-transparent */
-      border-radius: 50%; /* Bouton rond */
-      width: 40px;
-      height: 40px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      line-height: 1; /* Aligne le 'x' au centre */
-      transition: background 0.3s, transform 0.3s;
     }
 
-    .close-btn:hover {
-      background: rgba(0,0,0,0.8);
-      transform: scale(1.1);
+    @keyframes spinY {
+      from {
+        transform: rotateY(0deg);
+      }
+      to {
+        transform: rotateY(360deg);
+      }
+    }
+
+    /* Ajustements pour le mode mobile portrait */
+   @media (max-width: 768px) and (orientation: portrait) {
+      :root {
+        --img-size: 25vw;
+        --perspective: 800px;
+      }
+
+      .carousel-container {
+        position: absolute;
+        left: 50%;
+        top: calc(230px + 2vh); /* Adjust as needed */
+        transform: translateX(-50%);
+        width: 100vw;
+        height: calc(100vh - (230px + 2vh) - 20px); /* Adjust as needed */
+        overflow: hidden;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .carousel {
+        width: 100%;
+        height: 100%;
+        transform-style: preserve-3d;
+      }
+
+      .carousel img {
+        position: absolute;
+        width: var(--img-size);
+        height: var(--img-size);
+        object-fit: cover;
+        border-radius: 12px;
+        box-shadow: 0 0 10px rgba(0,0,0,0.5);
+        opacity: 1;
+        filter: none;
+        z-index: 1;
+      }
+
+      /* Modifications pour mobile portrait */
+      .page-title {
+        font-size: 1.4em; /* Réduit la taille de la police du titre */
+        margin-top: 15px; /* Ajuste la marge supérieure */
+        padding: 5px 10px; /* Réduit le padding */
+      }
+
+      .filters button {
+        font-size: 0.8em; /* Réduit la taille de la police des boutons */
+        padding: 4px 8px; /* Réduit le padding des boutons */
+        margin: 2px; /* Réduit la marge entre les boutons */
+      }
+    }
+
+    @media (max-width: 768px) and (orientation: landscape) {
+      :root {
+        --img-size: 19vw;
+        --sphere-radius-desktop: 400px; /* Reduced for landscape on smaller screens */
+        --perspective: 3500px;
+      }
+
+      .carousel-container {
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        perspective: var(--perspective);
+        height: 100vh;
+        width: 100vw;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        pointer-events: none;
+      }
+
+      .carousel {
+        transform-style: preserve-3d;
+        pointer-events: auto;
+        cursor: grab;
+      }
+
+      .carousel img {
+        position: absolute;
+        width: var(--img-size);
+        height: var(--img-size);
+        object-fit: cover;
+        border-radius: 12px;
+        box-shadow: 0 0 14px rgba(0, 0, 0, 0.7);
+        transition: transform 0.6s, z-index 0.6s, opacity 0.6s, filter 0.6s;
+        z-index: 1;
+        user-select: none;
+        will-change: transform, opacity, filter;
+      }
+    }
+
+    @media (orientation: landscape) and (max-height: 500px) {
+      :root {
+        --img-size: 12vw;
+        --sphere-radius-desktop: 370px; /* Further reduced for very short landscape screens */
+        --perspective: 4200px;
+      }
+
+      .carousel-container {
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        perspective: var(--perspective);
+        height: 100vh;
+        width: 100vw;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        pointer-events: none;
+      }
+
+      .carousel {
+        transform-style: preserve-3d;
+        pointer-events: auto;
+        cursor: grab;
+      }
+
+      .carousel img {
+        position: absolute;
+        width: var(--img-size);
+        height: var(--img-size);
+        object-fit: cover;
+        border-radius: 12px;
+        box-shadow: 0 0 14px rgba(0, 0, 0, 0.7);
+        transition: transform 0.6s, z-index 0.6s, opacity 0.6s, filter 0.6s;
+        z-index: 1;
+        user-select: none;
+        will-change: transform, opacity, filter;
+      }
+
+      .logo img {
+        height: 28px;
+      }
+
+      header {
+        padding: 2px 6px;
+        border-bottom: 1px solid #ccc;
+      }
+
+      nav ul li a {
+        font-size: 11px;
+        padding: 4px 6px;
+      }
+
+      .page-title {
+        font-size: 1.2em;
+        margin-top: 10px;
+        padding: 4px 10px;
+      }
+      .filters button {
+        font-size: 0.7em;
+        padding: 4px 8px;
+        margin: 2px;
+      }
     }
   </style>
 </head>
@@ -452,19 +457,23 @@
     let dragged = false;
     let currentFilter = 'all';
 
-    // Configuration pour la répartition des images sur la sphère en mode mobile portrait
+    // --- NOUVELLE CONFIGURATION POUR MOBILE PORTRAIT ---
     const mobilePortraitSphereConfig = {
-      // Le rayon de base est maintenant lu depuis la variable CSS --sphere-radius
+      baseRadius: 260, // Rayon de base de la sphère en mobile portrait (correspond à --sphere-radius-mobile-portrait)
       rings: [
-        { numImages: 1, verticalOffset: 0.95, ringRadiusFactor: 0.05 },
-        { numImages: 4, verticalOffset: 0.7, ringRadiusFactor: 0.6 },
-        { numImages: 7, verticalOffset: 0.3, ringRadiusFactor: 0.8 },
-        { numImages: 10, verticalOffset: 0, ringRadiusFactor: 1.0 },
-        { numImages: 7, verticalOffset: -0.3, ringRadiusFactor: 0.8 },
-        { numImages: 4, verticalOffset: -0.7, ringRadiusFactor: 0.6 },
-        { numImages: 1, verticalOffset: -0.95, ringRadiusFactor: 0.05 }
+        { numImages: 1, verticalOffset: 0.95, ringRadiusFactor: 0.1 }, // Haut (Pôle Nord)
+        { numImages: 5, verticalOffset: 0.7, ringRadiusFactor: 0.6 },
+        { numImages: 10, verticalOffset: 0.3, ringRadiusFactor: 0.9 },
+        { numImages: 15, verticalOffset: 0, ringRadiusFactor: 1.0 }, // Équateur
+        { numImages: 10, verticalOffset: -0.3, ringRadiusFactor: 0.9 },
+        { numImages: 5, verticalOffset: -0.7, ringRadiusFactor: 0.6 },
+        { numImages: 1, verticalOffset: -0.95, ringRadiusFactor: 0.1 }  // Bas (Pôle Sud)
       ]
+      // verticalOffset: -1 (bas) à 1 (haut). 0 est l'équateur.
+      // ringRadiusFactor: 0 (pôle) à 1 (équateur). Définit la taille du cercle.
     };
+    // --- FIN NOUVELLE CONFIGURATION ---
+
 
     function isMobilePortrait() {
       return window.innerWidth <= 768 && window.innerHeight > window.innerWidth;
@@ -473,12 +482,19 @@
     function positionImages() {
       const images = Array.from(carousel.querySelectorAll('img'));
       const total = images.length;
+      const isPortraitMobile = isMobilePortrait();
 
-      // Récupère la valeur actuelle de --sphere-radius depuis le CSS
-      const sphereRadius = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--sphere-radius'));
+      // La variable CSS '--sphere-radius-mobile-portrait' est désormais gérée via mobilePortraitSphereConfig.baseRadius
+      const sphereRadius = isPortraitMobile
+        ? mobilePortraitSphereConfig.baseRadius
+        : parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--sphere-radius-desktop'));
 
-      if (!isMobilePortrait()) {
-        // Mode Bureau/Paysage : Disposition cylindrique simple
+      // Mise à jour de la variable CSS pour assurer la cohérence si elle est lue ailleurs
+      document.documentElement.style.setProperty('--sphere-radius-mobile-portrait', `${mobilePortraitSphereConfig.baseRadius}px`);
+
+
+      if (!isPortraitMobile) {
+        // Mode Bureau/Paysage : Arrangement cylindrique simple pour un effet de carrousel
         const step = 360 / total;
         images.forEach((img, i) => {
           const imgAngle = step * i;
@@ -490,51 +506,42 @@
           img.style.filter = 'none';
           img.style.zIndex = '1';
         });
+        carousel.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
       } else {
-        // Mode Portrait Mobile : Disposition sphérique par anneaux
+        // Mode Portrait Mobile : Disposition basée sur la nouvelle configuration
         if (total === 0) {
             carousel.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
             return;
         }
 
         let currentImageIndex = 0;
-        // This variable is not strictly needed for the logic below, but kept for context.
-        // const totalConfiguredImages = mobilePortraitSphereConfig.rings.reduce((sum, ring) => sum + ring.numImages, 0);
+        const totalImagesInConfig = mobilePortraitSphereConfig.rings.reduce((sum, ring) => sum + ring.numImages, 0);
 
         for (let i = 0; i < mobilePortraitSphereConfig.rings.length; i++) {
             const ringConfig = mobilePortraitSphereConfig.rings[i];
+            const numImagesInThisRing = ringConfig.numImages;
+
             const y = sphereRadius * ringConfig.verticalOffset;
             const currentRingRadius = sphereRadius * ringConfig.ringRadiusFactor;
-            const effectiveRingRadius = Math.max(0.1, currentRingRadius); // Ensure radius is not zero
 
-            let numImagesInThisRing = ringConfig.numImages;
+            const effectiveRingRadius = Math.max(0.1, currentRingRadius); // Smallest radius to avoid division by zero
 
-            // Adjust allocation for remaining images to ensure all are placed or hidden
-            if (currentImageIndex + numImagesInThisRing > total && i < mobilePortraitSphereConfig.rings.length - 1) {
-                // If there are more images left than this ring's config, distribute them
-                const remainingImages = total - currentImageIndex;
-                const remainingRings = mobilePortraitSphereConfig.rings.length - i;
-                numImagesInThisRing = Math.ceil(remainingImages / remainingRings);
-                // Ensure we don't try to put more images than the ring was designed for, unless it's the last ring
-                numImagesInThisRing = Math.min(numImagesInThisRing, ringConfig.numImages);
-            } else if (i === mobilePortraitSphereConfig.rings.length - 1) {
-                // If it's the last ring, place all remaining images here
-                numImagesInThisRing = total - currentImageIndex;
-            }
+            const imagesToPlaceInThisRing = Math.min(numImagesInThisRing, total - currentImageIndex);
 
-            const angleStep = numImagesInThisRing > 0 ? 360 / numImagesInThisRing : 0;
+            const angleStep = imagesToPlaceInThisRing > 0 ? 360 / imagesToPlaceInThisRing : 0;
 
-            for (let j = 0; j < numImagesInThisRing; j++) {
-                if (currentImageIndex >= images.length) break;
+            for (let j = 0; j < imagesToPlaceInThisRing; j++) {
+                if (currentImageIndex >= images.length) break; // Safety break
                 const img = images[currentImageIndex];
                 const imgAngle = angleStep * j;
                 const rad = imgAngle * Math.PI / 180;
 
                 const x = Math.sin(rad) * effectiveRingRadius;
                 const z = Math.cos(rad) * effectiveRingRadius;
-
-                // Rotation en X pour que les images s'inclinent avec la sphère
-                const rotationXImg = - (Math.asin(ringConfig.verticalOffset) * 180 / Math.PI);
+                
+                // Pour une véritable orientation sphérique, vous pouvez ajouter une rotation en X basée sur l'offset vertical
+                // Cela fera que les images "pointeront" vers l'extérieur de la sphère.
+                const rotationXImg = - (Math.asin(ringConfig.verticalOffset) * 180 / Math.PI); // Convertir radians en degrés
 
                 img.style.transform = `translateX(${x}px) translateY(${y}px) translateZ(${z}px) rotateY(${imgAngle}deg) rotateX(${rotationXImg}deg) translate(-50%, -50%)`;
                 img.style.opacity = '1';
@@ -543,21 +550,23 @@
                 currentImageIndex++;
             }
         }
-        // Cacher les images excédentaires non positionnées
+
+        // Hide any remaining images if the total count exceeds the configured imagesPerRing sum
         for (let i = currentImageIndex; i < images.length; i++) {
             images[i].style.opacity = '0';
             images[i].style.filter = 'grayscale(100%)';
             images[i].style.zIndex = '-1';
         }
+
+        carousel.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
       }
-      carousel.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
     }
 
     function generateImages(filter = 'all') {
       currentFilter = filter;
       carousel.innerHTML = '';
       const filtered = filter === 'all' ? imagesData : imagesData.filter(img => img.theme === filter);
-      filtered.forEach((data) => {
+      filtered.forEach((data, i) => {
         const img = document.createElement('img');
         img.src = data.src;
         img.setAttribute('data-theme', data.theme);
@@ -570,6 +579,7 @@
       });
       positionImages();
     }
+
 
     function animate() {
       if (autoRotate && !isDragging) {
@@ -597,9 +607,11 @@
       });
     });
 
+    // Filtre initial actif
     document.querySelector('.filters button[data-theme="all"]').classList.add('active');
 
-    // Gestion du drag avec la souris
+
+    // Drag souris
     carousel.addEventListener('mousedown', e => {
       isDragging = true;
       dragged = false;
@@ -610,12 +622,13 @@
 
     document.addEventListener('mouseup', () => {
       isDragging = false;
-      if (!dragged) {
+      // Re-enable autoRotate after a short delay to allow for clicks without initiating rotation immediately
+      if (!dragged) { // Only re-enable if it was a click, not a drag
         autoRotate = true;
       } else {
-        setTimeout(() => { autoRotate = true; }, 500);
+        setTimeout(() => { autoRotate = true; }, 500); // Small delay after drag ends
       }
-      setTimeout(() => { dragged = false; }, 50);
+      setTimeout(() => { dragged = false; }, 50); // Reset dragged flag
     });
 
     document.addEventListener('mousemove', e => {
@@ -623,6 +636,7 @@
         const dx = e.clientX - startX;
         const dy = e.clientY - startY;
 
+        // Add a threshold to determine if it's a drag or a click
         if (Math.abs(dx) > 5 || Math.abs(dy) > 5) {
             dragged = true;
         }
@@ -658,6 +672,7 @@
 
       carousel.addEventListener('touchmove', (e) => {
         if (!isDragging) return;
+        // Empêcher le défilement de la page lors du touchmove dans le carrousel en mode portrait mobile
         if (isMobilePortrait()) {
             e.preventDefault();
         }
@@ -683,29 +698,11 @@
       });
     })();
 
-    // Fermeture du zoom en cliquant en dehors de l'image
     zoomViewer.addEventListener('click', (e) => {
       if (e.target === zoomViewer || e.target === zoomImage) {
         closeZoom();
       }
     });
-
-    // JavaScript pour ajuster dynamiquement la position de la sphère en mode mobile portrait
-    function updateSpherePosition() {
-      if (isMobilePortrait()) {
-        const headerHeight = document.querySelector('header').offsetHeight;
-        const titleHeight = document.querySelector('.page-title').offsetHeight;
-        const filtersElement = document.querySelector('.filters');
-        const filtersHeight = filtersElement.offsetHeight;
-
-        const totalOffset = headerHeight + titleHeight + filtersHeight + 20; // +20px de marge
-        document.documentElement.style.setProperty('--filters-bottom-offset-mobile', `${totalOffset}px`);
-      } else {
-        // En mode paysage ou bureau, on réinitialise pour que le fixed top: 50% reprenne le dessus
-        document.documentElement.style.removeProperty('--filters-bottom-offset-mobile');
-      }
-    }
-
 
     generateImages();
     animate();
@@ -718,21 +715,14 @@
 
       if (currentOrientation !== previousOrientation) {
         previousOrientation = currentOrientation;
+        // Reset rotations when orientation changes to avoid strange jumps
         rotateX = -3;
         rotateY = 0;
-        // On régénère les images car le calcul de position peut dépendre des variables CSS
-        // qui sont mises à jour via les media queries lors d'un changement d'orientation.
         generateImages(currentFilter);
       } else {
-        // Si seule la taille de la fenêtre change sans changement d'orientation,
-        // on se contente de repositionner les images avec les tailles actuelles.
         positionImages();
       }
-      updateSpherePosition(); // Appelle cette fonction lors du redimensionnement
     });
-
-    // Appel initial au chargement de la page pour définir la position de la sphère
-    updateSpherePosition();
   </script>
 </body>
 </html>
