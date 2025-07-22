@@ -62,7 +62,8 @@
 
       .filters button {
         font-size: 0.75em;
-        padding: 6px 10px;
+        /* RÉDUCTION DU PADDING POUR MOBILE PORTRAIT */
+        padding: 4px 8px; /* Réduit le padding pour un ajustement plus serré */
         margin: 1px; /* Réduit la marge pour un espacement plus serré */
         min-width: unset;
         flex-basis: auto;
@@ -147,8 +148,9 @@
         padding: 4px 10px;
       }
       .filters button {
+        /* RÉDUCTION DU PADDING POUR PAYSAGE TRÈS COURT */
         font-size: 0.7em;
-        padding: 4px 8px;
+        padding: 3px 6px; /* Encore plus réduit pour s'adapter */
         margin: 2px;
       }
     }
@@ -235,7 +237,8 @@
 
     .filters button {
       margin: 4px;
-      padding: 6px 12px;
+      /* RÉDUCTION DU PADDING PAR DÉFAUT */
+      padding: 5px 10px; /* Diminue le padding pour réduire l'espace */
       font-size: 0.9em;
       border-radius: 6px;
       border: 1px solid #003366;
@@ -690,49 +693,4 @@
       }
     });
 
-    // JavaScript pour ajuster dynamiquement la position de la sphère en mode mobile portrait
-    function updateSpherePosition() {
-      if (isMobilePortrait()) {
-        const headerHeight = document.querySelector('header').offsetHeight;
-        const titleHeight = document.querySelector('.page-title').offsetHeight;
-        const filtersElement = document.querySelector('.filters');
-        const filtersHeight = filtersElement.offsetHeight;
-
-        const totalOffset = headerHeight + titleHeight + filtersHeight + 20; // +20px de marge
-        document.documentElement.style.setProperty('--filters-bottom-offset-mobile', `${totalOffset}px`);
-      } else {
-        // En mode paysage ou bureau, on réinitialise pour que le fixed top: 50% reprenne le dessus
-        document.documentElement.style.removeProperty('--filters-bottom-offset-mobile');
-      }
-    }
-
-
-    generateImages();
-    animate();
-
-    let previousOrientation = window.innerHeight > window.innerWidth ? "portrait" : "landscape";
-
-    window.addEventListener("resize", () => {
-      const isPortrait = window.innerHeight > window.innerWidth;
-      const currentOrientation = isPortrait ? "portrait" : "landscape";
-
-      if (currentOrientation !== previousOrientation) {
-        previousOrientation = currentOrientation;
-        rotateX = -3;
-        rotateY = 0;
-        // On régénère les images car le calcul de position peut dépendre des variables CSS
-        // qui sont mises à jour via les media queries lors d'un changement d'orientation.
-        generateImages(currentFilter);
-      } else {
-        // Si seule la taille de la fenêtre change sans changement d'orientation,
-        // on se contente de repositionner les images avec les tailles actuelles.
-        positionImages();
-      }
-      updateSpherePosition(); // Appelle cette fonction lors du redimensionnement
-    });
-
-    // Appel initial au chargement de la page pour définir la position de la sphère
-    updateSpherePosition();
-  </script>
-</body>
-</html>
+    // JavaScript pour ajuster
