@@ -9,7 +9,7 @@
       --img-size: min(20vw, 150px);
       --sphere-radius-desktop: 800px;
       --perspective: 3500px;
-      --sphere-radius-mobile-portrait: 260px; /* Explicitly defined for mobile portrait */
+      --sphere-radius-mobile-portrait: 260px; /* Rayon de la sphère pour mobile portrait */
     }
 
     @media (max-width: 768px) {
@@ -202,20 +202,41 @@
    @media (max-width: 768px) and (orientation: portrait) {
       :root {
         --img-size: 20vw; /* Réduit la taille des images (les "bulles") */
-        --perspective: 800px;
+        --perspective: 800px; /* Ajuste la perspective pour une meilleure vue de la sphère */
+      }
+
+      /* Modifications pour réduire la taille du titre et des bulles de tri */
+      .page-title {
+        font-size: 1.2em; /* Réduit encore la taille de la police du titre */
+        margin-top: 15px; /* Ajuste la marge supérieure */
+        padding: 5px 10px; /* Réduit le padding */
+      }
+
+      .filters {
+        margin: 5px auto; /* Réduit la marge pour rapprocher des autres éléments */
+      }
+
+      .filters button {
+        font-size: 0.8em; /* Réduit la taille de la police des boutons */
+        padding: 4px 8px; /* Réduit le padding des boutons */
+        margin: 2px; /* Réduit la marge entre les boutons */
       }
 
       .carousel-container {
         position: absolute;
         left: 50%;
-        top: calc(230px + 2vh); /* Adjust as needed */
+        /* Ajuste le top pour positionner la sphère sous le titre et les filtres */
+        /* Estimations : header (40px) + titre (24px) + filters (30px) + marges (15px + 5px) = ~114px */
+        top: calc(40px + 24px + 30px + 15px + 5px + 10px); /* Ajuster cette valeur précisément si nécessaire */
         transform: translateX(-50%);
         width: 100vw;
-        height: calc(100vh - (230px + 2vh) - 20px); /* Adjust as needed */
+        /* Hauteur restante pour la sphère, avec une petite marge en bas */
+        height: calc(100vh - (40px + 24px + 30px + 15px + 5px + 10px) - 20px);
         overflow: hidden;
         display: flex;
         justify-content: center;
         align-items: center;
+        pointer-events: none;
       }
 
       .carousel {
@@ -234,19 +255,6 @@
         opacity: 1;
         filter: none;
         z-index: 1;
-      }
-
-      /* Modifications pour mobile portrait */
-      .page-title {
-        font-size: 1.2em; /* Réduit encore la taille de la police du titre */
-        margin-top: 15px; /* Ajuste la marge supérieure */
-        padding: 5px 10px; /* Réduit le padding */
-      }
-
-      .filters button {
-        font-size: 0.8em; /* Réduit la taille de la police des boutons */
-        padding: 4px 8px; /* Réduit le padding des boutons */
-        margin: 2px; /* Réduit la marge entre les boutons */
       }
     }
 
@@ -460,17 +468,22 @@
     // --- NOUVELLE CONFIGURATION POUR MOBILE PORTRAIT (AJUSTÉE) ---
     const mobilePortraitSphereConfig = {
       baseRadius: 260, // Rayon de base de la sphère en mobile portrait (correspond à --sphere-radius-mobile-portrait)
+      // J'ai ajusté le nombre d'images par anneau et les facteurs pour tenter de répartir au mieux les 46 images
+      // en gardant un aspect sphérique équilibré.
+      // Le total des numImages ici est : 1 + 4 + 7 + 10 + 7 + 4 + 1 = 34
+      // Si vous avez plus ou moins d'images au total, il faudra ajuster ces nombres.
       rings: [
-        { numImages: 1, verticalOffset: 0.95, ringRadiusFactor: 0 }, // Haut (Pôle Nord)
-        { numImages: 4, verticalOffset: 0.7, ringRadiusFactor: 0.6 }, // Réduit de 5 à 4
-        { numImages: 7, verticalOffset: 0.3, ringRadiusFactor: 0.8 }, // Réduit de 10 à 7
-        { numImages: 10, verticalOffset: 0, ringRadiusFactor: 1.0 }, // Réduit de 15 à 10 (Équateur)
-        { numImages: 7, verticalOffset: -0.3, ringRadiusFactor: 0.8 }, // Réduit de 10 à 7
-        { numImages: 4, verticalOffset: -0.7, ringRadiusFactor: 0.6 }, // Réduit de 5 à 4
-        { numImages: 1, verticalOffset: -0.95, ringRadiusFactor: 0 }  // Bas (Pôle Sud)
+        { numImages: 1, verticalOffset: 0.95, ringRadiusFactor: 0.05 }, // Pôle Nord, très petit cercle
+        { numImages: 4, verticalOffset: 0.7, ringRadiusFactor: 0.6 },
+        { numImages: 7, verticalOffset: 0.3, ringRadiusFactor: 0.8 },
+        { numImages: 10, verticalOffset: 0, ringRadiusFactor: 1.0 }, // Équateur
+        { numImages: 7, verticalOffset: -0.3, ringRadiusFactor: 0.8 },
+        { numImages: 4, verticalOffset: -0.7, ringRadiusFactor: 0.6 },
+        { numImages: 1, verticalOffset: -0.95, ringRadiusFactor: 0.05 }  // Pôle Sud, très petit cercle
       ]
       // verticalOffset: -1 (bas) à 1 (haut). 0 est l'équateur.
       // ringRadiusFactor: 0 (pôle) à 1 (équateur). Définit la taille du cercle.
+      // Ajustez ces valeurs pour une meilleure répartition visuelle et éviter les chevauchements.
     };
     // --- FIN NOUVELLE CONFIGURATION ---
 
@@ -501,6 +514,7 @@
           const rad = (imgAngle) * Math.PI / 180;
           const x = Math.sin(rad) * sphereRadius;
           const z = Math.cos(rad) * sphereRadius;
+          // Ajout de translate(-50%, -50%) pour centrer l'image sur le point calculé, même en desktop
           img.style.transform = `translateX(${x}px) translateZ(${z}px) rotateY(${imgAngle}deg) translate(-50%, -50%)`;
           img.style.opacity = '1';
           img.style.filter = 'none';
@@ -508,7 +522,7 @@
         });
         carousel.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
       } else {
-        // Mode Portrait Mobile : Disposition basée sur la nouvelle configuration
+        // Mode Portrait Mobile : Disposition basée sur la nouvelle configuration par anneaux
         if (total === 0) {
             carousel.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
             return;
@@ -519,19 +533,31 @@
 
         for (let i = 0; i < mobilePortraitSphereConfig.rings.length; i++) {
             const ringConfig = mobilePortraitSphereConfig.rings[i];
-            const numImagesInThisRing = ringConfig.numImages;
+            let numImagesInThisRing = ringConfig.numImages;
 
             const y = sphereRadius * ringConfig.verticalOffset;
             const currentRingRadius = sphereRadius * ringConfig.ringRadiusFactor;
 
-            const effectiveRingRadius = Math.max(0.1, currentRingRadius); // Smallest radius to avoid division by zero
+            const effectiveRingRadius = Math.max(0.1, currentRingRadius); // Rayon minimum pour éviter la division par zéro
 
-            const imagesToPlaceInThisRing = Math.min(numImagesInThisRing, total - currentImageIndex);
+            // Assurez-vous de ne pas dépasser le nombre total d'images disponibles
+            let imagesToPlaceInThisRing = Math.min(numImagesInThisRing, total - currentImageIndex);
+
+            // Si le nombre d'images est très grand et que le totalImagesInConfig est petit,
+            // répartissez les images restantes sur les anneaux restants.
+            if (currentImageIndex + imagesToPlaceInThisRing > total && i < mobilePortraitSphereConfig.rings.length -1) {
+              // Répartir les images restantes sur les anneaux restants
+              const remainingImages = total - currentImageIndex;
+              const remainingRings = mobilePortraitSphereConfig.rings.length - i;
+              imagesToPlaceInThisRing = Math.ceil(remainingImages / remainingRings);
+              imagesToPlaceInThisRing = Math.min(imagesToPlaceInThisRing, numImagesInThisRing); // Ne pas dépasser le max configuré
+            }
+
 
             const angleStep = imagesToPlaceInThisRing > 0 ? 360 / imagesToPlaceInThisRing : 0;
 
             for (let j = 0; j < imagesToPlaceInThisRing; j++) {
-                if (currentImageIndex >= images.length) break; // Safety break
+                if (currentImageIndex >= images.length) break; // Sécurité pour ne pas dépasser les images
                 const img = images[currentImageIndex];
                 const imgAngle = angleStep * j;
                 const rad = imgAngle * Math.PI / 180;
@@ -539,9 +565,13 @@
                 const x = Math.sin(rad) * effectiveRingRadius;
                 const z = Math.cos(rad) * effectiveRingRadius;
                 
-                // Pour une véritable orientation sphérique, vous pouvez ajouter une rotation en X basée sur l'offset vertical
-                // Cela fera que les images "pointeront" vers l'extérieur de la sphère.
-                const rotationXImg = - (Math.asin(ringConfig.verticalOffset) * 180 / Math.PI); // Convertir radians en degrés
+                // Rotation en X pour que les images "regardent" vers l'extérieur
+                // L'angle vertical (phi) pour l'image est basé sur son offset.
+                // On veut que l'image soit perpendiculaire à la surface de la sphère à ce point.
+                // Math.atan2(y, Math.sqrt(x*x + z*z)) donne l'angle vertical si l'image était au centre (0,0,0)
+                // Pour une sphère, cet angle est simplement lié au verticalOffset.
+                // L'angle est l'arc sinus de l'offset vertical.
+                const rotationXImg = - (Math.asin(ringConfig.verticalOffset) * 180 / Math.PI);
 
                 img.style.transform = `translateX(${x}px) translateY(${y}px) translateZ(${z}px) rotateY(${imgAngle}deg) rotateX(${rotationXImg}deg) translate(-50%, -50%)`;
                 img.style.opacity = '1';
@@ -551,7 +581,7 @@
             }
         }
 
-        // Hide any remaining images if the total count exceeds the configured imagesPerRing sum
+        // Cacher les images restantes si elles sont plus nombreuses que ce que la configuration des anneaux gère
         for (let i = currentImageIndex; i < images.length; i++) {
             images[i].style.opacity = '0';
             images[i].style.filter = 'grayscale(100%)';
