@@ -457,17 +457,17 @@
     let dragged = false;
     let currentFilter = 'all';
 
-    // --- NOUVELLE CONFIGURATION POUR MOBILE PORTRAIT ---
+    // --- NOUVELLE CONFIGURATION POUR MOBILE PORTRAIT (AJUSTÉE) ---
     const mobilePortraitSphereConfig = {
       baseRadius: 260, // Rayon de base de la sphère en mobile portrait (correspond à --sphere-radius-mobile-portrait)
       rings: [
-        { numImages: 1, verticalOffset: 0.95, ringRadiusFactor: 0.1 }, // Haut (Pôle Nord)
-        { numImages: 5, verticalOffset: 0.7, ringRadiusFactor: 0.6 },
-        { numImages: 10, verticalOffset: 0.3, ringRadiusFactor: 0.9 },
-        { numImages: 15, verticalOffset: 0, ringRadiusFactor: 1.0 }, // Équateur
-        { numImages: 10, verticalOffset: -0.3, ringRadiusFactor: 0.9 },
-        { numImages: 5, verticalOffset: -0.7, ringRadiusFactor: 0.6 },
-        { numImages: 1, verticalOffset: -0.95, ringRadiusFactor: 0.1 }  // Bas (Pôle Sud)
+        { numImages: 1, verticalOffset: 0.95, ringRadiusFactor: 0 }, // Haut (Pôle Nord)
+        { numImages: 4, verticalOffset: 0.7, ringRadiusFactor: 0.6 }, // Réduit de 5 à 4
+        { numImages: 7, verticalOffset: 0.3, ringRadiusFactor: 0.8 }, // Réduit de 10 à 7
+        { numImages: 10, verticalOffset: 0, ringRadiusFactor: 1.0 }, // Réduit de 15 à 10 (Équateur)
+        { numImages: 7, verticalOffset: -0.3, ringRadiusFactor: 0.8 }, // Réduit de 10 à 7
+        { numImages: 4, verticalOffset: -0.7, ringRadiusFactor: 0.6 }, // Réduit de 5 à 4
+        { numImages: 1, verticalOffset: -0.95, ringRadiusFactor: 0 }  // Bas (Pôle Sud)
       ]
       // verticalOffset: -1 (bas) à 1 (haut). 0 est l'équateur.
       // ringRadiusFactor: 0 (pôle) à 1 (équateur). Définit la taille du cercle.
