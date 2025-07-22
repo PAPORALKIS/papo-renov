@@ -457,6 +457,24 @@
     let dragged = false;
     let currentFilter = 'all';
 
+    // --- NOUVELLE CONFIGURATION POUR MOBILE PORTRAIT ---
+    const mobilePortraitSphereConfig = {
+      baseRadius: 260, // Rayon de base de la sphère en mobile portrait (correspond à --sphere-radius-mobile-portrait)
+      rings: [
+        { numImages: 1, verticalOffset: 0.95, ringRadiusFactor: 0.1 }, // Haut (Pôle Nord)
+        { numImages: 5, verticalOffset: 0.7, ringRadiusFactor: 0.6 },
+        { numImages: 10, verticalOffset: 0.3, ringRadiusFactor: 0.9 },
+        { numImages: 15, verticalOffset: 0, ringRadiusFactor: 1.0 }, // Équateur
+        { numImages: 10, verticalOffset: -0.3, ringRadiusFactor: 0.9 },
+        { numImages: 5, verticalOffset: -0.7, ringRadiusFactor: 0.6 },
+        { numImages: 1, verticalOffset: -0.95, ringRadiusFactor: 0.1 }  // Bas (Pôle Sud)
+      ]
+      // verticalOffset: -1 (bas) à 1 (haut). 0 est l'équateur.
+      // ringRadiusFactor: 0 (pôle) à 1 (équateur). Définit la taille du cercle.
+    };
+    // --- FIN NOUVELLE CONFIGURATION ---
+
+
     function isMobilePortrait() {
       return window.innerWidth <= 768 && window.innerHeight > window.innerWidth;
     }
@@ -466,9 +484,14 @@
       const total = images.length;
       const isPortraitMobile = isMobilePortrait();
 
+      // La variable CSS '--sphere-radius-mobile-portrait' est désormais gérée via mobilePortraitSphereConfig.baseRadius
       const sphereRadius = isPortraitMobile
-        ? parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--sphere-radius-mobile-portrait'))
+        ? mobilePortraitSphereConfig.baseRadius
         : parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--sphere-radius-desktop'));
+
+      // Mise à jour de la variable CSS pour assurer la cohérence si elle est lue ailleurs
+      document.documentElement.style.setProperty('--sphere-radius-mobile-portrait', `${mobilePortraitSphereConfig.baseRadius}px`);
+
 
       if (!isPortraitMobile) {
         // Mode Bureau/Paysage : Arrangement cylindrique simple pour un effet de carrousel
@@ -485,34 +508,22 @@
         });
         carousel.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
       } else {
-        // Mode Portrait Mobile : Disposition en 7 anneaux spécifiques
+        // Mode Portrait Mobile : Disposition basée sur la nouvelle configuration
         if (total === 0) {
             carousel.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
             return;
         }
 
-        const imagesPerRing = [1, 5, 10, 15, 10, 5, 1];
-        const numRings = imagesPerRing.length;
         let currentImageIndex = 0;
+        const totalImagesInConfig = mobilePortraitSphereConfig.rings.reduce((sum, ring) => sum + ring.numImages, 0);
 
-        // Calculate vertical positions (y-coordinates) for each ring
-        // The idea is to distribute the rings evenly along the height of the sphere.
-        // We'll use angles from -90 (bottom) to +90 (top) for vertical distribution.
-        const verticalAngles = [];
-        for (let i = 0; i < numRings; i++) {
-            // Distribute angles from 90 (top) to -90 (bottom)
-            verticalAngles.push(90 - (180 / (numRings - 1)) * i);
-        }
-        
-        for (let i = 0; i < numRings; i++) {
-            const numImagesInThisRing = imagesPerRing[i];
-            const latitudeAngleDeg = verticalAngles[i];
-            const latitudeAngleRad = latitudeAngleDeg * Math.PI / 180;
+        for (let i = 0; i < mobilePortraitSphereConfig.rings.length; i++) {
+            const ringConfig = mobilePortraitSphereConfig.rings[i];
+            const numImagesInThisRing = ringConfig.numImages;
 
-            const y = sphereRadius * Math.sin(latitudeAngleRad);
-            const currentRingRadius = sphereRadius * Math.cos(latitudeAngleRad);
+            const y = sphereRadius * ringConfig.verticalOffset;
+            const currentRingRadius = sphereRadius * ringConfig.ringRadiusFactor;
 
-            // Ensure currentRingRadius is not too small for division, especially near poles
             const effectiveRingRadius = Math.max(0.1, currentRingRadius); // Smallest radius to avoid division by zero
 
             const imagesToPlaceInThisRing = Math.min(numImagesInThisRing, total - currentImageIndex);
@@ -527,31 +538,12 @@
 
                 const x = Math.sin(rad) * effectiveRingRadius;
                 const z = Math.cos(rad) * effectiveRingRadius;
-
-                // For a spherical distribution, the image should rotate along its own axis
-                // to face outwards from the sphere's center, relative to its position.
-                // The current setup provides a cylindrical rotation. To truly face outwards
-                // on a sphere, you'd combine rotateY (for horizontal position) and rotateX (for vertical tilt).
-                // However, given the "carousel" naming and your original attempt,
-                // a setup where images essentially "orbit" and tilt to approximate
-                // a sphere might be what you're after.
-                // Let's stick closer to a more direct spherical positioning:
-                // rotateY aligns it around the Y axis (horizontal).
-                // rotateX aligns it vertically, facing "out" from the ring's center.
                 
-                // For a true sphere, images should point away from the center of the sphere.
-                // The rotation for each image should counteract the sphere's rotation so it appears "fixed"
-                // relative to the viewer as the carousel spins, but also rotate to face outwards from its point on the sphere.
-                
-                // Let's simplify the rotation for mobile portrait to just match the horizontal angle for now,
-                // and rely on the perspective to give the depth.
-                const rotationYImg = imgAngle; // Image faces along the tangent of its ring
+                // Pour une véritable orientation sphérique, vous pouvez ajouter une rotation en X basée sur l'offset vertical
+                // Cela fera que les images "pointeront" vers l'extérieur de la sphère.
+                const rotationXImg = - (Math.asin(ringConfig.verticalOffset) * 180 / Math.PI); // Convertir radians en degrés
 
-                // The rotateX should make the image "tilt" along with the sphere's curvature.
-                // It's the negative of the latitude angle.
-                const rotationXImg = -latitudeAngleDeg; 
-
-                img.style.transform = `translateX(${x}px) translateY(${y}px) translateZ(${z}px) rotateY(${rotationYImg}deg) rotateX(${rotationXImg}deg) translate(-50%, -50%)`;
+                img.style.transform = `translateX(${x}px) translateY(${y}px) translateZ(${z}px) rotateY(${imgAngle}deg) rotateX(${rotationXImg}deg) translate(-50%, -50%)`;
                 img.style.opacity = '1';
                 img.style.filter = 'none';
                 img.style.zIndex = '1';
@@ -559,7 +551,7 @@
             }
         }
 
-        // Hide any remaining images if the total count is less than 47 (the sum of imagesPerRing)
+        // Hide any remaining images if the total count exceeds the configured imagesPerRing sum
         for (let i = currentImageIndex; i < images.length; i++) {
             images[i].style.opacity = '0';
             images[i].style.filter = 'grayscale(100%)';
@@ -592,13 +584,6 @@
     function animate() {
       if (autoRotate && !isDragging) {
         rotateY += 0.10;
-        // No need to call positionImages here every frame, as rotateY is applied directly to carousel
-        // and images' transforms are relative to the carousel's rotation.
-        // However, if images' individual positions also depend on the *current* carousel rotation for dynamic effects,
-        // then positionImages() might be needed or a more granular update.
-        // For a static spherical layout that rotates, just applying the rotation to the carousel is enough.
-        // But your current positionImages() re-calculates x,y,z based on the absolute rotateY for the desktop mode,
-        // and also for mobile. So keeping it for now, though it might be slightly inefficient.
         positionImages();
       }
       requestAnimationFrame(animate);
