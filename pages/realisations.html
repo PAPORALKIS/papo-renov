@@ -97,10 +97,15 @@
       margin: 10px auto;
       position: relative;
       z-index: 10;
+      /* Ajout pour permettre aux boutons de passer à la ligne */
+      display: flex; /* Utilise flexbox pour l'alignement des boutons */
+      flex-wrap: wrap; /* Permet aux éléments de passer à la ligne si l'espace est insuffisant */
+      justify-content: center; /* Centre les boutons horizontalement */
+      padding: 0 10px; /* Ajoute un peu de padding pour éviter que les boutons ne touchent les bords sur de petits écrans */
     }
 
     .filters button {
-      margin: 4px;
+      margin: 4px; /* Marge autour de chaque bouton */
       padding: 6px 12px;
       font-size: 0.9em;
       border-radius: 6px;
@@ -109,6 +114,10 @@
       color: #003366;
       cursor: pointer;
       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      /* Définit une largeur minimale pour les boutons, permettant à 3 ou 2 boutons de tenir par ligne */
+      min-width: 120px; /* Ajustez cette valeur si nécessaire pour la disposition sur 2 lignes */
+      flex-grow: 1; /* Permet aux boutons de s'étirer si l'espace le permet */
+      max-width: 45%; /* Limite la largeur maximale pour encourager le passage à la ligne sur des écrans étroits */
     }
 
     .carousel-container {
@@ -214,25 +223,40 @@
 
       .filters {
         margin: 5px auto; /* Réduit la marge pour rapprocher les boutons de tri des autres éléments */
+        /* Permet aux boutons de tri de s'organiser sur plusieurs lignes */
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        padding: 0 5px; /* Réduit le padding sur les côtés pour les mobiles */
       }
 
       .filters button {
-        font-size: 0.8em; /* Réduit la taille de la police des boutons de tri */
-        padding: 4px 8px; /* Réduit le padding des boutons de tri */
-        margin: 2px; /* Réduit la marge entre les boutons de tri */
+        font-size: 0.75em; /* Réduit un peu plus la taille de la police des boutons de tri */
+        padding: 6px 10px; /* Ajuste le padding pour un meilleur look */
+        margin: 3px; /* Réduit la marge entre les boutons de tri */
+        min-width: unset; /* Supprime le min-width pour laisser flexbox décider */
+        flex-basis: auto; /* Permet aux éléments de prendre la taille de leur contenu */
+        max-width: 100%; /* S'assure qu'ils ne débordent pas */
+        /* Pour forcer 2 lignes, on peut essayer de donner une base de taille plus précise,
+           ou simplement laisser flex-wrap faire le travail en fonction de la taille du texte et du padding.
+           Une `flex-basis` de ~30-45% peut forcer 2-3 éléments par ligne si l'espace est limité.
+           Exemple : flex-basis: calc(50% - 10px); pour 2 par ligne avec des marges.
+           Mais ici, avec `flex-wrap` et `justify-content: center`, ils devraient se répartir naturellement.
+        */
       }
 
       .carousel-container {
         position: absolute;
         left: 50%;
         /* Ajuste le top pour positionner la sphère sous le titre et les filtres. */
-        /* Calcul estimatif : hauteur du header (40px) + hauteur du titre (env. 24px) + hauteur des filtres (env. 30px) */
-        /* + marges diverses (15px + 5px + 10px). Ajustez cette valeur si la sphère n'est pas idéalement placée. */
-        top: calc(40px + 24px + 30px + 15px + 5px + 10px);
+        /* Re-calculer cette valeur car la hauteur des filtres a changé. */
+        /* Hauteur estimée du header (40px) + titre (env. 24px) + filtres (maintenant sur 2 lignes, donc environ 2 * (bouton_height + margin) ) */
+        /* Ex: 40px (header) + 24px (title) + (2 * (6px+10px padding + 2px border + 3px margin)*2 = 2 * (21*2) ) = 40 + 24 + 84 = 148px. */
+        /* On va utiliser une valeur plus flexible basée sur la fin des filtres. */
+        top: calc(var(--filters-bottom-offset-mobile, 150px)); /* Variable CSS pour ajuster dynamiquement */
         transform: translateX(-50%);
         width: 100vw;
-        /* Hauteur restante pour la sphère, avec une petite marge en bas */
-        height: calc(100vh - (40px + 24px + 30px + 15px + 5px + 10px) - 20px);
+        height: calc(100vh - var(--filters-bottom-offset-mobile, 150px) - 20px); /* Ajuste la hauteur disponible pour la sphère */
         overflow: hidden;
         display: flex;
         justify-content: center;
@@ -740,6 +764,19 @@
       }
     });
 
+    // JavaScript pour ajuster dynamiquement la position de la sphère
+    function updateSpherePosition() {
+      const headerHeight = document.querySelector('header').offsetHeight; // Hauteur du header
+      const titleHeight = document.querySelector('.page-title').offsetHeight; // Hauteur du titre
+      const filtersElement = document.querySelector('.filters'); // L'élément des filtres
+      const filtersHeight = filtersElement.offsetHeight; // Hauteur des filtres
+
+      // Calcule le décalage total à partir du haut
+      const totalOffset = headerHeight + titleHeight + filtersHeight + 20; // +20px de marge supplémentaire
+      document.documentElement.style.setProperty('--filters-bottom-offset-mobile', `${totalOffset}px`); // Met à jour la variable CSS
+    }
+
+
     generateImages(); // Génère les images au chargement initial
     animate(); // Démarre l'animation
 
@@ -758,7 +795,11 @@
       } else {
         positionImages(); // Si seule la taille change, repositionne simplement les images
       }
+      updateSpherePosition(); // Appelle cette fonction lors du redimensionnement
     });
+
+    // Appel initial au chargement de la page pour définir la position de la sphère
+    updateSpherePosition();
   </script>
 </body>
 </html>
