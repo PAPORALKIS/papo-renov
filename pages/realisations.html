@@ -201,17 +201,19 @@
     /* Ajustements pour le mode mobile portrait */
    @media (max-width: 768px) and (orientation: portrait) {
       :root {
-        --img-size: 23vw;
-        --perspective: 800px;
+        --img-size: 22vw; /* Légèrement réduit pour un meilleur espacement */
+        --perspective: 700px; /* Ajusté pour une meilleure perception de la rondeur */
       }
 
       .carousel-container {
         position: absolute;
         left: 50%;
-        top: calc(150px + 2vh); /* Adjust as needed */
+        /* Ajustez cette valeur pour remonter ou descendre la sphère */
+        top: calc(140px + 2vh); /* Exemple: ajusté pour laisser plus de place en haut */
         transform: translateX(-50%);
         width: 100vw;
-        height: calc(100vh - (150px + 2vh) - 20px); /* Adjust as needed */
+        /* Ajustez cette hauteur pour que la sphère ait suffisamment d'espace */
+        height: calc(100vh - (140px + 2vh) - 20px); /* Ajusté en fonction du top */
         overflow: hidden;
         display: flex;
         justify-content: center;
@@ -243,10 +245,14 @@
         padding: 2px 5px; /* Réduit le padding */
       }
 
+      .filters {
+        margin: 2px auto; /* Réduit la marge du conteneur des filtres */
+      }
+
       .filters button {
         font-size: 0.7em; /* Réduit la taille de la police des boutons */
         padding: 3px 6px; /* Réduit le padding des boutons */
-        margin: 2m1px; /* Réduit la marge entre les boutons */
+        margin: 1px; /* Réduit la marge entre les boutons */
       }
     }
 
@@ -459,17 +465,16 @@
 
     // --- NOUVELLE CONFIGURATION POUR MOBILE PORTRAIT ---
     const mobilePortraitSphereConfig = {
-  baseRadius: 240, // Rayon de base de la sphère en mobile portrait
-  rings: [
-    { numImages: 1, verticalOffset: 1, ringRadiusFactor: 0 }, // Haut (Pôle Nord)
-    { numImages: 5, verticalOffset: 0.7, ringRadiusFactor: Math.sqrt(1 - 0.7*0.7) }, // ~0.714
-    { numImages: 10, verticalOffset: 0.4, ringRadiusFactor: Math.sqrt(1 - 0.4*0.4) }, // ~0.916
-    { numImages: 15, verticalOffset: 0, ringRadiusFactor: 1.0 }, // Équateur
-    { numImages: 10, verticalOffset: -0.4, ringRadiusFactor: Math.sqrt(1 - (-0.4)*(-0.4)) }, // ~0.916
-    { numImages: 5, verticalOffset: -0.7, ringRadiusFactor: Math.sqrt(1 - (-0.7)*(-0.7)) }, // ~0.714
-    { numImages: 1, verticalOffset: -1, ringRadiusFactor: 0 }  // Bas (Pôle Sud)
-       ]
-
+      baseRadius: 260, // Rayon de base de la sphère en mobile portrait
+      rings: [
+        { numImages: 1, verticalOffset: 0.98, ringRadiusFactor: Math.sqrt(1 - 0.98*0.98) }, // Haut (Pôle Nord) - A ajuster
+        { numImages: 5, verticalOffset: 0.7, ringRadiusFactor: Math.sqrt(1 - 0.7*0.7) },
+        { numImages: 10, verticalOffset: 0.4, ringRadiusFactor: Math.sqrt(1 - 0.4*0.4) },
+        { numImages: 15, verticalOffset: 0, ringRadiusFactor: 1.0 }, // Équateur
+        { numImages: 10, verticalOffset: -0.4, ringRadiusFactor: Math.sqrt(1 - (-0.4)*(-0.4)) },
+        { numImages: 5, verticalOffset: -0.7, ringRadiusFactor: Math.sqrt(1 - (-0.7)*(-0.7)) },
+        { numImages: 1, verticalOffset: -0.98, ringRadiusFactor: Math.sqrt(1 - (-0.98)*(-0.98)) }  // Bas (Pôle Sud) - A ajuster
+      ]
       // verticalOffset: -1 (bas) à 1 (haut). 0 est l'équateur.
       // ringRadiusFactor: 0 (pôle) à 1 (équateur). Définit la taille du cercle.
     };
@@ -542,7 +547,8 @@
                 
                 // Pour une véritable orientation sphérique, vous pouvez ajouter une rotation en X basée sur l'offset vertical
                 // Cela fera que les images "pointeront" vers l'extérieur de la sphère.
-                const rotationXImg = - (Math.asin(ringConfig.verticalOffset) * 180 / Math.PI); // Convertir radians en degrés
+                const rotationXRad = Math.asin(ringConfig.verticalOffset); // angle en radians
+                const rotationXImg = - (rotationXRad * 180 / Math.PI); // Convertir radians en degrés
 
                 img.style.transform = `translateX(${x}px) translateY(${y}px) translateZ(${z}px) rotateY(${imgAngle}deg) rotateX(${rotationXImg}deg) translate(-50%, -50%)`;
                 img.style.opacity = '1';
@@ -642,11 +648,9 @@
             dragged = true;
         }
 
-        rotateY += dx * 0.3;
-        rotateX -= dy * 0.3;
+        rotateY = angleStartY + dx * 0.5;
+        rotateX = angleStartX - dy * 0.5;
 
-        startX = e.clientX;
-        startY = e.clientY;
         positionImages();
       }
     });
