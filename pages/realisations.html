@@ -464,16 +464,22 @@
     let currentFilter = 'all';
 
     // --- NOUVELLE CONFIGURATION POUR MOBILE PORTRAIT ---
-    const mobilePortraitSphereConfig = {
-      baseRadius: 240, // Rayon de base de la sphère en mobile portrait
+        const mobilePortraitSphereConfig = {
+      baseRadius: 240, // Gardez un baseRadius qui est la "référence" de la taille maximale de votre sphère
       rings: [
-        { numImages: 6, verticalOffset: 0.7, ringRadiusFactor: Math.sqrt(1 - 0.7*0.7) },
-        { numImages: 10, verticalOffset: 0.4, ringRadiusFactor: Math.sqrt(1 - 0.4*0.4) },
-        { numImages: 15, verticalOffset: 0, ringRadiusFactor: 1.0 }, // Équateur
-        { numImages: 10, verticalOffset: -0.4, ringRadiusFactor: Math.sqrt(1 - (-0.4)*(-0.4)) },
-        { numImages: 6, verticalOffset: -0.7, ringRadiusFactor: Math.sqrt(1 - (-0.7)*(-0.7)) },
-        
+        // Anneau supérieur (presque le pôle)
+        { numImages: 6, verticalOffset: 0.7, ringRadiusFactor: 0.3 }, // Diamètre plus petit
+        // Anneau intermédiaire supérieur
+        { numImages: 10, verticalOffset: 0.4, ringRadiusFactor: 0.6 }, // Diamètre moyen
+        // Équateur
+        { numImages: 15, verticalOffset: 0, ringRadiusFactor: 1.0 }, // Diamètre le plus grand
+        // Anneau intermédiaire inférieur
+        { numImages: 10, verticalOffset: -0.4, ringRadiusFactor: 0.6 }, // Diamètre moyen (symétrique)
+        // Anneau inférieur (presque le pôle)
+        { numImages: 6, verticalOffset: -0.7, ringRadiusFactor: 0.3 }, // Diamètre plus petit (symétrique)
       ]
+    
+
       // verticalOffset: -1 (bas) à 1 (haut). 0 est l'équateur.
       // ringRadiusFactor: 0 (pôle) à 1 (équateur). Définit la taille du cercle.
     };
