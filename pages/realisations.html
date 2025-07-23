@@ -468,15 +468,15 @@
       baseRadius: 240, // Gardez un baseRadius qui est la "référence" de la taille maximale de votre sphère
       rings: [
         // Anneau supérieur (presque le pôle)
-        { numImages: 6, verticalOffset: 0.7, ringRadiusFactor: 0.8 }, // Diamètre plus petit
+        { numImages: 6, verticalOffset: 1, ringRadiusFactor: 0.9 }, // Diamètre plus petit
         // Anneau intermédiaire supérieur
-        { numImages: 10, verticalOffset: 0.4, ringRadiusFactor: 0.9 }, // Diamètre moyen
+        { numImages: 10, verticalOffset: 0.5, ringRadiusFactor: 0.95 }, // Diamètre moyen
         // Équateur
         { numImages: 15, verticalOffset: 0, ringRadiusFactor: 1.0 }, // Diamètre le plus grand
         // Anneau intermédiaire inférieur
-        { numImages: 10, verticalOffset: -0.4, ringRadiusFactor: 0.9 }, // Diamètre moyen (symétrique)
+        { numImages: 10, verticalOffset: -0.5, ringRadiusFactor: -0.95 }, // Diamètre moyen (symétrique)
         // Anneau inférieur (presque le pôle)
-        { numImages: 6, verticalOffset: -0.7, ringRadiusFactor: 0.8 }, // Diamètre plus petit (symétrique)
+        { numImages: 6, verticalOffset: -1, ringRadiusFactor: -0.9 }, // Diamètre plus petit (symétrique)
       ]
     
 
