@@ -208,11 +208,9 @@
       .carousel-container {
         position: absolute;
         left: 50%;
-        /* Ajustez cette valeur pour remonter ou descendre la sphère */
         top: calc(130px + 2vh); /* Ajusté pour un meilleur centrage vertical */
         transform: translateX(-50%);
         width: 100vw;
-        /* Ajustez cette hauteur pour que la sphère ait suffisamment d'espace */
         height: calc(100vh - (130px + 2vh) - 20px); /* Ajusté en fonction du top */
         /* overflow: hidden; */ /* Retiré pour éviter de couper la sphère si elle dépasse légèrement */
         display: flex;
@@ -474,21 +472,4 @@
         { numImages: 15, verticalOffset: 0, ringRadiusFactor: 1.0 }, // Équateur
         { numImages: 10, verticalOffset: -0.4, ringRadiusFactor: Math.sqrt(1 - (-0.4) * (-0.4)) },
         { numImages: 5, verticalOffset: -0.7, ringRadiusFactor: Math.sqrt(1 - (-0.7) * (-0.7)) },
-        { numImages: 2, verticalOffset: -0.99, ringRadiusFactor: Math.sqrt(1 - (-0.99) * (-0.99)) }  // Bas (Pôle Sud)
-      ]
-      // verticalOffset: -1 (bas) à 1 (haut). 0 est l'équateur.
-      // ringRadiusFactor: 0 (pôle) à 1 (équateur). Définit la taille du cercle.
-    };
-    // --- FIN NOUVELLE CONFIGURATION ---
-
-
-    function isMobilePortrait() {
-      return window.innerWidth <= 768 && window.innerHeight > window.innerWidth;
-    }
-
-    function positionImages() {
-      const images = Array.from(carousel.querySelectorAll('img'));
-      const total = images.length;
-      const isPortraitMobile = isMobilePortrait();
-
-      // La variable CSS '--sphere-radius-mobile-portrait' est désormais gérée via mobilePortraitSphereConfig.baseRadius
+        { numImages: 2, verticalOffset: -0.99, ringRadiusFactor: Math.sqrt(
