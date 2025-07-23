@@ -461,13 +461,13 @@
     const mobilePortraitSphereConfig = {
       baseRadius: 260, // Rayon de base de la sphère en mobile portrait (correspond à --sphere-radius-mobile-portrait)
       rings: [
-        { numImages: 1, verticalOffset: 1, ringRadiusFactor: 0.1 }, // Haut (Pôle Nord)
-        { numImages: 5, verticalOffset: 0.7, ringRadiusFactor: 0.6 },
+        { numImages: 1, verticalOffset: 1, ringRadiusFactor: 0 }, // Haut (Pôle Nord)
+        { numImages: 5, verticalOffset: 0.7, ringRadiusFactor: 0.8 },
         { numImages: 10, verticalOffset: 0.4, ringRadiusFactor: 0.9 },
         { numImages: 15, verticalOffset: 0, ringRadiusFactor: 1.0 }, // Équateur
         { numImages: 10, verticalOffset: -0.4, ringRadiusFactor: 0.9 },
-        { numImages: 5, verticalOffset: -0.7, ringRadiusFactor: 0.6 },
-        { numImages: 1, verticalOffset: -1, ringRadiusFactor: 0.1 }  // Bas (Pôle Sud)
+        { numImages: 5, verticalOffset: -0.7, ringRadiusFactor: 0.8 },
+        { numImages: 1, verticalOffset: -1, ringRadiusFactor: 0 }  // Bas (Pôle Sud)
       ]
       // verticalOffset: -1 (bas) à 1 (haut). 0 est l'équateur.
       // ringRadiusFactor: 0 (pôle) à 1 (équateur). Définit la taille du cercle.
