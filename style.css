@@ -1,4 +1,4 @@
- /* === Reset et base === */
+/* === Reset et base === */
 * {
   box-sizing: border-box;
 }
@@ -80,13 +80,19 @@ nav ul li a.active {
 /* === Hero section === */
 .hero {
   position: relative;
-  height: 80vh;
-  background-size: cover;
-  background-position: center;
+  /* Ancien: height: 80vh; */
+  min-height: 70vh; /* Ajusté pour laisser plus de flexibilité */
+  /* Ancien: background-size: cover; background-position: center; */
+  background-size: contain; /* L'image s'adapte entièrement sans être coupée */
+  background-position: center bottom; /* Centre l'image horizontalement et la place en bas */
+  background-repeat: no-repeat; /* Empêche la répétition de l'image */
+  
   display: flex;
+  flex-direction: column; /* Aligne les éléments de l'overlay en colonne */
   align-items: center;
-  justify-content: center;
+  justify-content: flex-end; /* Aligne le contenu vers le bas de la section */
   padding: 20px;
+  text-align: center; /* Assure que le texte est centré */
 }
 
 .overlay {
@@ -97,6 +103,7 @@ nav ul li a.active {
   text-align: center;
   max-width: 90%;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  margin-bottom: 20px; /* Ajout d'une marge en bas pour ne pas coller à l'image */
 }
 
 .highlight {
@@ -161,7 +168,7 @@ footer {
 
   nav ul li a {
     padding: 4px 6px;
-    font-size: 10qpx;
+    font-size: 10px; /* Correction de 10qpx à 10px */
   }
 }
 
@@ -250,7 +257,11 @@ footer {
 
   .btn-contact-smartphone a:hover {
     background-color: #0056b3;
-    @media (max-width: 480px) {
+  }
+}
+
+/* Responsive pour tarifs sur petits écrans */
+@media (max-width: 480px) {
   .tarif-grid {
     grid-template-columns: 1fr;
     gap: 8px;
@@ -267,9 +278,28 @@ footer {
   .tarif-card li {
     font-size: 0.9rem;
   }
-     @media (max-width: 480px) and (orientation: portrait) {
-  header nav ul li a {
-    font-size: 10px; /* ou 20px si tu veux encore plus grand */
+}
+
+/* Media query spécifique pour tablettes en mode paysage */
+@media (min-width: 768px) and (orientation: landscape) {
+  .hero {
+    /* Calcul de la hauteur pour que l'image prenne tout l'espace sous le header */
+    /* La hauteur du header est d'environ 50px (padding 5px+5px + logo 40px) */
+    min-height: calc(100vh - 50px); 
+    background-size: contain; /* Assure que l'image est entièrement visible */
+    background-position: center bottom; /* Positionne l'image en bas */
+  }
+
+  /* Ajustements pour la navigation sur tablette paysage si nécessaire */
+  nav ul li a {
+    font-size: 14px; /* Un peu plus grand pour la lisibilité sur tablette */
+    padding: 8px 12px;
   }
 }
 
+/* Media query pour les smartphones en mode portrait si besoin d'ajustements spécifiques */
+@media (max-width: 480px) and (orientation: portrait) {
+  header nav ul li a {
+    font-size: 10px; /* Taille de police spécifiée pour les liens de navigation */
+  }
+}
