@@ -271,8 +271,14 @@
         object-fit: cover;
         border-radius: 12px;
         /* Ajout d'un léger contour ombré sur les images */
-        box-shadow: 0 0 8px rgba(0,0,0,0.6), 0 0 0 1px rgba(255, 255, 255, 0.3); /* Ombre plus douce et léger contour blanc */
-        opacity: 1;
+        box-shadow: 0 0 12px rgba(0,0,0,0.8), 0 0 0 2px rgba(255, 255, 255, 0.4);
+/* Explication :
+   - '12px' (au lieu de 8px) pour un flou plus étendu.
+   - '0.8' (au lieu de 0.6) pour une ombre plus foncée.
+   - '2px' (au lieu de 1px) pour un contour blanc plus épais.
+   - '0.4' (au lieu de 0.3) pour un contour blanc plus visible.
+*/
+  opacity: 1;
         filter: none;
         z-index: 1;
       }
