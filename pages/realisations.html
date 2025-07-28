@@ -109,7 +109,34 @@
       color: #003366;
       cursor: pointer;
       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      /* Ajoutez une transition pour l'effet de volume */
+      transition: all 0.2s ease-in-out;
     }
+
+    /* Effet de volume au survol/actif */
+    .filters button:hover,
+    .filters button.active {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+    
+    /* Ligne sous les boutons */
+    .filters {
+        position: relative;
+        padding-bottom: 8px; /* Espace pour la ligne */
+    }
+
+    .filters::after {
+        content: '';
+        position: absolute;
+        left: 50%;
+        bottom: 0;
+        transform: translateX(-50%);
+        width: 80%; /* Largeur de la ligne */
+        height: 1px; /* Épaisseur de la ligne */
+        background-color: #003366; /* Couleur de la ligne */
+    }
+
 
     .carousel-container {
       position: fixed;
@@ -205,6 +232,17 @@
         --perspective: 1300px; /* Ajusté pour une meilleure perception de la rondeur */
       }
 
+      /* Atténuer la transparence du fond */
+      body {
+        background: #fdfdfd url('../img/fond-outils-filigrane.jpg');
+        background-repeat: repeat;
+        background-size: 400px auto;
+        background-attachment: fixed;
+        background-position: center;
+        background-color: rgba(253, 253, 253, 0.8); /* Fond blanc semi-transparent */
+        background-blend-mode: overlay; /* Mélange pour l'effet de transparence */
+      }
+
       .carousel-container {
         position: absolute;
         left: 50%;
@@ -232,7 +270,8 @@
         height: var(--img-size);
         object-fit: cover;
         border-radius: 12px;
-        box-shadow: 0 0 10px rgba(0,0,0,0.5);
+        /* Ajout d'un léger contour ombré sur les images */
+        box-shadow: 0 0 8px rgba(0,0,0,0.6), 0 0 0 1px rgba(255, 255, 255, 0.3); /* Ombre plus douce et léger contour blanc */
         opacity: 1;
         filter: none;
         z-index: 1;
@@ -247,12 +286,33 @@
 
       .filters {
         margin: 2px auto; /* Réduit la marge du conteneur des filtres */
+        padding-bottom: 8px; /* Assurez-vous que l'espace pour la ligne est là */
       }
 
       .filters button {
         font-size: 0.7em; /* Réduit la taille de la police des boutons */
         padding: 3px 6px; /* Réduit le padding des boutons */
         margin: 1px; /* Réduit la marge entre les boutons */
+        /* Ajoute du volume aux boutons en mobile portrait */
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        transform: translateY(0); /* Réinitialise le transform au cas où il y aurait eu un hover sur desktop */
+      }
+
+      .filters button:active { /* Effet de pression pour les écrans tactiles */
+          transform: translateY(1px);
+          box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+      }
+
+      /* Ligne sous les boutons en mobile portrait */
+      .filters::after {
+          content: '';
+          position: absolute;
+          left: 50%;
+          bottom: 0;
+          transform: translateX(-50%);
+          width: 90%; /* Ajuste la largeur de la ligne pour mobile */
+          height: 1px;
+          background-color: #003366;
       }
     }
 
