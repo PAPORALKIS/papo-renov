@@ -791,7 +791,11 @@
 
       // Case 1: Mobile Portrait and Filter Active (User's request for carousel)
       if (isPortraitMobile && currentFilter !== 'all') {
-        sphereRadius = 250; // Smaller radius for a tighter carousel effect
+        // Nouvelle taille pour les images en mode filtré portrait mobile
+        const filteredImgSize = '35vw'; // Vous pouvez ajuster cette valeur (ex: '30vw', '120px')
+        // Rayon ajusté pour accueillir les images plus grandes
+        const adjustedSphereRadius = 300; // Ajustez cette valeur si les images se chevauchent ou sont trop éloignées
+
         targetPerspective = '1500px'; // Flatter perspective
         targetRotateX = 0; // Make it flat (no X-axis tilt for carousel)
 
@@ -799,13 +803,16 @@
         images.forEach((img, i) => {
           const imgAngle = step * i;
           const rad = (imgAngle) * Math.PI / 180;
-          const x = Math.sin(rad) * sphereRadius;
-          const z = Math.cos(rad) * sphereRadius;
-          // Apply transform for a flat circle (carousel)
+          const x = Math.sin(rad) * adjustedSphereRadius; // Utilise le rayon ajusté
+          const z = Math.cos(rad) * adjustedSphereRadius; // Utilise le rayon ajusté
+          
           img.style.transform = `translateX(${x}px) translateZ(${z}px) rotateY(${imgAngle}deg) translate(-50%, -50%)`;
           img.style.opacity = '1';
           img.style.filter = 'none';
           img.style.zIndex = '1';
+          // Applique la nouvelle taille spécifiquement ici
+          img.style.width = filteredImgSize;
+          img.style.height = filteredImgSize;
         });
       } else if (isPortraitMobile) { // Case 2: Mobile Portrait and No Filter (Original 3D Sphere)
         sphereRadius = mobilePortraitSphereConfig.baseRadius;
@@ -834,6 +841,9 @@
                 img.style.opacity = '1';
                 img.style.filter = 'none';
                 img.style.zIndex = '1';
+                // Réinitialise la taille si elle a été modifiée par le mode filtré
+                img.style.width = ''; 
+                img.style.height = ''; 
                 currentImageIndex++;
             }
         }
@@ -861,6 +871,9 @@
           img.style.opacity = '1';
           img.style.filter = 'none';
           img.style.zIndex = '1';
+          // Réinitialise la taille si elle a été modifiée par le mode filtré
+          img.style.width = ''; 
+          img.style.height = ''; 
         });
       }
 
