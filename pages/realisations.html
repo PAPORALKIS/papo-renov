@@ -322,6 +322,7 @@
       }
     }
 
+    /* Styles pour les petits écrans en paysage (comme des smartphones en paysage) */
     @media (max-width: 768px) and (orientation: landscape) {
       :root {
         --img-size: 15vw;
@@ -330,7 +331,7 @@
       }
 
       .carousel-container {
-        top: 70%;
+        top: 70%; /* Cette valeur s'appliquera ici */
         left: 50%;
         transform: translate(-50%, -50%);
         perspective: var(--perspective);
@@ -361,6 +362,49 @@
         will-change: transform, opacity, filter;
       }
     }
+
+    /* Nouvelle media query pour les tablettes en paysage (comme votre Tab S6 Lite) */
+    /* Cette media query doit être placée APRÈS les media queries de plus petite largeur */
+    @media (min-width: 769px) and (orientation: landscape) {
+      :root {
+        --img-size: 15vw; /* Vous pouvez ajuster la taille des images ici */
+        --sphere-radius-desktop: 400px; /* Ajustez le rayon si nécessaire */
+        --perspective: 3500px;
+      }
+
+      .carousel-container {
+        top: 70%; /* Ajustez cette valeur pour faire descendre le carrousel sur votre tablette */
+        left: 50%;
+        transform: translate(-50%, -50%);
+        perspective: var(--perspective);
+        height: 100vh;
+        width: 100vw;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        pointer-events: none;
+      }
+
+      .carousel {
+        transform-style: preserve-3d;
+        pointer-events: auto;
+        cursor: grab;
+      }
+
+      .carousel img {
+        position: absolute;
+        width: var(--img-size);
+        height: var(--img-size);
+        object-fit: cover;
+        border-radius: 12px;
+        box-shadow: 0 0 14px rgba(0, 0, 0, 0.7);
+        transition: transform 0.6s, z-index 0.6s, opacity 0.6s, filter 0.6s;
+        z-index: 1;
+        user-select: none;
+        will-change: transform, opacity, filter;
+      }
+    }
+
 
     @media (orientation: landscape) and (max-height: 500px) {
       :root {
