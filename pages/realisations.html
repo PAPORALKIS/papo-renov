@@ -684,8 +684,8 @@
     theme: 'autre', 
     comment: 'Chambre 2', 
     linkedImages: [
-      '../img/CUIEXT2.jpg', // Première image liée
-      '../img/CUIEXT4.jpg'  // Deuxième image liée
+      '../img/1000001275.jpg', // Première image liée
+      '../img/1000001275.jpg'  // Deuxième image liée (tu devrais idéalement avoir un autre fichier ici)
     ] 
   },*/
     
@@ -785,11 +785,6 @@
       const isPortraitMobile = isMobilePortrait();
       const isLandscapeTablet = isTabletLandscape();
 
-      // Si le carrousel est en mode grille, ne pas appliquer les transformations de sphère
-      if (carousel.style.display === 'grid') {
-          return; 
-      }
-
       let sphereRadius;
 
       if (isPortraitMobile) {
@@ -853,97 +848,20 @@
       currentFilter = filter;
       carousel.innerHTML = '';
       const filtered = filter === 'all' ? imagesData : imagesData.filter(img => img.theme === filter);
-      const isPortraitMobile = isMobilePortrait();
-
-      if (isPortraitMobile && filter !== 'all') { // Condition pour l'affichage en carrousel standard sur mobile portrait avec filtre
-        carousel.style.position = 'relative'; // Changer la position pour un affichage en grille/carrousel
-        carousel.style.display = 'grid'; // Utiliser grid pour un affichage responsif
-        carousel.style.gridTemplateColumns = 'repeat(auto-fit, minmax(120px, 1fr))'; // Ajuster les colonnes
-        carousel.style.gap = '10px'; // Espacement entre les images
-        carousel.style.width = '90%'; // Largeur du conteneur
-        carousel.style.height = 'auto'; // Hauteur automatique
-        carousel.style.transform = 'none'; // Réinitialiser les transformations de la sphère
-        carousel.style.overflowY = 'auto'; // Permettre le défilement vertical
-        carousel.style.top = 'unset'; // Réinitialiser top
-        carousel.style.left = 'unset'; // Réinitialiser left
-        carousel.style.transform = 'none'; // Réinitialiser transform
-        carousel.style.pointerEvents = 'auto'; // Rendre les événements de pointeur actifs
-        carousel.style.padding = '10px'; // Ajouter un peu de padding
-        carousel.style.maxHeight = 'calc(100vh - 200px)'; // Limiter la hauteur pour le défilement
-        carousel.style.margin = '20px auto'; // Centrer le carousel en mode liste
-
-        // Ajuster le carousel-container pour qu'il ne cache pas le contenu du carousel
-        document.querySelector('.carousel-container').style.position = 'static';
-        document.querySelector('.carousel-container').style.transform = 'none';
-        document.querySelector('.carousel-container').style.height = 'auto';
-        document.querySelector('.carousel-container').style.width = 'auto';
-        document.querySelector('.carousel-container').style.display = 'block';
-        document.querySelector('.carousel-container').style.pointerEvents = 'auto'; // Rendre les événements de pointeur actifs
-
-        filtered.forEach((data, i) => {
-          const img = document.createElement('img');
-          img.src = data.src;
-          img.setAttribute('data-theme', data.theme);
-          img.setAttribute('data-comment', data.comment);
-          img.setAttribute('data-index', i);
-          img.style.position = 'static'; // Les images sont positionnées statiquement dans la grille
-          img.style.width = '100%'; // S'adapter à la largeur de la colonne de la grille
-          img.style.height = '120px'; // Hauteur fixe pour les miniatures en mode carrousel/grille
-          img.style.objectFit = 'cover';
-          img.style.transform = 'none'; // Réinitialiser les transformations de la sphère
-          img.style.opacity = '1';
-          img.style.filter = 'none';
-          img.style.zIndex = '1';
-          img.style.boxShadow = '0 2px 5px rgba(0,0,0,0.3)'; // Ombre plus légère
-          img.addEventListener('click', (e) => {
-              if (!dragged) showZoom(data);
-              e.stopPropagation();
-          });
-          carousel.appendChild(img);
+      filtered.forEach((data, i) => {
+        const img = document.createElement('img');
+        img.src = data.src;
+        img.setAttribute('data-theme', data.theme);
+        img.setAttribute('data-comment', data.comment);
+        // Ajout d'un index pour retrouver les images liées plus tard
+        img.setAttribute('data-index', i);
+        img.addEventListener('click', (e) => {
+            if (!dragged) showZoom(data); // Passe les données complètes de l'image cliquée
+            e.stopPropagation();
         });
-        // Désactiver la rotation automatique car on n'est plus en mode sphère
-        autoRotate = false;
-        // Supprimer les écouteurs d'événements de drag/touch sur le carousel si ce n'est pas déjà fait
-        // Ou gérer dans les écouteurs eux-mêmes pour ignorer si ce mode est actif.
-      } else { // Affichage sphère ou autres modes
-        // Réinitialiser les styles du carousel pour la sphère
-        carousel.style.position = 'relative'; // Doit rester relative pour la sphère
-        carousel.style.display = 'flex'; // Retour à flex pour centrer la sphère
-        carousel.style.gridTemplateColumns = 'unset';
-        carousel.style.gap = 'unset';
-        carousel.style.overflowY = 'hidden';
-        carousel.style.width = '100%'; // Largeur à 100% pour la sphère
-        carousel.style.height = '100%'; // Hauteur à 100% pour la sphère
-        carousel.style.pointerEvents = 'auto';
-        carousel.style.padding = '0';
-        carousel.style.maxHeight = 'unset';
-        carousel.style.margin = '0 auto'; // Réinitialiser la marge
-
-
-        document.querySelector('.carousel-container').style.position = 'fixed';
-        document.querySelector('.carousel-container').style.top = '50%';
-        document.querySelector('.carousel-container').style.left = '50%';
-        document.querySelector('.carousel-container').style.transform = 'translate(-50%, -50%)';
-        document.querySelector('.carousel-container').style.height = '100vh';
-        document.querySelector('.carousel-container').style.width = '100vw';
-        document.querySelector('.carousel-container').style.display = 'flex';
-        document.querySelector('.carousel-container').style.pointerEvents = 'none'; // Re-désactiver les events sur le container
-
-        filtered.forEach((data, i) => {
-          const img = document.createElement('img');
-          img.src = data.src;
-          img.setAttribute('data-theme', data.theme);
-          img.setAttribute('data-comment', data.comment);
-          img.setAttribute('data-index', i);
-          img.addEventListener('click', (e) => {
-              if (!dragged) showZoom(data);
-              e.stopPropagation();
-          });
-          carousel.appendChild(img);
-        });
-        positionImages(); // Positionne les images en sphère
-        autoRotate = true; // Réactiver l'auto-rotation
-      }
+        carousel.appendChild(img);
+      });
+      positionImages();
     }
 
     function animate() {
@@ -1093,9 +1011,6 @@
 
     // Drag souris
     carousel.addEventListener('mousedown', e => {
-      // Désactiver le drag si le carousel est en mode grille
-      if (carousel.style.display === 'grid') return;
-
       isDragging = true;
       dragged = false;
       startX = e.clientX;
@@ -1107,8 +1022,6 @@
     });
 
     document.addEventListener('mouseup', () => {
-      if (carousel.style.display === 'grid') return; // Ignorer si en mode grille
-
       isDragging = false;
       // Reprendre l'auto-rotation après un court délai pour permettre les clics sans drag
       if (!dragged) { // Si c'est un simple clic, reprendre immédiatement
@@ -1120,8 +1033,6 @@
     });
 
     document.addEventListener('mousemove', e => {
-      if (carousel.style.display === 'grid') return; // Ignorer si en mode grille
-
       if (isDragging) {
         const dx = e.clientX - startX;
         const dy = e.clientY - startY;
@@ -1144,8 +1055,6 @@
       let angleStartY = rotateY;
 
       carousel.addEventListener('touchstart', (e) => {
-        if (carousel.style.display === 'grid') return; // Désactiver le touch si le carousel est en mode grille
-
         if (e.touches.length !== 1) return;
         isDragging = true;
         dragged = false;
@@ -1159,8 +1068,6 @@
       }, { passive: false });
 
       carousel.addEventListener('touchmove', (e) => {
-        if (carousel.style.display === 'grid') return; // Ignorer si en mode grille
-
         if (!isDragging) return;
         if (isMobilePortrait()) {
             e.preventDefault(); // Empêche le défilement de la page en mode portrait mobile pour le carousel
@@ -1180,8 +1087,6 @@
       }, { passive: false });
 
       carousel.addEventListener('touchend', () => {
-        if (carousel.style.display === 'grid') return; // Ignorer si en mode grille
-
         isDragging = false;
         // Reprendre l'auto-rotation après un court délai
         resumeAutoRotateTimeout = setTimeout(() => {
@@ -1205,8 +1110,7 @@
         rotateY = 0;
         generateImages(currentFilter);
       } else {
-        // Appeler generateImages pour s'assurer que les styles sont corrects après redimensionnement
-        generateImages(currentFilter);
+        positionImages();
       }
     });
   </script>
