@@ -653,10 +653,23 @@
     let currentZoomData = null; // Stocke les données de l'image actuellement zoomée
     let currentLinkedImageIndex = 0; // Index de l'image liée actuellement affichée
 
+/* // Exemple 1: Une image principale avec des images liées
+  { 
+    src: '../img/CHBR1.jpg', 
+    theme: 'autre', 
+    comment: 'Chambre 2', 
+    linkedImages: [
+      '../img/1000001275.jpg', // Première image liée
+      '../img/1000001275.jpg'  // Deuxième image liée (tu devrais idéalement avoir un autre fichier ici)
+    ] 
+  },*/
+    
     const imagesData = [
       // Mettez à jour vos données ici avec le champ 'linkedImages'
       // **IMPORTANT : REMPLACEZ '../img/1000001275.jpg' PAR VOS VRAIES IMAGES LIÉES**
-      { src: '../img/CHBR1.jpg', theme: 'autre', comment: 'Chambre 2', linkedImages: ['../img/1000001275.jpg', '../img/1000001275.jpg'] },
+      { src: '../img/CHBR1.jpg', theme: 'autre', comment: 'Chambre 2', linkedImages: [
+                    '../img/1000001275.jpg',
+                    '../img/1000001275.jpg'] },
       { src: '../img/CUIEXT2.jpg', theme: 'cuisine', comment: 'Cuisine extérieure vue 2', linkedImages: ['../img/1000001275.jpg', '../img/1000001275.jpg'] },
       { src: '../img/CUIEXT4.jpg', theme: 'cuisine', comment: 'Cuisine extérieure vue 4', linkedImages: [] },
       { src: '../img/CUIEXT5.jpg', theme: 'cuisine', comment: 'Cuisine extérieure vue 5', linkedImages: [] },
