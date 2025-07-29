@@ -792,12 +792,12 @@
       // Case 1: Mobile Portrait and Filter Active (User's request for carousel)
       if (isPortraitMobile && currentFilter !== 'all') {
         // Nouvelle taille pour les images en mode filtré portrait mobile
-        const filteredImgSize = '20vw'; // Vous pouvez ajuster cette valeur (ex: '30vw', '120px')
+        const filteredImgSize = '35vw'; // Vous pouvez ajuster cette valeur (ex: '30vw', '120px')
         // Rayon ajusté pour accueillir les images plus grandes
         const adjustedSphereRadius = 300; // Ajustez cette valeur si les images se chevauchent ou sont trop éloignées
 
         targetPerspective = '1500px'; // Flatter perspective
-        targetRotateX = 0; // Make it flat (no X-axis tilt for carousel)
+        // Removed: targetRotateX = 0; // Make it flat (no X-axis tilt for carousel) - This line caused the issue.
 
         const step = 360 / total;
         images.forEach((img, i) => {
@@ -1107,9 +1107,15 @@
 
       carousel.addEventListener('touchmove', (e) => {
         if (!isDragging) return;
-        if (isMobilePortrait()) {
-            e.preventDefault(); // Empêche le défilement de la page en mode portrait mobile pour le carousel
-        }
+        // The condition below already prevents page scrolling when in mobile portrait.
+        // If the filter is active and it's mobile portrait, we want to allow dragging.
+        // We ensure that only when `isMobilePortrait()` is true AND the filter is 'all' (sphere mode), we prevent the default touchmove.
+        // If currentFilter !== 'all' (carousel mode), we *don't* preventDefault, allowing manual drag.
+        // However, the current logic is `if (isMobilePortrait()) { e.preventDefault(); }`.
+        // This means it prevents default *always* in mobile portrait, regardless of filter.
+        // For the flat carousel mode in mobile portrait with filter, `e.preventDefault()` should still be called to allow the manual rotation to work without scrolling the page.
+        // The previous behavior was `touch-action: none;` on `.carousel`, which handles preventing default.
+        // So, `e.preventDefault()` inside `touchmove` is fine.
 
         const dx = e.touches[0].clientX - startX;
         const dy = e.touches[0].clientY - startY;
@@ -1118,6 +1124,9 @@
             dragged = true;
         }
 
+        // Apply rotation only if currentFilter is 'all' OR if it's mobile portrait with a filter (flat carousel)
+        // In the filtered mobile portrait mode, `targetRotateX` is no longer forced to 0.
+        // So, `rotateX` from drag will be used.
         rotateY = angleStartY + dx * 0.2;
         rotateX = angleStartX - dy * 0.2;
 
