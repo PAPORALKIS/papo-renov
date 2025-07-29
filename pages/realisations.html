@@ -182,31 +182,146 @@
       will-change: transform, opacity, filter;
     }
 
+    /* Styles pour la nouvelle visionneuse de zoom */
     .zoom-viewer {
       position: fixed;
       top: 0; left: 0;
       width: 100%; height: 100%;
       background: rgba(0,0,0,0.9);
       display: none;
-      align-items: center;
-      justify-content: center;
+      align-items: center; /* Centrer verticalement le contenu principal */
+      justify-content: center; /* Centrer horizontalement le contenu principal */
       flex-direction: column;
       z-index: 100;
+      padding: 20px; /* Ajoute un peu de padding général */
+      box-sizing: border-box; /* Inclure le padding dans la largeur/hauteur */
     }
 
-    .zoom-viewer img {
+    .zoom-main-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 20px; /* Espace entre l'image principale et les images liées */
+      max-height: 80%; /* Pour laisser de la place aux images liées */
+      width: 100%;
+    }
+
+    .zoom-viewer img#zoomImage { /* Cibler spécifiquement l'image principale */
       max-width: 90vw;
-      max-height: 70vh;
+      max-height: 70vh; /* Ajusté pour laisser de la place aux images liées */
+      width: auto; /* Permet à l'image de s'adapter tout en respectant max-width/height */
+      height: auto;
+      object-fit: contain; /* Assure que l'image est entièrement visible */
       border-radius: 10px;
+      margin-bottom: 10px; /* Espace entre l'image et son commentaire */
     }
 
     .zoom-comment {
       color: white;
-      margin-top: 10px;
       text-align: center;
       font-size: 1.1em;
+      max-width: 80vw; /* Limite la largeur du commentaire */
     }
 
+    /* Nouveau style pour le conteneur des images liées */
+    .zoom-linked-images-container {
+        display: flex;
+        align-items: center;
+        width: 90%; /* Occupe une bonne partie de la largeur */
+        max-width: 1200px; /* Limite la largeur sur les grands écrans */
+        margin-top: 10px;
+        position: relative; /* Pour positionner les flèches */
+        box-sizing: border-box;
+    }
+
+    .zoom-linked-images {
+      display: flex;
+      overflow-x: auto; /* Permet le défilement horizontal */
+      -webkit-overflow-scrolling: touch; /* Améliore le défilement sur iOS */
+      scroll-snap-type: x mandatory; /* Snap aux images lors du défilement */
+      gap: 15px; /* Espace entre les images liées */
+      padding: 10px 0; /* Padding vertical */
+      background: rgba(255, 255, 255, 0.1); /* Léger fond pour le défilement */
+      border-radius: 8px;
+      flex-grow: 1; /* Permet de prendre l'espace disponible */
+      justify-content: flex-start; /* Aligne les images au début */
+      scroll-behavior: smooth; /* Défilement doux */
+    }
+
+    .zoom-linked-images::-webkit-scrollbar {
+      height: 8px;
+    }
+
+    .zoom-linked-images::-webkit-scrollbar-track {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+    }
+
+    .zoom-linked-images::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.5);
+      border-radius: 10px;
+    }
+
+    .zoom-linked-images img {
+      width: 100px; /* Taille fixe pour les miniatures */
+      height: 100px;
+      object-fit: cover;
+      border-radius: 8px;
+      cursor: pointer;
+      border: 2px solid transparent; /* Bordure par défaut transparente */
+      transition: transform 0.2s, border-color 0.2s, opacity 0.2s;
+      flex-shrink: 0; /* Empêche les images de rétrécir */
+      scroll-snap-align: center; /* Centre les images lors du snap */
+      box-shadow: 0 0 5px rgba(0,0,0,0.5);
+    }
+
+    .zoom-linked-images img:hover {
+      transform: scale(1.05);
+      border-color: #007bff; /* Bordure au survol */
+    }
+
+    .zoom-linked-images img.active {
+      border-color: #007bff; /* Bordure pour l'image actuellement affichée */
+      transform: scale(1.05);
+      box-shadow: 0 0 10px rgba(0,0,0,0.8), 0 0 0 3px #007bff;
+    }
+
+    /* Flèches de navigation pour les images liées */
+    .nav-arrow {
+        background: rgba(0, 0, 0, 0.5);
+        border: none;
+        color: white;
+        font-size: 2em;
+        cursor: pointer;
+        padding: 5px 10px;
+        border-radius: 50%;
+        margin: 0 5px;
+        z-index: 1;
+        transition: background 0.3s;
+        flex-shrink: 0; /* Empêche le bouton de rétrécir */
+    }
+
+    .nav-arrow:hover {
+        background: rgba(0, 0, 0, 0.8);
+    }
+
+    /* Ajustements responsive pour les images liées */
+    @media (max-width: 768px) {
+      .zoom-linked-images img {
+        width: 80px; /* Plus petit sur mobile */
+        height: 80px;
+      }
+      .zoom-linked-images-container {
+        width: 95%; /* Prend plus de largeur sur mobile */
+      }
+      .nav-arrow {
+        font-size: 1.5em;
+        padding: 3px 8px;
+      }
+    }
+
+    /* Ajustement pour le bouton de fermeture, pour qu'il soit toujours cliquable */
     .close-btn {
       position: absolute;
       top: 20px;
@@ -214,6 +329,7 @@
       font-size: 2em;
       color: white;
       cursor: pointer;
+      z-index: 101; /* Doit être au-dessus de tout le contenu du zoom-viewer */
     }
 
     @keyframes spinY {
@@ -509,9 +625,18 @@
   </div>
 
   <div class="zoom-viewer" id="zoomViewer">
-    <span class="close-btn" onclick="closeZoom()">&times;</span>
-    <img id="zoomImage" src="" alt="zoom">
-    <div class="zoom-comment" id="zoomComment"></div>
+    <span class="close-btn">&times;</span>
+    <div class="zoom-main-content">
+      <img id="zoomImage" src="" alt="zoom">
+      <div class="zoom-comment" id="zoomComment"></div>
+    </div>
+    
+    <div class="zoom-linked-images-container" id="zoomLinkedImagesContainer">
+        <button class="nav-arrow left" id="zoomNavLeft">&lt;</button>
+        <div class="zoom-linked-images" id="zoomLinkedImages">
+            </div>
+        <button class="nav-arrow right" id="zoomNavRight">&gt;</button>
+    </div>
   </div>
 
   <script>
@@ -519,55 +644,65 @@
     const zoomViewer = document.getElementById("zoomViewer");
     const zoomImage = document.getElementById("zoomImage");
     const zoomComment = document.getElementById("zoomComment");
+    const zoomLinkedImagesContainer = document.getElementById("zoomLinkedImagesContainer");
+    const zoomLinkedImages = document.getElementById("zoomLinkedImages");
+    const zoomNavLeft = document.getElementById("zoomNavLeft");
+    const zoomNavRight = document.getElementById("zoomNavRight");
+    const closeBtn = document.querySelector('.close-btn'); // Sélectionnez le bouton de fermeture
+
+    let currentZoomData = null; // Stocke les données de l'image actuellement zoomée
+    let currentLinkedImageIndex = 0; // Index de l'image liée actuellement affichée
 
     const imagesData = [
-      { src: '../img/CHBR1.jpg', theme: 'autre', comment: 'Chambre 2' },
-      { src: '../img/CUIEXT2.jpg', theme: 'cuisine', comment: 'Cuisine extérieure vue 2' },
-      { src: '../img/CUIEXT4.jpg', theme: 'cuisine', comment: 'Cuisine extérieure vue 4' },
-      { src: '../img/CUIEXT5.jpg', theme: 'cuisine', comment: 'Cuisine extérieure vue 5' },
-      { src: '../img/CUIEXT6.jpg', theme: 'cuisine', comment: 'Cuisine extérieure vue 6' },
-      { src: '../img/CUIMARS1.jpg', theme: 'cuisine', comment: 'Cuisine Mars vue 1' },
-      { src: '../img/CUIMARS2.jpg', theme: 'cuisine', comment: 'Cuisine Mars vue 2' },
-      { src: '../img/CUIMARS3.jpg', theme: 'cuisine', comment: 'Cuisine Mars vue 3' },
-      { src: '../img/CUIMARS4.jpg', theme: 'cuisine', comment: 'Cuisine Mars vue 4' },
-      { src: '../img/DRESSMARS1.jpg', theme: 'dressing', comment: 'Dressing Mars vue 1' },
-      { src: '../img/DRESSMARS2.jpg', theme: 'dressing', comment: 'Dressing Mars vue 2' },
-      { src: '../img/DRESSMARS3.jpg', theme: 'dressing', comment: 'Dressing Mars vue 3' },
-      { src: '../img/DRESSMARS4.jpg', theme: 'dressing', comment: 'Dressing Mars vue 4' },
-      { src: '../img/iso1.jpg', theme: 'autre', comment: 'Isolation 1' },
-      { src: '../img/Iso2.jpg', theme: 'autre', comment: 'Isolation 2' },
-      { src: '../img/Iso3.jpg', theme: 'autre', comment: 'Isolation 3' },
-      { src: '../img/Iso4.jpg', theme: 'autre', comment: 'Isolation 4' },
-      { src: '../img/Iso5.jpg', theme: 'autre', comment: 'Isolation 5' },
-      { src: '../img/Iso6.jpg', theme: 'autre', comment: 'Isolation 6' },
-      { src: '../img/SDB1.jpg', theme: 'sdb', comment: 'Salle de bain 1' },
-      { src: '../img/SDB2.jpg', theme: 'sdb', comment: 'Salle de bain 2' },
-      { src: '../img/SDB3.jpg', theme: 'sdb', comment: 'Salle de bain 3' },
-      { src: '../img/SDB4.jpg', theme: 'sdb', comment: 'Salle de bain 4' },
-      { src: '../img/SDB5.jpg', theme: 'sdb', comment: 'Salle de bain 5' },
-      { src: '../img/WC2.jpg', theme: 'sdb', comment: 'WC stylé' },
-      { src: '../img/ext1.jpg', theme: 'exterieur', comment: 'Extérieur 1' },
-      { src: '../img/ext2.jpg', theme: 'exterieur', comment: 'Extérieur 2' },
-      { src: '../img/meuble-laura-1.jpg', theme: 'dressing', comment: 'Dressing Laura 1' },
-      { src: '../img/meuble-laura-2.jpg', theme: 'dressing', comment: 'Dressing Laura 2' },
-      { src: '../img/meuble-laura-3.jpg', theme: 'dressing', comment: 'Dressing Laura 3' },
-      { src: '../img/martegauxavant1.jpg', theme: 'exterieur', comment: 'Avant Martegaux 1' },
-      { src: '../img/martegauxavant2.jpg', theme: 'exterieur', comment: 'Avant Martegaux 2' },
-      { src: '../img/martegauxavant3.jpg', theme: 'exterieur', comment: 'Avant Martegaux 3' },
-      { src: '../img/martegauxB.jpg', theme: 'exterieur', comment: 'Martegaux B' },
-      { src: '../img/martegauxC.jpg', theme: 'exterieur', comment: 'Martegaux C' },
-      { src: '../img/martegauxD.jpg', theme: 'exterieur', comment: 'Martegaux D' },
-      { src: '../img/martegauxE.jpg', theme: 'exterieur', comment: 'Martegaux E' },
-      { src: '../img/velaux0.jpg', theme: 'exterieur', comment: 'Velaux 0' },
-      { src: '../img/velaux1.jpg', theme: 'exterieur', comment: 'Velaux 1' },
-      { src: '../img/velaux2.jpg', theme: 'exterieur', comment: 'Velaux 2' },
-      { src: '../img/velaux3.jpg', theme: 'exterieur', comment: 'Velaux 3' },
-      { src: '../img/renoperier1.jpg', theme: 'cuisine', comment: 'Rénovation studio Marseille 1' },
-      { src: '../img/renoperier2.jpg', theme: 'cuisine', comment: 'Rénovation studio Marseille 2' },
-      { src: '../img/renoperier3.jpg', theme: 'cuisine', comment: 'Rénovation studio Marseille 3' },
-      { src: '../img/renoperier4.jpg', theme: 'cuisine', comment: 'Rénovation studio Marseille 4' },
-      { src: '../img/renoperier5.jpg', theme: 'cuisine', comment: 'Rénovation studio Marseille 5' },
-      { src: '../img/renoperier6.jpg', theme: 'cuisine', comment: 'Rénovation studio Marseille 6' },
+      // Mettez à jour vos données ici avec le champ 'linkedImages'
+      // **IMPORTANT : REMPLACEZ '../img/1000001275.jpg' PAR VOS VRAIES IMAGES LIÉES**
+      { src: '../img/CHBR1.jpg', theme: 'autre', comment: 'Chambre 2', linkedImages: ['../img/1000001275.jpg', '../img/1000001275.jpg'] },
+      { src: '../img/CUIEXT2.jpg', theme: 'cuisine', comment: 'Cuisine extérieure vue 2', linkedImages: ['../img/1000001275.jpg', '../img/1000001275.jpg'] },
+      { src: '../img/CUIEXT4.jpg', theme: 'cuisine', comment: 'Cuisine extérieure vue 4', linkedImages: [] },
+      { src: '../img/CUIEXT5.jpg', theme: 'cuisine', comment: 'Cuisine extérieure vue 5', linkedImages: [] },
+      { src: '../img/CUIEXT6.jpg', theme: 'cuisine', comment: 'Cuisine extérieure vue 6', linkedImages: [] },
+      { src: '../img/CUIMARS1.jpg', theme: 'cuisine', comment: 'Cuisine Mars vue 1', linkedImages: ['../img/1000001275.jpg', '../img/1000001275.jpg', '../img/1000001275.jpg'] },
+      { src: '../img/CUIMARS2.jpg', theme: 'cuisine', comment: 'Cuisine Mars vue 2', linkedImages: [] },
+      { src: '../img/CUIMARS3.jpg', theme: 'cuisine', comment: 'Cuisine Mars vue 3', linkedImages: [] },
+      { src: '../img/CUIMARS4.jpg', theme: 'cuisine', comment: 'Cuisine Mars vue 4', linkedImages: [] },
+      { src: '../img/DRESSMARS1.jpg', theme: 'dressing', comment: 'Dressing Mars vue 1', linkedImages: [] },
+      { src: '../img/DRESSMARS2.jpg', theme: 'dressing', comment: 'Dressing Mars vue 2', linkedImages: [] },
+      { src: '../img/DRESSMARS3.jpg', theme: 'dressing', comment: 'Dressing Mars vue 3', linkedImages: [] },
+      { src: '../img/DRESSMARS4.jpg', theme: 'dressing', comment: 'Dressing Mars vue 4', linkedImages: [] },
+      { src: '../img/iso1.jpg', theme: 'autre', comment: 'Isolation 1', linkedImages: [] },
+      { src: '../img/Iso2.jpg', theme: 'autre', comment: 'Isolation 2', linkedImages: [] },
+      { src: '../img/Iso3.jpg', theme: 'autre', comment: 'Isolation 3', linkedImages: [] },
+      { src: '../img/Iso4.jpg', theme: 'autre', comment: 'Isolation 4', linkedImages: [] },
+      { src: '../img/Iso5.jpg', theme: 'autre', comment: 'Isolation 5', linkedImages: [] },
+      { src: '../img/Iso6.jpg', theme: 'autre', comment: 'Isolation 6', linkedImages: [] },
+      { src: '../img/SDB1.jpg', theme: 'sdb', comment: 'Salle de bain 1', linkedImages: ['../img/1000001275.jpg', '../img/1000001275.jpg'] },
+      { src: '../img/SDB2.jpg', theme: 'sdb', comment: 'Salle de bain 2', linkedImages: [] },
+      { src: '../img/SDB3.jpg', theme: 'sdb', comment: 'Salle de bain 3', linkedImages: [] },
+      { src: '../img/SDB4.jpg', theme: 'sdb', comment: 'Salle de bain 4', linkedImages: [] },
+      { src: '../img/SDB5.jpg', theme: 'sdb', comment: 'Salle de bain 5', linkedImages: [] },
+      { src: '../img/WC2.jpg', theme: 'sdb', comment: 'WC stylé', linkedImages: [] },
+      { src: '../img/ext1.jpg', theme: 'exterieur', comment: 'Extérieur 1', linkedImages: [] },
+      { src: '../img/ext2.jpg', theme: 'exterieur', comment: 'Extérieur 2', linkedImages: [] },
+      { src: '../img/meuble-laura-1.jpg', theme: 'dressing', comment: 'Dressing Laura 1', linkedImages: [] },
+      { src: '../img/meuble-laura-2.jpg', theme: 'dressing', comment: 'Dressing Laura 2', linkedImages: [] },
+      { src: '../img/meuble-laura-3.jpg', theme: 'dressing', comment: 'Dressing Laura 3', linkedImages: [] },
+      { src: '../img/martegauxavant1.jpg', theme: 'exterieur', comment: 'Avant Martegaux 1', linkedImages: [] },
+      { src: '../img/martegauxavant2.jpg', theme: 'exterieur', comment: 'Avant Martegaux 2', linkedImages: [] },
+      { src: '../img/martegauxavant3.jpg', theme: 'exterieur', comment: 'Avant Martegaux 3', linkedImages: [] },
+      { src: '../img/martegauxB.jpg', theme: 'exterieur', comment: 'Martegaux B', linkedImages: [] },
+      { src: '../img/martegauxC.jpg', theme: 'exterieur', comment: 'Martegaux C', linkedImages: [] },
+      { src: '../img/martegauxD.jpg', theme: 'exterieur', comment: 'Martegaux D', linkedImages: [] },
+      { src: '../img/martegauxE.jpg', theme: 'exterieur', comment: 'Martegaux E', linkedImages: [] },
+      { src: '../img/velaux0.jpg', theme: 'exterieur', comment: 'Velaux 0', linkedImages: [] },
+      { src: '../img/velaux1.jpg', theme: 'exterieur', comment: 'Velaux 1', linkedImages: [] },
+      { src: '../img/velaux2.jpg', theme: 'exterieur', comment: 'Velaux 2', linkedImages: [] },
+      { src: '../img/velaux3.jpg', theme: 'exterieur', comment: 'Velaux 3', linkedImages: [] },
+      { src: '../img/renoperier1.jpg', theme: 'cuisine', comment: 'Rénovation studio Marseille 1', linkedImages: [] },
+      { src: '../img/renoperier2.jpg', theme: 'cuisine', comment: 'Rénovation studio Marseille 2', linkedImages: [] },
+      { src: '../img/renoperier3.jpg', theme: 'cuisine', comment: 'Rénovation studio Marseille 3', linkedImages: [] },
+      { src: '../img/renoperier4.jpg', theme: 'cuisine', comment: 'Rénovation studio Marseille 4', linkedImages: [] },
+      { src: '../img/renoperier5.jpg', theme: 'cuisine', comment: 'Rénovation studio Marseille 5', linkedImages: [] },
+      { src: '../img/renoperier6.jpg', theme: 'cuisine', comment: 'Rénovation studio Marseille 6', linkedImages: [] },
     ];
 
     // Variables pour la rotation de la sphère
@@ -580,49 +715,78 @@
     let dragged = false;
     let currentFilter = 'all';
 
-    // --- NOUVELLE CONFIGURATION POUR MOBILE PORTRAIT ---
-        const mobilePortraitSphereConfig = {
-      baseRadius: 220, // Gardez un baseRadius qui est la "référence" de la taille maximale de votre sphère
+    const mobilePortraitSphereConfig = {
+      baseRadius: 220,
       rings: [
-        // Anneau supérieur (presque le pôle)
-        { numImages: 7, verticalOffset: 0.70, ringRadiusFactor: 0.60 }, // Diamètre plus petit
-        // Anneau intermédiaire supérieur
-        { numImages: 10, verticalOffset: 0.40, ringRadiusFactor: 0.90 }, // Diamètre moyen
-        // Équateur
-        { numImages: 13, verticalOffset: 0, ringRadiusFactor: 1.0 }, // Diamètre le plus grand
-        // Anneau intermédiaire inférieur
-        { numImages: 10, verticalOffset: -0.40, ringRadiusFactor: 0.95 }, // Diamètre moyen (symétrique)
-        // Anneau inférieur (presque le pôle)
-        { numImages: 7, verticalOffset: -0.80, ringRadiusFactor: 0.85 }, // Diamètre plus petit (symétrique)
+        { numImages: 7, verticalOffset: 0.70, ringRadiusFactor: 0.60 },
+        { numImages: 10, verticalOffset: 0.40, ringRadiusFactor: 0.90 },
+        { numImages: 13, verticalOffset: 0, ringRadiusFactor: 1.0 },
+        { numImages: 10, verticalOffset: -0.40, ringRadiusFactor: 0.95 },
+        { numImages: 7, verticalOffset: -0.80, ringRadiusFactor: 0.85 },
       ]
-    
-
-      // verticalOffset: -1 (bas) à 1 (haut). 0 est l'équateur.
-      // ringRadiusFactor: 0 (pôle) à 1 (équateur). Définit la taille du cercle.
     };
-    // --- FIN NOUVELLE CONFIGURATION ---
-
 
     function isMobilePortrait() {
       return window.innerWidth <= 768 && window.innerHeight > window.innerWidth;
     }
+    
+    // Nouvelle fonction pour détecter le mode tablette paysage
+    function isTabletLandscape() {
+        // Une tablette en paysage est généralement plus large que 768px et l'orientation est paysage
+        // Ajustez 769px si vos media queries CSS définissent la tablette différemment
+        return window.innerWidth >= 769 && window.innerHeight < window.innerWidth;
+    }
+
 
     function positionImages() {
       const images = Array.from(carousel.querySelectorAll('img'));
       const total = images.length;
       const isPortraitMobile = isMobilePortrait();
+      const isLandscapeTablet = isTabletLandscape();
 
-      // La variable CSS '--sphere-radius-mobile-portrait' est désormais gérée via mobilePortraitSphereConfig.baseRadius
-      const sphereRadius = isPortraitMobile
-        ? mobilePortraitSphereConfig.baseRadius
-        : parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--sphere-radius-desktop'));
+      let sphereRadius;
 
-      // Mise à jour de la variable CSS pour assurer la cohérence si elle est lue ailleurs
-      document.documentElement.style.setProperty('--sphere-radius-mobile-portrait', `${mobilePortraitSphereConfig.baseRadius}px`);
+      if (isPortraitMobile) {
+        sphereRadius = mobilePortraitSphereConfig.baseRadius;
+        let currentImageIndex = 0;
+        for (let i = 0; i < mobilePortraitSphereConfig.rings.length; i++) {
+            const ringConfig = mobilePortraitSphereConfig.rings[i];
+            const numImagesInThisRing = ringConfig.numImages;
+            const y = sphereRadius * ringConfig.verticalOffset;
+            const currentRingRadius = sphereRadius * ringConfig.ringRadiusFactor;
+            const effectiveRingRadius = Math.max(0.1, currentRingRadius);
+            const imagesToPlaceInThisRing = Math.min(numImagesInThisRing, total - currentImageIndex);
+            const angleStep = imagesToPlaceInThisRing > 0 ? 360 / imagesToPlaceInThisRing : 0;
 
+            for (let j = 0; j < imagesToPlaceInThisRing; j++) {
+                if (currentImageIndex >= images.length) break;
+                const img = images[currentImageIndex];
+                const imgAngle = angleStep * j;
+                const rad = imgAngle * Math.PI / 180;
+                const x = Math.sin(rad) * effectiveRingRadius;
+                const z = Math.cos(rad) * effectiveRingRadius;
+                const rotationXRad = Math.asin(ringConfig.verticalOffset);
+                const rotationXImg = - (rotationXRad * 180 / Math.PI);
+                img.style.transform = `translateX(${x}px) translateY(${y}px) translateZ(${z}px) rotateY(${imgAngle}deg) rotateX(${rotationXImg}deg) translate(-50%, -50%)`;
+                img.style.opacity = '1';
+                img.style.filter = 'none';
+                img.style.zIndex = '1';
+                currentImageIndex++;
+            }
+        }
+        for (let i = currentImageIndex; i < images.length; i++) {
+            images[i].style.opacity = '0';
+            images[i].style.filter = 'grayscale(100%)';
+            images[i].style.zIndex = '-1';
+        }
 
-      if (!isPortraitMobile) {
-        // Mode Bureau/Paysage : Arrangement cylindrique simple pour un effet de carrousel
+      } else { // Mode paysage (desktop ou tablette)
+        if (isLandscapeTablet) {
+             sphereRadius = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--sphere-radius-desktop'));
+        } else {
+            sphereRadius = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--sphere-radius-desktop'));
+        }
+
         const step = 360 / total;
         images.forEach((img, i) => {
           const imgAngle = step * i;
@@ -634,61 +798,9 @@
           img.style.filter = 'none';
           img.style.zIndex = '1';
         });
-        carousel.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
-      } else {
-        // Mode Portrait Mobile : Disposition basée sur la nouvelle configuration
-        if (total === 0) {
-            carousel.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
-            return;
-        }
-
-        let currentImageIndex = 0;
-        const totalImagesInConfig = mobilePortraitSphereConfig.rings.reduce((sum, ring) => sum + ring.numImages, 0);
-
-        for (let i = 0; i < mobilePortraitSphereConfig.rings.length; i++) {
-            const ringConfig = mobilePortraitSphereConfig.rings[i];
-            const numImagesInThisRing = ringConfig.numImages;
-
-            const y = sphereRadius * ringConfig.verticalOffset;
-            const currentRingRadius = sphereRadius * ringConfig.ringRadiusFactor;
-
-            const effectiveRingRadius = Math.max(0.1, currentRingRadius); // Smallest radius to avoid division by zero
-
-            const imagesToPlaceInThisRing = Math.min(numImagesInThisRing, total - currentImageIndex);
-
-            const angleStep = imagesToPlaceInThisRing > 0 ? 360 / imagesToPlaceInThisRing : 0;
-
-            for (let j = 0; j < imagesToPlaceInThisRing; j++) {
-                if (currentImageIndex >= images.length) break; // Safety break
-                const img = images[currentImageIndex];
-                const imgAngle = angleStep * j;
-                const rad = imgAngle * Math.PI / 180;
-
-                const x = Math.sin(rad) * effectiveRingRadius;
-                const z = Math.cos(rad) * effectiveRingRadius;
-                
-                // Pour une véritable orientation sphérique, vous pouvez ajouter une rotation en X basée sur l'offset vertical
-                // Cela fera que les images "pointeront" vers l'extérieur de la sphère.
-                const rotationXRad = Math.asin(ringConfig.verticalOffset); // angle en radians
-                const rotationXImg = - (rotationXRad * 180 / Math.PI); // Convertir radians en degrés
-
-                img.style.transform = `translateX(${x}px) translateY(${y}px) translateZ(${z}px) rotateY(${imgAngle}deg) rotateX(${rotationXImg}deg) translate(-50%, -50%)`;
-                img.style.opacity = '1';
-                img.style.filter = 'none';
-                img.style.zIndex = '1';
-                currentImageIndex++;
-            }
-        }
-
-        // Hide any remaining images if the total count exceeds the configured imagesPerRing sum
-        for (let i = currentImageIndex; i < images.length; i++) {
-            images[i].style.opacity = '0';
-            images[i].style.filter = 'grayscale(100%)';
-            images[i].style.zIndex = '-1';
-        }
-
-        carousel.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
       }
+
+      carousel.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
     }
 
     function generateImages(filter = 'all') {
@@ -700,8 +812,10 @@
         img.src = data.src;
         img.setAttribute('data-theme', data.theme);
         img.setAttribute('data-comment', data.comment);
+        // Ajout d'un index pour retrouver les images liées plus tard
+        img.setAttribute('data-index', i);
         img.addEventListener('click', (e) => {
-            if (!dragged) showZoom(data);
+            if (!dragged) showZoom(data); // Passe les données complètes de l'image cliquée
             e.stopPropagation();
         });
         carousel.appendChild(img);
@@ -709,25 +823,151 @@
       positionImages();
     }
 
-
     function animate() {
       if (autoRotate && !isDragging) {
-        rotateY += 0.05;
+        let rotationSpeed = 0.05; // Vitesse par défaut pour desktop
+
+        // Pas de rotation automatique en mobile portrait
+        if (isMobilePortrait()) {
+          rotationSpeed = 0;
+        }
+        // Vitesse différente pour tablette paysage
+        else if (isTabletLandscape()) {
+            rotationSpeed = 0.08; // Vitesse légèrement plus rapide sur tablette paysage par exemple
+        }
+        // Pour les petits écrans en paysage (smartphones)
+        else if (window.innerWidth <= 768 && window.innerHeight < window.innerWidth) {
+            rotationSpeed = 0.12; // Vitesse plus rapide sur smartphone paysage
+        }
+        
+        rotateY += rotationSpeed;
         positionImages();
       }
       requestAnimationFrame(animate);
     }
 
+    // Fonction pour afficher la vue zoomée
     function showZoom(data) {
-      zoomImage.src = data.src;
+      currentZoomData = data; // Stocke l'image principale actuellement zoomée
       zoomComment.textContent = data.comment;
+      
+      zoomLinkedImages.innerHTML = ''; // Vide le conteneur des images liées
+
+      // Le premier élément des images à afficher est toujours l'image principale
+      const imagesToDisplay = [data.src, ...(data.linkedImages || [])]; 
+      
+      // Cache/affiche les boutons de navigation et le conteneur des images liées
+      if (imagesToDisplay.length <= 1) {
+          zoomNavLeft.style.display = 'none';
+          zoomNavRight.style.display = 'none';
+          zoomLinkedImagesContainer.style.display = 'none';
+      } else {
+          zoomNavLeft.style.display = 'block';
+          zoomNavRight.style.display = 'block';
+          zoomLinkedImagesContainer.style.display = 'flex'; // Utilise flex pour aligner les flèches
+      }
+
+      imagesToDisplay.forEach((src, index) => {
+        const img = document.createElement('img');
+        img.src = src;
+        img.alt = `Image liée ${index + 1}`;
+        if (index === 0) { // L'image principale est toujours la première active par défaut
+            img.classList.add('active');
+        }
+        img.addEventListener('click', () => {
+            displayLinkedImage(index);
+        });
+        zoomLinkedImages.appendChild(img);
+      });
+
+      // Affiche l'image principale initialement
+      displayLinkedImage(0); // Affiche toujours la première image du tableau (l'image cliquée)
       zoomViewer.style.display = 'flex';
+      autoRotate = false; // Arrête la rotation du carrousel
     }
+
+    // Fonction pour afficher une image liée spécifique
+    function displayLinkedImage(index) {
+        const images = Array.from(zoomLinkedImages.children);
+        if (index < 0 || index >= images.length) return;
+
+        // Mise à jour de l'image principale et de son commentaire
+        zoomImage.src = images[index].src;
+        // Si vous voulez un commentaire spécifique pour chaque image liée,
+        // vous devriez modifier la structure de 'imagesData' pour inclure des commentaires pour les images liées aussi.
+        // Par exemple: { src: '...', comment: '...', linkedImages: [{src: '...', comment: '...'}, ...] }
+
+        // Mettre à jour la classe 'active' pour la miniature
+        images.forEach((img, idx) => {
+            if (idx === index) {
+                img.classList.add('active');
+            } else {
+                img.classList.remove('active');
+            }
+        });
+        currentLinkedImageIndex = index;
+        
+        // Faire défiler pour centrer l'image active si nécessaire
+        scrollLinkedImagesToActive();
+    }
+
+    function scrollLinkedImagesToActive() {
+        const activeImage = zoomLinkedImages.querySelector('.zoom-linked-images img.active');
+        if (activeImage) {
+            // Calcule la position pour centrer l'image
+            const scrollLeft = activeImage.offsetLeft - (zoomLinkedImages.offsetWidth / 2) + (activeImage.offsetWidth / 2);
+            zoomLinkedImages.scrollTo({
+                left: scrollLeft,
+                behavior: 'smooth'
+            });
+        }
+    }
+
+    // Gestion des flèches de navigation pour les images liées
+    zoomNavLeft.addEventListener('click', () => {
+        let newIndex = currentLinkedImageIndex - 1;
+        const imagesCount = zoomLinkedImages.children.length;
+        if (newIndex < 0) {
+            newIndex = imagesCount - 1; // Boucle vers la fin
+        }
+        displayLinkedImage(newIndex);
+    });
+
+    zoomNavRight.addEventListener('click', () => {
+        let newIndex = currentLinkedImageIndex + 1;
+        const imagesCount = zoomLinkedImages.children.length;
+        if (newIndex >= imagesCount) {
+            newIndex = 0; // Boucle vers le début
+        }
+        displayLinkedImage(newIndex);
+    });
 
     function closeZoom() {
       zoomViewer.style.display = 'none';
+      autoRotate = true; // Reprend la rotation du carrousel
+      currentZoomData = null; // Réinitialise les données de zoom
+      currentLinkedImageIndex = 0; // Réinitialise l'index
     }
 
+    // Gestionnaire de clic pour fermer la visionneuse de zoom
+    zoomViewer.addEventListener('click', (e) => {
+        // Vérifie si le clic a eu lieu directement sur le zoomViewer (le fond noir),
+        // ou sur le bouton de fermeture, mais pas sur l'image principale ni les images liées
+        const isClickOnViewerBackground = e.target === zoomViewer;
+        const isClickOnCloseButton = e.target === closeBtn; // Utilise la variable closeBtn
+        
+        // Vérifie si le clic est sur une image (principale ou liée)
+        // e.target.closest('.zoom-linked-images img') vérifiera si l'élément cliqué
+        // ou l'un de ses ancêtres est une image dans le conteneur des images liées.
+        const isClickOnImage = (e.target.tagName === 'IMG' && e.target.id === 'zoomImage') || e.target.closest('.zoom-linked-images img');
+
+        // Ferme si le clic est sur le fond ou le bouton de fermeture ET PAS sur une image
+        if ((isClickOnViewerBackground || isClickOnCloseButton) && !isClickOnImage) {
+            closeZoom();
+        }
+    });
+
+    // Gestionnaires d'événements existants
     document.querySelectorAll('.filters button').forEach(btn => {
       btn.addEventListener('click', () => {
         document.querySelector('.filters button.active')?.classList.remove('active');
@@ -746,18 +986,19 @@
       dragged = false;
       startX = e.clientX;
       startY = e.clientY;
+      angleStartX = rotateX;
+      angleStartY = rotateY;
       autoRotate = false;
     });
 
     document.addEventListener('mouseup', () => {
       isDragging = false;
-      // Re-enable autoRotate after a short delay to allow for clicks without initiating rotation immediately
-      if (!dragged) { // Only re-enable if it was a click, not a drag
+      if (!dragged) {
         autoRotate = true;
       } else {
-        setTimeout(() => { autoRotate = true; }, 500); // Small delay after drag ends
+        setTimeout(() => { autoRotate = true; }, 500);
       }
-      setTimeout(() => { dragged = false; }, 50); // Reset dragged flag
+      setTimeout(() => { dragged = false; }, 50);
     });
 
     document.addEventListener('mousemove', e => {
@@ -765,7 +1006,6 @@
         const dx = e.clientX - startX;
         const dy = e.clientY - startY;
 
-        // Add a threshold to determine if it's a drag or a click
         if (Math.abs(dx) > 5 || Math.abs(dy) > 5) {
             dragged = true;
         }
@@ -799,7 +1039,6 @@
 
       carousel.addEventListener('touchmove', (e) => {
         if (!isDragging) return;
-        // Empêcher le défilement de la page lors du touchmove dans le carrousel en mode portrait mobile
         if (isMobilePortrait()) {
             e.preventDefault();
         }
@@ -825,12 +1064,6 @@
       });
     })();
 
-    zoomViewer.addEventListener('click', (e) => {
-      if (e.target === zoomViewer || e.target === zoomImage) {
-        closeZoom();
-      }
-    });
-
     generateImages();
     animate();
 
@@ -842,7 +1075,6 @@
 
       if (currentOrientation !== previousOrientation) {
         previousOrientation = currentOrientation;
-        // Reset rotations when orientation changes to avoid strange jumps
         rotateX = -3;
         rotateY = 0;
         generateImages(currentFilter);
