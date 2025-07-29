@@ -10,7 +10,6 @@
       --sphere-radius-desktop: 800px;
       --perspective: 3500px;
       --sphere-radius-mobile-portrait: 260px; /* Explicitly defined for mobile portrait */
-      --carousel-mode: 0; /* 0 for sphere, 1 for carousel */
     }
 
     @media (max-width: 768px) {
@@ -464,62 +463,6 @@
       }
     }
 
-    /* Styles for mobile portrait to convert to carousel */
-    @media (max-width: 768px) and (orientation: portrait) {
-      .carousel-container[data-carousel-mode="1"] {
-        position: relative; /* Change to relative positioning */
-        top: auto;
-        left: auto;
-        transform: none; /* Remove transform */
-        width: 100vw;
-        height: 50vh; /* Adjust height for carousel */
-        overflow-x: hidden; /* Hide horizontal overflow */
-        overflow-y: hidden;
-        perspective: none; /* No perspective for 2D carousel */
-        margin-top: 20px; /* Add some space from filters */
-      }
-
-      .carousel[data-carousel-mode="1"] {
-        position: relative;
-        transform-style: flat; /* Flatten for 2D */
-        overflow-x: scroll; /* Enable horizontal scrolling */
-        overflow-y: hidden;
-        scroll-snap-type: x mandatory; /* Snap to images */
-        display: flex; /* Use flexbox for horizontal layout */
-        align-items: center; /* Center images vertically in carousel */
-        justify-content: flex-start; /* Start images from left */
-        height: 100%;
-        width: 100%;
-        cursor: grab;
-        padding-left: 10vw; /* Padding to center the first image a bit */
-        padding-right: 10vw; /* Padding to allow last image to center */
-        box-sizing: border-box; /* Include padding in width */
-      }
-
-      .carousel[data-carousel-mode="1"] img {
-        position: static; /* Static positioning for flexbox layout */
-        width: 70vw; /* Larger image size for carousel */
-        height: 70vw; /* Maintain aspect ratio */
-        object-fit: contain; /* Ensure image fits without cropping */
-        margin-right: 20px; /* Space between images */
-        scroll-snap-align: center; /* Snap images to center when scrolling */
-        box-shadow: 0 5px 15px rgba(0,0,0,0.5); /* Stronger shadow for prominent images */
-        transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
-        transform: none; /* Remove any previous sphere transforms */
-      }
-
-      /* Hide other images for a cleaner carousel look if needed, or adjust their size */
-      .carousel[data-carousel-mode="1"] img:not(.active) {
-          /* You can add styles here for non-active images if you want them to be smaller,
-             or have reduced opacity, etc. For now, they just take up space and snap. */
-      }
-
-      .carousel[data-carousel-mode="1"]::-webkit-scrollbar {
-          display: none; /* Hide scrollbar for a cleaner look */
-      }
-    }
-
-
     /* Styles pour les petits écrans en paysage (comme des smartphones en paysage) */
     @media (max-width: 768px) and (orientation: landscape) {
       :root {
@@ -825,7 +768,6 @@
     };
 
     function isMobilePortrait() {
-      // Check for mobile width AND portrait orientation
       return window.innerWidth <= 768 && window.innerHeight > window.innerWidth;
     }
     
@@ -841,86 +783,65 @@
       const images = Array.from(carousel.querySelectorAll('img'));
       const total = images.length;
       const isPortraitMobile = isMobilePortrait();
+      const isLandscapeTablet = isTabletLandscape();
 
-      // Set a data attribute on carousel to trigger CSS changes for carousel mode
+      let sphereRadius;
+
       if (isPortraitMobile) {
-          carousel.setAttribute('data-carousel-mode', '1');
-          document.documentElement.style.setProperty('--carousel-mode', '1'); // Update CSS variable
-          // Clear any sphere-related transforms if switching to carousel mode
-          images.forEach(img => {
-              img.style.transform = 'none';
-              img.style.opacity = '1';
-              img.style.filter = 'none';
-              img.style.zIndex = '1';
-              img.style.position = 'static'; // Ensure images are static for flexbox layout
-          });
-          carousel.style.transform = 'none'; // Clear carousel container transform
-      } else { // Sphere mode (desktop or landscape)
-          carousel.setAttribute('data-carousel-mode', '0');
-          document.documentElement.style.setProperty('--carousel-mode', '0'); // Update CSS variable
+        sphereRadius = mobilePortraitSphereConfig.baseRadius;
+        let currentImageIndex = 0;
+        for (let i = 0; i < mobilePortraitSphereConfig.rings.length; i++) {
+            const ringConfig = mobilePortraitSphereConfig.rings[i];
+            const numImagesInThisRing = ringConfig.numImages;
+            const y = sphereRadius * ringConfig.verticalOffset;
+            const currentRingRadius = sphereRadius * ringConfig.ringRadiusFactor;
+            const effectiveRingRadius = Math.max(0.1, currentRingRadius);
+            const imagesToPlaceInThisRing = Math.min(numImagesInThisRing, total - currentImageIndex);
+            const angleStep = imagesToPlaceInThisRing > 0 ? 360 / imagesToPlaceInThisRing : 0;
 
-          const isLandscapeTablet = isTabletLandscape();
-          let sphereRadius;
-
-          if (isPortraitMobile) { // This block will now effectively be skipped or handle an edge case
-            sphereRadius = mobilePortraitSphereConfig.baseRadius;
-            let currentImageIndex = 0;
-            for (let i = 0; i < mobilePortraitSphereConfig.rings.length; i++) {
-                const ringConfig = mobilePortraitSphereConfig.rings[i];
-                const numImagesInThisRing = ringConfig.numImages;
-                const y = sphereRadius * ringConfig.verticalOffset;
-                const currentRingRadius = sphereRadius * ringConfig.ringRadiusFactor;
-                const effectiveRingRadius = Math.max(0.1, currentRingRadius);
-                const imagesToPlaceInThisRing = Math.min(numImagesInThisRing, total - currentImageIndex);
-                const angleStep = imagesToPlaceInThisRing > 0 ? 360 / imagesToPlaceInThisRing : 0;
-
-                for (let j = 0; j < imagesToPlaceInThisRing; j++) {
-                    if (currentImageIndex >= images.length) break;
-                    const img = images[currentImageIndex];
-                    const imgAngle = angleStep * j;
-                    const rad = imgAngle * Math.PI / 180;
-                    const x = Math.sin(rad) * effectiveRingRadius;
-                    const z = Math.cos(rad) * effectiveRingRadius;
-                    const rotationXRad = Math.asin(ringConfig.verticalOffset);
-                    const rotationXImg = - (rotationXRad * 180 / Math.PI);
-                    img.style.transform = `translateX(${x}px) translateY(${y}px) translateZ(${z}px) rotateY(${imgAngle}deg) rotateX(${rotationXImg}deg) translate(-50%, -50%)`;
-                    img.style.opacity = '1';
-                    img.style.filter = 'none';
-                    img.style.zIndex = '1';
-                    img.style.position = 'absolute'; // Ensure images are absolute for sphere layout
-                    currentImageIndex++;
-                }
+            for (let j = 0; j < imagesToPlaceInThisRing; j++) {
+                if (currentImageIndex >= images.length) break;
+                const img = images[currentImageIndex];
+                const imgAngle = angleStep * j;
+                const rad = imgAngle * Math.PI / 180;
+                const x = Math.sin(rad) * effectiveRingRadius;
+                const z = Math.cos(rad) * effectiveRingRadius;
+                const rotationXRad = Math.asin(ringConfig.verticalOffset);
+                const rotationXImg = - (rotationXRad * 180 / Math.PI);
+                img.style.transform = `translateX(${x}px) translateY(${y}px) translateZ(${z}px) rotateY(${imgAngle}deg) rotateX(${rotationXImg}deg) translate(-50%, -50%)`;
+                img.style.opacity = '1';
+                img.style.filter = 'none';
+                img.style.zIndex = '1';
+                currentImageIndex++;
             }
-            for (let i = currentImageIndex; i < images.length; i++) {
-                images[i].style.opacity = '0';
-                images[i].style.filter = 'grayscale(100%)';
-                images[i].style.zIndex = '-1';
-                images[i].style.position = 'absolute';
-            }
+        }
+        for (let i = currentImageIndex; i < images.length; i++) {
+            images[i].style.opacity = '0';
+            images[i].style.filter = 'grayscale(100%)';
+            images[i].style.zIndex = '-1';
+        }
 
-          } else { // Mode paysage (desktop ou tablette)
-            if (isLandscapeTablet) {
-                 sphereRadius = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--sphere-radius-desktop'));
-            } else {
-                sphereRadius = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--sphere-radius-desktop'));
-            }
+      } else { // Mode paysage (desktop ou tablette)
+        if (isLandscapeTablet) {
+             sphereRadius = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--sphere-radius-desktop'));
+        } else {
+            sphereRadius = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--sphere-radius-desktop'));
+        }
 
-            const step = 360 / total;
-            images.forEach((img, i) => {
-              const imgAngle = step * i;
-              const rad = (imgAngle) * Math.PI / 180;
-              const x = Math.sin(rad) * sphereRadius;
-              const z = Math.cos(rad) * sphereRadius;
-              img.style.transform = `translateX(${x}px) translateZ(${z}px) rotateY(${imgAngle}deg) translate(-50%, -50%)`;
-              img.style.opacity = '1';
-              img.style.filter = 'none';
-              img.style.zIndex = '1';
-              img.style.position = 'absolute'; // Ensure images are absolute for sphere layout
-            });
-          }
-
-          carousel.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+        const step = 360 / total;
+        images.forEach((img, i) => {
+          const imgAngle = step * i;
+          const rad = (imgAngle) * Math.PI / 180;
+          const x = Math.sin(rad) * sphereRadius;
+          const z = Math.cos(rad) * sphereRadius;
+          img.style.transform = `translateX(${x}px) translateZ(${z}px) rotateY(${imgAngle}deg) translate(-50%, -50%)`;
+          img.style.opacity = '1';
+          img.style.filter = 'none';
+          img.style.zIndex = '1';
+        });
       }
+
+      carousel.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
     }
 
     function generateImages(filter = 'all') {
@@ -944,10 +865,13 @@
     }
 
     function animate() {
-      if (autoRotate && !isDragging && !isMobilePortrait()) { // Only auto-rotate if not in mobile portrait
+      if (autoRotate && !isDragging) {
         let rotationSpeed = 0.05; // Vitesse par défaut pour desktop
 
-        if (isTabletLandscape()) {
+        if (isMobilePortrait()) {
+          rotationSpeed = 0.08; // Vitesse spécifique pour mobile portrait
+        }
+        else if (isTabletLandscape()) {
             rotationSpeed = 0.08; // Vitesse légèrement plus rapide sur tablette paysage par exemple
         }
         else if (window.innerWidth <= 768 && window.innerHeight < window.innerWidth) {
@@ -1087,7 +1011,6 @@
 
     // Drag souris
     carousel.addEventListener('mousedown', e => {
-      if (isMobilePortrait()) return; // Disable drag for sphere rotation in carousel mode
       isDragging = true;
       dragged = false;
       startX = e.clientX;
@@ -1101,16 +1024,16 @@
     document.addEventListener('mouseup', () => {
       isDragging = false;
       // Reprendre l'auto-rotation après un court délai pour permettre les clics sans drag
-      if (!dragged && !isMobilePortrait()) { // If it's a simple click and not mobile portrait, resume immediately
+      if (!dragged) { // Si c'est un simple clic, reprendre immédiatement
         autoRotate = true;
-      } else if (dragged && !isMobilePortrait()) { // If it was a drag and not mobile portrait, resume after a small delay
+      } else { // Si c'était un drag, reprendre après un petit délai
         resumeAutoRotateTimeout = setTimeout(() => { autoRotate = true; }, 500);
       }
       setTimeout(() => { dragged = false; }, 50); // Réinitialiser le flag dragged après un court délai
     });
 
     document.addEventListener('mousemove', e => {
-      if (isDragging && !isMobilePortrait()) { // Only apply rotation if not in mobile portrait (carousel mode)
+      if (isDragging) {
         const dx = e.clientX - startX;
         const dy = e.clientY - startY;
 
@@ -1146,9 +1069,8 @@
 
       carousel.addEventListener('touchmove', (e) => {
         if (!isDragging) return;
-        
-        if (!isMobilePortrait()) { // Prevent default only for sphere rotation
-            e.preventDefault(); 
+        if (isMobilePortrait()) {
+            e.preventDefault(); // Empêche le défilement de la page en mode portrait mobile pour le carousel
         }
 
         const dx = e.touches[0].clientX - startX;
@@ -1158,21 +1080,18 @@
             dragged = true;
         }
 
-        if (!isMobilePortrait()) { // Apply rotation only if not in mobile portrait (carousel mode)
-            rotateY = angleStartY + dx * 0.2;
-            rotateX = angleStartX - dy * 0.2;
-            positionImages();
-        }
+        rotateY = angleStartY + dx * 0.2;
+        rotateX = angleStartX - dy * 0.2;
+
+        positionImages();
       }, { passive: false });
 
       carousel.addEventListener('touchend', () => {
         isDragging = false;
         // Reprendre l'auto-rotation après un court délai
-        if (!isMobilePortrait()) { // Resume auto-rotation only if not in mobile portrait
-            resumeAutoRotateTimeout = setTimeout(() => {
-                autoRotate = true;
-            }, 500);
-        }
+        resumeAutoRotateTimeout = setTimeout(() => {
+          autoRotate = true;
+        }, 500);
       });
     })();
 
