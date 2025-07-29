@@ -786,9 +786,31 @@
       const isLandscapeTablet = isTabletLandscape();
 
       let sphereRadius;
+      let targetRotateX = rotateX; // Use dynamic rotateX for sphere, fixed for carousel
+      let targetPerspective; // To set on carousel-container
 
-      if (isPortraitMobile) {
+      // Case 1: Mobile Portrait and Filter Active (User's request for carousel)
+      if (isPortraitMobile && currentFilter !== 'all') {
+        sphereRadius = 250; // Smaller radius for a tighter carousel effect
+        targetPerspective = '1500px'; // Flatter perspective
+        targetRotateX = 0; // Make it flat (no X-axis tilt for carousel)
+
+        const step = 360 / total;
+        images.forEach((img, i) => {
+          const imgAngle = step * i;
+          const rad = (imgAngle) * Math.PI / 180;
+          const x = Math.sin(rad) * sphereRadius;
+          const z = Math.cos(rad) * sphereRadius;
+          // Apply transform for a flat circle (carousel)
+          img.style.transform = `translateX(${x}px) translateZ(${z}px) rotateY(${imgAngle}deg) translate(-50%, -50%)`;
+          img.style.opacity = '1';
+          img.style.filter = 'none';
+          img.style.zIndex = '1';
+        });
+      } else if (isPortraitMobile) { // Case 2: Mobile Portrait and No Filter (Original 3D Sphere)
         sphereRadius = mobilePortraitSphereConfig.baseRadius;
+        targetPerspective = 'var(--perspective)'; // Use CSS variable for 3D perspective
+        
         let currentImageIndex = 0;
         for (let i = 0; i < mobilePortraitSphereConfig.rings.length; i++) {
             const ringConfig = mobilePortraitSphereConfig.rings[i];
@@ -821,13 +843,14 @@
             images[i].style.zIndex = '-1';
         }
 
-      } else { // Mode paysage (desktop ou tablette)
+      } else { // Case 3: Desktop or Tablet Landscape (Existing flat carousel-like)
         if (isLandscapeTablet) {
              sphereRadius = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--sphere-radius-desktop'));
         } else {
             sphereRadius = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--sphere-radius-desktop'));
         }
-
+        targetPerspective = 'var(--perspective)'; // Use CSS variable for perspective
+        
         const step = 360 / total;
         images.forEach((img, i) => {
           const imgAngle = step * i;
@@ -841,7 +864,9 @@
         });
       }
 
-      carousel.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+      // Apply the perspective and carousel rotation based on the determined target values
+      document.querySelector('.carousel-container').style.perspective = targetPerspective;
+      carousel.style.transform = `rotateX(${targetRotateX}deg) rotateY(${rotateY}deg)`;
     }
 
     function generateImages(filter = 'all') {
