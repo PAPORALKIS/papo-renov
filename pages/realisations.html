@@ -397,11 +397,18 @@
         height: var(--img-size);
         object-fit: cover;
         border-radius: 12px;
-        box-shadow: 0 0 14px rgba(0, 0, 0, 0.7);
+        box-shadow: 0 0 17px rgba(0, 0, 0, 0.9);
         transition: transform 0.6s, z-index 0.6s, opacity 0.6s, filter 0.6s;
         z-index: 1;
         user-select: none;
         will-change: transform, opacity, filter;
+        
+        /* Explication :
+   - '12px' (au lieu de 8px) pour un flou plus étendu.
+   - '0.8' (au lieu de 0.6) pour une ombre plus foncée.
+   - '2px' (au lieu de 1px) pour un contour blanc plus épais.
+   - '0.4' (au lieu de 0.3) pour un contour blanc plus visible.
+*/
       }
     }
 
