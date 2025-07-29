@@ -51,6 +51,14 @@
       z-index: 1000;
       flex-wrap: nowrap;
       overflow-x: auto;
+      transition: opacity 0.3s ease, visibility 0.3s ease; /* Ajout d'une transition pour le masquage */
+    }
+
+    /* Nouvelle règle pour cacher le header */
+    header.hide-on-zoom {
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none; /* Empêche les interactions lorsque caché */
     }
 
     .logo img {
@@ -90,6 +98,14 @@
       font-size: 1.8em;
       margin-top: 25px;
       padding: 10px 20px;
+      transition: opacity 0.3s ease, visibility 0.3s ease; /* Ajout d'une transition pour le masquage */
+    }
+
+    /* Nouvelle règle pour cacher le titre de la page */
+    .page-title.hide-on-zoom {
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
     }
 
     .filters {
@@ -97,7 +113,16 @@
       margin: 5px auto;
       position: relative;
       z-index: 10;
+      transition: opacity 0.3s ease, visibility 0.3s ease; /* Ajout d'une transition pour le masquage */
     }
+
+    /* Nouvelle règle pour cacher les filtres */
+    .filters.hide-on-zoom {
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+    }
+
 
     .filters button {
       margin: 4px;
@@ -596,8 +621,7 @@
   </style>
 </head>
 <body>
-  <header>
-    <div class="logo"><img src="../img/logo.png" alt="Logo"></div>
+  <header id="mainHeader"> <div class="logo"><img src="../img/logo.png" alt="Logo"></div>
     <nav>
       <ul>
         <li><a href="../index.html">Accueil</a></li>
@@ -609,10 +633,7 @@
     </nav>
   </header>
 
-  <div class="page-title">Mes réalisations</div>
-
-  <div class="filters">
-    <button data-theme="all">Tous</button>
+  <div class="page-title" id="pageTitle">Mes réalisations</div> <div class="filters" id="filtersContainer"> <button data-theme="all">Tous</button>
     <button data-theme="sdb">Salle de bain</button>
     <button data-theme="cuisine">Cuisine</button>
     <button data-theme="dressing">Dressing/Rangement</button>
@@ -648,10 +669,14 @@
     const zoomLinkedImages = document.getElementById("zoomLinkedImages");
     const zoomNavLeft = document.getElementById("zoomNavLeft");
     const zoomNavRight = document.getElementById("zoomNavRight");
-    const closeBtn = document.querySelector('.close-btn'); // Sélectionnez le bouton de fermeture
+    const closeBtn = document.querySelector('.close-btn');
+    const mainHeader = document.getElementById('mainHeader'); // Sélection du header
+    const pageTitle = document.getElementById('pageTitle'); // Sélection du titre de la page
+    const filtersContainer = document.getElementById('filtersContainer'); // Sélection des filtres
 
-    let currentZoomData = null; // Stocke les données de l'image actuellement zoomée
-    let currentLinkedImageIndex = 0; // Index de l'image liée actuellement affichée
+
+    let currentZoomData = null;
+    let currentLinkedImageIndex = 0;
 
 /* // Exemple 1: Une image principale avec des images liées
   { 
@@ -676,7 +701,7 @@
       { src: '../img/CUIEXT4.jpg', theme: 'cuisine', comment: 'Cuisine extérieure vue 4', linkedImages: [] },
       { src: '../img/CUIEXT5.jpg', theme: 'cuisine', comment: 'Cuisine extérieure vue 5', linkedImages: [] },
       { src: '../img/CUIEXT6.jpg', theme: 'cuisine', comment: 'Cuisine extérieure vue 6', linkedImages: [] },
-      { src: '../img/CUIMARS1.jpg', theme: 'cuisine', comment: 'Cuisine Mars vue 1', linkedImages: ['../img/1000001275.jpg', '../img/1000001275.jpg', '../img/1000001275.jpg'] },
+      { src: '../img/CUIMARS1.jpg', theme: 'cuisine', comment: 'Cuisine Mars vue 1', linkedImages: ['../img/1000001275.jpg', '../储物柜.jpg', '../img/1000001275.jpg'] },
       { src: '../img/CUIMARS2.jpg', theme: 'cuisine', comment: 'Cuisine Mars vue 2', linkedImages: [] },
       { src: '../img/CUIMARS3.jpg', theme: 'cuisine', comment: 'Cuisine Mars vue 3', linkedImages: [] },
       { src: '../img/CUIMARS4.jpg', theme: 'cuisine', comment: 'Cuisine Mars vue 4', linkedImages: [] },
@@ -729,6 +754,7 @@
     let startY = 0;
     let dragged = false;
     let currentFilter = 'all';
+    let resumeAutoRotateTimeout = null; // Pour gérer la reprise de l'auto-rotation après un glisser/déposer
 
     const mobilePortraitSphereConfig = {
       baseRadius: 220,
@@ -842,15 +868,12 @@
       if (autoRotate && !isDragging) {
         let rotationSpeed = 0.05; // Vitesse par défaut pour desktop
 
-        // Pas de rotation automatique en mobile portrait
         if (isMobilePortrait()) {
-          rotationSpeed = 0;
+          rotationSpeed = 0.08; // Vitesse spécifique pour mobile portrait
         }
-        // Vitesse différente pour tablette paysage
         else if (isTabletLandscape()) {
             rotationSpeed = 0.08; // Vitesse légèrement plus rapide sur tablette paysage par exemple
         }
-        // Pour les petits écrans en paysage (smartphones)
         else if (window.innerWidth <= 768 && window.innerHeight < window.innerWidth) {
             rotationSpeed = 0.12; // Vitesse plus rapide sur smartphone paysage
         }
@@ -863,15 +886,13 @@
 
     // Fonction pour afficher la vue zoomée
     function showZoom(data) {
-      currentZoomData = data; // Stocke l'image principale actuellement zoomée
+      currentZoomData = data;
       zoomComment.textContent = data.comment;
       
-      zoomLinkedImages.innerHTML = ''; // Vide le conteneur des images liées
+      zoomLinkedImages.innerHTML = '';
 
-      // Le premier élément des images à afficher est toujours l'image principale
       const imagesToDisplay = [data.src, ...(data.linkedImages || [])]; 
       
-      // Cache/affiche les boutons de navigation et le conteneur des images liées
       if (imagesToDisplay.length <= 1) {
           zoomNavLeft.style.display = 'none';
           zoomNavRight.style.display = 'none';
@@ -879,14 +900,14 @@
       } else {
           zoomNavLeft.style.display = 'block';
           zoomNavRight.style.display = 'block';
-          zoomLinkedImagesContainer.style.display = 'flex'; // Utilise flex pour aligner les flèches
+          zoomLinkedImagesContainer.style.display = 'flex';
       }
 
       imagesToDisplay.forEach((src, index) => {
         const img = document.createElement('img');
         img.src = src;
         img.alt = `Image liée ${index + 1}`;
-        if (index === 0) { // L'image principale est toujours la première active par défaut
+        if (index === 0) {
             img.classList.add('active');
         }
         img.addEventListener('click', () => {
@@ -895,10 +916,14 @@
         zoomLinkedImages.appendChild(img);
       });
 
-      // Affiche l'image principale initialement
-      displayLinkedImage(0); // Affiche toujours la première image du tableau (l'image cliquée)
+      displayLinkedImage(0);
       zoomViewer.style.display = 'flex';
       autoRotate = false; // Arrête la rotation du carrousel
+
+      // Cache le header, le titre et les filtres lors du zoom
+      mainHeader.classList.add('hide-on-zoom');
+      pageTitle.classList.add('hide-on-zoom');
+      filtersContainer.classList.add('hide-on-zoom');
     }
 
     // Fonction pour afficher une image liée spécifique
@@ -906,13 +931,8 @@
         const images = Array.from(zoomLinkedImages.children);
         if (index < 0 || index >= images.length) return;
 
-        // Mise à jour de l'image principale et de son commentaire
         zoomImage.src = images[index].src;
-        // Si vous voulez un commentaire spécifique pour chaque image liée,
-        // vous devriez modifier la structure de 'imagesData' pour inclure des commentaires pour les images liées aussi.
-        // Par exemple: { src: '...', comment: '...', linkedImages: [{src: '...', comment: '...'}, ...] }
 
-        // Mettre à jour la classe 'active' pour la miniature
         images.forEach((img, idx) => {
             if (idx === index) {
                 img.classList.add('active');
@@ -922,14 +942,12 @@
         });
         currentLinkedImageIndex = index;
         
-        // Faire défiler pour centrer l'image active si nécessaire
         scrollLinkedImagesToActive();
     }
 
     function scrollLinkedImagesToActive() {
         const activeImage = zoomLinkedImages.querySelector('.zoom-linked-images img.active');
         if (activeImage) {
-            // Calcule la position pour centrer l'image
             const scrollLeft = activeImage.offsetLeft - (zoomLinkedImages.offsetWidth / 2) + (activeImage.offsetWidth / 2);
             zoomLinkedImages.scrollTo({
                 left: scrollLeft,
@@ -943,7 +961,7 @@
         let newIndex = currentLinkedImageIndex - 1;
         const imagesCount = zoomLinkedImages.children.length;
         if (newIndex < 0) {
-            newIndex = imagesCount - 1; // Boucle vers la fin
+            newIndex = imagesCount - 1;
         }
         displayLinkedImage(newIndex);
     });
@@ -952,37 +970,34 @@
         let newIndex = currentLinkedImageIndex + 1;
         const imagesCount = zoomLinkedImages.children.length;
         if (newIndex >= imagesCount) {
-            newIndex = 0; // Boucle vers le début
+            newIndex = 0;
         }
         displayLinkedImage(newIndex);
     });
 
     function closeZoom() {
       zoomViewer.style.display = 'none';
-      autoRotate = true; // Reprend la rotation du carrousel
-      currentZoomData = null; // Réinitialise les données de zoom
-      currentLinkedImageIndex = 0; // Réinitialise l'index
+      autoRotate = true;
+      currentZoomData = null;
+      currentLinkedImageIndex = 0;
+
+      // Affiche le header, le titre et les filtres après la fermeture du zoom
+      mainHeader.classList.remove('hide-on-zoom');
+      pageTitle.classList.remove('hide-on-zoom');
+      filtersContainer.classList.remove('hide-on-zoom');
     }
 
-    // Gestionnaire de clic pour fermer la visionneuse de zoom
     zoomViewer.addEventListener('click', (e) => {
-        // Vérifie si le clic a eu lieu directement sur le zoomViewer (le fond noir),
-        // ou sur le bouton de fermeture, mais pas sur l'image principale ni les images liées
         const isClickOnViewerBackground = e.target === zoomViewer;
-        const isClickOnCloseButton = e.target === closeBtn; // Utilise la variable closeBtn
+        const isClickOnCloseButton = e.target === closeBtn;
         
-        // Vérifie si le clic est sur une image (principale ou liée)
-        // e.target.closest('.zoom-linked-images img') vérifiera si l'élément cliqué
-        // ou l'un de ses ancêtres est une image dans le conteneur des images liées.
         const isClickOnImage = (e.target.tagName === 'IMG' && e.target.id === 'zoomImage') || e.target.closest('.zoom-linked-images img');
 
-        // Ferme si le clic est sur le fond ou le bouton de fermeture ET PAS sur une image
         if ((isClickOnViewerBackground || isClickOnCloseButton) && !isClickOnImage) {
             closeZoom();
         }
     });
 
-    // Gestionnaires d'événements existants
     document.querySelectorAll('.filters button').forEach(btn => {
       btn.addEventListener('click', () => {
         document.querySelector('.filters button.active')?.classList.remove('active');
@@ -991,7 +1006,6 @@
       });
     });
 
-    // Filtre initial actif
     document.querySelector('.filters button[data-theme="all"]').classList.add('active');
 
 
@@ -1003,17 +1017,19 @@
       startY = e.clientY;
       angleStartX = rotateX;
       angleStartY = rotateY;
-      autoRotate = false;
+      autoRotate = false; // Désactiver l'auto-rotation au début du drag
+      if (resumeAutoRotateTimeout) clearTimeout(resumeAutoRotateTimeout); // Annuler toute reprise d'auto-rotation
     });
 
     document.addEventListener('mouseup', () => {
       isDragging = false;
-      if (!dragged) {
+      // Reprendre l'auto-rotation après un court délai pour permettre les clics sans drag
+      if (!dragged) { // Si c'est un simple clic, reprendre immédiatement
         autoRotate = true;
-      } else {
-        setTimeout(() => { autoRotate = true; }, 500);
+      } else { // Si c'était un drag, reprendre après un petit délai
+        resumeAutoRotateTimeout = setTimeout(() => { autoRotate = true; }, 500);
       }
-      setTimeout(() => { dragged = false; }, 50);
+      setTimeout(() => { dragged = false; }, 50); // Réinitialiser le flag dragged après un court délai
     });
 
     document.addEventListener('mousemove', e => {
@@ -1035,7 +1051,6 @@
     // Gestion tactile
     (function () {
       if (!carousel) return;
-      let resumeTimeout = null;
       let angleStartX = rotateX;
       let angleStartY = rotateY;
 
@@ -1048,14 +1063,14 @@
         angleStartX = rotateX;
         angleStartY = rotateY;
 
-        autoRotate = false;
-        if (resumeTimeout) clearTimeout(resumeTimeout);
+        autoRotate = false; // Désactiver l'auto-rotation au début du touch
+        if (resumeAutoRotateTimeout) clearTimeout(resumeAutoRotateTimeout);
       }, { passive: false });
 
       carousel.addEventListener('touchmove', (e) => {
         if (!isDragging) return;
         if (isMobilePortrait()) {
-            e.preventDefault();
+            e.preventDefault(); // Empêche le défilement de la page en mode portrait mobile pour le carousel
         }
 
         const dx = e.touches[0].clientX - startX;
@@ -1073,7 +1088,8 @@
 
       carousel.addEventListener('touchend', () => {
         isDragging = false;
-        resumeTimeout = setTimeout(() => {
+        // Reprendre l'auto-rotation après un court délai
+        resumeAutoRotateTimeout = setTimeout(() => {
           autoRotate = true;
         }, 500);
       });
