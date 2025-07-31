@@ -249,6 +249,14 @@
       display: flex;
       justify-content: center;
       align-items: center;
+      transition: transform 0.4s ease-out, opacity 0.4s ease-out; /* Animation pour l'image */
+      transform: translateY(20px) scale(0.95);
+      opacity: 0;
+    }
+    
+    .zoom-viewer.active .zoom-image-container {
+        transform: translateY(0) scale(1);
+        opacity: 1;
     }
 
     .zoom-viewer img#zoomImage { /* Cibler spécifiquement l'image principale */
@@ -262,18 +270,43 @@
     }
 
     .zoom-comment {
+      /* Ligne pour modifier la taille de la police */
       color: white;
-      font-size: 1.1em;
+      font-size: 1.1em; /* C'EST CETTE LIGNE QUI DÉFINIT LA TAILLE DE LA POLICE */
       max-width: 400px; /* Limite la largeur du commentaire */
-      padding: 20px;
-      background: rgba(255, 255, 255, 0.1);
-      border-radius: 10px;
-      backdrop-filter: blur(5px);
-      border: 1px solid rgba(255, 255, 255, 0.2);
+      padding: 25px;
+      /* Nouveau style pour un effet de fond vitreux élégant */
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0));
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border-radius: 12px;
       align-self: center; /* Centrer verticalement le commentaire */
       line-height: 1.6;
       max-height: 90vh;
       overflow-y: auto; /* Permet le défilement si le texte est long */
+      /* Animation */
+      transition: transform 0.4s 0.2s ease-out, opacity 0.4s 0.2s ease-out; /* Délai pour que l'image apparaisse d'abord */
+      transform: translateY(20px) scale(0.95);
+      opacity: 0;
+    }
+    
+    .zoom-viewer.active .zoom-comment {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+    }
+    
+    .zoom-comment h3 {
+        margin-top: 0;
+        font-weight: 600;
+        color: #fff;
+        text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+    }
+    
+    .zoom-comment p {
+        margin-bottom: 0;
+        color: #eee;
     }
 
     /* Nouveau style pour le conteneur des images liées */
@@ -285,7 +318,16 @@
         position: relative; /* Pour positionner les flèches */
         box-sizing: border-box;
         margin-top: 20px; /* Espace sous le contenu principal */
+        transition: transform 0.4s 0.3s ease-out, opacity 0.4s 0.3s ease-out;
+        transform: translateY(20px) scale(0.95);
+        opacity: 0;
     }
+    
+    .zoom-viewer.active .zoom-linked-images-container {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+    }
+
 
     .zoom-linked-images {
       display: flex;
@@ -1303,7 +1345,8 @@
     // Fonction pour afficher la vue zoomée
     function showZoom(data) {
       currentZoomData = data;
-      zoomComment.textContent = data.comment;
+      // On insère le commentaire dans un <p> pour une meilleure sémantique
+      zoomComment.innerHTML = `<p>${data.comment}</p>`;
       
       zoomLinkedImages.innerHTML = '';
 
@@ -1334,6 +1377,11 @@
 
       displayLinkedImage(0);
       zoomViewer.style.display = 'flex';
+      // Ajoute la classe 'active' pour démarrer les animations
+      setTimeout(() => {
+          zoomViewer.classList.add('active');
+      }, 10);
+      
       autoRotate = false; // Arrête la rotation du carrousel
 
       // Cache le header, le titre et les filtres lors du zoom
@@ -1392,15 +1440,20 @@
     });
 
     function closeZoom() {
-      zoomViewer.style.display = 'none';
-      autoRotate = true;
-      currentZoomData = null;
-      currentLinkedImageIndex = 0;
+      // Retire la classe 'active' pour lancer l'animation de sortie
+      zoomViewer.classList.remove('active');
+      // Attend que l'animation de sortie soit terminée avant de masquer le viewer
+      setTimeout(() => {
+          zoomViewer.style.display = 'none';
+          autoRotate = true;
+          currentZoomData = null;
+          currentLinkedImageIndex = 0;
 
-      // Affiche le header, le titre et les filtres après la fermeture du zoom
-      mainHeader.classList.remove('hide-on-zoom');
-      pageTitle.classList.remove('hide-on-zoom');
-      filtersContainer.classList.remove('hide-on-zoom');
+          // Affiche le header, le titre et les filtres après la fermeture du zoom
+          mainHeader.classList.remove('hide-on-zoom');
+          pageTitle.classList.remove('hide-on-zoom');
+          filtersContainer.classList.remove('hide-on-zoom');
+      }, 400); // Doit correspondre à la durée de la transition CSS
     }
 
     zoomViewer.addEventListener('click', (e) => {
