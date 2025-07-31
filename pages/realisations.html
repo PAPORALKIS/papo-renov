@@ -244,7 +244,7 @@
     .zoom-image-container {
       position: relative;
       flex-shrink: 0; /* Empêche le conteneur de rétrécir */
-      max-width: 60%; /* L'image principale prend 60% de la largeur du conteneur principal */
+      max-width: 75%; /* MODIFICATION: Augmenté de 60% à 75% */
       max-height: 90vh;
       display: flex;
       justify-content: center;
@@ -270,12 +270,10 @@
     }
 
     .zoom-comment {
-      /* Ligne pour modifier la taille de la police */
       color: white;
-      font-size: 1.1em; /* C'EST CETTE LIGNE QUI DÉFINIT LA TAILLE DE LA POLICE */
-      max-width: 400px; /* Limite la largeur du commentaire */
+      font-size: 1.1em;
+      max-width: 250px; /* MODIFICATION: Réduit de 400px à 250px */
       padding: 25px;
-      /* Nouveau style pour un effet de fond vitreux élégant */
       background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0));
       border: 1px solid rgba(255, 255, 255, 0.18);
       box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
