@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Avis clients - Papo Rénov</title>
+  <link rel="stylesheet" href="style.css"> <!-- Ton CSS global -->
+  <style>
+    /* ====== STYLE SPÉCIFIQUE À LA PAGE AVIS ====== */
+
+    main {
+      max-width: 1000px;
+      margin: 100px auto 50px;
+      padding: 0 20px;
+    }
+
+    main h1 {
+      font-size: 2.2rem;
+      color: #1a3c6d;
+      margin-bottom: 10px;
+      text-align: center;
+    }
+
+    main .intro {
+      font-size: 1.1rem;
+      color: #555;
+      margin-bottom: 40px;
+      text-align: center;
+    }
+
+    /* Bloc avis */
+    .avis-list {
+      display: flex;
+      flex-direction: column;
+      gap: 25px;
+    }
+
+    .avis {
+      display: flex;
+      align-items: flex-start;
+      gap: 20px;
+      background: #f8f8f8;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    }
+
+    .avis-image img {
+      width: 140px;
+      height: 100px;
+      object-fit: cover;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: transform 0.3s;
+    }
+
+    .avis-image img:hover {
+      transform: scale(1.05);
+    }
+
+    .avis-texte {
+      flex: 1;
+    }
+
+    .avis-texte h3 {
+      margin: 0 0 10px;
+      color: #1a3c6d;
+      font-size: 1.1rem;
+    }
+
+    .avis-texte p {
+      font-style: italic;
+      margin-bottom: 10px;
+      color: #333;
+    }
+
+    .avis-texte .date {
+      font-size: 0.85rem;
+      color: #777;
+    }
+
+    /* ======== Galerie plein écran ======== */
+    #galleryOverlay {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.9);
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+      flex-direction: column;
+    }
+
+    #galleryOverlay img {
+      max-width: 90%;
+      max-height: 80%;
+      border-radius: 10px;
+    }
+
+    #galleryOverlay .close-btn {
+      position: absolute;
+      top: 20px; right: 30px;
+      font-size: 2rem;
+      color: white;
+      cursor: pointer;
+    }
+
+    #galleryOverlay .nav-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 2rem;
+      color: white;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    #galleryOverlay .prev { left: 20px; }
+    #galleryOverlay .next { right: 20px; }
+
+    footer {
+      background: #1a3c6d;
+      color: white;
+      padding: 15px;
+      text-align: center;
+      margin-top: 50px;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .avis {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+      }
+      .avis-image img {
+        width: 100%;
+        height: auto;
+      }
+      .avis-texte {
+        text-align: center;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ====== HEADER / NAVIGATION ====== -->
+  <header>
+    <nav>
+      <ul>
+        <li><a href="index.html">Accueil</a></li>
+        <li><a href="realisations.html">Réalisations</a></li>
+        <li><a href="devis.html">Devis</a></li>
+        <li><a href="avis.html" class="active">Avis clients</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- ====== CONTENU PRINCIPAL ====== -->
+  <main>
+    <h1>Vos avis sur Papo Rénov</h1>
+    <p class="intro">
+      Découvrez ce que nos clients disent de nos réalisations et services.
+    </p>
+
+    <section class="avis-list">
+
+      <!-- AVIS 1 -->
+      <article class="avis">
+        <div class="avis-image">
+          <img src="img/cuisine1.jpg" alt="Projet cuisine Sophie"
+               onclick="openGallery(['img/cuisine1.jpg','img/cuisine2.jpg','img/cuisine3.jpg'])">
+        </div>
+        <div class="avis-texte">
+          <h3>⭐️⭐️⭐️⭐️⭐️ – Sophie M.</h3>
+          <p>« Travail impeccable pour la rénovation de ma cuisine. Je recommande vivement ! »</p>
+          <span class="date">Publié le 15 juin 2025</span>
+        </div>
+      </article>
+
+      <!-- AVIS 2 -->
+      <article class="avis">
+        <div class="avis-image">
+          <img src="img/dressing1.jpg" alt="Projet dressing Karim"
+               onclick="openGallery(['img/dressing1.jpg','img/dressing2.jpg'])">
+        </div>
+        <div class="avis-texte">
+          <h3>⭐️⭐️⭐️⭐️⭐️ – Karim D.</h3>
+          <p>« Dressing sur mesure parfaitement réalisé. Très satisfait du rendu et du professionnalisme. »</p>
+          <span class="date">Publié le 3 juillet 2025</span>
+        </div>
+      </article>
+
+      <!-- AVIS 3 -->
+      <article class="avis">
+        <div class="avis-image">
+          <img src="img/sdb1.jpg" alt="Projet salle de bain Julie"
+               onclick="openGallery(['img/sdb1.jpg','img/sdb2.jpg'])">
+        </div>
+        <div class="avis-texte">
+          <h3>⭐️⭐️⭐️⭐️ – Julie P.</h3>
+          <p>« Pose de salle de bain bien faite, petites finitions à revoir mais travail sérieux. »</p>
+          <span class="date">Publié le 10 août 2025</span>
+        </div>
+      </article>
+
+    </section>
+  </main>
+
+  <!-- ====== GALERIE PLEIN ÉCRAN ====== -->
+  <div id="galleryOverlay">
+    <span class="close-btn" onclick="closeGallery()">&times;</span>
+    <span class="nav-btn prev" onclick="prevImage()">&#10094;</span>
+    <img id="galleryImage" src="">
+    <span class="nav-btn next" onclick="nextImage()">&#10095;</span>
+  </div>
+
+  <!-- ====== SCRIPT GALERIE ====== -->
+  <script>
+    let galleryImages = [];
+    let currentIndex = 0;
+
+    function openGallery(images) {
+      galleryImages = images;
+      currentIndex = 0;
+      document.getElementById("galleryImage").src = galleryImages[currentIndex];
+      document.getElementById("galleryOverlay").style.display = "flex";
+    }
+
+    function closeGallery() {
+      document.getElementById("galleryOverlay").style.display = "none";
+    }
+
+    function prevImage() {
+      if (galleryImages.length > 0) {
+        currentIndex = (currentIndex - 1 + galleryImages.length) % galleryImages.length;
+        document.getElementById("galleryImage").src = galleryImages[currentIndex];
+      }
+    }
+
+    function nextImage() {
+      if (galleryImages.length > 0) {
+        currentIndex = (currentIndex + 1) % galleryImages.length;
+        document.getElementById("galleryImage").src = galleryImages[currentIndex];
+      }
+    }
+  </script>
+
+  <!-- ====== FOOTER ====== -->
+  <footer>
+    <p>© 2025 Papo Rénov - Tous droits réservés</p>
+  </footer>
+
+</body>
+</html>
