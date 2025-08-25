@@ -188,5 +188,75 @@
     <img src="../img/dressing_karim1.jpg" alt="Projet dressing Karim">
   </div>
 
+<!-- Visionneuse Zoom avec regroupement -->
+<div class="zoom-viewer" id="zoomViewer">
+  <span class="close-btn">&times;</span>
+  <div class="zoom-content-wrapper">
+    <div class="zoom-main-content">
+      <div class="zoom-image-container">
+        <img id="zoomImage" src="" alt="zoom">
+      </div>
+      <div class="zoom-comment" id="zoomComment"></div>
+    </div>
+  </div>
+
+  <div class="zoom-linked-images-container" id="zoomLinkedImagesContainer">
+    <button class="nav-arrow left" id="zoomNavLeft">&lt;</button>
+    <div class="zoom-linked-images" id="zoomLinkedImages"></div>
+    <button class="nav-arrow right" id="zoomNavRight">&gt;</button>
+  </div>
+</div>
+  <script>
+  const zoomViewer = document.getElementById("zoomViewer");
+  const zoomImage = document.getElementById("zoomImage");
+  const zoomComment = document.getElementById("zoomComment");
+  const zoomLinkedImages = document.getElementById("zoomLinkedImages");
+  const zoomNavLeft = document.getElementById("zoomNavLeft");
+  const zoomNavRight = document.getElementById("zoomNavRight");
+  const closeBtn = document.querySelector('.close-btn');
+
+  let currentZoomData = null;
+  let currentLinkedImageIndex = 0;
+
+  // Fonction pour afficher la vue zoomée
+  function showZoom(data) {
+    currentZoomData = data;
+    zoomComment.innerHTML = `<p>${data.comment || ''}</p>`;
+    zoomLinkedImages.innerHTML = '';
+
+    const imagesToDisplay = [data.src, ...(data.linkedImages || [])];
+
+    imagesToDisplay.forEach((src, idx) => {
+      const thumb = document.createElement("img");
+      thumb.src = src;
+      thumb.addEventListener("click", () => {
+        currentLinkedImageIndex = idx;
+        zoomImage.src = src;
+        document.querySelectorAll(".zoom-linked-images img").forEach(img => img.classList.remove("active"));
+        thumb.classList.add("active");
+      });
+      zoomLinkedImages.appendChild(thumb);
+    });
+
+    currentLinkedImageIndex = 0;
+    zoomImage.src = imagesToDisplay[0];
+    zoomViewer.style.display = "flex";
+  }
+
+  // Navigation gauche/droite
+  function navigateLinkedImages(direction) {
+    if (!currentZoomData) return;
+    const imagesToDisplay = [currentZoomData.src, ...(currentZoomData.linkedImages || [])];
+    currentLinkedImageIndex = (currentLinkedImageIndex + direction + imagesToDisplay.length) % imagesToDisplay.length;
+    zoomImage.src = imagesToDisplay[currentLinkedImageIndex];
+  }
+
+  zoomNavLeft.addEventListener("click", () => navigateLinkedImages(-1));
+  zoomNavRight.addEventListener("click", () => navigateLinkedImages(1));
+
+  closeBtn.addEventListener("click", () => {
+    zoomViewer.style.display = "none";
+  });
+</script>
 </body>
 </html>
