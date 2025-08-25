@@ -1,148 +1,197 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Avis clients - Papo Renov</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="../style.css" />
-  <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Avis clients - Papo Rénov</title>
   <style>
-    /* Styles généraux */
+    /* --- Styles généraux --- */
     body {
-      font-family: 'Poppins', sans-serif;
+      font-family: Arial, sans-serif;
       margin: 0;
-      padding: 0 1rem;
-      box-sizing: border-box;
-      overflow-x: hidden;
-      background: #fff;
-    }
-
-    /* Barre de navigation */
-    header {
-      max-width: 900px;
-      margin: 0 auto;
-      padding: 1rem 0;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-    nav ul {
-      list-style: none;
-      display: flex;
-      gap: 1rem;
       padding: 0;
-      margin: 0;
-    }
-    nav ul li a {
-      text-decoration: none;
-      color: #003366;
-      font-weight: 600;
-    }
-    nav ul li a.active {
-      text-decoration: underline;
-    }
-
-    .logo img {
-      max-height: 50px;
-      width: auto;
-    }
-
-    /* Section titre */
-    .titre-section {
-      max-width: 700px;
-      margin: 2rem auto;
-      padding: 1rem;
-      text-align: center;
-    }
-    .titre-section h1 {
-      margin-bottom: 0.5rem;
-      font-size: 2rem;
-      color: #003366;
-    }
-    .titre-section p {
-      color: #555;
-      margin-top: 0;
-      font-size: 1.1rem;
-    }
-
-    /* Bloc avis */
-    .avis-list {
-      max-width: 700px;
-      margin: 2rem auto;
-      display: flex;
-      flex-direction: column;
-      gap: 1.5rem;
-    }
-    .avis {
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      padding: 1rem;
       background: #f9f9f9;
-    }
-    .avis strong {
-      color: #003366;
-    }
-    .avis p {
-      margin: 0.3rem 0 0;
       color: #333;
     }
 
-    /* Responsive */
-    @media (max-width: 480px) {
-      body {
-        font-size: 12px;
-      }
-      h2 {
-        font-size: 1.3rem;
-      }
-      .avis {
-        font-size: 0.9rem;
-      }
+    /* --- Header & Navbar --- */
+    header {
+      background: #0d2c54;
+      color: white;
+      padding: 15px 0;
+    }
+
+    .navbar {
+      width: 90%;
+      margin: auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .navbar .logo {
+      font-size: 1.5em;
+      font-weight: bold;
+      color: white;
+      text-decoration: none;
+    }
+
+    .nav-links {
+      list-style: none;
+      display: flex;
+      gap: 20px;
+    }
+
+    .nav-links li a {
+      color: white;
+      text-decoration: none;
+      transition: 0.3s;
+    }
+
+    .nav-links li a:hover,
+    .nav-links li a.active {
+      text-decoration: underline;
+    }
+
+    /* --- Section Avis --- */
+    .avis-section {
+      width: 90%;
+      max-width: 900px;
+      margin: 40px auto;
+    }
+
+    .avis-section h1 {
+      text-align: center;
+      font-size: 2em;
+      margin-bottom: 10px;
+    }
+
+    .avis-section p.subtitle {
+      text-align: center;
+      margin-bottom: 30px;
+      color: #666;
+    }
+
+    .avis {
+      background: white;
+      padding: 20px;
+      margin-bottom: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .avis img {
+      width: 100px;
+      height: 80px;
+      object-fit: cover;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: transform 0.3s;
+    }
+
+    .avis img:hover {
+      transform: scale(1.05);
+    }
+
+    .avis-content {
+      flex: 1;
+    }
+
+    .avis strong {
+      color: #0d2c54;
+    }
+
+    /* --- Lightbox (zoom image) --- */
+    .lightbox {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0; top: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.9);
+      justify-content: center;
+      align-items: center;
+    }
+
+    .lightbox img {
+      max-width: 90%;
+      max-height: 80%;
+      border-radius: 10px;
+      box-shadow: 0 0 20px #000;
+    }
+
+    .lightbox:target {
+      display: flex;
+    }
+
+    .close {
+      position: absolute;
+      top: 20px;
+      right: 40px;
+      font-size: 30px;
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
     }
   </style>
 </head>
 <body>
-<header>
-  <div class="logo">
-    <img src="../img/logo.png" alt="Logo Paporalkis" />
-  </div>
-  <nav>
-    <ul>
-      <li><a href="../index.html">Accueil</a></li>
-      <li><a href="devis.html">Demande de devis</a></li>
-      <li><a href="realisations.html">Mes réalisations</a></li>
-      <li><a href="tarifs.html">Tarifs</a></li>
-      <li><a href="planning.html">Planning</a></li>
-      <li><a href="contact.html">Contact</a></li>
-      <li><a href="avis.html" class="active">Avis clients</a></li>
-    </ul>
-  </nav>
-</header>
 
-<section class="titre-section" data-aos="fade-down">
-  <h1>Avis de nos clients</h1>
-  <p>Découvrez ce que nos clients disent de leur expérience avec Papo Renov</p>
-</section>
+  <!-- Header identique aux autres pages -->
+  <header>
+    <nav class="navbar">
+      <a href="../index.html" class="logo">Papo Rénov</a>
+      <ul class="nav-links">
+        <li><a href="../index.html">Accueil</a></li>
+        <li><a href="devis.html">Demande de devis</a></li>
+        <li><a href="realisations.html">Mes réalisations</a></li>
+        <li><a href="tarifs.html">Tarifs</a></li>
+        <li><a href="planning.html">Planning</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li><a href="avis.html" class="active">Avis clients</a></li>
+      </ul>
+    </nav>
+  </header>
 
-<section class="avis-list" data-aos="fade-up">
-  <div class="avis">
-    <strong>Jean D.</strong>
-    <p>“Travail soigné et de qualité, je recommande vivement !”</p>
-  </div>
-  <div class="avis">
-    <strong>Sophie M.</strong>
-    <p>“Un artisan sérieux et à l’écoute, ma cuisine est parfaite.”</p>
-  </div>
-  <div class="avis">
-    <strong>Marc L.</strong>
-    <p>“Ponctuel, efficace et de très bons conseils. Merci encore !”</p>
-  </div>
-</section>
+  <!-- Section Avis -->
+  <section class="avis-section">
+    <h1>Vos avis sur Papo Rénov</h1>
+    <p class="subtitle">Découvrez ce que nos clients disent de nos réalisations et services.</p>
 
-<script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
-<script>
-  AOS.init({ duration: 800, once: true });
-</script>
+    <!-- Avis Sophie -->
+    <div class="avis">
+      <a href="#img1"><img src="../img/cuisine_sophie1.jpg" alt="Projet cuisine Sophie"></a>
+      <div class="avis-content">
+        ⭐⭐⭐⭐⭐ – <strong>Sophie M.</strong>
+        <p><em>« Travail impeccable pour la rénovation de ma cuisine. Je recommande vivement ! »</em></p>
+        <small>Publié le 15 juin 2025</small>
+      </div>
+    </div>
+
+    <!-- Avis Karim -->
+    <div class="avis">
+      <a href="#img2"><img src="../img/dressing_karim1.jpg" alt="Projet dressing Karim"></a>
+      <div class="avis-content">
+        ⭐⭐⭐⭐⭐ – <strong>Karim D.</strong>
+        <p><em>« Dressing sur mesure parfaitement réalisé. Très satisfait du rendu et du professionnalisme. »</em></p>
+        <small>Publié le 3 juillet 2025</small>
+      </div>
+    </div>
+  </section>
+
+  <!-- Lightbox (zoom images projets) -->
+  <div id="img1" class="lightbox">
+    <a href="#" class="close">&times;</a>
+    <img src="../img/cuisine_sophie1.jpg" alt="Projet cuisine Sophie">
+  </div>
+
+  <div id="img2" class="lightbox">
+    <a href="#" class="close">&times;</a>
+    <img src="../img/dressing_karim1.jpg" alt="Projet dressing Karim">
+  </div>
+
 </body>
 </html>
