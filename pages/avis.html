@@ -85,7 +85,8 @@
     .avis strong {
       color: #0d2c54;
     }
-    /* --- Nouveau style zoom viewer (hérité de réalisations.html) --- */
+
+    /* --- Zoom Viewer --- */
     .zoom-viewer {
       position: fixed;
       top: 0; left: 0;
@@ -96,10 +97,12 @@
       justify-content: center;
       flex-direction: column;
       z-index: 1000;
+      padding: 10px;
+      box-sizing: border-box;
     }
     .zoom-image-container img {
       max-width: 90%;
-      max-height: 80%;
+      max-height: 75vh;
       border-radius: 10px;
       box-shadow: 0 0 20px rgba(0,0,0,0.5);
     }
@@ -108,17 +111,22 @@
       margin-top: 15px;
       font-size: 1em;
       text-align: center;
+      max-width: 600px;
     }
     .zoom-linked-images-container {
       display: flex;
       align-items: center;
       margin-top: 15px;
       gap: 10px;
+      width: 100%;
+      justify-content: center;
     }
     .zoom-linked-images {
       display: flex;
       gap: 8px;
       overflow-x: auto;
+      padding: 5px;
+      scroll-behavior: smooth;
     }
     .zoom-linked-images img {
       width: 80px;
@@ -127,6 +135,7 @@
       border-radius: 6px;
       cursor: pointer;
       border: 2px solid transparent;
+      flex-shrink: 0;
     }
     .zoom-linked-images img.active {
       border-color: #007bff;
@@ -147,6 +156,42 @@
       font-size: 2em;
       color: white;
       cursor: pointer;
+    }
+
+    /* --- Responsive --- */
+    @media (max-width: 768px) {
+      .avis {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .avis img {
+        width: 100%;
+        height: auto;
+        max-width: 300px;
+      }
+      .zoom-image-container img {
+        max-width: 95%;
+        max-height: 60vh;
+      }
+      .zoom-linked-images img {
+        width: 60px;
+        height: 60px;
+      }
+      .zoom-comment {
+        font-size: 0.9em;
+        max-width: 90%;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .nav-arrow {
+        font-size: 1.2em;
+        padding: 3px 6px;
+      }
+      .zoom-linked-images img {
+        width: 50px;
+        height: 50px;
+      }
     }
   </style>
 </head>
@@ -175,7 +220,7 @@
     <h1>Vos avis sur Papo Rénov</h1>
     <p class="subtitle">Découvrez ce que nos clients disent de nos réalisations et services.</p>
 
-    <!-- Avis Sophie (modifié pour zoom regroupement) -->
+    <!-- Avis Sophie -->
     <div class="avis">
       <img src="../img/meuble-laura-1.jpg" alt="Montage de meubles en KIT"
            onclick="showZoom({
@@ -190,7 +235,7 @@
       </div>
     </div>
 
-    <!-- Avis Laura (non modifié pour l’instant) -->
+    <!-- Avis Laura -->
     <div class="avis">
       <img src="../img/escalier SPACEO.png" alt="Projet dressing Karim"
            onclick="showZoom({
@@ -206,7 +251,7 @@
     </div>
   </section>
 
-  <!-- Nouveau Zoom Viewer -->
+  <!-- Zoom Viewer -->
   <div class="zoom-viewer" id="zoomViewer">
     <span class="close-btn">&times;</span>
     <div class="zoom-content-wrapper">
