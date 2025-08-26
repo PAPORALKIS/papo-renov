@@ -4,17 +4,16 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Avis clients - Papo Rénov</title>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="../style.css" />
   <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet" />
   <style>
-    /* Conteneur général centré avec max-width pour limiter la largeur */
     body {
       font-family: 'Poppins', sans-serif;
       margin: 0;
       padding: 0 1rem;
       box-sizing: border-box;
-      overflow-x: hidden; /* éviter débordement horizontal */
+      overflow-x: hidden;
       background: #fff;
     }
     header {
@@ -40,31 +39,25 @@
     nav ul li a.active {
       text-decoration: underline;
     }
-
     .logo img {
       max-height: 50px;
       width: auto;
     }
-
-    /* --- Section Avis --- */
     .avis-section {
       width: 90%;
       max-width: 900px;
       margin: 40px auto;
     }
-
     .avis-section h1 {
       text-align: center;
       font-size: 2em;
       margin-bottom: 10px;
     }
-
     .avis-section p.subtitle {
       text-align: center;
       margin-bottom: 30px;
       color: #666;
     }
-
     .avis {
       background: white;
       padding: 20px;
@@ -75,7 +68,6 @@
       align-items: center;
       gap: 20px;
     }
-
     .avis img {
       width: 100px;
       height: 80px;
@@ -84,50 +76,77 @@
       cursor: pointer;
       transition: transform 0.3s;
     }
-
     .avis img:hover {
       transform: scale(1.05);
     }
-
     .avis-content {
       flex: 1;
     }
-
     .avis strong {
       color: #0d2c54;
     }
-
-    /* --- Lightbox (zoom image) --- */
-    .lightbox {
-      display: none;
+    /* --- Nouveau style zoom viewer (hérité de réalisations.html) --- */
+    .zoom-viewer {
       position: fixed;
-      z-index: 1000;
-      left: 0; top: 0;
+      top: 0; left: 0;
       width: 100%; height: 100%;
       background: rgba(0,0,0,0.9);
-      justify-content: center;
+      display: none;
       align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      z-index: 1000;
     }
-
-    .lightbox img {
+    .zoom-image-container img {
       max-width: 90%;
       max-height: 80%;
       border-radius: 10px;
-      box-shadow: 0 0 20px #000;
+      box-shadow: 0 0 20px rgba(0,0,0,0.5);
     }
-
-    .lightbox:target {
+    .zoom-comment {
+      color: white;
+      margin-top: 15px;
+      font-size: 1em;
+      text-align: center;
+    }
+    .zoom-linked-images-container {
       display: flex;
+      align-items: center;
+      margin-top: 15px;
+      gap: 10px;
     }
-
-    .close {
+    .zoom-linked-images {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+    }
+    .zoom-linked-images img {
+      width: 80px;
+      height: 80px;
+      object-fit: cover;
+      border-radius: 6px;
+      cursor: pointer;
+      border: 2px solid transparent;
+    }
+    .zoom-linked-images img.active {
+      border-color: #007bff;
+    }
+    .nav-arrow {
+      background: rgba(0,0,0,0.5);
+      border: none;
+      color: white;
+      font-size: 1.5em;
+      cursor: pointer;
+      padding: 4px 8px;
+      border-radius: 50%;
+    }
+    .close-btn {
       position: absolute;
       top: 20px;
-      right: 40px;
-      font-size: 30px;
+      right: 20px;
+      font-size: 2em;
       color: white;
-      text-decoration: none;
-      font-weight: bold;
+      cursor: pointer;
     }
   </style>
 </head>
@@ -135,127 +154,121 @@
 
   <!-- Header identique aux autres pages -->
   <header>
-  <div class="logo">
-    <img src="../img/logo.png" alt="Logo Paporalkis" />
-  </div>
-  <nav>
-    <ul>
-      <li><a href="../index.html">Accueil</a></li>
-      <li><a href="devis.html">Demande de devis</a></li>
-      <li><a href="realisations.html">Mes réalisations</a></li>
-      <li><a href="tarifs.html">Tarifs</a></li>
-      <li><a href="planning.html">Planning</a></li>
-      <li><a href="contact.html">Contact</a></li>
-      <li><a href="avis.html"class="active" >Avis clients</a></li>
-    </ul>
-  </nav>
-</header>
+    <div class="logo">
+      <img src="../img/logo.png" alt="Logo Paporalkis" />
+    </div>
+    <nav>
+      <ul>
+        <li><a href="../index.html">Accueil</a></li>
+        <li><a href="devis.html">Demande de devis</a></li>
+        <li><a href="realisations.html">Mes réalisations</a></li>
+        <li><a href="tarifs.html">Tarifs</a></li>
+        <li><a href="planning.html">Planning</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li><a href="avis.html" class="active">Avis clients</a></li>
+      </ul>
+    </nav>
+  </header>
 
   <!-- Section Avis -->
   <section class="avis-section">
     <h1>Vos avis sur Papo Rénov</h1>
     <p class="subtitle">Découvrez ce que nos clients disent de nos réalisations et services.</p>
 
-    <!-- Avis Sophie -->
+    <!-- Avis Sophie (modifié pour zoom regroupement) -->
     <div class="avis">
-  <img src="../img/meuble-laura-1.jpg" alt="Montage de meubles en KIT"
-       onclick="showZoom({
-         src: '../img/meuble-laura-1.jpg',
-         comment: 'Montage de meubles en KIT',
-         linkedImages: ['../img/cuisine_sophie1.jpg','../img/cuisine_sophie2.jpg']
-       })">
-  <div class="avis-content">
-    ⭐⭐⭐⭐⭐ – <strong>Sophie M.</strong>
-    <p><em>« Travail impeccable et rapide. Je recommande vivement ! »</em></p>
-    <small>Publié le 15 juin 2025</small>
-  </div>
-</div>
-    <!-- Avis Laura  -->
+      <img src="../img/meuble-laura-1.jpg" alt="Montage de meubles en KIT"
+           onclick="showZoom({
+             src: '../img/meuble-laura-1.jpg',
+             comment: 'Montage de meubles en KIT',
+             linkedImages: ['../img/cuisine_sophie1.jpg','../img/cuisine_sophie2.jpg']
+           })">
+      <div class="avis-content">
+        ⭐⭐⭐⭐⭐ – <strong>Sophie M.</strong>
+        <p><em>« Travail impeccable et rapide. Je recommande vivement ! »</em></p>
+        <small>Publié le 15 juin 2025</small>
+      </div>
+    </div>
+
+    <!-- Avis Laura (non modifié pour l’instant) -->
     <div class="avis">
-  <img src="../img/meuble-laura-1.jpg" alt="Montage de meubles en KIT"
-       onclick="showZoom({
-         src: '../img/meuble-laura-1.jpg',
-         comment: 'Montage de meubles en KIT',
-         linkedImages: ['../img/cuisine_sophie1.jpg','../img/cuisine_sophie2.jpg']
-       })">
-  <div class="avis-content">
-    ⭐⭐⭐⭐⭐ – <strong>Sophie M.</strong>
-    <p><em>« Travail impeccable et rapide. Je recommande vivement ! »</em></p>
-    <small>Publié le 15 juin 2025</small>
-  </div>
-</div>
+      <img src="../img/escalier SPACEO.png" alt="Projet dressing Karim"
+           onclick="showZoom({
+             src: '../img/escalier SPACEO.png',
+             comment: 'Agencement placards sur-mesure',
+             linkedImages: ['../img/dressing_karim1.jpg']
+           })">
+      <div class="avis-content">
+        ⭐⭐⭐⭐⭐ – <strong>Laura B.</strong>
+        <p><em>« J’ai fais appel à PAPO RENOV pour l’agencement de mes placards sur-mesure.. Travail soigné, personne rigoureuse et sérieuse. »</em></p>
+        <small>Publié Juin 2025</small>
+      </div>
+    </div>
   </section>
 
-  
-<!-- Visionneuse Zoom avec regroupement -->
-<div class="zoom-viewer" id="zoomViewer">
-  <span class="close-btn">&times;</span>
-  <div class="zoom-content-wrapper">
-    <div class="zoom-main-content">
-      <div class="zoom-image-container">
-        <img id="zoomImage" src="" alt="zoom">
+  <!-- Nouveau Zoom Viewer -->
+  <div class="zoom-viewer" id="zoomViewer">
+    <span class="close-btn">&times;</span>
+    <div class="zoom-content-wrapper">
+      <div class="zoom-main-content">
+        <div class="zoom-image-container">
+          <img id="zoomImage" src="" alt="zoom">
+        </div>
+        <div class="zoom-comment" id="zoomComment"></div>
       </div>
-      <div class="zoom-comment" id="zoomComment"></div>
+    </div>
+    <div class="zoom-linked-images-container">
+      <button class="nav-arrow left" id="zoomNavLeft">&lt;</button>
+      <div class="zoom-linked-images" id="zoomLinkedImages"></div>
+      <button class="nav-arrow right" id="zoomNavRight">&gt;</button>
     </div>
   </div>
 
-  <div class="zoom-linked-images-container" id="zoomLinkedImagesContainer">
-    <button class="nav-arrow left" id="zoomNavLeft">&lt;</button>
-    <div class="zoom-linked-images" id="zoomLinkedImages"></div>
-    <button class="nav-arrow right" id="zoomNavRight">&gt;</button>
-  </div>
-</div>
   <script>
-  const zoomViewer = document.getElementById("zoomViewer");
-  const zoomImage = document.getElementById("zoomImage");
-  const zoomComment = document.getElementById("zoomComment");
-  const zoomLinkedImages = document.getElementById("zoomLinkedImages");
-  const zoomNavLeft = document.getElementById("zoomNavLeft");
-  const zoomNavRight = document.getElementById("zoomNavRight");
-  const closeBtn = document.querySelector('.close-btn');
+    const zoomViewer = document.getElementById("zoomViewer");
+    const zoomImage = document.getElementById("zoomImage");
+    const zoomComment = document.getElementById("zoomComment");
+    const zoomLinkedImages = document.getElementById("zoomLinkedImages");
+    const zoomNavLeft = document.getElementById("zoomNavLeft");
+    const zoomNavRight = document.getElementById("zoomNavRight");
+    const closeBtn = document.querySelector('.close-btn');
 
-  let currentZoomData = null;
-  let currentLinkedImageIndex = 0;
+    let currentZoomData = null;
+    let currentLinkedImageIndex = 0;
 
-  // Fonction pour afficher la vue zoomée
-  function showZoom(data) {
-    currentZoomData = data;
-    zoomComment.innerHTML = `<p>${data.comment || ''}</p>`;
-    zoomLinkedImages.innerHTML = '';
+    function showZoom(data) {
+      currentZoomData = data;
+      zoomComment.innerHTML = `<p>${data.comment || ''}</p>`;
+      zoomLinkedImages.innerHTML = '';
 
-    const imagesToDisplay = [data.src, ...(data.linkedImages || [])];
-
-    imagesToDisplay.forEach((src, idx) => {
-      const thumb = document.createElement("img");
-      thumb.src = src;
-      thumb.addEventListener("click", () => {
-        currentLinkedImageIndex = idx;
-        zoomImage.src = src;
-        document.querySelectorAll(".zoom-linked-images img").forEach(img => img.classList.remove("active"));
-        thumb.classList.add("active");
+      const imagesToDisplay = [data.src, ...(data.linkedImages || [])];
+      imagesToDisplay.forEach((src, idx) => {
+        const thumb = document.createElement("img");
+        thumb.src = src;
+        thumb.addEventListener("click", () => {
+          currentLinkedImageIndex = idx;
+          zoomImage.src = src;
+          document.querySelectorAll(".zoom-linked-images img").forEach(img => img.classList.remove("active"));
+          thumb.classList.add("active");
+        });
+        zoomLinkedImages.appendChild(thumb);
       });
-      zoomLinkedImages.appendChild(thumb);
-    });
 
-    currentLinkedImageIndex = 0;
-    zoomImage.src = imagesToDisplay[0];
-    zoomViewer.style.display = "flex";
-  }
+      currentLinkedImageIndex = 0;
+      zoomImage.src = imagesToDisplay[0];
+      zoomViewer.style.display = "flex";
+    }
 
-  // Navigation gauche/droite
-  function navigateLinkedImages(direction) {
-    if (!currentZoomData) return;
-    const imagesToDisplay = [currentZoomData.src, ...(currentZoomData.linkedImages || [])];
-    currentLinkedImageIndex = (currentLinkedImageIndex + direction + imagesToDisplay.length) % imagesToDisplay.length;
-    zoomImage.src = imagesToDisplay[currentLinkedImageIndex];
-  }
+    function navigateLinkedImages(direction) {
+      if (!currentZoomData) return;
+      const imagesToDisplay = [currentZoomData.src, ...(currentZoomData.linkedImages || [])];
+      currentLinkedImageIndex = (currentLinkedImageIndex + direction + imagesToDisplay.length) % imagesToDisplay.length;
+      zoomImage.src = imagesToDisplay[currentLinkedImageIndex];
+    }
 
-  zoomNavLeft.addEventListener("click", () => navigateLinkedImages(-1));
-  zoomNavRight.addEventListener("click", () => navigateLinkedImages(1));
-
-  closeBtn.addEventListener("click", () => {
-    zoomViewer.style.display = "none";
-  });
-</script>
+    zoomNavLeft.addEventListener("click", () => navigateLinkedImages(-1));
+    zoomNavRight.addEventListener("click", () => navigateLinkedImages(1));
+    closeBtn.addEventListener("click", () => { zoomViewer.style.display = "none"; });
+  </script>
 </body>
 </html>
