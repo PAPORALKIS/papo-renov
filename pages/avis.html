@@ -69,13 +69,26 @@
       gap: 20px;
     }
     .avis img {
-      width: 50px;
-      height: 30px;
+      width: 80px;
+      height: 60px;
       object-fit: cover;
       border-radius: 8px;
       cursor: pointer;
       transition: transform 0.3s;
-    }
+
+      @media (max-width: 768px) {
+  .avis img {
+    width: 60px;
+    height: auto;
+  }
+}
+
+@media (max-width: 480px) {
+  .avis img {
+    width: 50px;
+    height: auto;
+  }
+}
     .avis img:hover {
       transform: scale(1.05);
     }
