@@ -1,201 +1,247 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Tarifs – Paporalkis</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="../style.css" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tarifs - Papo Rénov</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../style.css">
   <style>
     body {
       font-family: 'Poppins', sans-serif;
-      background: url('../img/logo.png') no-repeat center center fixed;
-      background-size: 60%;
-      background-attachment: fixed;
-      opacity: 0.95;
       margin: 0;
+      padding: 0;
+      background-color: #f9f9f9;
     }
 
-    .section {
-      max-width: 1000px;
-      margin: 2rem auto;
-      background-color: rgba(255, 255, 255, 0.95);
-      padding: 2rem;
-      border-radius: 12px;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-
-      overflow-x: auto; /* Scroll horizontal si besoin */
-      -webkit-overflow-scrolling: touch; /* Smooth scroll iOS */
+    nav ul li a.active {
+      color: #00bfff;
     }
 
-    .section img {
-      width: 70px;
-      height: auto;
-      margin-bottom: 1rem;
-    }
-
-    h2 {
+    .content-section {
+      padding: 60px 20px;
+      min-height: 90vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
       text-align: center;
-      color: #003366;
-      font-size: 2rem;
-      margin-top: 0;
     }
 
-    table {
+    .price-container {
       width: 100%;
-      border-collapse: collapse;
-      margin-top: 1rem;
-      table-layout: auto; /* Cols s’adaptent au contenu */
+      max-width: 800px;
+      margin-top: 20px;
     }
 
-    th, td {
-      padding: 0.7rem;
-      border: 1px solid #ccc;
-      text-align: left;
-      font-size: 0.95rem;
-
-      word-break: break-word;    /* Coupe mot si nécessaire sans tiret */
-      hyphens: none;             /* Pas de césure */
-      white-space: normal;       /* Retour à la ligne normal */
-      overflow-wrap: break-word; /* Découpe mot si besoin */
+    /* Styles des deux sections de prix */
+    .pricing-table {
+      background-color: #fff;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    .pricing-table h2 {
+      color: #00bfff;
+    }
+    .pricing-table ul {
+      list-style-type: none;
+      padding: 0;
+      margin: 20px 0;
+    }
+    .pricing-table li {
+      padding: 10px;
+      border-bottom: 1px solid #eee;
+    }
+    .pricing-table li:last-child {
+      border-bottom: none;
     }
 
-    th {
-      background-color: #003366;
-      color: white;
+    /* Cache la version partenaire par défaut */
+    .partner-prices {
+      display: none;
     }
 
-    .pack {
-      background-color: #f4f9ff;
-      border: 2px solid #003366;
-      padding: 1rem;
-      margin: 1.5rem 0;
-      border-radius: 12px;
+    /* Styles pour le bouton caché */
+    #accessButton {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      width: 50px;
+      height: 50px;
+      opacity: 0;
+      cursor: pointer;
+      z-index: 999;
+    }
+    #accessButton:hover {
+        opacity: 0.1; /* Pour la démo, le rend visible au survol */
     }
 
-    .pack h3 {
-      margin-top: 0;
-      color: #003366;
+    /* Styles pour la modale de connexion */
+    .modal-overlay {
+      display: none; /* Cache la modale par défaut */
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.7);
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
     }
-
-    .centered {
+    .modal-content {
+      background-color: #fff;
+      padding: 30px;
+      border-radius: 8px;
       text-align: center;
+      width: 90%;
+      max-width: 400px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    .modal-content input {
+      width: calc(100% - 20px);
+      padding: 10px;
+      margin-top: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    .modal-content button {
+      background-color: #00bfff;
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      font-weight: bold;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-top: 20px;
+      width: 100%;
     }
 
-    /* Police responsive */
-    @media (max-width: 768px) {
-      body {
-        font-size: 14px;
-      }
-      h2 {
-        font-size: 1.5rem;
-      }
-      th, td {
-        font-size: 0.85rem;
-      }
-    }
-
-    @media (max-width: 480px) {
-      body {
-        font-size: 12px;
-      }
-      h2 {
-        font-size: 1.3rem;
-      }
-      th, td {
-        font-size: 0.75rem;
-      }
+    footer {
+      text-align: center;
+      padding: 20px;
+      font-size: 0.9rem;
+      color: #555;
+      background-color: #fff;
+      box-shadow: 0 -1px 3px rgba(0,0,0,0.1);
     }
   </style>
 </head>
 <body>
-
-  <!-- HEADER et NAV -->
-  <header>
-    <div class="logo">
-      <img src="../img/logo.png" alt="Logo Papo Rénov" />
-    </div>
-    <nav>
-      <ul>
-        <li><a href="../index.html">Accueil</a></li>
+<header>
+  <div class="logo">
+    <img src="../img/logo.png" alt="Logo Papo Rénov">
+  </div>
+  <nav>
+    <ul>
+      <li><a href="../index.html">Accueil</a></li>
       <li><a href="devis.html">Demande de devis</a></li>
       <li><a href="realisations.html">Mes réalisations</a></li>
-      <li><a href="tarifs.html"class="active">Tarifs</a></li>
+      <li><a href="tarifs.html" class="active">Tarifs</a></li>
       <li><a href="planning.html">Planning</a></li>
-      <li><a href="contact.html" >Contact</a></li>
-        <li><a href="avis.html" >Avis clients</a></li>
+      <li><a href="contact.html">Contact</a></li>
+      <li><a href="avis.html">Avis clients</a></li>
+    </ul>
+  </nav>
+</header>
+
+<section class="content-section">
+  <h1>Nos Tarifs</h1>
+
+  <div class="price-container" id="public-prices">
+    <div class="pricing-table">
+      <h2>Tarifs Publics</h2>
+      <p>Voici nos tarifs standards pour les services de rénovation.</p>
+      <ul>
+        <li>Rénovation de salle de bain : **(Prix ici)**</li>
+        <li>Pose de carrelage : **(Prix ici)**</li>
+        <li>Peinture intérieure (au m²) : **(Prix ici)**</li>
+        <li>Installation de plomberie : **(Prix ici)**</li>
+        <li>... (Ajoutez d'autres services ici)</li>
       </ul>
-    </nav>
-  </header>
-
-  <!-- SECTION : Rénovation intérieure -->
-  <div class="section">
-    <div class="centered">
-      <img src="../img/renovation_interieure.png" alt="Travaux rénovations" />
-      <h2>Rénovation intérieure</h2>
+      <p>Pour un devis personnalisé, n'hésitez pas à nous <a href="devis.html">contacter</a>.</p>
     </div>
-    <table>
-      <tr><th>Prestation</th><th>Détail / Unité</th><th>Prix (€)</th><th>Commentaires</th></tr>
-      <tr><td>Peinture murale</td><td>au m²</td><td>12</td><td>Hors préparation</td></tr>
-      <tr><td>Pose de parquet flottant</td><td>au m²</td><td>18</td><td>Sous-couche incluse</td></tr>
-      <tr><td>Montage de meuble</td><td>par meuble</td><td>30</td><td>Meuble standard</td></tr>
-      <tr><td>Installation de placo</td><td>au m²</td><td>25</td><td>Pose sur ossature métallique</td></tr>
-      <tr><td>Isolation murs</td><td>au m²</td><td>22</td><td>Hors pose de placo</td></tr>
-      <tr><td>Isolation plafond</td><td>au m²</td><td>28</td><td>Hors pose de placo</td></tr>
-      <tr><td>Pose de cuisine</td><td>/jour</td><td>À partir de 350</td><td>Sur devis selon projet</td></tr>
-      <tr><td>Pose de dressing</td><td>Par ml</td><td>À partir de 250</td><td>Sur devis selon projet</td></tr>
-      <tr><td>Pose de plinthes</td><td>ml</td><td>5</td><td></td></tr>
-      <tr><td>Pose de faïence murale</td><td>au m²</td><td>30</td><td>Sans fourniture</td></tr>
-    </table>
   </div>
 
-  <!-- SECTION : Travaux du quotidien -->
-  <div class="section">
-    <div class="centered">
-      <img src="../img/reno_express.png" alt="Travaux quotidiens" />
-      <h2>Travaux du quotidien</h2>
+  <div class="price-container partner-prices" id="partner-prices">
+    <div class="pricing-table">
+      <h2>Tarifs Partenaires 🤝</h2>
+      <p>Merci de votre fidélité ! Voici vos tarifs spéciaux et exclusifs.</p>
+      <ul>
+        <li>Rénovation de salle de bain : **(Prix spécial ici)**</li>
+        <li>Pose de carrelage : **(Prix spécial ici)**</li>
+        <li>Peinture intérieure (au m²) : **(Prix spécial ici)**</li>
+        <li>Installation de plomberie : **(Prix spécial ici)**</li>
+        <li>... (Ajoutez les mêmes services ici, avec les prix spéciaux)</li>
+      </ul>
+      <p>Ces tarifs sont réservés à nos partenaires enregistrés.</p>
     </div>
-    <table>
-      <tr><th>Prestation</th><th>Unité</th><th>Prix (€)</th><th>Commentaires</th></tr>
-      <tr><td>Fixation étagères/luminaires etc.</td><td>par unité</td><td>15</td><td>Vis et chevilles incluses</td></tr>
-      <tr><td>Pose de moustiquaires</td><td>par fenêtre</td><td>25</td><td></td></tr>
-      <tr><td>Réparation mur (enduit)</td><td>au m²</td><td>18</td><td>Enduit lissage compris</td></tr>
-      <tr><td>Remplacement joint silicone</td><td>par mètre</td><td>10</td><td></td></tr>
-    </table>
   </div>
 
-  <!-- SECTION : Extérieur -->
-  <div class="section">
-    <div class="centered">
-      <img src="../img/exterieur.png" alt="Travaux extérieurs" />
-      <h2>Extérieur</h2>
-    </div>
-    <table>
-      <tr><th>Prestation</th><th>Unité</th><th>Prix (€)</th><th>Commentaires</th></tr>
-      <tr><td>Tonte de pelouse</td><td>&lt; 200m²</td><td>35–60</td><td></td></tr>
-      <tr><td></td><td>200–500 m²</td><td>50–90</td><td></td></tr>
-      <tr><td></td><td>&gt; 500 m²</td><td>à partir de 90</td><td>Sur devis</td></tr>
-      <tr><td>Taille de haie</td><td>ml</td><td>6</td><td>Hauteur &lt; 2m</td></tr>
-      <tr><td>Débroussaillage</td><td>au m²</td><td>1.2</td><td>Terrain dégagé</td></tr>
-      <tr><td>Pose terrasse bois</td><td>au m²</td><td>50</td><td>Bois exotique ou composite</td></tr>
-      <tr><td>Pose de pergola</td><td>—</td><td>À partir de 600</td><td>Selon modèle</td></tr>
-      <tr><td>Nettoyage haute pression</td><td>au m²</td><td>2</td><td>Allée, façade</td></tr>
-      <tr><td>Plantation massifs</td><td>par m²</td><td>35</td><td>Plantes non incluses</td></tr>
-    </table>
-  </div>
+</section>
 
-  <!-- SECTION : Packs -->
-  <div class="section">
-    <div class="centered">
-      <img src="../img/pack.png" alt="Packs rénovation" style="width: 90px;" />
-      <h2>Packs</h2>
-    </div>
+<button id="accessButton" title="Accès Partenaires"></button>
 
-    <div class="pack"><h3>Pack Rénovation Express – 1 jour</h3><p><strong>250 €</strong> – Peinture, petits montages, fixations</p></div>
-    <div class="pack"><h3>Pack Jardinage Complet – 1/2 journée</h3><p><strong>140 €</strong> – Tonte, taille, soufflage</p></div>
-    <div class="pack"><h3>Pack Terrasse + Pergola</h3><p><strong>Sur devis</strong> – Installation clé en main</p></div>
-    <div class="pack"><h3>Pack Rénovation pièce (15m²)</h3><p><strong>Sur devis</strong> – Sur mesure</p></div>
+<div class="modal-overlay" id="modal-overlay">
+  <div class="modal-content">
+    <h3>Accès Partenaires</h3>
+    <form id="login-form">
+      <input type="text" id="username" placeholder="Identifiant" required>
+      <input type="password" id="password" placeholder="Mot de passe" required>
+      <button type="submit">Se connecter</button>
+    </form>
   </div>
+</div>
+
+<footer>
+  <p>&copy; 2025 Papo Rénov - Tous droits réservés</p>
+</footer>
+
+<script>
+  // Cibler les éléments du DOM
+  const accessButton = document.getElementById('accessButton');
+  const modalOverlay = document.getElementById('modal-overlay');
+  const loginForm = document.getElementById('login-form');
+  const publicPrices = document.getElementById('public-prices');
+  const partnerPrices = document.getElementById('partner-prices');
+
+  // Gérer l'affichage de la modale au clic sur le bouton "caché"
+  accessButton.addEventListener('click', () => {
+    modalOverlay.style.display = 'flex';
+  });
+
+  // Gérer la soumission du formulaire de connexion
+  loginForm.addEventListener('submit', (e) => {
+    e.preventDefault(); // Empêcher le rechargement de la page
+
+    const usernameInput = document.getElementById('username');
+    const passwordInput = document.getElementById('password');
+
+    // Identifiants "hardcodés" pour la démo
+    const correctUsername = "partenaire";
+    const correctPassword = "papo2025";
+
+    if (usernameInput.value === correctUsername && passwordInput.value === correctPassword) {
+      alert("Connexion réussie ! Affichage des tarifs partenaires.");
+      modalOverlay.style.display = 'none'; // Cacher la modale
+
+      // Afficher les prix partenaires et cacher les prix publics
+      publicPrices.style.display = 'none';
+      partnerPrices.style.display = 'block';
+
+    } else {
+      alert("Identifiant ou mot de passe incorrect. Veuillez réessayer.");
+    }
+  });
+
+  // Gérer la fermeture de la modale en cliquant à l'extérieur
+  modalOverlay.addEventListener('click', (e) => {
+    if (e.target === modalOverlay) {
+      modalOverlay.style.display = 'none';
+    }
+  });
+</script>
 
 </body>
 </html>
