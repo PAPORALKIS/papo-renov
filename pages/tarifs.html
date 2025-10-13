@@ -4,80 +4,28 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Tarifs - Papo Rénov</title>
-  <link href="https://fonts.googleapis.com/css?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../style.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-
   <style>
-    /* VARIABLES DE COULEUR PAPO RÉNOV (issues du PDF) */
-    :root {
-      --primary-color: #007bff; /* Bleu vif */
-      --secondary-color: #212529; /* Gris très foncé */
-      --background-light: #f4f7f9;
-      --card-background: #ffffff;
-      --price-accent: #28a745; /* Vert pour les prix */
-      --accent-orange: #ffc107; /* Jaune/Orange de l'accueil */
-      --dark-blue-logo: #0a1f44;
-      --shadow-color: rgba(0, 0, 0, 0.15);
-    }
-    
     body {
       font-family: 'Poppins', sans-serif;
       margin: 0;
       padding: 0;
-      background-color: var(--background-light);
-      color: var(--secondary-color);
-      line-height: 1.6;
+      background-color: #f9f9f9;
     }
 
     nav ul li a.active {
-      color: var(--primary-color);
-      font-weight: 700;
-    }
-
-    header .logo {
-      position: relative;
-      display: inline-block;
-    }
-
-    /* Nouvelle zone cliquable cachée sur le logo pour l'accès partenaire */
-    #logo-overlay-partner {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      opacity: 0; /* Rendre invisible mais cliquable */
-      cursor: pointer;
-      z-index: 10;
+      color: #00bfff;
     }
 
     .content-section {
-      padding: 80px 20px 40px;
+      padding: 60px 20px;
       min-height: 90vh;
       display: flex;
       flex-direction: column;
       align-items: center;
+      justify-content: center;
       text-align: center;
-    }
-
-    h1 {
-      color: var(--secondary-color);
-      margin-bottom: 40px;
-      font-weight: 800;
-      font-size: 2.5rem;
-      position: relative;
-    }
-
-    /* Ligne de séparation sous le titre (issue du PDF) */
-    h1::after {
-      content: "";
-      display: block;
-      width: 80px;
-      height: 4px;
-      background: var(--primary-color);
-      margin: 10px auto 0;
-      border-radius: 2px;
     }
 
     .price-container {
@@ -86,17 +34,15 @@
       margin-top: 20px;
     }
 
-    /* Styles de la table de prix mis à jour avec les variables */
+    /* Styles des deux sections de prix */
     .pricing-table {
-      background-color: var(--card-background);
+      background-color: #fff;
       padding: 30px;
       border-radius: 10px;
-      box-shadow: 0 5px 20px var(--shadow-color);
-      margin-bottom: 30px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
     }
     .pricing-table h2 {
-      color: var(--primary-color);
-      font-weight: 700;
+      color: #00bfff;
     }
     .pricing-table ul {
       list-style-type: none;
@@ -104,15 +50,8 @@
       margin: 20px 0;
     }
     .pricing-table li {
-      padding: 15px;
+      padding: 10px;
       border-bottom: 1px solid #eee;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    .pricing-table li strong {
-        color: var(--price-accent);
-        font-weight: 600;
     }
     .pricing-table li:last-child {
       border-bottom: none;
@@ -123,50 +62,60 @@
       display: none;
     }
 
-    /* Styles pour la modale de connexion (renommée et stylisée avec les variables) */
+    /* Styles pour le bouton caché */
+    #accessButton {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      width: 50px;
+      height: 50px;
+      opacity: 0;
+      cursor: pointer;
+      z-index: 999;
+    }
+    #accessButton:hover {
+        opacity: 0.1; /* Pour la démo, le rend visible au survol */
+    }
+
+    /* Styles pour la modale de connexion */
     .modal-overlay {
-      display: none;
+      display: none; /* Cache la modale par défaut */
       position: fixed;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      background-color: rgba(0, 0, 0, 0.8);
+      background-color: rgba(0, 0, 0, 0.7);
       justify-content: center;
       align-items: center;
       z-index: 1000;
     }
     .modal-content {
-      background-color: var(--card-background);
+      background-color: #fff;
       padding: 30px;
       border-radius: 8px;
       text-align: center;
       width: 90%;
       max-width: 400px;
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     }
     .modal-content input {
       width: calc(100% - 20px);
-      padding: 12px;
-      margin-top: 15px;
+      padding: 10px;
+      margin-top: 10px;
       border: 1px solid #ccc;
       border-radius: 5px;
-      box-sizing: border-box;
     }
     .modal-content button {
-      background-color: var(--primary-color);
+      background-color: #00bfff;
       color: white;
       border: none;
       padding: 12px 20px;
       font-weight: bold;
       border-radius: 5px;
       cursor: pointer;
-      margin-top: 25px;
+      margin-top: 20px;
       width: 100%;
-      transition: background-color 0.3s ease;
-    }
-    .modal-content button:hover {
-        background-color: #0056b3;
     }
 
     footer {
@@ -174,7 +123,7 @@
       padding: 20px;
       font-size: 0.9rem;
       color: #555;
-      background-color: var(--card-background);
+      background-color: #fff;
       box-shadow: 0 -1px 3px rgba(0,0,0,0.1);
     }
   </style>
@@ -183,7 +132,6 @@
 <header>
   <div class="logo">
     <img src="../img/logo.png" alt="Logo Papo Rénov">
-    <div id="logo-overlay-partner"></div>
   </div>
   <nav>
     <ul>
@@ -204,13 +152,13 @@
   <div class="price-container" id="public-prices">
     <div class="pricing-table">
       <h2>Tarifs Publics</h2>
-      <p>Voici nos tarifs standards pour les services de rénovation. Les prix indiqués sont des estimations hors taxes.</p>
+      <p>Voici nos tarifs standards pour les services de rénovation.</p>
       <ul>
-        <li>Rénovation de salle de bain (forfait de base) : <strong>3 500 €</strong></li>
-        <li>Pose de carrelage au sol (au m²) : <strong>45 € / m²</strong></li>
-        <li>Peinture intérieure (au m²) : <strong>25 € / m²</strong></li>
-        <li>Installation de plomberie (point d'eau) : <strong>250 € / unité</strong></li>
-        <li>Isolation des combles (au m²) : <strong>50 € / m²</strong></li>
+        <li>Rénovation de salle de bain : **(Prix ici)**</li>
+        <li>Pose de carrelage : **(Prix ici)**</li>
+        <li>Peinture intérieure (au m²) : **(Prix ici)**</li>
+        <li>Installation de plomberie : **(Prix ici)**</li>
+        <li>... (Ajoutez d'autres services ici)</li>
       </ul>
       <p>Pour un devis personnalisé, n'hésitez pas à nous <a href="devis.html">contacter</a>.</p>
     </div>
@@ -221,11 +169,11 @@
       <h2>Tarifs Partenaires 🤝</h2>
       <p>Merci de votre fidélité ! Voici vos tarifs spéciaux et exclusifs.</p>
       <ul>
-        <li>Rénovation de salle de bain (forfait de base) : <strong>2 800 €</strong></li>
-        <li>Pose de carrelage au sol (au m²) : <strong>35 € / m²</strong></li>
-        <li>Peinture intérieure (au m²) : <strong>20 € / m²</strong></li>
-        <li>Installation de plomberie (point d'eau) : <strong>200 € / unité</strong></li>
-        <li>Isolation des combles (au m²) : <strong>40 € / m²</strong></li>
+        <li>Rénovation de salle de bain : **(Prix spécial ici)**</li>
+        <li>Pose de carrelage : **(Prix spécial ici)**</li>
+        <li>Peinture intérieure (au m²) : **(Prix spécial ici)**</li>
+        <li>Installation de plomberie : **(Prix spécial ici)**</li>
+        <li>... (Ajoutez les mêmes services ici, avec les prix spéciaux)</li>
       </ul>
       <p>Ces tarifs sont réservés à nos partenaires enregistrés.</p>
     </div>
@@ -233,7 +181,9 @@
 
 </section>
 
-<div class="modal-overlay" id="partner-login-modal">
+<button id="accessButton" title="Accès Partenaires"></button>
+
+<div class="modal-overlay" id="modal-overlay">
   <div class="modal-content">
     <h3>Accès Partenaires</h3>
     <form id="login-form">
@@ -249,16 +199,16 @@
 </footer>
 
 <script>
-  // Cibler les éléments du DOM avec les IDs corrigés et la nouvelle logique d'accès
-  const accessButtonPartner = document.getElementById('logo-overlay-partner');
-  const partnerLoginModal = document.getElementById('partner-login-modal');
+  // Cibler les éléments du DOM
+  const accessButton = document.getElementById('accessButton');
+  const modalOverlay = document.getElementById('modal-overlay');
   const loginForm = document.getElementById('login-form');
   const publicPrices = document.getElementById('public-prices');
   const partnerPrices = document.getElementById('partner-prices');
 
-  // Gérer l'affichage de la modale au clic sur le logo "caché"
-  accessButtonPartner.addEventListener('click', () => {
-    partnerLoginModal.style.display = 'flex';
+  // Gérer l'affichage de la modale au clic sur le bouton "caché"
+  accessButton.addEventListener('click', () => {
+    modalOverlay.style.display = 'flex';
   });
 
   // Gérer la soumission du formulaire de connexion
@@ -268,33 +218,27 @@
     const usernameInput = document.getElementById('username');
     const passwordInput = document.getElementById('password');
 
-    // Identifiants "hardcodés"
+    // Identifiants "hardcodés" pour la démo
     const correctUsername = "partenaire";
     const correctPassword = "papo2025";
 
     if (usernameInput.value === correctUsername && passwordInput.value === correctPassword) {
       alert("Connexion réussie ! Affichage des tarifs partenaires.");
-      partnerLoginModal.style.display = 'none'; // Cacher la modale
+      modalOverlay.style.display = 'none'; // Cacher la modale
 
       // Afficher les prix partenaires et cacher les prix publics
       publicPrices.style.display = 'none';
       partnerPrices.style.display = 'block';
 
-      // Réinitialiser les champs pour la prochaine fois
-      usernameInput.value = '';
-      passwordInput.value = '';
-
     } else {
       alert("Identifiant ou mot de passe incorrect. Veuillez réessayer.");
-      passwordInput.value = ''; // Effacer seulement le mot de passe
-      passwordInput.focus(); // Remettre le focus
     }
   });
 
   // Gérer la fermeture de la modale en cliquant à l'extérieur
-  partnerLoginModal.addEventListener('click', (e) => {
-    if (e.target === partnerLoginModal) {
-      partnerLoginModal.style.display = 'none';
+  modalOverlay.addEventListener('click', (e) => {
+    if (e.target === modalOverlay) {
+      modalOverlay.style.display = 'none';
     }
   });
 </script>
