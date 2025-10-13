@@ -7,13 +7,14 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../style.css">
   <style>
-    /* VARIABLES DE COULEUR PAPO RÉNOV (Basé sur le bleu de l'entête et le contraste) */
+    /* VARIABLES DE COULEUR PAPO RÉNOV */
     :root {
-      --primary-color: #007bff; /* Bleu vif de vos boutons et de l'entête */
+      --primary-color: #007bff; /* Bleu vif de vos boutons */
       --secondary-color: #212529; /* Noir/Gris très foncé pour le texte principal */
       --background-light: #f4f7f9; /* Fond de page très clair */
       --card-background: #ffffff;
       --price-accent: #28a745; /* Vert pour les prix */
+      --accent-yellow: #ffc107; /* Jaune/Orange pour l'interaction (comme votre bannière) */
       --border-light: #e9ecef;
       --shadow-color: rgba(0, 0, 0, 0.08);
     }
@@ -34,7 +35,7 @@
     }
 
     .content-section {
-      padding: 80px 20px;
+      padding: 80px 20px 40px; /* Moins de padding bas pour le pied de page */
       min-height: 90vh;
       display: flex;
       flex-direction: column;
@@ -69,12 +70,11 @@
     /* Styles du conteneur de prix principal (Carte) */
     .pricing-table {
       background-color: var(--card-background);
-      padding: 50px;
+      padding: 40px; /* Réduit légèrement le padding pour laisser plus de place au contenu */
       border-radius: 12px;
-      box-shadow: 0 8px 20px var(--shadow-color);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1); /* Ombre nette */
       text-align: left;
       margin-bottom: 40px;
-      border: 1px solid var(--border-light);
     }
     .pricing-table h2 {
       font-size: 2rem;
@@ -85,12 +85,42 @@
       margin-bottom: 35px;
     }
 
+    /* --- FILTRES INTERACTIFS (Nouveaux styles) --- */
+    .price-filters {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 15px;
+      margin-bottom: 30px;
+    }
+    .filter-btn {
+      padding: 10px 20px;
+      border: 2px solid var(--primary-color);
+      border-radius: 50px; /* Coins très arrondis pour le design */
+      background-color: transparent;
+      color: var(--primary-color);
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-size: 1rem;
+      text-transform: uppercase;
+    }
+    .filter-btn:hover, .filter-btn.active {
+      background-color: var(--primary-color);
+      color: var(--card-background);
+      box-shadow: 0 4px 10px rgba(0, 123, 255, 0.3);
+    }
+    .filter-btn:active {
+        transform: scale(0.98);
+    }
+    
     /* Structure en colonnes */
     .price-details {
         display: flex;
         flex-wrap: wrap; 
         gap: 25px;
         justify-content: center;
+        transition: opacity 0.5s ease;
     }
 
     .category {
@@ -101,19 +131,26 @@
         border-radius: 10px;
         border: 1px solid var(--border-light);
         transition: all 0.3s ease;
-        box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        box-shadow: 0 4px 10px rgba(0,0,0,0.05); 
+        display: none; /* Caché par défaut pour le filtre */
+        opacity: 0;
+    }
+    .category.show {
+        display: block; /* Affiché via JS */
+        opacity: 1;
     }
     .category:hover {
         transform: translateY(-3px); 
-        box-shadow: 0 8px 18px rgba(0, 123, 255, 0.2); /* Ombre plus marquée au survol */
+        box-shadow: 0 8px 18px rgba(0, 123, 255, 0.15); 
     }
     .category h3 {
-        color: var(--secondary-color); /* Utilisation du gris foncé pour les titres de catégorie */
+        color: var(--secondary-color);
         font-size: 1.3rem;
-        font-weight: 600;
+        font-weight: 700;
         margin-top: 0;
         margin-bottom: 20px;
-        border-bottom: 2px solid var(--primary-color); /* Ligne de séparation en bleu vif */
+        /* Ligne épaisse en couleur d'accentuation pour la catégorie */
+        border-bottom: 3px solid var(--accent-yellow); 
         padding-bottom: 10px;
     }
 
@@ -124,7 +161,7 @@
     }
     .category li {
       padding: 15px 0;
-      border-bottom: 1px solid var(--border-light);
+      border-bottom: 1px dashed var(--border-light);
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -139,9 +176,6 @@
         font-weight: 700;
         margin-left: 15px;
         white-space: nowrap; 
-    }
-    .category li span {
-        color: var(--secondary-color);
     }
 
     .pricing-table > p {
@@ -162,7 +196,13 @@
         color: #0056b3;
     }
 
-    /* Style du bouton caché (partenaires) */
+
+    /* Cache la version partenaire par défaut */
+    .partner-prices {
+      display: none;
+    }
+
+    /* Styles pour l'emplacement du logo et le bouton caché (Inchangé) */
     header .logo {
         position: relative; 
         display: inline-block;
@@ -177,46 +217,47 @@
       cursor: pointer;
       z-index: 10;
     }
-
-    /* Modale et Bouton de connexion (cohérence du bleu) */
+    
+    /* Styles pour la modale de connexion - Harmonisation des boutons */
     .modal-content button {
       background-color: var(--primary-color);
-      transition: background-color 0.3s;
-      border: none; /* Assurer l'absence de bordure pour l'harmonie */
-      border-radius: 8px; /* Coins légèrement plus arrondis comme les boutons du site */
-      padding: 15px 25px;
-      font-size: 1.1rem;
+      border: none;
+      border-radius: 8px; /* Coins arrondis pour coller à l'esthétique générale */
     }
     .modal-content button:hover {
         background-color: #0056b3;
     }
     .modal-content input {
-        border-radius: 8px; /* Coins arrondis des inputs */
+      border-radius: 8px;
     }
 
-    /* Footer (cohérence des couleurs) */
-    footer {
-      background-color: var(--card-background);
-      border-top: 1px solid var(--border-light);
-      color: #6c757d;
-    }
-
-    /* Media Queries (Inchangé) */
+    /* Media Queries */
     @media (max-width: 992px) {
         .category {
             flex: 1 1 calc(50% - 15px);
         }
+        .filter-btn {
+            font-size: 0.9rem;
+            padding: 8px 15px;
+        }
     }
     @media (max-width: 600px) {
         .content-section {
-            padding-top: 40px;
+            padding: 40px 10px;
         }
         .category {
             flex: 1 1 100%;
             min-width: unset;
         }
         .pricing-table {
-            padding: 30px 20px;
+            padding: 25px 15px;
+        }
+        .price-filters {
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .filter-btn {
+            flex: 1 1 auto;
         }
     }
   </style>
@@ -246,11 +287,19 @@
   <div class="price-container" id="public-prices">
     <div class="pricing-table">
       <h2>Tarifs Publics (Main d'Œuvre HT)</h2>
-      <p>Ces prix indiquent une estimation de la main d'œuvre hors fourniture de matériaux (sauf mention contraire). Les tarifs sont indicatifs et dépendent de la complexité du chantier.</p>
+      
+      <div class="price-filters">
+          <button class="filter-btn active" data-filter="all">Toutes les Prestations</button>
+          <button class="filter-btn" data-filter="revetements">Revêtements & Peinture</button>
+          <button class="filter-btn" data-filter="plomberie">Plomberie & Sanitaires</button>
+          <button class="filter-btn" data-filter="electricite">Électricité & Plâtrerie</button>
+      </div>
+      
+      <p>Ces prix indiquent une estimation de la main d'œuvre hors fourniture de matériaux (sauf mention contraire).</p>
 
       <div class="price-details">
         
-        <div class="category">
+        <div class="category show" data-category="revetements">
           <h3>Revêtements & Peinture</h3>
           <ul>
             <li><span>Peinture Murs (2 couches, préparation incluse)</span><strong>25 € - 40 € / m²</strong></li>
@@ -261,7 +310,7 @@
           </ul>
         </div>
 
-        <div class="category">
+        <div class="category show" data-category="plomberie">
           <h3>Plomberie & Sanitaires</h3>
           <ul>
             <li><span>Rénovation complète SDB (Forfait M.O.)</span><strong>3 500 € - 8 000 €</strong></li>
@@ -272,7 +321,7 @@
           </ul>
         </div>
 
-        <div class="category">
+        <div class="category show" data-category="electricite">
           <h3>Électricité & Plâtrerie</h3>
           <ul>
             <li><span>Création d'une cloison Placo (Fourn. + M.O.)</span><strong>45 € - 65 € / m²</strong></li>
@@ -292,11 +341,18 @@
   <div class="price-container partner-prices" id="partner-prices">
     <div class="pricing-table">
       <h2>Tarifs Partenaires 🤝 (Main d'Œuvre HT)</h2>
-      <p>Merci de votre fidélité ! Voici vos tarifs spéciaux et exclusifs (réduction moyenne de 10% sur la main d'œuvre standard).</p>
+      <p>Merci de votre fidélité ! Voici vos tarifs spéciaux et exclusifs.</p>
       
+      <div class="price-filters">
+          <button class="filter-btn active" data-filter="all">Toutes les Prestations</button>
+          <button class="filter-btn" data-filter="revetements">Revêtements & Peinture</button>
+          <button class="filter-btn" data-filter="plomberie">Plomberie & Sanitaires</button>
+          <button class="filter-btn" data-filter="electricite">Électricité & Plâtrerie</button>
+      </div>
+
       <div class="price-details">
         
-        <div class="category">
+        <div class="category show" data-category="revetements">
           <h3>Revêtements & Peinture</h3>
           <ul>
             <li><span>Peinture Murs (2 couches, préparation incluse)</span><strong>22 € - 36 € / m²</strong></li>
@@ -307,7 +363,7 @@
           </ul>
         </div>
 
-        <div class="category">
+        <div class="category show" data-category="plomberie">
           <h3>Plomberie & Sanitaires</h3>
           <ul>
             <li><span>Rénovation complète SDB (Forfait M.O.)</span><strong>3 150 € - 7 200 €</strong></li>
@@ -318,7 +374,7 @@
           </ul>
         </div>
 
-        <div class="category">
+        <div class="category show" data-category="electricite">
           <h3>Électricité & Plâtrerie</h3>
           <ul>
             <li><span>Création d'une cloison Placo (Fourn. + M.O.)</span><strong>40 € - 60 € / m²</strong></li>
@@ -339,49 +395,72 @@
 
 
 <div class="modal-overlay" id="modal-overlay">
-  <div class="modal-content">
-    <h3>Accès Partenaires</h3>
-    <form id="login-form">
-      <input type="text" id="username" placeholder="Identifiant" required>
-      <input type="password" id="password" placeholder="Mot de passe" required>
-      <button type="submit">Se connecter</button>
-    </form>
   </div>
-</div>
 
 <footer>
   <p>&copy; 2025 Papo Rénov - Tous droits réservés</p>
 </footer>
 
 <script>
-  // Cibler les éléments du DOM
+  // Cibler les éléments du DOM pour les filtres
+  const filterButtons = document.querySelectorAll('.filter-btn');
+  const categories = document.querySelectorAll('.category');
+  
+  // Fonction de filtrage des catégories
+  function filterCategories(filter) {
+    categories.forEach(category => {
+      const categoryFilter = category.getAttribute('data-category');
+      
+      // Gérer l'affichage/masquage avec une transition douce
+      if (filter === 'all' || categoryFilter === filter) {
+        category.classList.add('show');
+      } else {
+        category.classList.remove('show');
+      }
+    });
+  }
+
+  // Écouteur d'événements pour les boutons de filtre
+  filterButtons.forEach(button => {
+    button.addEventListener('click', () => {
+      const filterValue = button.getAttribute('data-filter');
+
+      // Gérer la classe active
+      filterButtons.forEach(btn => btn.classList.remove('active'));
+      button.classList.add('active');
+
+      // Filtrer les catégories
+      filterCategories(filterValue);
+    });
+  });
+
+  // Initialisation : Afficher tout au chargement
+  filterCategories('all');
+
+  
+  // --- CODE PARTENAIRE (Inchangé) ---
   const accessButton = document.getElementById('logo-overlay'); 
   const modalOverlay = document.getElementById('modal-overlay');
   const loginForm = document.getElementById('login-form');
   const publicPrices = document.getElementById('public-prices');
   const partnerPrices = document.getElementById('partner-prices');
 
-  // Gérer l'affichage de la modale au clic sur le bouton "caché"
   accessButton.addEventListener('click', () => {
     modalOverlay.style.display = 'flex';
   });
 
-  // Gérer la soumission du formulaire de connexion
   loginForm.addEventListener('submit', (e) => {
     e.preventDefault(); 
 
-    const usernameInput = document.getElementById('username');
-    const passwordInput = document.getElementById('password');
-
-    // Identifiants "hardcodés" pour la démo
     const correctUsername = "partenaire";
     const correctPassword = "papo2025";
+    const usernameInput = document.getElementById('username');
+    const passwordInput = document.getElementById('password');
 
     if (usernameInput.value === correctUsername && passwordInput.value === correctPassword) {
       alert("Connexion réussie ! Affichage des tarifs partenaires.");
       modalOverlay.style.display = 'none'; 
 
-      // Afficher les prix partenaires et cacher les prix publics
       publicPrices.style.display = 'none';
       partnerPrices.style.display = 'block';
 
@@ -390,7 +469,6 @@
     }
   });
 
-  // Gérer la fermeture de la modale en cliquant à l'extérieur
   modalOverlay.addEventListener('click', (e) => {
     if (e.target === modalOverlay) {
       modalOverlay.style.display = 'none';
