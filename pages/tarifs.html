@@ -4,22 +4,23 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Tarifs - Papo Rénov</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
   <style>
-    /* VARIABLES DE COULEUR PAPO RÉNOV */
+    /* VARIABLES DE COULEUR PAPO RÉNOV (issues du PDF) */
     :root {
-      --primary-color: #007bff; /* Bleu vif de vos boutons */
-      --secondary-color: #212529; /* Noir/Gris très foncé pour le texte principal */
-      --background-light: #f4f7f9; /* Fond de page très clair */
+      --primary-color: #007bff; /* Bleu vif */
+      --secondary-color: #212529; /* Gris très foncé */
+      --background-light: #f4f7f9;
       --card-background: #ffffff;
       --price-accent: #28a745; /* Vert pour les prix */
-      --accent-orange: #ffc107; /* Jaune/Orange de votre bannière */
-      --border-light: #e9ecef;
+      --accent-orange: #ffc107; /* Jaune/Orange de l'accueil */
+      --dark-blue-logo: #0a1f44;
       --shadow-color: rgba(0, 0, 0, 0.15);
-      --dark-blue-logo: #0a1f44; /* Basé sur la couleur du logo P */
     }
-
+    
     body {
       font-family: 'Poppins', sans-serif;
       margin: 0;
@@ -29,10 +30,26 @@
       line-height: 1.6;
     }
 
-    /* En-tête et Navigation */
     nav ul li a.active {
       color: var(--primary-color);
       font-weight: 700;
+    }
+
+    header .logo {
+      position: relative;
+      display: inline-block;
+    }
+
+    /* Nouvelle zone cliquable cachée sur le logo pour l'accès partenaire */
+    #logo-overlay-partner {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0; /* Rendre invisible mais cliquable */
+      cursor: pointer;
+      z-index: 10;
     }
 
     .content-section {
@@ -51,225 +68,122 @@
       font-size: 2.5rem;
       position: relative;
     }
+
+    /* Ligne de séparation sous le titre (issue du PDF) */
     h1::after {
-        content: '';
-        display: block;
-        width: 80px;
-        height: 4px;
-        background: var(--primary-color);
-        margin: 10px auto 0;
-        border-radius: 2px;
+      content: "";
+      display: block;
+      width: 80px;
+      height: 4px;
+      background: var(--primary-color);
+      margin: 10px auto 0;
+      border-radius: 2px;
     }
 
-    /* --- CONTENEUR DES CARTES IMMERSIVES --- */
-    .card-grid {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 30px;
+    .price-container {
       width: 100%;
-      max-width: 1200px;
-      padding: 30px 0;
-      perspective: 1000px; /* Ajoute la perspective pour l'effet 3D */
-    }
-
-    .pricing-card {
-      width: 100%;
-      max-width: 350px;
-      min-height: 250px;
-      background-color: var(--card-background);
-      border-radius: 12px;
-      box-shadow: 0 10px 30px var(--shadow-color);
-      overflow: hidden;
-      cursor: pointer;
-      transition: transform 0.4s ease-in-out, box-shadow 0.4s ease-in-out;
-      transform-style: preserve-3d; /* Nécessaire pour l'effet 3D */
-      text-align: center;
-      position: relative;
-    }
-
-    /* Effet 3D au survol */
-    .pricing-card:hover {
-      transform: translateY(-8px) rotateX(2deg) rotateY(-2deg) scale(1.02);
-      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
-    }
-
-    .card-header {
-      padding: 25px 20px;
-      background-color: var(--dark-blue-logo);
-      color: var(--card-background);
-      position: relative;
-    }
-    .card-header h3 {
-      margin: 0;
-      font-weight: 700;
-      font-size: 1.5rem;
-    }
-
-    .card-header::after {
-        content: '';
-        display: block;
-        width: 100%;
-        height: 8px;
-        background-color: var(--accent-orange); /* Bande orange */
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        transform: translateY(100%);
-    }
-
-    .card-body {
-      padding: 30px 20px;
-      color: var(--secondary-color);
-    }
-    .card-body p {
-        font-size: 0.95rem;
-        color: #6c757d;
-        margin-bottom: 20px;
-    }
-    .card-body strong {
-        display: block;
-        font-size: 1.1rem;
-        color: var(--price-accent);
-        margin-top: 10px;
-    }
-    .card-icon {
-        font-size: 40px;
-        color: var(--primary-color);
-        margin-bottom: 15px;
-    }
-    .card-icon i {
-        /* Utilisez Font Awesome si disponible, sinon utilisez des emojis */
-        line-height: 1;
-    }
-    
-    /* --- MODALE DE DÉTAILS PLEIN ÉCRAN (ZOOM) --- */
-
-    /* La modale de détail utilise le style 'modal-overlay' existant mais avec un contenu spécifique */
-    .detail-modal-content {
-      background-color: var(--card-background);
-      padding: 40px;
-      border-radius: 12px;
-      text-align: left;
-      width: 90%;
       max-width: 800px;
-      max-height: 90vh;
-      overflow-y: auto;
-      position: relative;
+      margin-top: 20px;
     }
 
-    .detail-modal-content h3 {
-        color: var(--primary-color);
-        font-size: 2rem;
-        border-bottom: 3px solid var(--accent-orange);
-        padding-bottom: 10px;
-        margin-bottom: 30px;
-        text-align: center;
+    /* Styles de la table de prix mis à jour avec les variables */
+    .pricing-table {
+      background-color: var(--card-background);
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 5px 20px var(--shadow-color);
+      margin-bottom: 30px;
     }
-
-    .detail-modal-content ul {
-        list-style-type: none;
-        padding: 0;
+    .pricing-table h2 {
+      color: var(--primary-color);
+      font-weight: 700;
     }
-    .detail-modal-content li {
-        display: flex;
-        justify-content: space-between;
-        padding: 15px 0;
-        border-bottom: 1px dashed var(--border-light);
-        font-size: 1.05rem;
+    .pricing-table ul {
+      list-style-type: none;
+      padding: 0;
+      margin: 20px 0;
     }
-    .detail-modal-content li span {
-        font-weight: 500;
+    .pricing-table li {
+      padding: 15px;
+      border-bottom: 1px solid #eee;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
-    .detail-modal-content li strong {
+    .pricing-table li strong {
         color: var(--price-accent);
-        font-weight: 700;
+        font-weight: 600;
+    }
+    .pricing-table li:last-child {
+      border-bottom: none;
     }
 
-    .close-btn {
-        position: absolute;
-        top: 15px;
-        right: 15px;
-        background: var(--secondary-color);
-        color: white;
-        border: none;
-        border-radius: 50%;
-        width: 30px;
-        height: 30px;
-        font-size: 1.2rem;
-        cursor: pointer;
-        line-height: 1;
-        transition: background 0.3s;
-    }
-    .close-btn:hover {
-        background: #dc3545;
-    }
-
-    /* --- CONSERVATION DES STYLES EXISTANTS POUR PARTENAIRES --- */
+    /* Cache la version partenaire par défaut */
     .partner-prices {
-        display: none;
-        width: 100%;
-        max-width: 1200px;
-    }
-    .partner-prices .pricing-card {
-        /* Peut être stylé différemment si nécessaire */
-        background-color: #e6f7ff; /* Légère teinte pour les partenaires */
+      display: none;
     }
 
-    /* Styles pour l'emplacement du logo et le bouton caché (Modifié pour le logo) */
-    header .logo {
-        position: relative; 
-        display: inline-block;
-    }
-    #logo-overlay-partner { /* Nouveau ID pour le bouton invisible */
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      opacity: 0;
-      cursor: pointer;
-      z-index: 10;
-    }
-    
-    /* MODALE GLOBALE DE CONNEXION PARTENAIRE */
-    .modal-overlay { /* Utilise l'ancien style pour la modale de connexion */
+    /* Styles pour la modale de connexion (renommée et stylisée avec les variables) */
+    .modal-overlay {
       display: none;
       position: fixed;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      background-color: rgba(0, 0, 0, 0.75);
+      background-color: rgba(0, 0, 0, 0.8);
       justify-content: center;
       align-items: center;
       z-index: 1000;
     }
+    .modal-content {
+      background-color: var(--card-background);
+      padding: 30px;
+      border-radius: 8px;
+      text-align: center;
+      width: 90%;
+      max-width: 400px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    }
+    .modal-content input {
+      width: calc(100% - 20px);
+      padding: 12px;
+      margin-top: 15px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      box-sizing: border-box;
+    }
     .modal-content button {
-        background-color: var(--primary-color);
-        transition: background-color 0.3s;
+      background-color: var(--primary-color);
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      font-weight: bold;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-top: 25px;
+      width: 100%;
+      transition: background-color 0.3s ease;
     }
     .modal-content button:hover {
         background-color: #0056b3;
     }
-    
-    @media (max-width: 768px) {
-        .pricing-card {
-            max-width: 90%;
-            margin-bottom: 20px;
-        }
-        .card-grid {
-            gap: 20px;
-        }
+
+    footer {
+      text-align: center;
+      padding: 20px;
+      font-size: 0.9rem;
+      color: #555;
+      background-color: var(--card-background);
+      box-shadow: 0 -1px 3px rgba(0,0,0,0.1);
     }
   </style>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
 <header>
   <div class="logo">
     <img src="../img/logo.png" alt="Logo Papo Rénov">
-    <button id="logo-overlay-partner" title="Accès Partenaires"></button>
+    <div id="logo-overlay-partner"></div>
   </div>
   <nav>
     <ul>
@@ -285,78 +199,39 @@
 </header>
 
 <section class="content-section">
-  <h1>Nos Tarifs pour la Rénovation Intérieure</h1>
-  <p>Cliquez sur une catégorie pour voir le détail des prestations et les prix indicatifs.</p>
+  <h1>Nos Tarifs</h1>
 
   <div class="price-container" id="public-prices">
-    <div class="card-grid">
-        
-        <div class="pricing-card" data-category="revetements">
-          <div class="card-header"><h3>Revêtements & Peinture</h3></div>
-          <div class="card-body">
-            <div class="card-icon"><i class="fas fa-paint-roller"></i></div>
-            <p>Peinture, carrelage, faïence, parquets : les prix au m² pour sublimer vos surfaces.</p>
-            <strong>À partir de 20 € / m² (M.O. HT)</strong>
-          </div>
-        </div>
-
-        <div class="pricing-card" data-category="plomberie">
-          <div class="card-header"><h3>Plomberie & Sanitaires</h3></div>
-          <div class="card-body">
-            <div class="card-icon"><i class="fas fa-bath"></i></div>
-            <p>Installation de SDB, WC, douches, chauffe-eau. Forfaits pour les interventions courantes.</p>
-            <strong>Forfait SDB dès 3 500 € (M.O. HT)</strong>
-          </div>
-        </div>
-
-        <div class="pricing-card" data-category="electricite">
-          <div class="card-header"><h3>Électricité & Plâtrerie</h3></div>
-          <div class="card-body">
-            <div class="card-icon"><i class="fas fa-bolt"></i></div>
-            <p>Création de cloisons, isolation, tableaux électriques et installation de prises/luminaires.</p>
-            <strong>Cloison Placo dès 45 € / m² (Fourn. + M.O. HT)</strong>
-          </div>
-        </div>
-        
+    <div class="pricing-table">
+      <h2>Tarifs Publics</h2>
+      <p>Voici nos tarifs standards pour les services de rénovation. Les prix indiqués sont des estimations hors taxes.</p>
+      <ul>
+        <li>Rénovation de salle de bain (forfait de base) : <strong>3 500 €</strong></li>
+        <li>Pose de carrelage au sol (au m²) : <strong>45 € / m²</strong></li>
+        <li>Peinture intérieure (au m²) : <strong>25 € / m²</strong></li>
+        <li>Installation de plomberie (point d'eau) : <strong>250 € / unité</strong></li>
+        <li>Isolation des combles (au m²) : <strong>50 € / m²</strong></li>
+      </ul>
+      <p>Pour un devis personnalisé, n'hésitez pas à nous <a href="devis.html">contacter</a>.</p>
     </div>
-    <p style="text-align: center; margin-top: 20px;">Pour un devis précis et complet, veuillez nous <a href="devis.html">contacter</a>.</p>
   </div>
-  
+
   <div class="price-container partner-prices" id="partner-prices">
-    <div class="card-grid">
-        
-        <div class="pricing-card" data-category="revetements">
-          <div class="card-header"><h3>Revêtements & Peinture</h3></div>
-          <div class="card-body">
-            <div class="card-icon"><i class="fas fa-handshake"></i></div>
-            <p>Tarifs préférentiels pour nos partenaires. Jusqu'à -10% sur la main d'œuvre !</p>
-            <strong>À partir de 18 € / m² (M.O. HT)</strong>
-          </div>
-        </div>
-
-        <div class="pricing-card" data-category="plomberie">
-          <div class="card-header"><h3>Plomberie & Sanitaires</h3></div>
-          <div class="card-body">
-            <div class="card-icon"><i class="fas fa-handshake"></i></div>
-            <p>Tarifs préférentiels pour nos partenaires. Jusqu'à -10% sur la main d'œuvre !</p>
-            <strong>Forfait SDB dès 3 150 € (M.O. HT)</strong>
-          </div>
-        </div>
-
-        <div class="pricing-card" data-category="electricite">
-          <div class="card-header"><h3>Électricité & Plâtrerie</h3></div>
-          <div class="card-body">
-            <div class="card-icon"><i class="fas fa-handshake"></i></div>
-            <p>Tarifs préférentiels pour nos partenaires. Jusqu'à -10% sur la main d'œuvre !</p>
-            <strong>Cloison Placo dès 40 € / m² (Fourn. + M.O. HT)</strong>
-          </div>
-        </div>
-        
+    <div class="pricing-table">
+      <h2>Tarifs Partenaires 🤝</h2>
+      <p>Merci de votre fidélité ! Voici vos tarifs spéciaux et exclusifs.</p>
+      <ul>
+        <li>Rénovation de salle de bain (forfait de base) : <strong>2 800 €</strong></li>
+        <li>Pose de carrelage au sol (au m²) : <strong>35 € / m²</strong></li>
+        <li>Peinture intérieure (au m²) : <strong>20 € / m²</strong></li>
+        <li>Installation de plomberie (point d'eau) : <strong>200 € / unité</strong></li>
+        <li>Isolation des combles (au m²) : <strong>40 € / m²</strong></li>
+      </ul>
+      <p>Ces tarifs sont réservés à nos partenaires enregistrés.</p>
     </div>
-    <p style="text-align: center; margin-top: 20px;">Ces tarifs sont exclusifs à nos partenaires enregistrés.</p>
   </div>
-</section>
 
+</section>
 
 <div class="modal-overlay" id="partner-login-modal">
   <div class="modal-content">
@@ -369,165 +244,50 @@
   </div>
 </div>
 
-<div class="modal-overlay" id="detail-modal">
-  <div class="detail-modal-content">
-    <button class="close-btn" id="close-detail-modal">&times;</button>
-    <div id="modal-details-content">
-        </div>
-  </div>
-</div>
-
 <footer>
   <p>&copy; 2025 Papo Rénov - Tous droits réservés</p>
 </footer>
 
 <script>
-  // Contenu détaillé des prix (pour la modale)
-  const priceDetails = {
-    revetements: {
-      title: "Revêtements & Peinture - Tarifs Publics (HT)",
-      items: [
-        { label: "Peinture Murs (2 couches, préparation incluse)", price: "25 € - 40 € / m²" },
-        { label: "Peinture Plafonds (2 couches, préparation incluse)", price: "30 € - 50 € / m²" },
-        { label: "Pose de Carrelage au sol (Droit, hors fourniture)", price: "35 € - 60 € / m²" },
-        { label: "Pose de Faïence murale (hors fourniture)", price: "40 € - 75 € / m²" },
-        { label: "Pose de Parquet Flottant", price: "20 € - 35 € / m²" }
-      ]
-    },
-    plomberie: {
-      title: "Plomberie & Sanitaires - Tarifs Publics (HT)",
-      items: [
-        { label: "Rénovation complète SDB (Forfait M.O.)", price: "3 500 € - 8 000 €" },
-        { label: "Création d'un point d'eau (A/E usées)", price: "250 € - 500 € / unité" },
-        { label: "Pose d'un WC suspendu (Forfait M.O.)", price: "450 € - 750 €" },
-        { label: "Pose d'une douche à l'italienne (Étanchéité et M.O.)", price: "1 200 € - 2 500 €" },
-        { label: "Remplacement de chauffe-eau standard", price: "250 € - 450 € (hors fourn.)" }
-      ]
-    },
-    electricite: {
-      title: "Électricité & Plâtrerie - Tarifs Publics (HT)",
-      items: [
-        { label: "Création d'une cloison Placo (Fourn. + M.O.)", price: "45 € - 65 € / m²" },
-        { label: "Doublage isolant mur Placo (Fourn. + M.O.)", price: "55 € - 85 € / m²" },
-        { label: "Installation Prise/Interrupteur (M.O. seule)", price: "80 € - 120 € / unité" },
-        { label: "Rénovation complète tableau électrique", price: "900 € - 1 800 € (Forfait M.O.)" },
-        { label: "Installation VMC simple flux (Forfait M.O.)", price: "350 € - 650 €" }
-      ]
-    },
-    // Contenu détaillé des prix PARTENAIRES
-    revetements_partner: {
-      title: "Revêtements & Peinture - Tarifs Partenaires (HT)",
-      items: [
-        { label: "Peinture Murs (2 couches, préparation incluse)", price: "22 € - 36 € / m²" },
-        { label: "Peinture Plafonds (2 couches, préparation incluse)", price: "27 € - 45 € / m²" },
-        { label: "Pose de Carrelage au sol (Droit, hors fourniture)", price: "30 € - 55 € / m²" },
-        { label: "Pose de Faïence murale (hors fourniture)", price: "35 € - 65 € / m²" },
-        { label: "Pose de Parquet Flottant", price: "18 € - 30 € / m²" }
-      ]
-    },
-    // ... Ajoutez les autres catégories partenaires de manière similaire ...
-    plomberie_partner: {
-      title: "Plomberie & Sanitaires - Tarifs Partenaires (HT)",
-      items: [
-        { label: "Rénovation complète SDB (Forfait M.O.)", price: "3 150 € - 7 200 €" },
-        { label: "Création d'un point d'eau (A/E usées)", price: "225 € - 450 € / unité" },
-        { label: "Pose d'un WC suspendu (Forfait M.O.)", price: "400 € - 675 €" },
-        { label: "Pose d'une douche à l'italienne (Étanchéité et M.O.)", price: "1 080 € - 2 250 €" },
-        { label: "Remplacement de chauffe-eau standard", price: "225 € - 400 € (hors fourn.)" }
-      ]
-    },
-    electricite_partner: {
-      title: "Électricité & Plâtrerie - Tarifs Partenaires (HT)",
-      items: [
-        { label: "Création d'une cloison Placo (Fourn. + M.O.)", price: "40 € - 60 € / m²" },
-        { label: "Doublage isolant mur Placo (Fourn. + M.O.)", price: "50 € - 75 € / m²" },
-        { label: "Installation Prise/Interrupteur (M.O. seule)", price: "70 € - 110 € / unité" },
-        { label: "Rénovation complète tableau électrique", price: "810 € - 1 620 € (Forfait M.O.)" },
-        { label: "Installation VMC simple flux (Forfait M.O.)", price: "315 € - 585 €" }
-      ]
-    }
-  };
-
-  // --- PARTIE MODALE DE DÉTAIL (Zoom) ---
-  const detailModal = document.getElementById('detail-modal');
-  const modalDetailsContent = document.getElementById('modal-details-content');
-  const closeDetailModal = document.getElementById('close-detail-modal');
-  let isPartnerView = false; // Suivi de l'état (public ou partenaire)
-
-  // Ouvre la modale de détail avec les prix
-  function openDetailModal(categoryKey) {
-    const key = isPartnerView ? `${categoryKey}_partner` : categoryKey;
-    const data = priceDetails[key];
-
-    if (!data) return;
-
-    let htmlContent = `<h3>${data.title}</h3><ul>`;
-    data.items.forEach(item => {
-      htmlContent += `<li><span>${item.label}</span><strong>${item.price}</strong></li>`;
-    });
-    htmlContent += '</ul>';
-    
-    // Ajoutez un lien vers la page de devis dans la modale
-    htmlContent += '<p style="text-align: center; margin-top: 30px;">Ces prix sont indicatifs. <a href="devis.html" style="color: var(--primary-color); font-weight: 700;">Demandez un devis personnalisé ici.</a></p>';
-
-    modalDetailsContent.innerHTML = htmlContent;
-    detailModal.style.display = 'flex';
-  }
-
-  // Écouteur pour ouvrir la modale au clic sur la carte
-  document.querySelectorAll('.pricing-card').forEach(card => {
-    card.addEventListener('click', () => {
-      const categoryKey = card.getAttribute('data-category');
-      openDetailModal(categoryKey);
-    });
-  });
-
-  // Ferme la modale de détail
-  closeDetailModal.addEventListener('click', () => {
-    detailModal.style.display = 'none';
-  });
-
-  detailModal.addEventListener('click', (e) => {
-    if (e.target === detailModal) {
-      detailModal.style.display = 'none';
-    }
-  });
-
-
-  // --- PARTIE MODALE DE CONNEXION PARTENAIRE ---
-  const accessButtonPartner = document.getElementById('logo-overlay-partner'); 
-  const partnerLoginModal = document.getElementById('partner-login-modal'); // Modale de connexion
+  // Cibler les éléments du DOM avec les IDs corrigés et la nouvelle logique d'accès
+  const accessButtonPartner = document.getElementById('logo-overlay-partner');
+  const partnerLoginModal = document.getElementById('partner-login-modal');
   const loginForm = document.getElementById('login-form');
   const publicPrices = document.getElementById('public-prices');
   const partnerPrices = document.getElementById('partner-prices');
 
-  // Gérer l'affichage de la modale au clic sur le bouton "caché"
+  // Gérer l'affichage de la modale au clic sur le logo "caché"
   accessButtonPartner.addEventListener('click', () => {
     partnerLoginModal.style.display = 'flex';
   });
 
   // Gérer la soumission du formulaire de connexion
   loginForm.addEventListener('submit', (e) => {
-    e.preventDefault(); 
+    e.preventDefault(); // Empêcher le rechargement de la page
 
     const usernameInput = document.getElementById('username');
     const passwordInput = document.getElementById('password');
 
-    // Identifiants "hardcodés" pour la démo
+    // Identifiants "hardcodés"
     const correctUsername = "partenaire";
     const correctPassword = "papo2025";
 
     if (usernameInput.value === correctUsername && passwordInput.value === correctPassword) {
       alert("Connexion réussie ! Affichage des tarifs partenaires.");
-      partnerLoginModal.style.display = 'none'; 
+      partnerLoginModal.style.display = 'none'; // Cacher la modale
 
-      // Mettre à jour l'état et afficher les prix partenaires
-      isPartnerView = true;
+      // Afficher les prix partenaires et cacher les prix publics
       publicPrices.style.display = 'none';
       partnerPrices.style.display = 'block';
 
+      // Réinitialiser les champs pour la prochaine fois
+      usernameInput.value = '';
+      passwordInput.value = '';
+
     } else {
       alert("Identifiant ou mot de passe incorrect. Veuillez réessayer.");
+      passwordInput.value = ''; // Effacer seulement le mot de passe
+      passwordInput.focus(); // Remettre le focus
     }
   });
 
