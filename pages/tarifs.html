@@ -7,13 +7,15 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../style.css">
   <style>
-    /* VARIABLES DE COULEUR */
+    /* VARIABLES DE COULEUR PAPO RÉNOV (Basé sur le bleu de l'entête et le contraste) */
     :root {
-      --primary-color: #007bff; /* Bleu d'accentuation profond */
-      --secondary-color: #343a40; /* Gris foncé pour le texte */
-      --background-light: #f8f9fa; /* Fond de page très clair */
+      --primary-color: #007bff; /* Bleu vif de vos boutons et de l'entête */
+      --secondary-color: #212529; /* Noir/Gris très foncé pour le texte principal */
+      --background-light: #f4f7f9; /* Fond de page très clair */
       --card-background: #ffffff;
       --price-accent: #28a745; /* Vert pour les prix */
+      --border-light: #e9ecef;
+      --shadow-color: rgba(0, 0, 0, 0.08);
     }
 
     body {
@@ -25,14 +27,14 @@
       line-height: 1.6;
     }
 
-    /* En-tête et Navigation (supposons qu'ils viennent de style.css) */
+    /* En-tête et Navigation (pour assurer la cohérence) */
     nav ul li a.active {
       color: var(--primary-color);
       font-weight: 700;
     }
 
     .content-section {
-      padding: 80px 20px; /* Augmentation du padding pour l'aération */
+      padding: 80px 20px;
       min-height: 90vh;
       display: flex;
       flex-direction: column;
@@ -40,6 +42,7 @@
       text-align: center;
     }
 
+    /* Titre de la page - Coordonné avec le style du site */
     h1 {
       color: var(--secondary-color);
       margin-bottom: 40px;
@@ -59,18 +62,19 @@
 
     .price-container {
       width: 100%;
-      max-width: 1200px; /* Encore plus large pour un design aéré */
+      max-width: 1200px;
       margin-top: 30px;
     }
 
-    /* Styles de la table de prix principale (Carte) */
+    /* Styles du conteneur de prix principal (Carte) */
     .pricing-table {
       background-color: var(--card-background);
       padding: 50px;
-      border-radius: 15px; /* Coins plus arrondis */
-      box-shadow: 0 15px 40px rgba(0,0,0,0.1); /* Ombre plus visible */
+      border-radius: 12px;
+      box-shadow: 0 8px 20px var(--shadow-color);
       text-align: left;
       margin-bottom: 40px;
+      border: 1px solid var(--border-light);
     }
     .pricing-table h2 {
       font-size: 2rem;
@@ -81,34 +85,35 @@
       margin-bottom: 35px;
     }
 
-    /* Structure en colonnes pour les détails des prix */
+    /* Structure en colonnes */
     .price-details {
         display: flex;
         flex-wrap: wrap; 
-        gap: 30px;
-        justify-content: center; /* Centrer les blocs si moins de 3 */
+        gap: 25px;
+        justify-content: center;
     }
 
     .category {
         flex: 1 1 calc(33.33% - 20px); 
         min-width: 300px; 
-        background-color: #f7f9fc; 
-        padding: 25px; /* Augmentation du padding */
+        background-color: #ffffff; 
+        padding: 25px;
         border-radius: 10px;
-        border-left: 5px solid var(--primary-color); /* Ligne d'accentuation */
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        border: 1px solid var(--border-light);
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.05);
     }
     .category:hover {
-        transform: translateY(-5px); /* Léger effet de survol */
-        box-shadow: 0 8px 15px rgba(0, 123, 255, 0.15);
+        transform: translateY(-3px); 
+        box-shadow: 0 8px 18px rgba(0, 123, 255, 0.2); /* Ombre plus marquée au survol */
     }
     .category h3 {
-        color: var(--secondary-color);
-        font-size: 1.4rem;
+        color: var(--secondary-color); /* Utilisation du gris foncé pour les titres de catégorie */
+        font-size: 1.3rem;
         font-weight: 600;
         margin-top: 0;
         margin-bottom: 20px;
-        border-bottom: 1px solid #e9ecef;
+        border-bottom: 2px solid var(--primary-color); /* Ligne de séparation en bleu vif */
         padding-bottom: 10px;
     }
 
@@ -118,29 +123,34 @@
       margin: 0;
     }
     .category li {
-      padding: 15px 0; /* Plus d'espace vertical */
-      border-bottom: 1px dashed #dee2e6;
+      padding: 15px 0;
+      border-bottom: 1px solid var(--border-light);
       display: flex;
       justify-content: space-between;
       align-items: center;
-      font-size: 1rem;
+      font-size: 0.95rem;
     }
     .category li:last-child {
       border-bottom: none;
       padding-bottom: 0;
     }
     .category li strong {
-        color: var(--price-accent); /* Couleur verte pour les prix */
+        color: var(--price-accent); 
         font-weight: 700;
         margin-left: 15px;
         white-space: nowrap; 
+    }
+    .category li span {
+        color: var(--secondary-color);
     }
 
     .pricing-table > p {
         text-align: center;
         margin-top: 40px;
-        font-size: 1.1rem;
+        font-size: 1rem;
         color: #6c757d;
+        border-top: 1px solid var(--border-light);
+        padding-top: 20px;
     }
     .pricing-table a {
         color: var(--primary-color); 
@@ -152,13 +162,7 @@
         color: #0056b3;
     }
 
-
-    /* Cache la version partenaire par défaut */
-    .partner-prices {
-      display: none;
-    }
-
-    /* Styles pour l'emplacement du logo et le bouton caché (Inchangé dans la fonction) */
+    /* Style du bouton caché (partenaires) */
     header .logo {
         position: relative; 
         display: inline-block;
@@ -173,69 +177,34 @@
       cursor: pointer;
       z-index: 10;
     }
-    #logo-overlay:hover {
-        opacity: 0.1;
-    }
 
-    /* Styles pour la modale de connexion */
-    .modal-overlay {
-      display: none; 
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(0, 0, 0, 0.75); /* Fond plus opaque */
-      justify-content: center;
-      align-items: center;
-      z-index: 1000;
-    }
-    .modal-content {
-      background-color: var(--card-background);
-      padding: 40px;
-      border-radius: 10px;
-      text-align: center;
-      width: 90%;
-      max-width: 400px;
-      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-    }
-    .modal-content input {
-      width: calc(100% - 20px);
-      padding: 12px;
-      margin-top: 15px;
-      border: 1px solid #ced4da;
-      border-radius: 5px;
-      font-size: 1rem;
-    }
+    /* Modale et Bouton de connexion (cohérence du bleu) */
     .modal-content button {
       background-color: var(--primary-color);
-      color: white;
-      border: none;
-      padding: 14px 25px;
-      font-weight: 600;
-      border-radius: 5px;
-      cursor: pointer;
-      margin-top: 25px;
-      width: 100%;
       transition: background-color 0.3s;
+      border: none; /* Assurer l'absence de bordure pour l'harmonie */
+      border-radius: 8px; /* Coins légèrement plus arrondis comme les boutons du site */
+      padding: 15px 25px;
+      font-size: 1.1rem;
     }
     .modal-content button:hover {
         background-color: #0056b3;
     }
-
-    footer {
-      text-align: center;
-      padding: 25px;
-      font-size: 0.95rem;
-      color: #6c757d;
-      background-color: var(--card-background);
-      border-top: 1px solid #e9ecef;
+    .modal-content input {
+        border-radius: 8px; /* Coins arrondis des inputs */
     }
 
-    /* Media Queries pour les tablettes/mobiles */
+    /* Footer (cohérence des couleurs) */
+    footer {
+      background-color: var(--card-background);
+      border-top: 1px solid var(--border-light);
+      color: #6c757d;
+    }
+
+    /* Media Queries (Inchangé) */
     @media (max-width: 992px) {
         .category {
-            flex: 1 1 calc(50% - 15px); /* 2 colonnes sur tablette */
+            flex: 1 1 calc(50% - 15px);
         }
     }
     @media (max-width: 600px) {
@@ -243,7 +212,7 @@
             padding-top: 40px;
         }
         .category {
-            flex: 1 1 100%; /* 1 colonne sur mobile */
+            flex: 1 1 100%;
             min-width: unset;
         }
         .pricing-table {
@@ -310,7 +279,7 @@
             <li><span>Doublage isolant mur Placo (Fourn. + M.O.)</span><strong>55 € - 85 € / m²</strong></li>
             <li><span>Installation Prise/Interrupteur (M.O. seule)</span><strong>80 € - 120 € / unité</strong></li>
             <li><span>Rénovation complète tableau électrique</span><strong>900 € - 1 800 € (Forfait M.O.)</strong></li>
-            <li><span>Installation VMC simple flux (Forfait M.O.)</span><strong>350 € - 650 €</strong></li>
+            <li><span>Installation VMC simple flux (Forfait M.O.)</strong><strong>350 € - 650 €</strong></li>
           </ul>
         </div>
 
