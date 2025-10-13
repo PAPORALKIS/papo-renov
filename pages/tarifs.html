@@ -14,6 +14,7 @@
       background-color: #f9f9f9;
     }
 
+    /* Styles pour la navigation (si elle est définie dans style.css, cela garantit l'override pour 'active') */
     nav ul li a.active {
       color: #00bfff;
     }
@@ -40,6 +41,7 @@
       padding: 30px;
       border-radius: 10px;
       box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      margin-bottom: 20px; /* Ajout d'une marge pour les séparer */
     }
     .pricing-table h2 {
       color: #00bfff;
@@ -52,6 +54,13 @@
     .pricing-table li {
       padding: 10px;
       border-bottom: 1px solid #eee;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .pricing-table li strong {
+        color: #333;
+        font-weight: 600;
     }
     .pricing-table li:last-child {
       border-bottom: none;
@@ -62,18 +71,23 @@
       display: none;
     }
 
-    /* Styles pour le bouton caché */
-    #accessButton {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      width: 50px;
-      height: 50px;
-      opacity: 0;
-      cursor: pointer;
-      z-index: 999;
+    /* Styles pour l'emplacement du logo et le bouton caché */
+    header .logo {
+        position: relative; /* Pour que le bouton superposé se positionne par rapport au logo */
+        display: inline-block;
     }
-    #accessButton:hover {
+    /* Nouveau style pour le bouton caché, maintenant #logo-overlay */
+    #logo-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0; /* Rendre invisible */
+      cursor: pointer;
+      z-index: 10; /* Assurez-vous qu'il est au-dessus de l'image du logo */
+    }
+    #logo-overlay:hover {
         opacity: 0.1; /* Pour la démo, le rend visible au survol */
     }
 
@@ -132,6 +146,7 @@
 <header>
   <div class="logo">
     <img src="../img/logo.png" alt="Logo Papo Rénov">
+    <button id="logo-overlay" title="Accès Partenaires"></button>
   </div>
   <nav>
     <ul>
@@ -151,37 +166,81 @@
 
   <div class="price-container" id="public-prices">
     <div class="pricing-table">
-      <h2>Tarifs Publics</h2>
-      <p>Voici nos tarifs standards pour les services de rénovation.</p>
+      <h2>Tarifs Publics (HT)</h2>
+      <p>Voici une estimation de nos tarifs standards pour les services de rénovation. Les prix finaux sont sujets à la complexité du chantier et aux matériaux choisis.</p>
       <ul>
-        <li>Rénovation de salle de bain : **(Prix ici)**</li>
-        <li>Pose de carrelage : **(Prix ici)**</li>
-        <li>Peinture intérieure (au m²) : **(Prix ici)**</li>
-        <li>Installation de plomberie : **(Prix ici)**</li>
-        <li>... (Ajoutez d'autres services ici)</li>
+        <li>
+            <span>Rénovation de salle de bain (main d'œuvre + matériaux standard)</span>
+            <strong>4 500 € à 12 000 € (Forfait)</strong>
+        </li>
+        <li>
+            <span>Pose de carrelage au sol (hors fourniture)</span>
+            <strong>35 € à 60 € / m²</strong>
+        </li>
+        <li>
+            <span>Peinture intérieure (Murs et plafonds, 2 couches, hors fourniture)</span>
+            <strong>25 € à 40 € / m²</strong>
+        </li>
+        <li>
+            <span>Doublage Placo (fourniture + pose)</span>
+            <strong>50 € à 75 € / m²</strong>
+        </li>
+        <li>
+            <span>Installation électrique complète (Rénovation d'une pièce)</span>
+            <strong>800 € à 2 500 € (Forfait)</strong>
+        </li>
+        <li>
+            <span>Installation d'une VMC simple flux (fourniture + pose)</span>
+            <strong>500 € à 900 € (Forfait)</strong>
+        </li>
+        <li>
+            <span>Installation de WC suspendus (fourniture + pose)</span>
+            <strong>650 € à 1 200 € (Forfait)</strong>
+        </li>
       </ul>
-      <p>Pour un devis personnalisé, n'hésitez pas à nous <a href="devis.html">contacter</a>.</p>
+      <p>Pour un devis précis et personnalisé, n'hésitez pas à nous <a href="devis.html">contacter</a>.</p>
     </div>
   </div>
 
   <div class="price-container partner-prices" id="partner-prices">
     <div class="pricing-table">
-      <h2>Tarifs Partenaires 🤝</h2>
+      <h2>Tarifs Partenaires 🤝 (HT)</h2>
       <p>Merci de votre fidélité ! Voici vos tarifs spéciaux et exclusifs.</p>
       <ul>
-        <li>Rénovation de salle de bain : **(Prix spécial ici)**</li>
-        <li>Pose de carrelage : **(Prix spécial ici)**</li>
-        <li>Peinture intérieure (au m²) : **(Prix spécial ici)**</li>
-        <li>Installation de plomberie : **(Prix spécial ici)**</li>
-        <li>... (Ajoutez les mêmes services ici, avec les prix spéciaux)</li>
+        <li>
+            <span>Rénovation de salle de bain (main d'œuvre + matériaux standard)</span>
+            <strong>3 800 € à 10 500 € (Forfait)</strong>
+        </li>
+        <li>
+            <span>Pose de carrelage au sol (hors fourniture)</span>
+            <strong>30 € à 50 € / m²</strong>
+        </li>
+        <li>
+            <span>Peinture intérieure (Murs et plafonds, 2 couches, hors fourniture)</span>
+            <strong>22 € à 35 € / m²</strong>
+        </li>
+        <li>
+            <span>Doublage Placo (fourniture + pose)</span>
+            <strong>45 € à 65 € / m²</strong>
+        </li>
+        <li>
+            <span>Installation électrique complète (Rénovation d'une pièce)</span>
+            <strong>700 € à 2 200 € (Forfait)</strong>
+        </li>
+        <li>
+            <span>Installation d'une VMC simple flux (fourniture + pose)</span>
+            <strong>450 € à 800 € (Forfait)</strong>
+        </li>
+        <li>
+            <span>Installation de WC suspendus (fourniture + pose)</span>
+            <strong>600 € à 1 050 € (Forfait)</strong>
+        </li>
       </ul>
       <p>Ces tarifs sont réservés à nos partenaires enregistrés.</p>
     </div>
   </div>
 
 </section>
-
-<button id="accessButton" title="Accès Partenaires"></button>
 
 <div class="modal-overlay" id="modal-overlay">
   <div class="modal-content">
@@ -200,7 +259,8 @@
 
 <script>
   // Cibler les éléments du DOM
-  const accessButton = document.getElementById('accessButton');
+  // Mise à jour de la référence du bouton caché
+  const accessButton = document.getElementById('logo-overlay'); 
   const modalOverlay = document.getElementById('modal-overlay');
   const loginForm = document.getElementById('login-form');
   const publicPrices = document.getElementById('public-prices');
