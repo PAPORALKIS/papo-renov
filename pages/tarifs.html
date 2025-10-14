@@ -134,7 +134,7 @@ h1::after{
 
 .sheet{
   /* LARGEUR MANUELLE (Desktop) */
-  width:120px;
+  width:350px;
   /* HAUTEUR MANUELLE (Desktop) */
   height:320px;
   
@@ -273,7 +273,7 @@ h1::after{
 .partner-prices{display:none}
 
 /* =========================
-   RESPONSIVE (AJUSTÉ POUR CONSERVER LES NOUVELLES HAUTEURS/LARGEURS MANUELLES)
+   RESPONSIVE (AJUSTÉ POUR LARGEUR 120PX SUR MOBILE)
    ========================= */
 @media (max-width:1300px){
   /* Réduit l'espace négatif pour éviter un chevauchement trop important sur les petits écrans */
@@ -289,11 +289,11 @@ h1::after{
   }
   
   .sheet {
-      /* LARGEUR MANUELLE POUR MOBILE */
-      width: 290px; 
+      /* LARGEUR MANUELLE POUR MOBILE : 120px comme demandé */
+      width: 120px; 
       /* HAUTEUR MANUELLE POUR MOBILE */
       height: 300px;
-      margin-right: -100px; /* Augmente le chevauchement pour que les 4 cartes rentrent */
+      margin-right: -50px; /* Nouveau chevauchement pour 120px de largeur */
   }
   .sheets { margin-top: -80px; }
   .sheets article:nth-child(4) { margin-right: 0px; }
