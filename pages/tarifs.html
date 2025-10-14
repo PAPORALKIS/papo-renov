@@ -5,8 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Tarifs - Papo Rénov</title>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../style.css"><!-- si tu as un style global -->
-<link rel="preconnect" href="https://cdnjs.cloudflare.com">
+<link rel="stylesheet" href="../style.css"><link rel="preconnect" href="https://cdnjs.cloudflare.com">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 
 <style>
@@ -116,7 +115,7 @@ h1::after{
   display:flex;flex-wrap:wrap;justify-content:center;gap:22px;
   perspective:1000px;
   padding:0 8px;
-  z-index:2;                   /* AJOUT: assure que les fiches sont devant */
+  z-index:2; /* AJOUT: assure que les fiches sont devant */
 }
 .sheet{
   width:320px;max-width:92vw;
@@ -212,7 +211,6 @@ h1::after{
 <header>
   <div class="logo">
     <img src="../img/logo.png" alt="Logo Papo Rénov">
-    <!-- Bouton invisible d’accès partenaire (conservé) -->
     <button id="logo-overlay-partner" title="Accès Partenaires" style="position:absolute;inset:0;opacity:0;cursor:pointer;"></button>
   </div>
   <nav>
@@ -230,14 +228,13 @@ h1::after{
 
 <section class="content-section">
   <h1>Tarifs rénovation & agencement</h1>
-  <p class="subtitle">La tablette présente vos chantiers. Devant, consultez les fiches par catégorie et ouvrez le détail complet.</p>
+  <p class="subtitle">La tablette présente vos chantiers.
+Devant, consultez les fiches par catégorie et ouvrez le détail complet.</p>
 
-  <!-- TABLETTE avec slider d’images -->
   <div class="tablet" aria-label="Galerie de réalisations">
     <div class="tablet-camera" aria-hidden="true"></div>
     <div class="tablet-screen">
       <div class="slider" id="slider">
-        <!-- Remplace les src par tes images /img/... -->
         <img src="../img/realisations/real-01.jpg" alt="Cuisine rénovée" class="active">
         <img src="../img/realisations/real-02.jpg" alt="Salle de bain carrelage">
         <img src="../img/realisations/real-03.jpg" alt="Dressing sur mesure">
@@ -246,7 +243,6 @@ h1::after{
     </div>
   </div>
 
-  <!-- FICHES superposées (devant la tablette) -->
   <div class="sheets" id="public-prices">
     <article class="sheet" data-category="revetements" style="--rot:-2.5deg">
       <div class="head">
@@ -255,7 +251,8 @@ h1::after{
       </div>
       <h3>Revêtements & Peinture</h3>
       <p>Peinture, carrelage, faïence, parquets : tarifs au m² pour sublimer vos surfaces.</p>
-      <div class="from">À partir de 20 € / m² (M.O. HT)</div>
+      <div class="from">À partir de 20 € / m² (M.O.
+HT)</div>
       <div class="actions">
         <button class="btn primary open-details"><i class="fa-solid fa-magnifying-glass"></i>Voir détails</button>
         <a class="btn" href="devis.html"><i class="fa-regular fa-file-lines"></i>Devis</a>
@@ -268,7 +265,8 @@ h1::after{
         <i class="icon fas fa-bath"></i>
       </div>
       <h3>Plomberie & Sanitaires</h3>
-      <p>Création / rénovation SDB, douches, WC, chauffe-eau. Forfaits interventions courantes.</p>
+      <p>Création / rénovation 
+SDB, douches, WC, chauffe-eau. Forfaits interventions courantes.</p>
       <div class="from">Forfait SDB dès 3 500 € (M.O. HT)</div>
       <div class="actions">
         <button class="btn primary open-details"><i class="fa-solid fa-magnifying-glass"></i>Voir détails</button>
@@ -291,13 +289,13 @@ h1::after{
     </article>
   </div>
 
-  <!-- Tarifs partenaires (affichés après login) -->
   <div class="sheets partner-prices" id="partner-prices">
     <article class="sheet" data-category="revetements" style="--rot:-2deg">
       <div class="head"><span class="badge">Partenaires</span><i class="icon fas fa-handshake"></i></div>
       <h3>Revêtements & Peinture</h3>
       <p>Tarifs préférentiels sur la main d’œuvre (jusqu’à −10%).</p>
-      <div class="from">À partir de 18 € / m² (M.O. HT)</div>
+      <div class="from">À partir de 18 € / m² (M.O.
+HT)</div>
       <div class="actions">
         <button class="btn primary open-details"><i class="fa-solid fa-magnifying-glass"></i>Voir détails</button>
         <a class="btn" href="devis.html"><i class="fa-regular fa-file-lines"></i>Devis</a>
@@ -319,7 +317,8 @@ h1::after{
       <div class="head"><span class="badge">Partenaires</span><i class="icon fas fa-handshake"></i></div>
       <h3>Électricité & Plâtrerie</h3>
       <p>Grille dédiée pour projets récurrents et volumes.</p>
-      <div class="from">Cloison placo dès 40 € / m² (Fourn. + M.O. HT)</div>
+      <div class="from">Cloison placo dès 40 € / m² (Fourn.
++ M.O. HT)</div>
       <div class="actions">
         <button class="btn primary open-details"><i class="fa-solid fa-magnifying-glass"></i>Voir détails</button>
         <a class="btn" href="devis.html"><i class="fa-regular fa-file-lines"></i>Devis</a>
@@ -330,7 +329,6 @@ h1::after{
   <p style="margin:8px 0 0">Pour un chiffrage précis : <a href="devis.html" style="font-weight:700;color:var(--primary-color)">demandez un devis</a>.</p>
 </section>
 
-<!-- Modale détails -->
 <div class="modal-overlay" id="detail-modal" role="dialog" aria-modal="true" aria-labelledby="detail-title">
   <div class="detail-modal-content">
     <button class="close-btn" id="close-detail-modal" aria-label="Fermer">&times;</button>
@@ -338,9 +336,9 @@ h1::after{
   </div>
 </div>
 
-<!-- Modale accès partenaires (conservée) -->
 <div class="modal-overlay" id="partner-login-modal" role="dialog" aria-modal="true" aria-labelledby="partner-title">
-  <div class="detail-modal-content" style="max-width:480px">
+  <div class="detail-modal-content" 
+style="max-width:480px">
     <button class="close-btn" id="close-partner-modal" aria-label="Fermer">&times;</button>
     <h3 id="partner-title">Accès Partenaires</h3>
     <form id="login-form">
@@ -352,7 +350,8 @@ h1::after{
 </div>
 
 <footer>
-  <p style="text-align:center;margin:40px 0;color:#6c757d">&copy; 2025 Papo Rénov — Tous droits réservés</p>
+  <p style="text-align:center;margin:40px 0;color:#6c757d">&copy;
+2025 Papo Rénov — Tous droits réservés</p>
 </footer>
 
 <script>
@@ -368,7 +367,6 @@ h1::after{
     slides[i].classList.add('active');
   }, 3500);
 })();
-
 /* =========================
    DONNÉES TARIFS (reprend ta grille)
    ========================= */
@@ -378,7 +376,8 @@ const priceDetails = {
     items: [
       { label: "Peinture murs (2 couches, préparation incluse)", price: "25 € - 40 € / m²" },
       { label: "Peinture plafonds (2 couches, préparation incluse)", price: "30 € - 50 € / m²" },
-      { label: "Pose de carrelage au sol (droit, hors fourniture)", price: "35 € - 60 € / m²" },
+      { label: "Pose de carrelage au sol (droit, hors fourniture)", price: "35 € - 60 € 
+/ m²" },
       { label: "Pose de faïence murale (hors fourniture)", price: "40 € - 75 € / m²" },
       { label: "Pose de parquet flottant", price: "20 € - 35 € / m²" }
     ]
@@ -387,7 +386,8 @@ const priceDetails = {
     title: "Plomberie & Sanitaires - Tarifs Publics (HT)",
     items: [
       { label: "Rénovation complète SDB (Forfait M.O.)", price: "3 500 € - 8 000 €" },
-      { label: "Création d'un point d'eau (A/E usées)", price: "250 € - 500 € / unité" },
+      { label: "Création d'un 
+point d'eau (A/E usées)", price: "250 € - 500 € / unité" },
       { label: "Pose d'un WC suspendu (Forfait M.O.)", price: "450 € - 750 €" },
       { label: "Pose d'une douche à l'italienne (étanchéité et M.O.)", price: "1 200 € - 2 500 €" },
       { label: "Remplacement de chauffe-eau standard", price: "250 € - 450 € (hors fourn.)" }
@@ -395,14 +395,17 @@ const priceDetails = {
   },
   electricite: {
     title: "Électricité & Plâtrerie - Tarifs Publics (HT)",
-    items: [
-      { label: "Création d'une cloison placo (Fourn. + M.O.)", price: "45 € - 65 € / m²" },
+    
+items: [
+      { label: "Création d'une cloison placo (Fourn.
++ M.O.)", price: "45 € - 65 € / m²" },
       { label: "Doublage isolant mur placo (Fourn. + M.O.)", price: "55 € - 85 € / m²" },
       { label: "Installation prise/interrupteur (M.O. seule)", price: "80 € - 120 € / unité" },
       { label: "Rénovation complète tableau électrique", price: "900 € - 1 800 € (Forfait M.O.)" },
       { label: "Installation VMC simple flux (Forfait M.O.)", price: "350 € - 650 €" }
     ]
-  },
+  
+},
   /* PARTENAIRES */
   revetements_partner: {
     title: "Revêtements & Peinture - Tarifs Partenaires (HT)",
@@ -410,7 +413,8 @@ const priceDetails = {
       { label: "Peinture murs (2 couches, préparation incluse)", price: "22 € - 36 € / m²" },
       { label: "Peinture plafonds (2 couches, préparation incluse)", price: "27 € - 45 € / m²" },
       { label: "Pose de carrelage au sol (droit, hors fourniture)", price: "30 € - 55 € / m²" },
-      { label: "Pose de faïence murale (hors fourniture)", price: "35 € - 65 € / m²" },
+      { label: "Pose 
+de faïence murale (hors fourniture)", price: "35 € - 65 € / m²" },
       { label: "Pose de parquet flottant", price: "18 € - 30 € / m²" }
     ]
   },
@@ -418,7 +422,8 @@ const priceDetails = {
     title: "Plomberie & Sanitaires - Tarifs Partenaires (HT)",
     items: [
       { label: "Rénovation complète SDB (Forfait M.O.)", price: "3 150 € - 7 200 €" },
-      { label: "Création d'un point d'eau (A/E usées)", price: "225 € - 450 € / unité" },
+      { label: "Création d'un point d'eau (A/E usées)", price: "225 € - 450 € / 
+unité" },
       { label: "Pose d'un WC suspendu (Forfait M.O.)", price: "400 € - 675 €" },
       { label: "Pose d'une douche à l'italienne (étanchéité et M.O.)", price: "1 080 € - 2 250 €" },
       { label: "Remplacement de chauffe-eau standard", price: "225 € - 400 € (hors fourn.)" }
@@ -427,12 +432,14 @@ const priceDetails = {
   electricite_partner: {
     title: "Électricité & Plâtrerie - Tarifs Partenaires (HT)",
     items: [
-      { label: "Création d'une cloison placo (Fourn. + M.O.)", price: "40 € - 60 € / m²" },
+      { label: "Création d'une 
+cloison placo (Fourn. + M.O.)", price: "40 € - 60 € / m²" },
       { label: "Doublage isolant mur placo (Fourn. + M.O.)", price: "50 € - 75 € / m²" },
       { label: "Installation prise/interrupteur (M.O. seule)", price: "70 € - 110 € / unité" },
       { label: "Rénovation complète tableau électrique", price: "810 € - 1 620 € (Forfait M.O.)" },
       { label: "Installation VMC simple flux (Forfait M.O.)", price: "315 € - 585 €" }
-    ]
+   
+]
   }
 };
 
@@ -450,14 +457,14 @@ document.querySelectorAll('.open-details, .sheet').forEach(el=>{
     const key = isPartnerView ? `${cat}_partner` : cat;
     const data = priceDetails[key];
     if(!data) return;
-
-    let html = `<h3 id="detail-title">${data.title}</h3><ul>`;
+let html = `<h3 id="detail-title">${data.title}</h3><ul>`;
     data.items.forEach(it=>{
       html += `<li><span>${it.label}</span><strong>${it.price}</strong></li>`;
     });
-    html += `</ul>
+html += `</ul>
       <p style="text-align:center;margin-top:22px">
-        Ces prix sont indicatifs. <a href="devis.html" style="font-weight:700;color:var(--primary-color)">Demandez un devis personnalisé</a>.
+        Ces prix sont indicatifs.
+<a href="devis.html" style="font-weight:700;color:var(--primary-color)">Demandez un devis personnalisé</a>.
       </p>`;
     modalDetailsContent.innerHTML = html;
     detailModal.style.display = 'flex';
@@ -465,7 +472,6 @@ document.querySelectorAll('.open-details, .sheet').forEach(el=>{
 });
 document.getElementById('close-detail-modal').addEventListener('click',()=>detailModal.style.display='none');
 detailModal.addEventListener('click',(e)=>{ if(e.target===detailModal) detailModal.style.display='none'; });
-
 /* =========================
    ACCÈS PARTENAIRES (conservé)
    ========================= */
