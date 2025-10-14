@@ -30,7 +30,7 @@ body{
   background:var(--background-light);
   color:var(--secondary-color);
   line-height:1.6;
-  /* AJOUT : Contrainte de largeur minimale pour éviter l'écrasement sur les très petits écrans */
+  /* Contrainte de largeur minimale conservée */
   min-width:320px;
 }
 
@@ -41,7 +41,6 @@ nav ul li a.active{color:var(--primary-color);font-weight:700}
    SECTION HERO (TABLETTE)
    ========================= */
 .content-section{
-  /* MODIFIÉ : Réduction du padding-top de 80px à 40px */
   padding:40px 20px 40px; 
   display:flex; /* */
   flex-direction:column; /* */
@@ -54,7 +53,7 @@ h1{
   color:var(--secondary-color);
   margin:0 0 14px;
   font-weight:800;
-  /* MODIFIÉ : Réduction de la taille de la police de 2.4rem à 1.8rem */
+  /* Taille de police réduite conservée */
   font-size:1.8rem; 
 }
 h1::after{
@@ -296,13 +295,13 @@ Devant, consultez les fiches par catégorie et ouvrez le détail complet.</p> /*
       </div>
     </article>
     
-    <article class="sheet" data-category="divers" style="--rot:2.5deg">
+    <article class="sheet" data-category="vierge" style="--rot:3.5deg">
       <div class="head">
         <span class="badge">Public</span>
-        <i class="icon fa-solid fa-screwdriver-wrench"></i> </div>
-      <h3>Agencement & Divers</h3>
-      <p>Création de mobilier sur mesure, travaux spécifiques non listés (à détailler).</p>
-      <div class="from">Prix sur devis (M.O. HT)</div>
+        <i class="icon fa-solid fa-list-check"></i> </div>
+      <h3>[TITRE DE LA FICHE]</h3>
+      <p>[Description : Travaux divers, autres prestations, agencement, etc.]</p>
+      <div class="from">À partir de [Prix de base] (HT)</div>
       <div class="actions">
         <button class="btn primary open-details"><i class="fa-solid fa-magnifying-glass"></i>Voir détails</button>
         <a class="btn" href="devis.html"><i class="fa-regular fa-file-lines"></i>Devis</a>
@@ -348,13 +347,13 @@ Devant, consultez les fiches par catégorie et ouvrez le détail complet.</p> /*
       </div>
     </article>
     
-    <article class="sheet" data-category="divers" style="--rot:2.2deg">
+    <article class="sheet" data-category="vierge" style="--rot:3.2deg">
       <div class="head">
         <span class="badge">Partenaires</span>
         <i class="icon fas fa-handshake"></i>
       </div>
-      <h3>Agencement & Divers</h3>
-      <p>Tarifs spéciaux pour les projets d'agencement et les travaux non standards.</p>
+      <h3>[TITRE PARTENAIRE]</h3>
+      <p>[Description Partenaire : Grille dédiée ou forfaits spéciaux.]</p>
       <div class="from">Devis Partenaires (M.O. HT)</div>
       <div class="actions">
         <button class="btn primary open-details"><i class="fa-solid fa-magnifying-glass"></i>Voir détails</button>
@@ -444,13 +443,13 @@ const priceDetails = { /* */
   
   },
   
-  /* NOUVELLE CATÉGORIE À REMPLIR */
-  divers: {
-    title: "Agencement & Divers - À Remplir (HT)",
+  /* NOUVELLE CATÉGORIE VIERGE À REMPLIR (PUBLIC) */
+  vierge: {
+    title: "[TITRE À COMPLÉTER] - Tarifs Publics (HT)",
     items: [
-      { label: "Nom de l'élément 1 (Ex: Meuble sur mesure)", price: "À saisir €" },
-      { label: "Nom de l'élément 2 (Ex: Petite réparation)", price: "À saisir €" },
-      { label: "Nom de l'élément 3 (Ex: Forfait Journée)", price: "À saisir €" }
+      { label: "Nom du service / prestation 1 (à remplir)", price: "À saisir €" },
+      { label: "Nom du service / prestation 2 (à remplir)", price: "À saisir €" },
+      { label: "Nom du service / prestation 3 (à remplir)", price: "À saisir €" }
     ]
   },
   
@@ -489,13 +488,13 @@ const priceDetails = { /* */
     ]
   },
   
-  /* NOUVELLE CATÉGORIE PARTENAIRE À REMPLIR */
-  divers_partner: {
-    title: "Agencement & Divers - Partenaires (HT)",
+  /* NOUVELLE CATÉGORIE VIERGE À REMPLIR (PARTENAIRE) */
+  vierge_partner: {
+    title: "[TITRE À COMPLÉTER] - Tarifs Partenaires (HT)",
     items: [
-      { label: "Nom de l'élément 1 (Ex: Meuble sur mesure)", price: "À saisir €" },
-      { label: "Nom de l'élément 2 (Ex: Petite réparation)", price: "À saisir €" },
-      { label: "Nom de l'élément 3 (Ex: Forfait Journée)", price: "À saisir €" }
+      { label: "Nom du service / prestation 1 (Partenaire)", price: "À saisir €" },
+      { label: "Nom du service / prestation 2 (Partenaire)", price: "À saisir €" },
+      { label: "Nom du service / prestation 3 (Partenaire)", price: "À saisir €" }
     ]
   }
 };
