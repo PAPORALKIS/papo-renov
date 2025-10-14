@@ -40,7 +40,8 @@ nav ul li a.active{color:var(--primary-color);font-weight:700}
    SECTION HERO (TABLETTE)
    ========================= */
 .content-section{
-  padding:40px 20px 40px; /* Réduit le padding du haut pour mobile */
+  /* MODIFIÉ: Réduit le padding-top de 40px à 20px */
+  padding:20px 20px 40px; 
   display:flex;
   flex-direction:column;
   align-items:center;
@@ -105,9 +106,9 @@ h1::after{
 }
 .slider img.active{opacity:1}
 
-/* =========================
-   FICHES TARIFS 3D UNIFORME (MODIFIÉ)
-   ========================= */
+/* ====================================================================
+   FICHES TARIFS 3D UNIFORME
+   ==================================================================== */
 .sheets{
   position:relative;
   width:100%;
@@ -132,25 +133,28 @@ h1::after{
 }
 
 .sheet{
-  /* Largeur des fiches pour Desktop/Tablette */
-  width:320px;
+  /* LARGEUR MANUELLE (Desktop) */
+  width:350px;
+  /* HAUTEUR MANUELLE (Desktop) */
+  height:320px;
+  
   /* Permet au contenu des fiches de ne pas déborder */
   flex-shrink: 0; 
-  max-width:92vw;
+  
   background:var(--card-background);
   border-radius:14px;
   
-  /* AJOUT DE L'EFFET D'OMBRE 3D */
+  /* AJOUT DE L'EFFET D'OMBRE 3D (Rétabli) */
   box-shadow:0 15px 45px rgba(0,0,0,.25), 0 0 0 1px rgba(0,0,0,.05);
   
   padding:18px 18px 16px;
   text-align:left;cursor:pointer;
   
-  /* GESTION DES TRANSFORMATIONS 3D ET DU CHEVAUCHEMENT */
-  /* --rot : Rotation sur l'axe Z (comme avant) */
-  /* --ty : Décalage vertical vers le haut/bas */
+  /* GESTION DES TRANSFORMATIONS 3D ET DU CHEVAUCHEMENT (Rétabli) */
+  /* --rot : Rotation sur l'axe Z (Légère inclinaison) */
+  /* --ty : Décalage vertical vers le haut/bas (Effet modèle) */
   /* --tx : Décalage horizontal pour le chevauchement */
-  /* --rz : Rotation sur l'axe Y pour l'effet carte */
+  /* --ry : Rotation sur l'axe Y pour l'effet carte */
   transform: rotateZ(var(--rot, 0deg)) translateY(var(--ty, 0px)) translateX(var(--tx, 0px)) rotateY(var(--ry, 0deg));
   
   transition: transform .35s ease, box-shadow .35s ease;
@@ -161,6 +165,9 @@ h1::after{
   
   /* Ajout d'une marge négative pour chevauchement horizontal */
   margin-right: -100px; 
+  
+  /* Ajout de l'overflow pour gérer le contenu si la hauteur est trop petite */
+  overflow: auto; 
 }
 
 /* DÉFINITION DES PROPRIÉTÉS MANUELLES (Rotation, Décalage, Z-index) */
@@ -198,7 +205,7 @@ h1::after{
   --tx: 0px;
   --ry: -1deg;
   --z-idx: 1; /* En-dessous */
-  /* Marge négative plus petite pour la dernière fiche */
+  /* Marge négative plus petite pour la dernière fiche pour ne pas trop la cacher */
   margin-right: 20px; 
 }
 
@@ -209,7 +216,6 @@ h1::after{
   box-shadow:0 40px 100px rgba(0,0,0,.35);
   z-index: 5; /* Assure que la fiche survolée est toujours au-dessus */
 }
-
 /* Le reste du style de fiche... (conservé) */
 .sheet .head{
   display:flex;align-items:center;gap:10px;margin-bottom:10px;
@@ -267,7 +273,7 @@ h1::after{
 .partner-prices{display:none}
 
 /* =========================
-   RESPONSIVE (SIMPLIFIÉ POUR UN EFFET UNIFORME)
+   RESPONSIVE (AJUSTÉ POUR CONSERVER LES NOUVELLES HAUTEURS/LARGEURS MANUELLES)
    ========================= */
 @media (max-width:1300px){
   /* Réduit l'espace négatif pour éviter un chevauchement trop important sur les petits écrans */
@@ -277,12 +283,19 @@ h1::after{
 }
 
 @media (max-width:768px){
-  /* Réduit la marge négative pour la rendre visible sur petit écran */
-  .sheets { margin-top: -80px; }
+  /* Conserve le padding-top si nécessaire ou ajuste-le manuellement */
+  .content-section{
+      padding-top: 20px; /* Conserve le 20px réduit */
+  }
+  
   .sheet {
-      width: 280px; /* Réduit un peu la largeur des cartes */
+      /* LARGEUR MANUELLE POUR MOBILE */
+      width: 290px; 
+      /* HAUTEUR MANUELLE POUR MOBILE */
+      height: 300px;
       margin-right: -100px; /* Augmente le chevauchement pour que les 4 cartes rentrent */
   }
+  .sheets { margin-top: -80px; }
   .sheets article:nth-child(4) { margin-right: 0px; }
   
   .tablet{aspect-ratio: 4 / 3}
@@ -488,7 +501,7 @@ Devant, consultez les fiches par catégorie et ouvrez le détail complet.</p>
 })();
 
 /* =========================
-   DONNÉES TARIFS (MISES À JOUR)
+   DONNÉES TARIFS
    ========================= */
 const priceDetails = {
   revetements: {
@@ -584,14 +597,13 @@ const detailModal = document.getElementById('detail-modal');
 const modalDetailsContent = document.getElementById('modal-details-content');
 document.querySelectorAll('.open-details, .sheet').forEach(el=>{
   el.addEventListener('click', (e)=>{
-    // Empêche le clic sur la fiche elle-même d'ouvrir deux fois la modale si l'élément cliqué est .sheet
-    if (e.target.tagName.toLowerCase() !== 'button' && e.target.closest('.sheet').contains(e.target) && e.target.className.indexOf('open-details') === -1) {
-        return;
-    }
     
+    // Si le clic provient d'un élément *dans* les actions (boutons ou liens), on ne fait rien.
+    if(e.target.closest('.actions')) return; 
+
     const card = e.currentTarget.closest('.sheet');
-    if (!card) return; // S'assure qu'on a bien cliqué sur une fiche ou un bouton dedans
-    
+    if (!card) return; 
+
     const cat = card.getAttribute('data-category');
     const key = isPartnerView ? `${cat}_partner` : cat;
     const data = priceDetails[key];
