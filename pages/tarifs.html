@@ -124,12 +124,7 @@ h1::after{
   perspective:1200px; /* Augmente la perspective pour l'effet 3D */
   padding:0 8px;
   z-index:2;
-  /* Ajout du défilement horizontal en cas de petit écran et de trop de contenu */
-  overflow-x: auto;
-  scrollbar-width: none; /* Masque la barre de défilement pour Firefox */
-  -ms-overflow-style: none; /* Masque la barre de défilement pour IE/Edge */
-  /* Masque la barre de défilement pour Chrome/Safari */
-  &::-webkit-scrollbar { display: none; }
+  /* SUPPRIMÉ : Défilement horizontal des fiches */
 }
 
 .sheet{
@@ -166,8 +161,8 @@ h1::after{
   /* Ajout d'une marge négative pour chevauchement horizontal (Ajustée pour 120px) */
   margin-right: -40px; 
   
-  /* Ajout de l'overflow pour gérer le contenu si la hauteur est trop petite */
-  overflow: auto; 
+  /* RETIRÉ : Défilement du texte intérieur */
+  overflow: hidden; 
 }
 
 /* DÉFINITION DES PROPRIÉTÉS MANUELLES (Rotation, Décalage, Z-index) */
@@ -350,7 +345,6 @@ Devant, consultez les fiches par catégorie et ouvrez le détail complet.</p>
   <div class="sheets" id="public-prices">
     <article class="sheet" data-category="revetements">
       <div class="head">
-        <span class="badge">Public</span>
         <i class="icon fas fa-paint-roller"></i>
       </div>
       <h3>Revêtements & Peinture</h3>
@@ -365,7 +359,6 @@ Devant, consultez les fiches par catégorie et ouvrez le détail complet.</p>
 
     <article class="sheet" data-category="plomberie">
       <div class="head">
-        <span class="badge">Public</span>
         <i class="icon fas fa-bath"></i>
       </div>
       <h3>Plomberie & Sanitaires</h3>
@@ -380,7 +373,6 @@ Devant, consultez les fiches par catégorie et ouvrez le détail complet.</p>
 
     <article class="sheet" data-category="electricite">
       <div class="head">
-        <span class="badge">Public</span>
         <i class="icon fas fa-bolt"></i>
       </div>
       <h3>Électricité & Plâtrerie</h3>
@@ -394,7 +386,6 @@ Devant, consultez les fiches par catégorie et ouvrez le détail complet.</p>
     
     <article class="sheet" data-category="vierge">
       <div class="head">
-        <span class="badge">Public</span>
         <i class="icon fa-solid fa-list-check"></i>
       </div>
       <h3>Autres Prestations</h3>
