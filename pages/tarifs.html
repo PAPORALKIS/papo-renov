@@ -44,7 +44,7 @@ nav ul li a.active{color:var(--primary-color);font-weight:700}
   flex-direction:column;
   align-items:center;
   text-align:center;
-  position:relative;            /* AJOUT: pour gérer la superposition locale */
+  position:relative;            
   /* pas d'autre changement */
 }
 h1{
@@ -73,7 +73,7 @@ h1::after{
   background:#111;
   box-shadow:0 40px 80px rgba(0,0,0,.25);
   overflow:hidden;
-  z-index:1;                    /* AJOUT: la tablette passe derrière les fiches */
+  z-index:1;                    
 }
 .tablet::before{ /* contour / biseau */
   content:'';
@@ -111,24 +111,23 @@ h1::after{
   position:relative;
   width:100%;
   max-width:1180px;
-  /* MODIFIE : Marge négative réduite de moitié pour proportionnalité */
-  margin:-45px auto 20px; 
-  display:flex;flex-wrap:wrap;justify-content:center;gap:22px;
+  /* LIGNE RESPONSABLE DE LA MONTÉE DES FICHES */
+  margin:-60px auto 20px; 
+  display:flex;flex-wrap:wrap;justify-content:center;gap:18px; 
   perspective:1000px;
   padding:0 8px;
   z-index:2; 
 }
 
-/* BLOC DE LA TAILLE DE LA FICHE (Réduit de moitié) */
+/* BLOC DE LA TAILLE DE LA FICHE (Réduite à 120px) */
 .sheet{
-  /* MODIFIE : Réduit la largeur de 320px à 160px */
   width:120px;
   max-width:92vw;
   background:var(--card-background);
   border-radius:14px;
-  box-shadow:0 20px 60px rgba(0,0,0,.18);
-  /* MODIFIE : Réduit le padding de 18px 18px 16px à 9px 9px 8px */
-  padding:9px 9px 8px;
+  /* NOUVEL EFFET 3D: Ombre plus diffuse et portée */
+  box-shadow: 0 5px 15px rgba(0,0,0,.15), 0 20px 40px rgba(0,0,0,.1); 
+  padding:6px 6px 4px;
   text-align:left;cursor:pointer;
   transform:rotateZ(var(--rot,0deg)) translateY(0);
   transition:transform .25s ease, box-shadow .25s ease;
@@ -136,60 +135,53 @@ h1::after{
 }
 
 .sheet:hover{
-  transform:translateY(-3px) rotateZ(var(--rot,0deg)) scale(1.02); /* Réduit le soulèvement */
-  box-shadow:0 28px 80px rgba(0,0,0,.24);
+  transform:translateY(-3px) rotateZ(var(--rot,0deg)) scale(1.02); 
+  /* NOUVEL EFFET 3D au survol: Ombre plus marquée */
+  box-shadow: 0 10px 25px rgba(0,0,0,.2), 0 40px 80px rgba(0,0,0,.15);
 }
 .sheet .head{
-  display:flex;align-items:center;gap:5px; /* Réduit le gap */
-  margin-bottom:5px; /* Réduit la marge */
+  display:flex;align-items:center;gap:5px;
+  margin-bottom:4px;
 }
 .sheet .badge{
   background:var(--dark-blue-logo);
   color:#fff;font-weight:700;
-  /* MODIFIE : Réduit la taille du texte */
   font-size:0.5rem;
-  /* MODIFIE : Réduit le padding */
-  padding:4px 6px;
-  border-radius:10px 10px 10px 0;
+  padding:3px 5px; 
+  border-radius:8px 8px 8px 0;
 }
 .sheet .icon{
-  /* MODIFIE : Réduit la taille de l'icône de 26px à 13px */
-  font-size:13px;
+  font-size:12px; 
   color:var(--primary-color)
 }
 .sheet h3{
-  /* MODIFIE : Réduit la taille du titre de 1.2rem à 0.6rem */
-  margin:3px 0 4px;
-  font-size:0.6rem
+  margin:2px 0 3px;
+  font-size:0.55rem 
 }
 .sheet p{
-  /* MODIFIE : Réduit la taille du paragraphe */
-  margin:0 0 5px;
+  margin:0 0 4px;
   color:#6c757d;
-  font-size:0.5rem
+  font-size:0.4rem 
 }
 .sheet .from{
   color:var(--price-accent);
   font-weight:700;
-  margin-top:3px;
-  font-size:0.5rem /* Ajout d'une réduction de taille */
+  margin-top:2px;
+  font-size:0.45rem 
 }
 .sheet .actions{
-  /* MODIFIE : Réduit le gap */
   display:flex;
-  gap:5px;
-  margin-top:6px
+  gap:3px; 
+  margin-top:5px
 }
 .sheet .btn{
   display:inline-flex;align-items:center;
-  /* MODIFIE : Réduit le gap */
-  gap:4px;
-  /* MODIFIE : Réduit le padding */
-  padding:5px 6px;
-  border-radius:10px;border:1px solid var(--border-light);
+  gap:3px;
+  padding:4px 5px; 
+  border-radius:8px;
+  border:1px solid var(--border-light);
   background:#fff;cursor:pointer;font-weight:600;
-  /* MODIFIE : Réduit la taille du texte */
-  font-size:0.5rem;
+  font-size:0.45rem;
 }
 .sheet .btn.primary{background:var(--primary-color);border-color:var(--primary-color);color:#fff}
 .sheet .btn:active{transform:translateY(1px)}
@@ -234,8 +226,8 @@ h1::after{
    RESPONSIVE
    ========================= */
 @media (max-width:1024px){
-  /* MODIFIE : Marge négative réduite de moitié pour proportionnalité */
-  .sheets{margin:-35px auto 10px} 
+  /* MODIFIE : Marge négative ajustée pour la nouvelle largeur */
+  .sheets{margin:-30px auto 10px} 
 }
 @media (max-width:768px){
   /* ATTENTION : Le comportement forcé de superposition est conservé ici */
