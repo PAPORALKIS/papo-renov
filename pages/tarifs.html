@@ -40,7 +40,7 @@ nav ul li a.active{color:var(--primary-color);font-weight:700}
    SECTION HERO (TABLETTE)
    ========================= */
 .content-section{
-  padding:40px 20px 40px; 
+  padding:40px 20px 40px; /* Réduit le padding du haut pour mobile */
   display:flex;
   flex-direction:column;
   align-items:center;
@@ -51,6 +51,7 @@ h1{
   color:var(--secondary-color);
   margin:0 0 14px;
   font-weight:800;
+  /* Réduction de la taille de h1 pour smartphone */
   font-size:1.8rem; 
 }
 h1::after{
@@ -110,22 +111,29 @@ h1::after{
 .sheets{
   position:relative;
   width:100%;
-  /* CORRECTION CLÉ: Augmentation de la largeur max pour 4 fiches */
+  /* Largeur max ajustée pour les 4 fiches */
   max-width:1350px; 
   margin:-90px auto 20px;
-  display:flex;flex-wrap:wrap;justify-content:center;gap:22px;
+  /* ON GARDE flex-wrap: wrap; pour éviter le défilement horizontal */
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
+  gap:22px;
   perspective:1000px;
   padding:0 8px;
   z-index:2;
 }
 .sheet{
-  width:320px;max-width:92vw;
+  /* Largeur des fiches pour Desktop/Tablette */
+  width:320px;
+  max-width:92vw;
   background:var(--card-background);
   border-radius:14px;
   box-shadow:0 20px 60px rgba(0,0,0,.18);
   padding:18px 18px 16px;
   text-align:left;cursor:pointer;
-  transform:rotateZ(var(--rot,0deg)) translateY(0);
+  /* Rotation et décalage horizontal appliqués uniquement sur grand écran */
+  transform:rotateZ(var(--rot,0deg)) translateY(0) translateX(0);
   transition:transform .25s ease, box-shadow .25s ease;
   border:1px solid var(--border-light);
 }
@@ -133,6 +141,7 @@ h1::after{
   transform:translateY(-6px) rotateZ(var(--rot,0deg)) scale(1.02);
   box-shadow:0 28px 80px rgba(0,0,0,.24);
 }
+/* Le reste du style de fiche... (conservé) */
 .sheet .head{
   display:flex;align-items:center;gap:10px;margin-bottom:10px;
 }
@@ -155,7 +164,7 @@ h1::after{
 .sheet .btn:active{transform:translateY(1px)}
 
 /* =========================
-   MODALES (détails + partenaires)
+   MODALES (conservées)
    ========================= */
 .modal-overlay{
   display:none;position:fixed;inset:0;
@@ -186,8 +195,6 @@ h1::after{
   border:none;background:var(--secondary-color);color:#fff;cursor:pointer;
 }
 .close-btn:hover{background:#dc3545}
-
-/* Partenaires: on conserve, caché par défaut */
 .partner-prices{display:none}
 
 /* =========================
@@ -196,10 +203,47 @@ h1::after{
 @media (max-width:1024px){
   .sheets{margin:-70px auto 10px}
 }
+
+/* CORRECTION POUR LA SUPERPOSITION EN CASCADE SUR MOBILE/PETIT ÉCRAN */
 @media (max-width:768px){
   .tablet{aspect-ratio: 3 / 2}
-  .sheets{margin:18px auto 0}
-  .sheet{--rot:0deg}
+  .sheets{
+      margin:18px auto 0;
+      /* Ajuste le gap pour un chevauchement */
+      gap: 0; 
+      /* Ajoute une marge latérale pour décaler les fiches du bord */
+      padding: 0 15px; 
+  }
+  .sheet{
+      /* Force la fiche à prendre toute la largeur disponible (dans le padding de .sheets) */
+      width: 100%;
+      /* Annule la rotation et ajoute un décalage vertical et horizontal pour la cascade */
+      --rot: 0deg !important;
+      margin-bottom: -100px; /* Décalage vers le haut pour chevauchement */
+      /* Décalage horizontal pour l'effet de pile penchée */
+      transform: translateY(0) translateX(var(--tx,0px)) !important;
+      transition: none; /* Désactive l'effet hover qui serait gênant ici */
+  }
+  
+  /* On applique un décalage horizontal différent à chaque fiche */
+  .sheet:nth-child(1) { --tx: 0px; z-index: 4;} /* Fiche la plus à gauche, au-dessus */
+  .sheet:nth-child(2) { --tx: 10px; z-index: 3;}
+  .sheet:nth-child(3) { --tx: 20px; z-index: 2;}
+  .sheet:nth-child(4) { --tx: 30px; z-index: 1;} /* Fiche la plus à droite, en-dessous */
+  
+  /* Le dernier élément a besoin d'un padding/margin pour laisser l'espace pour le texte suivant */
+  .sheet:last-child{
+      margin-bottom: 20px; 
+  }
+  
+  /* Désactive l'effet hover pour mobile (pas adapté à la cascade) */
+  .sheet:hover{
+      transform: translateY(0) translateX(var(--tx,0px)) scale(1.0);
+      box-shadow:0 20px 60px rgba(0,0,0,.18);
+  }
+  
+  /* Remise à la taille de h1 pour mobile */
+  h1{ font-size: 1.8rem; }
 }
 /* AJOUT: compatibilité très anciens navigateurs sans aspect-ratio */
 @supports not (aspect-ratio: 1){
@@ -294,9 +338,9 @@ Devant, consultez les fiches par catégorie et ouvrez le détail complet.</p>
         <span class="badge">Public</span>
         <i class="icon fa-solid fa-list-check"></i>
       </div>
-      <h3>[TITRE DE LA FICHE À COMPLÉTER]</h3>
-      <p>[Description : Travaux divers, autres prestations, agencement, etc.]</p>
-      <div class="from">À partir de [Prix de base] (HT)</div>
+      <h3>Autres Prestations</h3>
+      <p>Agencement, menuiserie, travaux spécifiques sur devis.</p>
+      <div class="from">Sur devis uniquement (M.O. HT)</div>
       <div class="actions">
         <button class="btn primary open-details"><i class="fa-solid fa-magnifying-glass"></i>Voir détails</button>
         <a class="btn" href="devis.html"><i class="fa-regular fa-file-lines"></i>Devis</a>
@@ -347,8 +391,8 @@ Devant, consultez les fiches par catégorie et ouvrez le détail complet.</p>
         <span class="badge">Partenaires</span>
         <i class="icon fas fa-handshake"></i>
       </div>
-      <h3>[TITRE PARTENAIRE À COMPLÉTER]</h3>
-      <p>[Description Partenaire : Grille dédiée ou forfaits spéciaux.]</p>
+      <h3>Autres Prestations Partenaires</h3>
+      <p>Tarifs spécifiques pour l'agencement et travaux divers.</p>
       <div class="from">Devis Partenaires (M.O. HT)</div>
       <div class="actions">
         <button class="btn primary open-details"><i class="fa-solid fa-magnifying-glass"></i>Voir détails</button>
@@ -407,8 +451,7 @@ const priceDetails = {
     items: [
       { label: "Peinture murs (2 couches, préparation incluse)", price: "25 € - 40 € / m²" },
       { label: "Peinture plafonds (2 couches, préparation incluse)", price: "30 € - 50 € / m²" },
-      { label: "Pose de carrelage au sol (droit, hors fourniture)", price: "35 € - 60 € 
-      / m²" },
+      { label: "Pose de carrelage au sol (droit, hors fourniture)", price: "35 € - 60 € / m²" },
       { label: "Pose de faïence murale (hors fourniture)", price: "40 € - 75 € / m²" },
       { label: "Pose de parquet flottant", price: "20 € - 35 € / m²" }
     ]
@@ -417,8 +460,7 @@ const priceDetails = {
     title: "Plomberie & Sanitaires - Tarifs Publics (HT)",
     items: [
       { label: "Rénovation complète SDB (Forfait M.O.)", price: "3 500 € - 8 000 €" },
-      { label: "Création d'un 
-      point d'eau (A/E usées)", price: "250 € - 500 € / unité" },
+      { label: "Création d'un point d'eau (A/E usées)", price: "250 € - 500 € / unité" },
       { label: "Pose d'un WC suspendu (Forfait M.O.)", price: "450 € - 750 €" },
       { label: "Pose d'une douche à l'italienne (étanchéité et M.O.)", price: "1 200 € - 2 500 €" },
       { label: "Remplacement de chauffe-eau standard", price: "250 € - 450 € (hors fourn.)" }
@@ -426,25 +468,22 @@ const priceDetails = {
   },
   electricite: {
     title: "Électricité & Plâtrerie - Tarifs Publics (HT)",
-    
     items: [
-      { label: "Création d'une cloison placo (Fourn. 
-      + M.O.)", price: "45 € - 65 € / m²" },
+      { label: "Création d'une cloison placo (Fourn. + M.O.)", price: "45 € - 65 € / m²" },
       { label: "Doublage isolant mur placo (Fourn. + M.O.)", price: "55 € - 85 € / m²" },
       { label: "Installation prise/interrupteur (M.O. seule)", price: "80 € - 120 € / unité" },
       { label: "Rénovation complète tableau électrique", price: "900 € - 1 800 € (Forfait M.O.)" },
       { label: "Installation VMC simple flux (Forfait M.O.)", price: "350 € - 650 €" }
     ]
-  
   },
   
   /* NOUVELLE CATÉGORIE VIERGE À REMPLIR (PUBLIC) */
   vierge: {
-    title: "[TITRE À COMPLÉTER] - Détails (HT)",
+    title: "Autres Prestations - Détails (HT)",
     items: [
-      { label: "Nom du service / prestation 1 (à remplir)", price: "À saisir €" },
-      { label: "Nom du service / prestation 2 (à remplir)", price: "À saisir €" },
-      { label: "Nom du service / prestation 3 (à remplir)", price: "À saisir €" }
+      { label: "Agencement sur mesure", price: "Sur devis" },
+      { label: "Menuiserie intérieure (portes, plinthes)", price: "Sur devis" },
+      { label: "Démolition et évacuation", price: "Sur devis" }
     ]
   },
   
@@ -455,8 +494,7 @@ const priceDetails = {
       { label: "Peinture murs (2 couches, préparation incluse)", price: "22 € - 36 € / m²" },
       { label: "Peinture plafonds (2 couches, préparation incluse)", price: "27 € - 45 € / m²" },
       { label: "Pose de carrelage au sol (droit, hors fourniture)", price: "30 € - 55 € / m²" },
-      { label: "Pose 
-      de faïence murale (hors fourniture)", price: "35 € - 65 € / m²" },
+      { label: "Pose de faïence murale (hors fourniture)", price: "35 € - 65 € / m²" },
       { label: "Pose de parquet flottant", price: "18 € - 30 € / m²" }
     ]
   },
@@ -464,8 +502,7 @@ const priceDetails = {
     title: "Plomberie & Sanitaires - Tarifs Partenaires (HT)",
     items: [
       { label: "Rénovation complète SDB (Forfait M.O.)", price: "3 150 € - 7 200 €" },
-      { label: "Création d'un point d'eau (A/E usées)", price: "225 € - 450 € / 
-      unité" },
+      { label: "Création d'un point d'eau (A/E usées)", price: "225 € - 450 € / unité" },
       { label: "Pose d'un WC suspendu (Forfait M.O.)", price: "400 € - 675 €" },
       { label: "Pose d'une douche à l'italienne (étanchéité et M.O.)", price: "1 080 € - 2 250 €" },
       { label: "Remplacement de chauffe-eau standard", price: "225 € - 400 € (hors fourn.)" }
@@ -474,8 +511,7 @@ const priceDetails = {
   electricite_partner: {
     title: "Électricité & Plâtrerie - Tarifs Partenaires (HT)",
     items: [
-      { label: "Création d'une 
-      cloison placo (Fourn. + M.O.)", price: "40 € - 60 € / m²" },
+      { label: "Création d'une cloison placo (Fourn. + M.O.)", price: "40 € - 60 € / m²" },
       { label: "Doublage isolant mur placo (Fourn. + M.O.)", price: "50 € - 75 € / m²" },
       { label: "Installation prise/interrupteur (M.O. seule)", price: "70 € - 110 € / unité" },
       { label: "Rénovation complète tableau électrique", price: "810 € - 1 620 € (Forfait M.O.)" },
@@ -485,11 +521,11 @@ const priceDetails = {
   
   /* NOUVELLE CATÉGORIE VIERGE À REMPLIR (PARTENAIRE) */
   vierge_partner: {
-    title: "[TITRE À COMPLÉTER] - Détails Partenaires (HT)",
+    title: "Autres Prestations - Détails Partenaires (HT)",
     items: [
-      { label: "Nom du service / prestation 1 (Partenaire)", price: "À saisir €" },
-      { label: "Nom du service / prestation 2 (Partenaire)", price: "À saisir €" },
-      { label: "Nom du service / prestation 3 (Partenaire)", price: "À saisir €" }
+      { label: "Agencement sur mesure Partenaire", price: "Sur devis spécial" },
+      { label: "Menuiserie intérieure (portes, plinthes)", price: "Sur devis spécial" },
+      { label: "Démolition et évacuation", price: "Sur devis spécial" }
     ]
   }
 };
