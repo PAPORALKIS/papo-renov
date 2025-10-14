@@ -53,7 +53,7 @@ h1{
   margin:0 0 14px;
   font-weight:800;
   /* Réduction de la taille de h1 pour smartphone */
-  font-size:1.8rem; 
+  font-size:1.2rem; 
 }
 h1::after{
   content:'';
@@ -231,8 +231,9 @@ h1::after{
 .sheet p{margin:0 0 8px;color:#6c757d;font-size:.75rem; line-height: 1.2;} /* CONSERVÉ */
 .sheet .from{color:var(--price-accent);font-weight:700;margin-top:4px; font-size:.7rem} /* NOUVEAU: RÉDUIT */
 .sheet .actions{
+    /* La colonne n'est plus nécessaire mais la conserver ne nuit pas */
     display:flex;
-    flex-direction: column; /* Empile les boutons */
+    flex-direction: column; 
     gap:5px;
     margin-top:8px
 }
@@ -353,8 +354,7 @@ Devant, consultez les fiches par catégorie et ouvrez le détail complet.</p>
       HT)</div>
       <div class="actions">
         <button class="btn primary open-details"><i class="fa-solid fa-magnifying-glass"></i>Voir détails</button>
-        <a class="btn" href="devis.html"><i class="fa-regular fa-file-lines"></i>Devis</a>
-      </div>
+        </div>
     </article>
 
     <article class="sheet" data-category="plomberie">
@@ -367,8 +367,7 @@ Devant, consultez les fiches par catégorie et ouvrez le détail complet.</p>
       <div class="from">Forfait SDB dès 3 500 € (M.O. HT)</div>
       <div class="actions">
         <button class="btn primary open-details"><i class="fa-solid fa-magnifying-glass"></i>Voir détails</button>
-        <a class="btn" href="devis.html"><i class="fa-regular fa-file-lines"></i>Devis</a>
-      </div>
+        </div>
     </article>
 
     <article class="sheet" data-category="electricite">
@@ -380,8 +379,7 @@ Devant, consultez les fiches par catégorie et ouvrez le détail complet.</p>
       <div class="from">Cloison placo dès 45 € / m² (Fourn. + M.O. HT)</div>
       <div class="actions">
         <button class="btn primary open-details"><i class="fa-solid fa-magnifying-glass"></i>Voir détails</button>
-        <a class="btn" href="devis.html"><i class="fa-regular fa-file-lines"></i>Devis</a>
-      </div>
+        </div>
     </article>
     
     <article class="sheet" data-category="vierge">
@@ -393,8 +391,7 @@ Devant, consultez les fiches par catégorie et ouvrez le détail complet.</p>
       <div class="from">Sur devis uniquement (M.O. HT)</div>
       <div class="actions">
         <button class="btn primary open-details"><i class="fa-solid fa-magnifying-glass"></i>Voir détails</button>
-        <a class="btn" href="devis.html"><i class="fa-regular fa-file-lines"></i>Devis</a>
-      </div>
+        </div>
     </article>
   </div>
 
@@ -408,8 +405,7 @@ Devant, consultez les fiches par catégorie et ouvrez le détail complet.</p>
       HT)</div>
       <div class="actions">
         <button class="btn primary open-details"><i class="fa-solid fa-magnifying-glass"></i>Voir détails</button>
-        <a class="btn" href="devis.html"><i class="fa-regular fa-file-lines"></i>Devis</a>
-      </div>
+        </div>
     </article>
 
     <article class="sheet" data-category="plomberie">
@@ -420,8 +416,7 @@ Devant, consultez les fiches par catégorie et ouvrez le détail complet.</p>
       
       <div class="actions">
         <button class="btn primary open-details"><i class="fa-solid fa-magnifying-glass"></i>Voir détails</button>
-        <a class="btn" href="devis.html"><i class="fa-regular fa-file-lines"></i>Devis</a>
-      </div>
+        </div>
     </article>
 
     <article class="sheet" data-category="electricite">
@@ -432,8 +427,7 @@ Devant, consultez les fiches par catégorie et ouvrez le détail complet.</p>
       + M.O. HT)</div>
       <div class="actions">
         <button class="btn primary open-details"><i class="fa-solid fa-magnifying-glass"></i>Voir détails</button>
-        <a class="btn" href="devis.html"><i class="fa-regular fa-file-lines"></i>Devis</a>
-      </div>
+        </div>
     </article>
     
     <article class="sheet" data-category="vierge">
@@ -446,8 +440,7 @@ Devant, consultez les fiches par catégorie et ouvrez le détail complet.</p>
       <div class="from">Devis Partenaires (M.O. HT)</div>
       <div class="actions">
         <button class="btn primary open-details"><i class="fa-solid fa-magnifying-glass"></i>Voir détails</button>
-        <a class="btn" href="devis.html"><i class="fa-regular fa-file-lines"></i>Devis</a>
-      </div>
+        </div>
     </article>
   </div>
 
