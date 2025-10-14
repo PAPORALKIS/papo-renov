@@ -37,10 +37,28 @@ body{
 nav ul li a.active{color:var(--primary-color);font-weight:700}
 
 /* =========================
+   MASQUAGE DE LA BARRE DE DÉFILEMENT
+   ========================= */
+nav ul {
+    /* Masque la scrollbar pour IE et Edge */
+    -ms-overflow-style: none;  
+    /* Masque la scrollbar pour Firefox */
+    scrollbar-width: none;  
+    
+    /* Assure que l'élément peut défiler si besoin */
+    overflow-x: auto; 
+}
+/* Masque la scrollbar pour Chrome, Safari et Opera */
+nav ul::-webkit-scrollbar {
+    display: none;
+}
+
+/* =========================
    SECTION HERO (TABLETTE)
    ========================= */
 .content-section{
-  padding:40px 20px 40px; /* Réduit le padding du haut pour mobile */
+  /* MODIFIÉ: Réduit le padding-top de 40px à 20px */
+  padding:20px 20px 40px; 
   display:flex;
   flex-direction:column;
   align-items:center;
@@ -51,17 +69,18 @@ h1{
   color:var(--secondary-color);
   margin:0 0 14px;
   font-weight:800;
-  /* Réduction de la taille de h1 pour smartphone */
-  font-size:1.8rem; 
+  /* MODIFIÉ: Suppression du blocage et réglage de la taille à 1.2rem */
+  font-size:1.2rem; 
 }
 h1::after{
   content:'';
   display:block;
   width:80px;height:4px;
   background:var(--primary-color);
-  margin:12px auto 0;border-radius:2px;
+  margin:18px auto 0;border-radius:2px;
 }
 .subtitle{
+  /* MODIFIÉ: J'ai conservé la classe CSS mais elle est vide dans le HTML ci-dessous */
   margin:10px 0 36px;color:#6c757d
 }
 
@@ -105,60 +124,148 @@ h1::after{
 }
 .slider img.active{opacity:1}
 
-/* =========================
-   FICHES TARIFS DEVANT
-   ========================= */
+/* ====================================================================
+   FICHES TARIFS 3D UNIFORME
+   ==================================================================== */
 .sheets{
   position:relative;
   width:100%;
-  /* Largeur max ajustée pour les 4 fiches */
-  max-width:1350px; 
-  margin:-90px auto 20px;
-  /* ON GARDE flex-wrap: wrap; pour éviter le défilement horizontal */
+  /* Largeur max ajustée pour les 4 fiches - Permet le chevauchement */
+  max-width:1450px; 
+  /* Fait remonter les fiches devant la tablette */
+  margin:-100px auto 20px; 
+  /* Changement de flex-wrap pour un affichage en ligne forcé */
   display:flex;
-  flex-wrap:wrap;
+  flex-wrap:nowrap; /* Les fiches ne doivent jamais faire un retour à la ligne */
   justify-content:center;
-  gap:22px;
-  perspective:1000px;
+  gap:0; /* Supprime le gap pour contrôler le chevauchement manuellement */
+  perspective:1500px; /* MODIFIÉ: Augmente la perspective pour l'effet 3D */
   padding:0 8px;
   z-index:2;
+  /* SUPPRIMÉ : Défilement horizontal des fiches */
 }
+
 .sheet{
-  /* Largeur des fiches pour Desktop/Tablette */
-  width:320px;
-  max-width:92vw;
+  /* LARGEUR MANUELLE UNIFORME POUR TOUS LES SUPPORTS */
+  width:120px;
+  /* HAUTEUR MANUELLE CONSERVÉE */
+  height:290px;
+  
+  /* Permet au contenu des fiches de ne pas déborder */
+  flex-shrink: 0; 
+  
   background:var(--card-background);
   border-radius:14px;
-  box-shadow:0 20px 60px rgba(0,0,0,.18);
-  padding:18px 18px 16px;
+  
+  /* MODIFIÉ: Augmente l'ombre par défaut */
+  box-shadow:0 20px 50px rgba(0,0,0,.35), 0 0 0 1px rgba(0,0,0,.1);
+  
+  padding:10px 10px 10px;
   text-align:left;cursor:pointer;
-  /* Rotation et décalage horizontal appliqués uniquement sur grand écran */
-  transform:rotateZ(var(--rot,0deg)) translateY(0) translateX(0);
-  transition:transform .25s ease, box-shadow .25s ease;
+  
+  /* GESTION DES TRANSFORMATIONS 3D ET DU CHEVAUCHEMENT (Rétabli) */
+  /* --rot : Rotation sur l'axe Z (Légère inclinaison) */
+  /* --ty : Décalage vertical vers le haut/bas (Effet modèle) */
+  /* --tx : Décalage horizontal pour le chevauchement */
+  /* --ry : Rotation sur l'axe Y pour l'effet carte */
+  transform: rotateZ(var(--rot, 0deg)) translateY(var(--ty, 0px)) translateX(var(--tx, 0px)) rotateY(var(--ry, 0deg));
+  
+  transition: transform .35s ease, box-shadow .35s ease;
   border:1px solid var(--border-light);
+  
+  /* Z-index manuel pour la superposition de la cascade */
+  z-index: var(--z-idx); 
+  
+  /* Ajout d'une marge négative pour chevauchement horizontal (Ajustée pour 120px) */
+  margin-right: -40px; 
+  
+  /* RETIRÉ : Défilement du texte intérieur */
+  overflow: hidden; 
 }
+
+/* DÉFINITION DES PROPRIÉTÉS MANUELLES (Rotation, Décalage, Z-index) */
+/* MODIFIÉ: Augmentation des valeurs pour l'effet 3D */
+/* Révêtements & Peinture (Fiche 1) */
+.sheets article:nth-child(1) {
+  --rot: -4deg; /* Rotation Z (Augmentée) */
+  --ty: 10px; 
+  --tx: 0px; 
+  --ry: -4deg; /* Rotation Y (Augmentée) */
+  --z-idx: 4; 
+}
+
+/* Plomberie & Sanitaires (Fiche 2) */
+.sheets article:nth-child(2) {
+  --rot: 3deg; /* Rotation Z (Augmentée) */
+  --ty: -10px;
+  --tx: 0px;
+  --ry: 0deg;
+  --z-idx: 3;
+}
+
+/* Électricité & Plâtrerie (Fiche 3) */
+.sheets article:nth-child(3) {
+  --rot: -2deg; /* Rotation Z (Augmentée) */
+  --ty: 5px;
+  --tx: 0px;
+  --ry: 4deg; /* Rotation Y (Augmentée) */
+  --z-idx: 2;
+}
+
+/* Autres Prestations (Fiche 4) */
+.sheets article:nth-child(4) {
+  --rot: 5deg; /* Rotation Z (Augmentée) */
+  --ty: -5px;
+  --tx: 0px;
+  --ry: -3deg; /* Rotation Y (Augmentée) */
+  --z-idx: 1; /* En-dessous */
+  /* Marge supprimée sur la dernière fiche pour qu'elle soit pleinement visible */
+  margin-right: 0px; 
+}
+
+
 .sheet:hover{
-  transform:translateY(-6px) rotateZ(var(--rot,0deg)) scale(1.02);
-  box-shadow:0 28px 80px rgba(0,0,0,.24);
+  /* MODIFIÉ: Augmente l'effet de scale */
+  transform:translateY(calc(var(--ty, 0px) - 10px)) rotateZ(var(--rot,0deg)) scale(1.06) rotateY(var(--ry, 0deg));
+  /* MODIFIÉ: Augmente l'ombre au survol */
+  box-shadow:0 50px 120px rgba(0,0,0,.45);
+  z-index: 5; /* Assure que la fiche survolée est toujours au-dessus */
 }
-/* Le reste du style de fiche... (conservé) */
+
+/* REDUCTION DE LA TAILLE DES POLICES POUR UNE LARGEUR DE 120PX */
 .sheet .head{
-  display:flex;align-items:center;gap:10px;margin-bottom:10px;
+  display:flex;align-items:center;gap:6px; /* Réduit le gap */
+  margin-bottom:8px; /* Réduit la marge */
+  flex-direction: column; /* Empile l'icône et le badge pour une meilleure lisibilité sur 120px */
+  text-align: center;
 }
 .sheet .badge{
   background:var(--dark-blue-logo);
-  color:#fff;font-weight:700;font-size:.95rem;
-  padding:8px 12px;border-radius:10px 10px 10px 0;
+  color:#fff;font-weight:700;
+  font-size:.8rem; /* RÉDUIT */
+  padding:4px 6px; /* RÉDUIT */
+  border-radius:6px;
 }
-.sheet .icon{font-size:26px;color:var(--primary-color)}
-.sheet h3{margin:6px 0 8px;font-size:1.2rem}
-.sheet p{margin:0 0 10px;color:#6c757d;font-size:.95rem}
-.sheet .from{color:var(--price-accent);font-weight:700;margin-top:6px}
-.sheet .actions{display:flex;gap:10px;margin-top:12px}
+.sheet .icon{font-size:20px;color:var(--primary-color)} /* RÉDUIT */
+.sheet h3{margin:4px 0 6px;font-size:0.9rem; line-height: 1.1;} /* RÉDUIT */
+.sheet p{margin:0 0 8px;color:#6c757d;font-size:.75rem; line-height: 1.2;} /* CONSERVÉ */
+.sheet .from{color:var(--price-accent);font-weight:700;margin-top:4px; font-size:.7rem} /* RÉDUIT */
+.sheet .actions{
+    /* La colonne n'est plus nécessaire mais la conserver ne nuit pas */
+    display:flex;
+    flex-direction: column; 
+    gap:5px;
+    margin-top:8px
+}
 .sheet .btn{
-  display:inline-flex;align-items:center;gap:8px;
-  padding:10px 12px;border-radius:10px;border:1px solid var(--border-light);
-  background:#fff;cursor:pointer;font-weight:600;font-size:.95rem;
+  display:inline-flex;align-items:center;justify-content:center;
+  gap:4px;
+  padding:4px 6px; /* CONSERVÉ */
+  border-radius:6px;border:1px solid var(--border-light);
+  background:#fff;cursor:pointer;font-weight:600;
+  font-size:.75rem; /* CONSERVÉ */
+  text-align:center;
+  width: 100%; /* S'étend sur toute la largeur */
 }
 .sheet .btn.primary{background:var(--primary-color);border-color:var(--primary-color);color:#fff}
 .sheet .btn:active{transform:translateY(1px)}
@@ -198,53 +305,21 @@ h1::after{
 .partner-prices{display:none}
 
 /* =========================
-   RESPONSIVE
+   RESPONSIVE (NETTOYÉ)
    ========================= */
-@media (max-width:1024px){
-  .sheets{margin:-70px auto 10px}
+@media (max-width:1300px){
+  /* RÈGLES DE LARGEUR/MARGE SUPPRIMÉES */
 }
 
-/* CORRECTION POUR LA SUPERPOSITION EN CASCADE SUR MOBILE/PETIT ÉCRAN */
 @media (max-width:768px){
-  .tablet{aspect-ratio: 3 / 2}
-  .sheets{
-      margin:18px auto 0;
-      /* Ajuste le gap pour un chevauchement */
-      gap: 0; 
-      /* Ajoute une marge latérale pour décaler les fiches du bord */
-      padding: 0 15px; 
+  .content-section{
+      padding-top: 20px;
   }
-  .sheet{
-      /* Force la fiche à prendre toute la largeur disponible (dans le padding de .sheets) */
-      width: 100%;
-      /* Annule la rotation et ajoute un décalage vertical et horizontal pour la cascade */
-      --rot: 0deg !important;
-      margin-bottom: -100px; /* Décalage vers le haut pour chevauchement */
-      /* Décalage horizontal pour l'effet de pile penchée */
-      transform: translateY(0) translateX(var(--tx,0px)) !important;
-      transition: none; /* Désactive l'effet hover qui serait gênant ici */
-  }
-  
-  /* On applique un décalage horizontal différent à chaque fiche */
-  .sheet:nth-child(1) { --tx: 0px; z-index: 4;} /* Fiche la plus à gauche, au-dessus */
-  .sheet:nth-child(2) { --tx: 10px; z-index: 3;}
-  .sheet:nth-child(3) { --tx: 20px; z-index: 2;}
-  .sheet:nth-child(4) { --tx: 30px; z-index: 1;} /* Fiche la plus à droite, en-dessous */
-  
-  /* Le dernier élément a besoin d'un padding/margin pour laisser l'espace pour le texte suivant */
-  .sheet:last-child{
-      margin-bottom: 20px; 
-  }
-  
-  /* Désactive l'effet hover pour mobile (pas adapté à la cascade) */
-  .sheet:hover{
-      transform: translateY(0) translateX(var(--tx,0px)) scale(1.0);
-      box-shadow:0 20px 60px rgba(0,0,0,.18);
-  }
-  
-  /* Remise à la taille de h1 pour mobile */
-  h1{ font-size: 1.8rem; }
+  .sheets { margin-top: -80px; }
+  .tablet{aspect-ratio: 4 / 3}
+  /* SUPPRIMÉ: La règle h1{ font-size: 1.8rem; } qui bloquait le changement */
 }
+
 /* AJOUT: compatibilité très anciens navigateurs sans aspect-ratio */
 @supports not (aspect-ratio: 1){
   .tablet{height:0;padding-top:56.25%} /* 16:9 */
@@ -254,7 +329,7 @@ h1::after{
 </head>
 <body>
 <header>
-  <div class="logo" style="position: relative;">
+  <div class="logo">
     <img src="../img/logo.png" alt="Logo Papo Rénov">
     <button id="logo-overlay-partner" title="Accès Partenaires" style="position:absolute;inset:0;opacity:0;cursor:pointer;"></button>
   </div>
@@ -277,18 +352,77 @@ h1::after{
     <div class="tablet-camera" aria-hidden="true"></div>
     <div class="tablet-screen">
       <div class="slider" id="slider">
-        <img src="../img/realisations/real-01.jpg" alt="Cuisine rénovée" class="active">
-        <img src="../img/realisations/real-02.jpg" alt="Salle de bain carrelage">
-        <img src="../img/realisations/real-03.jpg" alt="Dressing sur mesure">
-        <img src="../img/realisations/real-04.jpg" alt="Salon peinture et parquet">
+        <img src="../img/CHBR1.jpg" alt="Chambre rénovée" class="active">
+        <img src="../img/CUIEXT2.jpg" alt="Cuisine extérieure 2">
+        <img src="../img/CUIEXT4.jpg" alt="Cuisine extérieure 4">
+        <img src="../img/CUIEXT5.jpg" alt="Cuisine extérieure 5">
+        <img src="../img/CUIEXT6.jpg" alt="Cuisine extérieure 6">
+        <img src="../img/CUIMARS1.jpg" alt="Cuisine Mars 1">
+        <img src="../img/CUIMARS2.jpg" alt="Cuisine Mars 2">
+        <img src="../img/CUIMARS3.jpg" alt="Cuisine Mars 3">
+        <img src="../img/CUIMARS4.jpg" alt="Cuisine Mars 4">
+        <img src="../img/Chambre SPACEO.png" alt="Chambre Spaceo">
+        <img src="../img/DRESSMARS1.jpg" alt="Dressing Mars 1">
+        <img src="../img/DRESSMARS2.jpg" alt="Dressing Mars 2">
+        <img src="../img/DRESSMARS3.jpg" alt="Dressing Mars 3">
+        <img src="../img/DRESSMARS4.jpg" alt="Dressing Mars 4">
+        <img src="../img/Iso2.jpg" alt="Isolation 2">
+        <img src="../img/Iso3.jpg" alt="Isolation 3">
+        <img src="../img/Iso4.jpg" alt="Isolation 4">
+        <img src="../img/Iso5.jpg" alt="Isolation 5">
+        <img src="../img/Iso6.jpg" alt="Isolation 6">
+        <img src="../img/SDB1.jpg" alt="Salle de bain 1">
+        <img src="../img/SDB2.jpg" alt="Salle de bain 2">
+        <img src="../img/SDB3.jpg" alt="Salle de bain 3">
+        <img src="../img/SDB4.jpg" alt="Salle de bain 4">
+        <img src="../img/SDB5.jpg" alt="Salle de bain 5">
+        <img src="../img/WC1.jpg" alt="WC 1">
+        <img src="../img/WC2.jpg" alt="WC 2">
+        <img src="../img/aumetz-avant-1.jpeg" alt="Aumetz avant">
+        <img src="../img/aumetz10.jpeg" alt="Aumetz 10">
+        <img src="../img/aumetz11.jpeg" alt="Aumetz 11">
+        <img src="../img/aumetz12.jpeg" alt="Aumetz 12">
+        <img src="../img/aumetz14.jpeg" alt="Aumetz 14">
+        <img src="../img/aumetz15.jpeg" alt="Aumetz 15">
+        <img src="../img/aumetz16.jpeg" alt="Aumetz 16">
+        <img src="../img/aumetz17.jpeg" alt="Aumetz 17">
+        <img src="../img/aumetz18.jpeg" alt="Aumetz 18">
+        <img src="../img/aumetz5.jpeg" alt="Aumetz 5">
+        <img src="../img/aumetz6.jpeg" alt="Aumetz 6">
+        <img src="../img/aumetz7.jpeg" alt="Aumetz 7">
+        <img src="../img/aumetz8.jpeg" alt="Aumetz 8">
+        <img src="../img/aumetz9.jpeg" alt="Aumetz 9">
+        <img src="../img/escalier SPACEO.png" alt="Escalier Spaceo">
+        <img src="../img/ext1.jpg" alt="Extérieur 1">
+        <img src="../img/ext2.jpg" alt="Extérieur 2">
+        <img src="../img/iso1.jpg" alt="Isolation 1">
+        <img src="../img/martegauxB.jpg" alt="Martegaux B">
+        <img src="../img/martegauxC.jpg" alt="Martegaux C">
+        <img src="../img/martegauxD.jpg" alt="Martegaux D">
+        <img src="../img/martegauxE.jpg" alt="Martegaux E">
+        <img src="../img/martegauxavant1.jpg" alt="Martegaux avant 1">
+        <img src="../img/martegauxavant2.jpg" alt="Martegaux avant 2">
+        <img src="../img/martegauxavant3.jpg" alt="Martegaux avant 3">
+        <img src="../img/meuble-laura-1.jpg" alt="Meuble Laura 1">
+        <img src="../img/meuble-laura-2.jpg" alt="Meuble Laura 2">
+        <img src="../img/meuble-laura-3.jpg" alt="Meuble Laura 3">
+        <img src="../img/renoperier1.jpg" alt="Réno Périer 1">
+        <img src="../img/renoperier2.jpg" alt="Réno Périer 2">
+        <img src="../img/renoperier3.jpg" alt="Réno Périer 3">
+        <img src="../img/renoperier4.jpg" alt="Réno Périer 4">
+        <img src="../img/renoperier5.jpg" alt="Réno Périer 5">
+        <img src="../img/renoperier6.jpg" alt="Réno Périer 6">
+        <img src="../img/velaux0.jpg" alt="Velaux 0">
+        <img src="../img/velaux1.jpg" alt="Velaux 1">
+        <img src="../img/velaux2.jpg" alt="Velaux 2">
+        <img src="../img/velaux3.jpg" alt="Velaux 3">
       </div>
     </div>
   </div>
 
   <div class="sheets" id="public-prices">
-    <article class="sheet" data-category="revetements" style="--rot:-2.5deg">
+    <article class="sheet" data-category="revetements">
       <div class="head">
-        <span class="badge">Public</span>
         <i class="icon fas fa-paint-roller"></i>
       </div>
       <h3>Revêtements & Peinture</h3>
@@ -297,13 +431,11 @@ h1::after{
       HT)</div>
       <div class="actions">
         <button class="btn primary open-details"><i class="fa-solid fa-magnifying-glass"></i>Voir détails</button>
-        <a class="btn" href="devis.html"><i class="fa-regular fa-file-lines"></i>Devis</a>
-      </div>
+        </div>
     </article>
 
-    <article class="sheet" data-category="plomberie" style="--rot:1.5deg">
+    <article class="sheet" data-category="plomberie">
       <div class="head">
-        <span class="badge">Public</span>
         <i class="icon fas fa-bath"></i>
       </div>
       <h3>Plomberie & Sanitaires</h3>
@@ -312,13 +444,11 @@ h1::after{
       <div class="from">Forfait SDB dès 3 500 € (M.O. HT)</div>
       <div class="actions">
         <button class="btn primary open-details"><i class="fa-solid fa-magnifying-glass"></i>Voir détails</button>
-        <a class="btn" href="devis.html"><i class="fa-regular fa-file-lines"></i>Devis</a>
-      </div>
+        </div>
     </article>
 
-    <article class="sheet" data-category="electricite" style="--rot:-0.5deg">
+    <article class="sheet" data-category="electricite">
       <div class="head">
-        <span class="badge">Public</span>
         <i class="icon fas fa-bolt"></i>
       </div>
       <h3>Électricité & Plâtrerie</h3>
@@ -326,13 +456,11 @@ h1::after{
       <div class="from">Cloison placo dès 45 € / m² (Fourn. + M.O. HT)</div>
       <div class="actions">
         <button class="btn primary open-details"><i class="fa-solid fa-magnifying-glass"></i>Voir détails</button>
-        <a class="btn" href="devis.html"><i class="fa-regular fa-file-lines"></i>Devis</a>
-      </div>
+        </div>
     </article>
     
-    <article class="sheet" data-category="vierge" style="--rot:3.5deg">
+    <article class="sheet" data-category="vierge">
       <div class="head">
-        <span class="badge">Public</span>
         <i class="icon fa-solid fa-list-check"></i>
       </div>
       <h3>Autres Prestations</h3>
@@ -340,14 +468,13 @@ h1::after{
       <div class="from">Sur devis uniquement (M.O. HT)</div>
       <div class="actions">
         <button class="btn primary open-details"><i class="fa-solid fa-magnifying-glass"></i>Voir détails</button>
-        <a class="btn" href="devis.html"><i class="fa-regular fa-file-lines"></i>Devis</a>
-      </div>
+        </div>
     </article>
   </div>
 
   <div class="sheets partner-prices" id="partner-prices">
-  
-    <article class="sheet" data-category="revetements" style="--rot:-2deg">
+    
+    <article class="sheet" data-category="revetements">
       <div class="head"><span class="badge">Partenaires</span><i class="icon fas fa-handshake"></i></div>
       <h3>Revêtements & Peinture</h3>
       <p>Tarifs préférentiels sur la main d’œuvre (jusqu’à −10%).</p>
@@ -355,11 +482,10 @@ h1::after{
       HT)</div>
       <div class="actions">
         <button class="btn primary open-details"><i class="fa-solid fa-magnifying-glass"></i>Voir détails</button>
-        <a class="btn" href="devis.html"><i class="fa-regular fa-file-lines"></i>Devis</a>
-      </div>
+        </div>
     </article>
 
-    <article class="sheet" data-category="plomberie" style="--rot:1.2deg">
+    <article class="sheet" data-category="plomberie">
       <div class="head"><span class="badge">Partenaires</span><i class="icon fas fa-handshake"></i></div>
       <h3>Plomberie & Sanitaires</h3>
       <p>Forfaits optimisés pour nos partenaires enregistrés.</p>
@@ -367,11 +493,10 @@ h1::after{
       
       <div class="actions">
         <button class="btn primary open-details"><i class="fa-solid fa-magnifying-glass"></i>Voir détails</button>
-        <a class="btn" href="devis.html"><i class="fa-regular fa-file-lines"></i>Devis</a>
-      </div>
+        </div>
     </article>
 
-    <article class="sheet" data-category="electricite" style="--rot:-0.4deg">
+    <article class="sheet" data-category="electricite">
       <div class="head"><span class="badge">Partenaires</span><i class="icon fas fa-handshake"></i></div>
       <h3>Électricité & Plâtrerie</h3>
       <p>Grille dédiée pour projets récurrents et volumes.</p>
@@ -379,11 +504,10 @@ h1::after{
       + M.O. HT)</div>
       <div class="actions">
         <button class="btn primary open-details"><i class="fa-solid fa-magnifying-glass"></i>Voir détails</button>
-        <a class="btn" href="devis.html"><i class="fa-regular fa-file-lines"></i>Devis</a>
-      </div>
+        </div>
     </article>
     
-    <article class="sheet" data-category="vierge" style="--rot:3.2deg">
+    <article class="sheet" data-category="vierge">
       <div class="head">
         <span class="badge">Partenaires</span>
         <i class="icon fas fa-handshake"></i>
@@ -393,8 +517,7 @@ h1::after{
       <div class="from">Devis Partenaires (M.O. HT)</div>
       <div class="actions">
         <button class="btn primary open-details"><i class="fa-solid fa-magnifying-glass"></i>Voir détails</button>
-        <a class="btn" href="devis.html"><i class="fa-regular fa-file-lines"></i>Devis</a>
-      </div>
+        </div>
     </article>
   </div>
 
@@ -439,6 +562,7 @@ h1::after{
     slides[i].classList.add('active');
   }, 3500);
 })();
+
 /* =========================
    DONNÉES TARIFS
    ========================= */
@@ -474,7 +598,7 @@ const priceDetails = {
     ]
   },
   
-  /* NOUVELLE CATÉGORIE VIERGE À REMPLIR (PUBLIC) */
+  /* 4ÈME CATÉGORIE VIERGE PUBLIC */
   vierge: {
     title: "Autres Prestations - Détails (HT)",
     items: [
@@ -516,7 +640,7 @@ const priceDetails = {
     ]
   },
   
-  /* NOUVELLE CATÉGORIE VIERGE À REMPLIR (PARTENAIRE) */
+  /* 4ÈME CATÉGORIE VIERGE PARTENAIRE */
   vierge_partner: {
     title: "Autres Prestations - Détails Partenaires (HT)",
     items: [
@@ -536,12 +660,13 @@ const detailModal = document.getElementById('detail-modal');
 const modalDetailsContent = document.getElementById('modal-details-content');
 document.querySelectorAll('.open-details, .sheet').forEach(el=>{
   el.addEventListener('click', (e)=>{
+    
     // Si le clic provient d'un élément *dans* les actions (boutons ou liens), on ne fait rien.
     if(e.target.closest('.actions')) return; 
 
     const card = e.currentTarget.closest('.sheet');
     if (!card) return; 
-    
+
     const cat = card.getAttribute('data-category');
     const key = isPartnerView ? `${cat}_partner` : cat;
     const data = priceDetails[key];
