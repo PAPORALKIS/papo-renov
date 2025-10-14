@@ -196,9 +196,9 @@ h1::after{
   .sheets{margin:-70px auto 10px}
 }
 @media (max-width:768px){
+  /* ATTENTION : Les lignes pour .sheets et .sheet ont été retirées ici */
+  /* pour forcer la superposition 3D sur mobile, tel que demandé. */
   .tablet{aspect-ratio: 3 / 2}
-  .sheets{margin:18px auto 0}
-  .sheet{--rot:0deg}
 }
 /* AJOUT: compatibilité très anciens navigateurs sans aspect-ratio */
 @supports not (aspect-ratio: 1){
