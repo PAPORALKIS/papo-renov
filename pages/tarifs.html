@@ -111,23 +111,31 @@ h1::after{
   position:relative;
   width:100%;
   max-width:1180px;
-  /* LIGNE RESPONSABLE DE LA MONTÉE DES FICHES */
-  margin:-60px auto 20px; 
-  display:flex;flex-wrap:wrap;justify-content:center;gap:18px; 
+  /* MODIFIE : Marge négative augmentée pour monter les fiches */
+  margin:-80px auto 20px; 
+  display:flex;
+  /* MODIFIE : Garantit la ligne horizontale et le défilement */
+  flex-wrap:nowrap; 
+  overflow-x:auto;
+  justify-content:flex-start; /* Aligné à gauche pour le défilement horizontal */
+  gap:18px; 
   perspective:1000px;
   padding:0 8px;
   z-index:2; 
 }
 
-/* BLOC DE LA TAILLE DE LA FICHE (Réduite à 120px) */
+/* BLOC DE LA TAILLE DE LA FICHE (Réduite à 110px) */
 .sheet{
-  width:120px;
+  /* MODIFIE : Réduit la largeur de 120px à 110px */
+  width:110px;
   max-width:92vw;
+  /* MODIFIE : Augmente le padding vertical pour augmenter la "longueur" (hauteur) */
+  padding:12px 6px 8px; 
+  flex-shrink: 0; /* Empêche le rétrécissement pour assurer la largeur de 110px */
   background:var(--card-background);
   border-radius:14px;
-  /* NOUVEL EFFET 3D: Ombre plus diffuse et portée */
+  /* EFFET 3D: Ombre plus diffuse et portée */
   box-shadow: 0 5px 15px rgba(0,0,0,.15), 0 20px 40px rgba(0,0,0,.1); 
-  padding:6px 6px 4px;
   text-align:left;cursor:pointer;
   transform:rotateZ(var(--rot,0deg)) translateY(0);
   transition:transform .25s ease, box-shadow .25s ease;
@@ -136,12 +144,12 @@ h1::after{
 
 .sheet:hover{
   transform:translateY(-3px) rotateZ(var(--rot,0deg)) scale(1.02); 
-  /* NOUVEL EFFET 3D au survol: Ombre plus marquée */
+  /* EFFET 3D au survol: Ombre plus marquée */
   box-shadow: 0 10px 25px rgba(0,0,0,.2), 0 40px 80px rgba(0,0,0,.15);
 }
 .sheet .head{
   display:flex;align-items:center;gap:5px;
-  margin-bottom:4px;
+  margin-bottom:6px; /* Ajusté */
 }
 .sheet .badge{
   background:var(--dark-blue-logo);
@@ -155,24 +163,24 @@ h1::after{
   color:var(--primary-color)
 }
 .sheet h3{
-  margin:2px 0 3px;
+  margin:4px 0 6px; /* Ajusté */
   font-size:0.55rem 
 }
 .sheet p{
-  margin:0 0 4px;
+  margin:0 0 6px; /* Ajusté */
   color:#6c757d;
   font-size:0.4rem 
 }
 .sheet .from{
   color:var(--price-accent);
   font-weight:700;
-  margin-top:2px;
+  margin-top:4px; /* Ajusté */
   font-size:0.45rem 
 }
 .sheet .actions{
   display:flex;
   gap:3px; 
-  margin-top:5px
+  margin-top:8px /* Ajusté */
 }
 .sheet .btn{
   display:inline-flex;align-items:center;
@@ -226,8 +234,8 @@ h1::after{
    RESPONSIVE
    ========================= */
 @media (max-width:1024px){
-  /* MODIFIE : Marge négative ajustée pour la nouvelle largeur */
-  .sheets{margin:-30px auto 10px} 
+  /* MODIFIE : Marge négative plus forte pour les écrans moyens */
+  .sheets{margin:-70px auto 10px} 
 }
 @media (max-width:768px){
   /* ATTENTION : Le comportement forcé de superposition est conservé ici */
@@ -269,9 +277,9 @@ Devant, consultez les fiches par catégorie et ouvrez le détail complet.</p>
     <div class="tablet-screen">
       <div class="slider" id="slider">
         <img src="../img/realisations/real-01.jpg" alt="Cuisine rénovée" class="active">
-        <img src="../img/realisations/real-02.jpg" alt="Salle de bain carrelage">
-        <img src="../img/realisations/real-03.jpg" alt="Dressing sur mesure">
-        <img src="../img/realisations/real-04.jpg" alt="Salon peinture et parquet">
+        <img src="https://i.ibb.co/6y40F6P/real-02.jpg" alt="Salle de bain carrelage">
+        <img src="https://i.ibb.co/3s6Kq50/real-03.jpg" alt="Dressing sur mesure">
+        <img src="https://i.ibb.co/R2tq42N/real-04.jpg" alt="Salon peinture et parquet">
       </div>
     </div>
   </div>
