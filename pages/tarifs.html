@@ -40,7 +40,7 @@ nav ul li a.active{color:var(--primary-color);font-weight:700}
    SECTION HERO (TABLETTE)
    ========================= */
 .content-section{
-  padding:20px 20px 40px; 
+  padding:40px 20px 40px; /* Réduit le padding du haut pour mobile */
   display:flex;
   flex-direction:column;
   align-items:center;
@@ -51,6 +51,7 @@ h1{
   color:var(--secondary-color);
   margin:0 0 14px;
   font-weight:800;
+  /* Réduction de la taille de h1 pour smartphone */
   font-size:1.8rem; 
 }
 h1::after{
@@ -64,7 +65,7 @@ h1::after{
   margin:10px 0 36px;color:#6c757d
 }
 
-/* Cadre tablette (conservé) */
+/* Cadre tablette */
 .tablet{
   position:relative;
   width:min(100%,980px);
@@ -92,6 +93,8 @@ h1::after{
   position:absolute;inset:20px 24px;
   border-radius:18px;overflow:hidden;background:#000;
 }
+
+/* Slider d’images dans l’écran */
 .slider{
   position:absolute;inset:0;
 }
@@ -103,47 +106,41 @@ h1::after{
 .slider img.active{opacity:1}
 
 /* =========================
-   FICHES TARIFS (Desktop/Mobile)
+   FICHES TARIFS DEVANT
    ========================= */
 .sheets{
   position:relative;
   width:100%;
+  /* Largeur max ajustée pour les 4 fiches */
   max-width:1350px; 
   margin:-90px auto 20px;
+  /* ON GARDE flex-wrap: wrap; pour éviter le défilement horizontal */
   display:flex;
-  /* Maintient l'alignement horizontal */
-  flex-wrap:nowrap; 
+  flex-wrap:wrap;
   justify-content:center;
   gap:22px;
   perspective:1000px;
   padding:0 8px;
   z-index:2;
-  /* SUPPRESSION du défilement horizontal */
-  overflow-x: visible; 
-  -ms-overflow-style: initial;  
-  scrollbar-width: initial;  
 }
-.sheets::-webkit-scrollbar {
-    display: initial;
-}
-
 .sheet{
-  /* Largeur par défaut pour Desktop/Tablette */
+  /* Largeur des fiches pour Desktop/Tablette */
   width:320px;
-  min-width:320px; 
   max-width:92vw;
   background:var(--card-background);
   border-radius:14px;
   box-shadow:0 20px 60px rgba(0,0,0,.18);
   padding:18px 18px 16px;
   text-align:left;cursor:pointer;
-  transform:rotateZ(var(--rot,0deg)) translateY(0);
+  /* Rotation et décalage horizontal appliqués uniquement sur grand écran */
+  transform:rotateZ(var(--rot,0deg)) translateY(0) translateX(0);
   transition:transform .25s ease, box-shadow .25s ease;
   border:1px solid var(--border-light);
-  /* Marge négative pour le chevauchement (Desktop/Tablette) */
-  margin-right: -100px; 
 }
-
+.sheet:hover{
+  transform:translateY(-6px) rotateZ(var(--rot,0deg)) scale(1.02);
+  box-shadow:0 28px 80px rgba(0,0,0,.24);
+}
 /* Le reste du style de fiche... (conservé) */
 .sheet .head{
   display:flex;align-items:center;gap:10px;margin-bottom:10px;
@@ -166,78 +163,87 @@ h1::after{
 .sheet .btn.primary{background:var(--primary-color);border-color:var(--primary-color);color:#fff}
 .sheet .btn:active{transform:translateY(1px)}
 
-/* Z-index pour la superposition (conservé) */
-.sheet:nth-child(2){z-index:3}
-.sheet:nth-child(3){z-index:2}
-.sheet:nth-child(4){z-index:1}
-
+/* =========================
+   MODALES (conservées)
+   ========================= */
+.modal-overlay{
+  display:none;position:fixed;inset:0;
+  background:rgba(0,0,0,.75);
+  z-index:1000;justify-content:center;align-items:center;padding:20px;
+}
+.detail-modal-content{
+  background:var(--card-background);
+  padding:34px;border-radius:14px;text-align:left;
+  width:min(920px,94vw);max-height:88vh;overflow:auto;position:relative;
+  box-shadow:0 30px 80px rgba(0,0,0,.35);
+}
+.detail-modal-content h3{
+  color:var(--primary-color);font-size:1.6rem;
+  border-bottom:3px solid var(--accent-orange);
+  padding-bottom:8px;margin:0 0 20px;text-align:center;
+}
+.detail-modal-content ul{list-style:none;padding:0;margin:0}
+.detail-modal-content li{
+  display:flex;justify-content:space-between;gap:16px;
+  padding:12px 0;border-bottom:1px dashed var(--border-light);
+  font-size:1rem;
+}
+.detail-modal-content li strong{color:var(--price-accent)}
+.close-btn{
+  position:absolute;top:12px;right:12px;
+  width:34px;height:34px;border-radius:50%;
+  border:none;background:var(--secondary-color);color:#fff;cursor:pointer;
+}
+.close-btn:hover{background:#dc3545}
+.partner-prices{display:none}
 
 /* =========================
-   RESPONSIVE (Ajustements pour 110px de large)
+   RESPONSIVE
    ========================= */
 @media (max-width:1024px){
   .sheets{margin:-70px auto 10px}
 }
 
+/* CORRECTION POUR LA SUPERPOSITION EN CASCADE SUR MOBILE/PETIT ÉCRAN */
 @media (max-width:768px){
   .tablet{aspect-ratio: 3 / 2}
   .sheets{
       margin:18px auto 0;
-      /* Ajuste le padding total pour centrer les 4 fiches de 110px + marge */
-      /* Largeur totale fiches: 4*110 = 440px. Il faudra un écran de 440+px */
-      /* Centrage forcé par justify-content:center; */
-      padding: 0; 
-      justify-content: center; 
-      gap: 0;
+      /* Ajuste le gap pour un chevauchement */
+      gap: 0; 
+      /* Ajoute une marge latérale pour décaler les fiches du bord */
+      padding: 0 15px; 
   }
   .sheet{
-      /* MODIFICATION CLÉ 1: Largeur forcée à 110px */
-      width: 110px;
-      min-width: 110px;
-      
-      /* MODIFICATION CLÉ 2: Hauteur augmentée (ex: de 220px à 330px) */
-      min-height: 330px; 
-      
-      /* MODIFICATION CLÉ 3: Marge négative ajustée pour la nouvelle largeur */
-      margin-right: -40px; 
-      padding: 8px 6px 6px; /* Réduit le padding pour ne pas déborder */
-      
-      /* Annule la rotation pour alignement horizontal serré */
+      /* Force la fiche à prendre toute la largeur disponible (dans le padding de .sheets) */
+      width: 100%;
+      /* Annule la rotation et ajoute un décalage vertical et horizontal pour la cascade */
       --rot: 0deg !important;
+      margin-bottom: -100px; /* Décalage vers le haut pour chevauchement */
+      /* Décalage horizontal pour l'effet de pile penchée */
+      transform: translateY(0) translateX(var(--tx,0px)) !important;
+      transition: none; /* Désactive l'effet hover qui serait gênant ici */
   }
   
-  /* Ajustements du contenu des fiches pour la nouvelle petite taille */
-  .sheet .head{margin-bottom: 4px; gap: 4px; flex-wrap: wrap;}
-  .sheet .badge{font-size: .7rem; padding: 4px 6px; border-radius: 6px 6px 6px 0;}
-  .sheet .icon{font-size: 18px;}
-  .sheet h3{font-size: .7rem; line-height: 1.1; margin: 4px 0;}
-  .sheet p{font-size: .6rem; margin: 0 0 6px; line-height: 1.2;}
-  .sheet .from{font-size: .7rem; margin-top: 4px;}
+  /* On applique un décalage horizontal différent à chaque fiche */
+  .sheet:nth-child(1) { --tx: 0px; z-index: 4;} /* Fiche la plus à gauche, au-dessus */
+  .sheet:nth-child(2) { --tx: 10px; z-index: 3;}
+  .sheet:nth-child(3) { --tx: 20px; z-index: 2;}
+  .sheet:nth-child(4) { --tx: 30px; z-index: 1;} /* Fiche la plus à droite, en-dessous */
   
-  /* Masque les boutons d'action qui ne tiendraient pas */
-  .sheet .actions{display: none;}
-  
-  /* Permet le clic sur la fiche entière pour ouvrir la modale */
-  .sheet[data-category]::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      z-index: 10;
-      cursor: pointer;
+  /* Le dernier élément a besoin d'un padding/margin pour laisser l'espace pour le texte suivant */
+  .sheet:last-child{
+      margin-bottom: 20px; 
   }
   
+  /* Désactive l'effet hover pour mobile (pas adapté à la cascade) */
   .sheet:hover{
-      /* Désactive l'effet hover pour mobile */
-      transform:rotateZ(0) translateY(0) scale(1.02);
+      transform: translateY(0) translateX(var(--tx,0px)) scale(1.0);
       box-shadow:0 20px 60px rgba(0,0,0,.18);
   }
-  /* La dernière fiche doit garder sa marge négative pour que les fiches ne se dispersent pas */
-  .sheet:last-child {
-      margin-right: -40px; 
-  }
+  
+  /* Remise à la taille de h1 pour mobile */
+  h1{ font-size: 1.8rem; }
 }
 /* AJOUT: compatibilité très anciens navigateurs sans aspect-ratio */
 @supports not (aspect-ratio: 1){
@@ -437,7 +443,7 @@ Devant, consultez les fiches par catégorie et ouvrez le détail complet.</p>
   }, 3500);
 })();
 /* =========================
-   DONNÉES TARIFS (conservées)
+   DONNÉES TARIFS
    ========================= */
 const priceDetails = {
   revetements: {
@@ -470,6 +476,8 @@ const priceDetails = {
       { label: "Installation VMC simple flux (Forfait M.O.)", price: "350 € - 650 €" }
     ]
   },
+  
+  /* NOUVELLE CATÉGORIE VIERGE À REMPLIR (PUBLIC) */
   vierge: {
     title: "Autres Prestations - Détails (HT)",
     items: [
@@ -478,6 +486,8 @@ const priceDetails = {
       { label: "Démolition et évacuation", price: "Sur devis" }
     ]
   },
+  
+  /* PARTENAIRES */
   revetements_partner: {
     title: "Revêtements & Peinture - Tarifs Partenaires (HT)",
     items: [
@@ -508,6 +518,8 @@ const priceDetails = {
       { label: "Installation VMC simple flux (Forfait M.O.)", price: "315 € - 585 €" }
     ]
   },
+  
+  /* NOUVELLE CATÉGORIE VIERGE À REMPLIR (PARTENAIRE) */
   vierge_partner: {
     title: "Autres Prestations - Détails Partenaires (HT)",
     items: [
@@ -521,7 +533,57 @@ const priceDetails = {
 let isPartnerView = false;
 
 /* =========================
-   OUVERTURE MODALE DÉTAIL (conservée)
+   OUVERTURE MODALE DÉTAIL
    ========================= */
 const detailModal = document.getElementById('detail-modal');
-const modalDetailsCont
+const modalDetailsContent = document.getElementById('modal-details-content');
+document.querySelectorAll('.open-details, .sheet').forEach(el=>{
+  el.addEventListener('click', (e)=>{
+    const card = e.currentTarget.closest('.sheet') || e.currentTarget;
+    const cat = card.getAttribute('data-category');
+    const key = isPartnerView ? `${cat}_partner` : cat;
+    const data = priceDetails[key];
+    if(!data) return;
+    let html = `<h3 id="detail-title">${data.title}</h3><ul>`;
+    data.items.forEach(it=>{
+      html += `<li><span>${it.label}</span><strong>${it.price}</strong></li>`;
+    });
+    html += `</ul>
+      <p style="text-align:center;margin-top:22px">
+        Ces prix sont indicatifs.
+        <a href="devis.html" style="font-weight:700;color:var(--primary-color)">Demandez un devis personnalisé</a>.
+      </p>`;
+    modalDetailsContent.innerHTML = html;
+    detailModal.style.display = 'flex';
+  });
+});
+document.getElementById('close-detail-modal').addEventListener('click',()=>detailModal.style.display='none');
+detailModal.addEventListener('click',(e)=>{ if(e.target===detailModal) detailModal.style.display='none'; });
+
+/* =========================
+   ACCÈS PARTENAIRES (conservé)
+   ========================= */
+const accessButtonPartner = document.getElementById('logo-overlay-partner');
+const partnerLoginModal = document.getElementById('partner-login-modal');
+document.getElementById('close-partner-modal').addEventListener('click',()=>partnerLoginModal.style.display='none');
+partnerLoginModal.addEventListener('click',e=>{ if(e.target===partnerLoginModal) partnerLoginModal.style.display='none'; });
+
+accessButtonPartner.addEventListener('click',()=> partnerLoginModal.style.display='flex');
+
+document.getElementById('login-form').addEventListener('submit', (e)=>{
+  e.preventDefault();
+  const u = document.getElementById('username').value.trim();
+  const p = document.getElementById('password').value.trim();
+  if(u==="partenaire" && p==="papo2025"){
+    isPartnerView = true;
+    document.getElementById('public-prices').style.display='none';
+    document.getElementById('partner-prices').style.display='flex';
+    partnerLoginModal.style.display='none';
+    alert("Connexion réussie ! Tarifs partenaires affichés.");
+  }else{
+    alert("Identifiant ou mot de passe incorrect.");
+  }
+});
+</script>
+</body>
+</html>
