@@ -40,7 +40,7 @@ nav ul li a.active{color:var(--primary-color);font-weight:700}
    SECTION HERO (TABLETTE)
    ========================= */
 .content-section{
-  padding:40px 20px 40px; 
+  padding:40px 20px 40px; /* Réduit le padding du haut pour mobile */
   display:flex;
   flex-direction:column;
   align-items:center;
@@ -51,12 +51,13 @@ h1{
   color:var(--secondary-color);
   margin:0 0 14px;
   font-weight:800;
+  /* Réduction de la taille de h1 pour smartphone */
   font-size:1.8rem; 
 }
 h1::after{
   content:'';
   display:block;
-  width:20px;height:4px;
+  width:80px;height:4px;
   background:var(--primary-color);
   margin:12px auto 0;border-radius:2px;
 }
@@ -64,7 +65,7 @@ h1::after{
   margin:10px 0 36px;color:#6c757d
 }
 
-/* Cadre tablette (conservé) */
+/* Cadre tablette */
 .tablet{
   position:relative;
   width:min(100%,980px);
@@ -92,6 +93,8 @@ h1::after{
   position:absolute;inset:20px 24px;
   border-radius:18px;overflow:hidden;background:#000;
 }
+
+/* Slider d’images dans l’écran */
 .slider{
   position:absolute;inset:0;
 }
@@ -103,41 +106,108 @@ h1::after{
 .slider img.active{opacity:1}
 
 /* =========================
-   FICHES TARIFS (Desktop/Mobile)
+   FICHES TARIFS 3D UNIFORME (MODIFIÉ)
    ========================= */
 .sheets{
   position:relative;
   width:100%;
-  max-width:1350px; 
-  margin:-50px auto 20px;
+  /* Largeur max ajustée pour les 4 fiches - Permet le chevauchement */
+  max-width:1450px; 
+  /* Fait remonter les fiches devant la tablette */
+  margin:-120px auto 20px; 
+  /* Changement de flex-wrap pour un affichage en ligne forcé */
   display:flex;
-  /* CONSERVÉ: Empêche le retour à la ligne */
-  flex-wrap:nowrap; 
+  flex-wrap:nowrap; /* Les fiches ne doivent jamais faire un retour à la ligne */
   justify-content:center;
-  gap:0;
-  perspective:1000px;
+  gap:0; /* Supprime le gap pour contrôler le chevauchement manuellement */
+  perspective:1200px; /* Augmente la perspective pour l'effet 3D */
   padding:0 8px;
   z-index:2;
-  /* MODIFIÉ: Supprime le défilement */
-  overflow-x: hidden; 
+  /* Ajout du défilement horizontal en cas de petit écran et de trop de contenu */
+  overflow-x: auto;
+  scrollbar-width: none; /* Masque la barre de défilement pour Firefox */
+  -ms-overflow-style: none; /* Masque la barre de défilement pour IE/Edge */
+  /* Masque la barre de défilement pour Chrome/Safari */
+  &::-webkit-scrollbar { display: none; }
 }
 
 .sheet{
-  /* MODIFICATION CLÉ: Dimensions manuelles pour Desktop/Tablette */
-  width:110px;
-  min-width:320px; 
-  min-height:380px; /* Hauteur par défaut à ajuster manuellement */
-  
+  /* Largeur des fiches pour Desktop/Tablette */
+  width:320px;
+  /* Permet au contenu des fiches de ne pas déborder */
+  flex-shrink: 0; 
+  max-width:92vw;
   background:var(--card-background);
   border-radius:14px;
-  box-shadow:0 20px 60px rgba(0,0,0,.18);
+  
+  /* AJOUT DE L'EFFET D'OMBRE 3D */
+  box-shadow:0 15px 45px rgba(0,0,0,.25), 0 0 0 1px rgba(0,0,0,.05);
+  
   padding:18px 18px 16px;
   text-align:left;cursor:pointer;
-  transform:rotateZ(var(--rot,0deg)) translateY(0);
-  transition:transform .25s ease, box-shadow .25s ease;
+  
+  /* GESTION DES TRANSFORMATIONS 3D ET DU CHEVAUCHEMENT */
+  /* --rot : Rotation sur l'axe Z (comme avant) */
+  /* --ty : Décalage vertical vers le haut/bas */
+  /* --tx : Décalage horizontal pour le chevauchement */
+  /* --rz : Rotation sur l'axe Y pour l'effet carte */
+  transform: rotateZ(var(--rot, 0deg)) translateY(var(--ty, 0px)) translateX(var(--tx, 0px)) rotateY(var(--ry, 0deg));
+  
+  transition: transform .35s ease, box-shadow .35s ease;
   border:1px solid var(--border-light);
-  /* Marge négative pour le chevauchement Desktop */
+  
+  /* Z-index manuel pour la superposition de la cascade */
+  z-index: var(--z-idx); 
+  
+  /* Ajout d'une marge négative pour chevauchement horizontal */
   margin-right: -100px; 
+}
+
+/* DÉFINITION DES PROPRIÉTÉS MANUELLES (Rotation, Décalage, Z-index) */
+/* Révêtements & Peinture (Fiche 1) */
+.sheets article:nth-child(1) {
+  --rot: -2.5deg; /* Rotation Z (Légère inclinaison) */
+  --ty: 10px; /* Décalage Y (Haut/Bas) */
+  --tx: 0px; /* Décalage X (Chevauchement) */
+  --ry: -2deg; /* Rotation Y (Effet Carte 3D) */
+  --z-idx: 4; /* Au-dessus */
+}
+
+/* Plomberie & Sanitaires (Fiche 2) */
+.sheets article:nth-child(2) {
+  --rot: 1.5deg; 
+  --ty: -10px;
+  --tx: 0px;
+  --ry: 0deg;
+  --z-idx: 3;
+}
+
+/* Électricité & Plâtrerie (Fiche 3) */
+.sheets article:nth-child(3) {
+  --rot: -0.5deg;
+  --ty: 5px;
+  --tx: 0px;
+  --ry: 2deg;
+  --z-idx: 2;
+}
+
+/* Autres Prestations (Fiche 4) */
+.sheets article:nth-child(4) {
+  --rot: 3.5deg;
+  --ty: -5px;
+  --tx: 0px;
+  --ry: -1deg;
+  --z-idx: 1; /* En-dessous */
+  /* Marge négative plus petite pour la dernière fiche */
+  margin-right: 20px; 
+}
+
+
+.sheet:hover{
+  /* Effet 3D au survol : remonte (translateY), s'agrandit (scale), tourne légèrement */
+  transform:translateY(calc(var(--ty, 0px) - 10px)) rotateZ(var(--rot,0deg)) scale(1.04) rotateY(var(--ry, 0deg));
+  box-shadow:0 40px 100px rgba(0,0,0,.35);
+  z-index: 5; /* Assure que la fiche survolée est toujours au-dessus */
 }
 
 /* Le reste du style de fiche... (conservé) */
@@ -162,75 +232,63 @@ h1::after{
 .sheet .btn.primary{background:var(--primary-color);border-color:var(--primary-color);color:#fff}
 .sheet .btn:active{transform:translateY(1px)}
 
-/* Z-index pour la superposition (conservé) */
-.sheet:nth-child(1){z-index:4}
-.sheet:nth-child(2){z-index:3}
-.sheet:nth-child(3){z-index:2}
-.sheet:nth-child(4){z-index:1}
-.sheet:hover{
-  transform:translateY(-6px) rotateZ(var(--rot,0deg)) scale(1.02);
-  box-shadow:0 28px 80px rgba(0,0,0,.24);
+/* =========================
+   MODALES (conservées)
+   ========================= */
+.modal-overlay{
+  display:none;position:fixed;inset:0;
+  background:rgba(0,0,0,.75);
+  z-index:1000;justify-content:center;align-items:center;padding:20px;
 }
+.detail-modal-content{
+  background:var(--card-background);
+  padding:34px;border-radius:14px;text-align:left;
+  width:min(920px,94vw);max-height:88vh;overflow:auto;position:relative;
+  box-shadow:0 30px 80px rgba(0,0,0,.35);
+}
+.detail-modal-content h3{
+  color:var(--primary-color);font-size:1.6rem;
+  border-bottom:3px solid var(--accent-orange);
+  padding-bottom:8px;margin:0 0 20px;text-align:center;
+}
+.detail-modal-content ul{list-style:none;padding:0;margin:0}
+.detail-modal-content li{
+  display:flex;justify-content:space-between;gap:16px;
+  padding:12px 0;border-bottom:1px dashed var(--border-light);
+  font-size:1rem;
+}
+.detail-modal-content li strong{color:var(--price-accent)}
+.close-btn{
+  position:absolute;top:12px;right:12px;
+  width:34px;height:34px;border-radius:50%;
+  border:none;background:var(--secondary-color);color:#fff;cursor:pointer;
+}
+.close-btn:hover{background:#dc3545}
+.partner-prices{display:none}
 
 /* =========================
-   RESPONSIVE (Gestion manuelle Mobile)
+   RESPONSIVE (SIMPLIFIÉ POUR UN EFFET UNIFORME)
    ========================= */
-@media (max-width:1024px){
-  .sheets{margin:-70px auto 10px}
+@media (max-width:1300px){
+  /* Réduit l'espace négatif pour éviter un chevauchement trop important sur les petits écrans */
+  .sheet { margin-right: -70px; }
+  /* Compense sur la dernière carte */
+  .sheets article:nth-child(4) { margin-right: 10px; }
 }
 
 @media (max-width:768px){
-  .tablet{aspect-ratio: 3 / 2}
-  .sheets{
-      margin:18px auto 0;
-      padding: 0 5px; /* Petit padding pour éviter de coller aux bords */
-      justify-content: center;
+  /* Réduit la marge négative pour la rendre visible sur petit écran */
+  .sheets { margin-top: -80px; }
+  .sheet {
+      width: 280px; /* Réduit un peu la largeur des cartes */
+      margin-right: -100px; /* Augmente le chevauchement pour que les 4 cartes rentrent */
   }
-  .sheet{
-      /* MODIFICATION CLÉ: Dimensions manuelles pour Mobile (largeur à 110px) */
-      width: 110px;
-      min-width: 110px;
-      min-height: 300px; /* Hauteur de référence (à ajuster manuellement) */
-      
-      /* MODIFICATION CLÉ: Ajustement de la superposition pour les fiches de 110px */
-      margin-right: -70px; 
-      padding: 8px 6px 6px; /* Réduit le padding pour que le contenu tienne */
-      
-      /* Annule la rotation pour mobile (optionnel) */
-      --rot: 0deg !important;
-  }
+  .sheets article:nth-child(4) { margin-right: 0px; }
   
-  /* Ajustements du contenu pour tenir dans la petite fiche */
-  .sheet .head{margin-bottom: 4px; gap: 4px; flex-wrap: wrap;}
-  .sheet .badge{font-size: .7rem; padding: 4px 6px; border-radius: 6px 6px 6px 0;}
-  .sheet .icon{font-size: 18px;}
-  .sheet h3{font-size: .7rem; line-height: 1.1; margin: 4px 0;}
-  .sheet p{display: none;} /* Masque la description pour gagner de la hauteur */
-  .sheet .from{font-size: .7rem; margin-top: 4px;}
-  .sheet .actions{display: none;} /* Masque les boutons d'action */
-  
-  /* Permet le clic sur la fiche entière pour ouvrir la modale */
-  .sheet[data-category]::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      z-index: 10;
-      cursor: pointer;
-  }
-  
-  .sheet:hover{
-      /* Désactive l'effet hover pour mobile */
-      transform:rotateZ(0) translateY(0) scale(1.0);
-      box-shadow:0 20px 60px rgba(0,0,0,.18);
-  }
-  /* La dernière fiche n'a pas besoin de marge négative */
-  .sheet:last-child {
-      margin-right: 0; 
-  }
+  .tablet{aspect-ratio: 4 / 3}
+  h1{ font-size: 1.8rem; }
 }
+
 /* AJOUT: compatibilité très anciens navigateurs sans aspect-ratio */
 @supports not (aspect-ratio: 1){
   .tablet{height:0;padding-top:56.25%} /* 16:9 */
@@ -275,7 +333,7 @@ Devant, consultez les fiches par catégorie et ouvrez le détail complet.</p>
   </div>
 
   <div class="sheets" id="public-prices">
-    <article class="sheet" data-category="revetements" style="--rot:-2.5deg">
+    <article class="sheet" data-category="revetements">
       <div class="head">
         <span class="badge">Public</span>
         <i class="icon fas fa-paint-roller"></i>
@@ -290,7 +348,7 @@ Devant, consultez les fiches par catégorie et ouvrez le détail complet.</p>
       </div>
     </article>
 
-    <article class="sheet" data-category="plomberie" style="--rot:1.5deg">
+    <article class="sheet" data-category="plomberie">
       <div class="head">
         <span class="badge">Public</span>
         <i class="icon fas fa-bath"></i>
@@ -305,7 +363,7 @@ Devant, consultez les fiches par catégorie et ouvrez le détail complet.</p>
       </div>
     </article>
 
-    <article class="sheet" data-category="electricite" style="--rot:-0.5deg">
+    <article class="sheet" data-category="electricite">
       <div class="head">
         <span class="badge">Public</span>
         <i class="icon fas fa-bolt"></i>
@@ -319,7 +377,7 @@ Devant, consultez les fiches par catégorie et ouvrez le détail complet.</p>
       </div>
     </article>
     
-    <article class="sheet" data-category="vierge" style="--rot:3.5deg">
+    <article class="sheet" data-category="vierge">
       <div class="head">
         <span class="badge">Public</span>
         <i class="icon fa-solid fa-list-check"></i>
@@ -334,9 +392,9 @@ Devant, consultez les fiches par catégorie et ouvrez le détail complet.</p>
     </article>
   </div>
 
-  <div class="sheets partner-prices" id="partner-prices" style="display:none;">
-  
-    <article class="sheet" data-category="revetements" style="--rot:-2deg">
+  <div class="sheets partner-prices" id="partner-prices">
+    
+    <article class="sheet" data-category="revetements">
       <div class="head"><span class="badge">Partenaires</span><i class="icon fas fa-handshake"></i></div>
       <h3>Revêtements & Peinture</h3>
       <p>Tarifs préférentiels sur la main d’œuvre (jusqu’à −10%).</p>
@@ -348,7 +406,7 @@ Devant, consultez les fiches par catégorie et ouvrez le détail complet.</p>
       </div>
     </article>
 
-    <article class="sheet" data-category="plomberie" style="--rot:1.2deg">
+    <article class="sheet" data-category="plomberie">
       <div class="head"><span class="badge">Partenaires</span><i class="icon fas fa-handshake"></i></div>
       <h3>Plomberie & Sanitaires</h3>
       <p>Forfaits optimisés pour nos partenaires enregistrés.</p>
@@ -360,7 +418,7 @@ Devant, consultez les fiches par catégorie et ouvrez le détail complet.</p>
       </div>
     </article>
 
-    <article class="sheet" data-category="electricite" style="--rot:-0.4deg">
+    <article class="sheet" data-category="electricite">
       <div class="head"><span class="badge">Partenaires</span><i class="icon fas fa-handshake"></i></div>
       <h3>Électricité & Plâtrerie</h3>
       <p>Grille dédiée pour projets récurrents et volumes.</p>
@@ -372,7 +430,7 @@ Devant, consultez les fiches par catégorie et ouvrez le détail complet.</p>
       </div>
     </article>
     
-    <article class="sheet" data-category="vierge" style="--rot:3.2deg">
+    <article class="sheet" data-category="vierge">
       <div class="head">
         <span class="badge">Partenaires</span>
         <i class="icon fas fa-handshake"></i>
@@ -428,8 +486,9 @@ Devant, consultez les fiches par catégorie et ouvrez le détail complet.</p>
     slides[i].classList.add('active');
   }, 3500);
 })();
+
 /* =========================
-   DONNÉES TARIFS (conservées)
+   DONNÉES TARIFS (MISES À JOUR)
    ========================= */
 const priceDetails = {
   revetements: {
@@ -462,6 +521,8 @@ const priceDetails = {
       { label: "Installation VMC simple flux (Forfait M.O.)", price: "350 € - 650 €" }
     ]
   },
+  
+  /* 4ÈME CATÉGORIE VIERGE PUBLIC */
   vierge: {
     title: "Autres Prestations - Détails (HT)",
     items: [
@@ -470,6 +531,8 @@ const priceDetails = {
       { label: "Démolition et évacuation", price: "Sur devis" }
     ]
   },
+  
+  /* PARTENAIRES */
   revetements_partner: {
     title: "Revêtements & Peinture - Tarifs Partenaires (HT)",
     items: [
@@ -500,6 +563,8 @@ const priceDetails = {
       { label: "Installation VMC simple flux (Forfait M.O.)", price: "315 € - 585 €" }
     ]
   },
+  
+  /* 4ÈME CATÉGORIE VIERGE PARTENAIRE */
   vierge_partner: {
     title: "Autres Prestations - Détails Partenaires (HT)",
     items: [
@@ -513,16 +578,20 @@ const priceDetails = {
 let isPartnerView = false;
 
 /* =========================
-   OUVERTURE MODALE DÉTAIL (conservée)
+   OUVERTURE MODALE DÉTAIL
    ========================= */
 const detailModal = document.getElementById('detail-modal');
 const modalDetailsContent = document.getElementById('modal-details-content');
 document.querySelectorAll('.open-details, .sheet').forEach(el=>{
   el.addEventListener('click', (e)=>{
-    // Empêche de déclencher l'événement si c'est un bouton dans la fiche qui est cliqué sur desktop
-    if (e.target.closest('.btn') && window.innerWidth > 768) return;
+    // Empêche le clic sur la fiche elle-même d'ouvrir deux fois la modale si l'élément cliqué est .sheet
+    if (e.target.tagName.toLowerCase() !== 'button' && e.target.closest('.sheet').contains(e.target) && e.target.className.indexOf('open-details') === -1) {
+        return;
+    }
     
-    const card = e.currentTarget.closest('.sheet') || e.currentTarget;
+    const card = e.currentTarget.closest('.sheet');
+    if (!card) return; // S'assure qu'on a bien cliqué sur une fiche ou un bouton dedans
+    
     const cat = card.getAttribute('data-category');
     const key = isPartnerView ? `${cat}_partner` : cat;
     const data = priceDetails[key];
