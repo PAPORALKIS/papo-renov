@@ -133,9 +133,9 @@ h1::after{
 }
 
 .sheet{
-  /* LARGEUR MANUELLE (Desktop) */
-  width:350px;
-  /* HAUTEUR MANUELLE (Desktop) */
+  /* LARGEUR MANUELLE UNIFORME POUR TOUS LES SUPPORTS */
+  width:120px;
+  /* HAUTEUR MANUELLE CONSERVÉE */
   height:320px;
   
   /* Permet au contenu des fiches de ne pas déborder */
@@ -163,8 +163,8 @@ h1::after{
   /* Z-index manuel pour la superposition de la cascade */
   z-index: var(--z-idx); 
   
-  /* Ajout d'une marge négative pour chevauchement horizontal */
-  margin-right: -100px; 
+  /* Ajout d'une marge négative pour chevauchement horizontal (Ajustée pour 120px) */
+  margin-right: -40px; 
   
   /* Ajout de l'overflow pour gérer le contenu si la hauteur est trop petite */
   overflow: auto; 
@@ -205,8 +205,8 @@ h1::after{
   --tx: 0px;
   --ry: -1deg;
   --z-idx: 1; /* En-dessous */
-  /* Marge négative plus petite pour la dernière fiche pour ne pas trop la cacher */
-  margin-right: 20px; 
+  /* Marge supprimée sur la dernière fiche pour qu'elle soit pleinement visible */
+  margin-right: 0px; 
 }
 
 
@@ -216,24 +216,40 @@ h1::after{
   box-shadow:0 40px 100px rgba(0,0,0,.35);
   z-index: 5; /* Assure que la fiche survolée est toujours au-dessus */
 }
-/* Le reste du style de fiche... (conservé) */
+
+/* REDUCTION DE LA TAILLE DES POLICES POUR UNE LARGEUR DE 120PX */
 .sheet .head{
-  display:flex;align-items:center;gap:10px;margin-bottom:10px;
+  display:flex;align-items:center;gap:6px; /* Réduit le gap */
+  margin-bottom:8px; /* Réduit la marge */
+  flex-direction: column; /* Empile l'icône et le badge pour une meilleure lisibilité sur 120px */
+  text-align: center;
 }
 .sheet .badge{
   background:var(--dark-blue-logo);
-  color:#fff;font-weight:700;font-size:.95rem;
-  padding:8px 12px;border-radius:10px 10px 10px 0;
+  color:#fff;font-weight:700;
+  font-size:.8rem; /* RÉDUIT */
+  padding:4px 6px; /* RÉDUIT */
+  border-radius:6px;
 }
-.sheet .icon{font-size:26px;color:var(--primary-color)}
-.sheet h3{margin:6px 0 8px;font-size:1.2rem}
-.sheet p{margin:0 0 10px;color:#6c757d;font-size:.95rem}
-.sheet .from{color:var(--price-accent);font-weight:700;margin-top:6px}
-.sheet .actions{display:flex;gap:10px;margin-top:12px}
+.sheet .icon{font-size:20px;color:var(--primary-color)} /* RÉDUIT */
+.sheet h3{margin:4px 0 6px;font-size:1rem; line-height: 1.1;} /* RÉDUIT */
+.sheet p{margin:0 0 8px;color:#6c757d;font-size:.75rem; line-height: 1.2;} /* RÉDUIT */
+.sheet .from{color:var(--price-accent);font-weight:700;margin-top:4px; font-size:.8rem} /* RÉDUIT */
+.sheet .actions{
+    display:flex;
+    flex-direction: column; /* Empile les boutons */
+    gap:5px;
+    margin-top:8px
+}
 .sheet .btn{
-  display:inline-flex;align-items:center;gap:8px;
-  padding:10px 12px;border-radius:10px;border:1px solid var(--border-light);
-  background:#fff;cursor:pointer;font-weight:600;font-size:.95rem;
+  display:inline-flex;align-items:center;justify-content:center;
+  gap:4px;
+  padding:4px 6px; /* RÉDUIT */
+  border-radius:6px;border:1px solid var(--border-light);
+  background:#fff;cursor:pointer;font-weight:600;
+  font-size:.75rem; /* RÉDUIT */
+  text-align:center;
+  width: 100%; /* S'étend sur toute la largeur */
 }
 .sheet .btn.primary{background:var(--primary-color);border-color:var(--primary-color);color:#fff}
 .sheet .btn:active{transform:translateY(1px)}
@@ -273,31 +289,17 @@ h1::after{
 .partner-prices{display:none}
 
 /* =========================
-   RESPONSIVE (AJUSTÉ POUR LARGEUR 120PX SUR MOBILE)
+   RESPONSIVE (NETTOYÉ)
    ========================= */
 @media (max-width:1300px){
-  /* Réduit l'espace négatif pour éviter un chevauchement trop important sur les petits écrans */
-  .sheet { margin-right: -70px; }
-  /* Compense sur la dernière carte */
-  .sheets article:nth-child(4) { margin-right: 10px; }
+  /* RÈGLES DE LARGEUR/MARGE SUPPRIMÉES */
 }
 
 @media (max-width:768px){
-  /* Conserve le padding-top si nécessaire ou ajuste-le manuellement */
   .content-section{
-      padding-top: 20px; /* Conserve le 20px réduit */
-  }
-  
-  .sheet {
-      /* LARGEUR MANUELLE POUR MOBILE : 120px comme demandé */
-      width: 120px; 
-      /* HAUTEUR MANUELLE POUR MOBILE */
-      height: 300px;
-      margin-right: -50px; /* Nouveau chevauchement pour 120px de largeur */
+      padding-top: 20px;
   }
   .sheets { margin-top: -80px; }
-  .sheets article:nth-child(4) { margin-right: 0px; }
-  
   .tablet{aspect-ratio: 4 / 3}
   h1{ font-size: 1.8rem; }
 }
