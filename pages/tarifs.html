@@ -45,7 +45,8 @@ nav ul li a.active{color:var(--primary-color);font-weight:700}
   flex-direction:column;
   align-items:center;
   text-align:center;
-  position:relative;
+  position:relative;            /* AJOUT: pour gérer la superposition locale */
+  /* pas d'autre changement */
 }
 h1{
   color:var(--secondary-color);
@@ -73,6 +74,7 @@ h1::after{
   background:#111;
   box-shadow:0 40px 80px rgba(0,0,0,.25);
   overflow:hidden;
+  z-index:1;                    /* AJOUT: la tablette passe derrière les fiches */
 }
 .tablet::before{ /* contour / biseau */
   content:'';
@@ -114,6 +116,7 @@ h1::after{
   display:flex;flex-wrap:wrap;justify-content:center;gap:22px;
   perspective:1000px;
   padding:0 8px;
+  z-index:2;                   /* AJOUT: assure que les fiches sont devant */
 }
 .sheet{
   width:320px;max-width:92vw;
@@ -198,6 +201,11 @@ h1::after{
   .sheets{margin:18px auto 0}
   .sheet{--rot:0deg}
 }
+/* AJOUT: compatibilité très anciens navigateurs sans aspect-ratio */
+@supports not (aspect-ratio: 1){
+  .tablet{height:0;padding-top:56.25%} /* 16:9 */
+  .tablet-screen{position:absolute;top:20px;left:24px;right:24px;bottom:20px}
+}
 </style>
 </head>
 <body>
@@ -238,7 +246,7 @@ h1::after{
     </div>
   </div>
 
-  <!-- FICHES superposées -->
+  <!-- FICHES superposées (devant la tablette) -->
   <div class="sheets" id="public-prices">
     <article class="sheet" data-category="revetements" style="--rot:-2.5deg">
       <div class="head">
@@ -437,7 +445,6 @@ const detailModal = document.getElementById('detail-modal');
 const modalDetailsContent = document.getElementById('modal-details-content');
 document.querySelectorAll('.open-details, .sheet').forEach(el=>{
   el.addEventListener('click', (e)=>{
-    // si on clique sur le bouton ou la fiche entière
     const card = e.currentTarget.closest('.sheet') || e.currentTarget;
     const cat = card.getAttribute('data-category');
     const key = isPartnerView ? `${cat}_partner` : cat;
