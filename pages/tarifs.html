@@ -40,7 +40,7 @@ nav ul li a.active{color:var(--primary-color);font-weight:700}
    SECTION HERO (TABLETTE)
    ========================= */
 .content-section{
-  padding:20px 20px 40px; /* Réduit le padding du haut pour mobile */
+  padding:40px 20px 40px; 
   display:flex;
   flex-direction:column;
   align-items:center;
@@ -51,7 +51,6 @@ h1{
   color:var(--secondary-color);
   margin:0 0 14px;
   font-weight:800;
-  /* Réduction de la taille de h1 pour smartphone */
   font-size:1.8rem; 
 }
 h1::after{
@@ -65,7 +64,7 @@ h1::after{
   margin:10px 0 36px;color:#6c757d
 }
 
-/* Cadre tablette */
+/* Cadre tablette (conservé) */
 .tablet{
   position:relative;
   width:min(100%,980px);
@@ -93,8 +92,6 @@ h1::after{
   position:absolute;inset:20px 24px;
   border-radius:18px;overflow:hidden;background:#000;
 }
-
-/* Slider d’images dans l’écran */
 .slider{
   position:absolute;inset:0;
 }
@@ -106,41 +103,43 @@ h1::after{
 .slider img.active{opacity:1}
 
 /* =========================
-   FICHES TARIFS DEVANT
+   FICHES TARIFS (Desktop/Mobile)
    ========================= */
 .sheets{
   position:relative;
   width:100%;
-  /* Largeur max ajustée pour les 4 fiches */
   max-width:1350px; 
   margin:-90px auto 20px;
-  /* ON GARDE flex-wrap: wrap; pour éviter le défilement horizontal */
   display:flex;
-  flex-wrap:wrap;
+  /* CONSERVÉ: Empêche le retour à la ligne */
+  flex-wrap:nowrap; 
   justify-content:center;
-  gap:22px;
+  gap:0;
   perspective:1000px;
   padding:0 8px;
   z-index:2;
+  /* MODIFIÉ: Supprime le défilement */
+  overflow-x: hidden; 
 }
+
 .sheet{
-  /* Largeur des fiches pour Desktop/Tablette */
-  width:110px;
-  max-width:92vw;
+  /* MODIFICATION CLÉ: Dimensions manuelles pour Desktop/Tablette */
+  width:320px;
+  min-width:320px; 
+  min-height:380px; /* Hauteur par défaut à ajuster manuellement */
+  
   background:var(--card-background);
   border-radius:14px;
   box-shadow:0 20px 60px rgba(0,0,0,.18);
   padding:18px 18px 16px;
   text-align:left;cursor:pointer;
-  /* Rotation et décalage horizontal appliqués uniquement sur grand écran */
-  transform:rotateZ(var(--rot,0deg)) translateY(0) translateX(0);
+  transform:rotateZ(var(--rot,0deg)) translateY(0);
   transition:transform .25s ease, box-shadow .25s ease;
   border:1px solid var(--border-light);
+  /* Marge négative pour le chevauchement Desktop */
+  margin-right: -100px; 
 }
-.sheet:hover{
-  transform:translateY(-6px) rotateZ(var(--rot,0deg)) scale(1.02);
-  box-shadow:0 28px 80px rgba(0,0,0,.24);
-}
+
 /* Le reste du style de fiche... (conservé) */
 .sheet .head{
   display:flex;align-items:center;gap:10px;margin-bottom:10px;
@@ -163,87 +162,74 @@ h1::after{
 .sheet .btn.primary{background:var(--primary-color);border-color:var(--primary-color);color:#fff}
 .sheet .btn:active{transform:translateY(1px)}
 
-/* =========================
-   MODALES (conservées)
-   ========================= */
-.modal-overlay{
-  display:none;position:fixed;inset:0;
-  background:rgba(0,0,0,.75);
-  z-index:1000;justify-content:center;align-items:center;padding:20px;
+/* Z-index pour la superposition (conservé) */
+.sheet:nth-child(1){z-index:4}
+.sheet:nth-child(2){z-index:3}
+.sheet:nth-child(3){z-index:2}
+.sheet:nth-child(4){z-index:1}
+.sheet:hover{
+  transform:translateY(-6px) rotateZ(var(--rot,0deg)) scale(1.02);
+  box-shadow:0 28px 80px rgba(0,0,0,.24);
 }
-.detail-modal-content{
-  background:var(--card-background);
-  padding:34px;border-radius:14px;text-align:left;
-  width:min(920px,94vw);max-height:88vh;overflow:auto;position:relative;
-  box-shadow:0 30px 80px rgba(0,0,0,.35);
-}
-.detail-modal-content h3{
-  color:var(--primary-color);font-size:1.6rem;
-  border-bottom:3px solid var(--accent-orange);
-  padding-bottom:8px;margin:0 0 20px;text-align:center;
-}
-.detail-modal-content ul{list-style:none;padding:0;margin:0}
-.detail-modal-content li{
-  display:flex;justify-content:space-between;gap:16px;
-  padding:12px 0;border-bottom:1px dashed var(--border-light);
-  font-size:1rem;
-}
-.detail-modal-content li strong{color:var(--price-accent)}
-.close-btn{
-  position:absolute;top:12px;right:12px;
-  width:34px;height:34px;border-radius:50%;
-  border:none;background:var(--secondary-color);color:#fff;cursor:pointer;
-}
-.close-btn:hover{background:#dc3545}
-.partner-prices{display:none}
 
 /* =========================
-   RESPONSIVE
+   RESPONSIVE (Gestion manuelle Mobile)
    ========================= */
 @media (max-width:1024px){
   .sheets{margin:-70px auto 10px}
 }
 
-/* CORRECTION POUR LA SUPERPOSITION EN CASCADE SUR MOBILE/PETIT ÉCRAN */
 @media (max-width:768px){
   .tablet{aspect-ratio: 3 / 2}
   .sheets{
       margin:18px auto 0;
-      /* Ajuste le gap pour un chevauchement */
-      gap: 0; 
-      /* Ajoute une marge latérale pour décaler les fiches du bord */
-      padding: 0 15px; 
+      padding: 0 5px; /* Petit padding pour éviter de coller aux bords */
+      justify-content: center;
   }
   .sheet{
-      /* Force la fiche à prendre toute la largeur disponible (dans le padding de .sheets) */
-      width: 100%;
-      /* Annule la rotation et ajoute un décalage vertical et horizontal pour la cascade */
+      /* MODIFICATION CLÉ: Dimensions manuelles pour Mobile (largeur à 110px) */
+      width: 110px;
+      min-width: 110px;
+      min-height: 300px; /* Hauteur de référence (à ajuster manuellement) */
+      
+      /* MODIFICATION CLÉ: Ajustement de la superposition pour les fiches de 110px */
+      margin-right: -70px; 
+      padding: 8px 6px 6px; /* Réduit le padding pour que le contenu tienne */
+      
+      /* Annule la rotation pour mobile (optionnel) */
       --rot: 0deg !important;
-      margin-bottom: -100px; /* Décalage vers le haut pour chevauchement */
-      /* Décalage horizontal pour l'effet de pile penchée */
-      transform: translateY(0) translateX(var(--tx,0px)) !important;
-      transition: none; /* Désactive l'effet hover qui serait gênant ici */
   }
   
-  /* On applique un décalage horizontal différent à chaque fiche */
-  .sheet:nth-child(1) { --tx: 0px; z-index: 4;} /* Fiche la plus à gauche, au-dessus */
-  .sheet:nth-child(2) { --tx: 10px; z-index: 3;}
-  .sheet:nth-child(3) { --tx: 20px; z-index: 2;}
-  .sheet:nth-child(4) { --tx: 30px; z-index: 1;} /* Fiche la plus à droite, en-dessous */
+  /* Ajustements du contenu pour tenir dans la petite fiche */
+  .sheet .head{margin-bottom: 4px; gap: 4px; flex-wrap: wrap;}
+  .sheet .badge{font-size: .7rem; padding: 4px 6px; border-radius: 6px 6px 6px 0;}
+  .sheet .icon{font-size: 18px;}
+  .sheet h3{font-size: .7rem; line-height: 1.1; margin: 4px 0;}
+  .sheet p{display: none;} /* Masque la description pour gagner de la hauteur */
+  .sheet .from{font-size: .7rem; margin-top: 4px;}
+  .sheet .actions{display: none;} /* Masque les boutons d'action */
   
-  /* Le dernier élément a besoin d'un padding/margin pour laisser l'espace pour le texte suivant */
-  .sheet:last-child{
-      margin-bottom: 20px; 
+  /* Permet le clic sur la fiche entière pour ouvrir la modale */
+  .sheet[data-category]::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 10;
+      cursor: pointer;
   }
   
-  /* Désactive l'effet hover pour mobile (pas adapté à la cascade) */
   .sheet:hover{
-      transform: translateY(0) translateX(var(--tx,0px)) scale(1.0);
+      /* Désactive l'effet hover pour mobile */
+      transform:rotateZ(0) translateY(0) scale(1.0);
       box-shadow:0 20px 60px rgba(0,0,0,.18);
   }
-  
-  /* Remise à la taille de h1 pour mobile */
-  h1{ font-size: 1.8rem; }
+  /* La dernière fiche n'a pas besoin de marge négative */
+  .sheet:last-child {
+      margin-right: 0; 
+  }
 }
 /* AJOUT: compatibilité très anciens navigateurs sans aspect-ratio */
 @supports not (aspect-ratio: 1){
@@ -348,7 +334,7 @@ Devant, consultez les fiches par catégorie et ouvrez le détail complet.</p>
     </article>
   </div>
 
-  <div class="sheets partner-prices" id="partner-prices">
+  <div class="sheets partner-prices" id="partner-prices" style="display:none;">
   
     <article class="sheet" data-category="revetements" style="--rot:-2deg">
       <div class="head"><span class="badge">Partenaires</span><i class="icon fas fa-handshake"></i></div>
@@ -443,7 +429,7 @@ Devant, consultez les fiches par catégorie et ouvrez le détail complet.</p>
   }, 3500);
 })();
 /* =========================
-   DONNÉES TARIFS
+   DONNÉES TARIFS (conservées)
    ========================= */
 const priceDetails = {
   revetements: {
@@ -476,8 +462,6 @@ const priceDetails = {
       { label: "Installation VMC simple flux (Forfait M.O.)", price: "350 € - 650 €" }
     ]
   },
-  
-  /* NOUVELLE CATÉGORIE VIERGE À REMPLIR (PUBLIC) */
   vierge: {
     title: "Autres Prestations - Détails (HT)",
     items: [
@@ -486,8 +470,6 @@ const priceDetails = {
       { label: "Démolition et évacuation", price: "Sur devis" }
     ]
   },
-  
-  /* PARTENAIRES */
   revetements_partner: {
     title: "Revêtements & Peinture - Tarifs Partenaires (HT)",
     items: [
@@ -518,8 +500,6 @@ const priceDetails = {
       { label: "Installation VMC simple flux (Forfait M.O.)", price: "315 € - 585 €" }
     ]
   },
-  
-  /* NOUVELLE CATÉGORIE VIERGE À REMPLIR (PARTENAIRE) */
   vierge_partner: {
     title: "Autres Prestations - Détails Partenaires (HT)",
     items: [
@@ -533,12 +513,15 @@ const priceDetails = {
 let isPartnerView = false;
 
 /* =========================
-   OUVERTURE MODALE DÉTAIL
+   OUVERTURE MODALE DÉTAIL (conservée)
    ========================= */
 const detailModal = document.getElementById('detail-modal');
 const modalDetailsContent = document.getElementById('modal-details-content');
 document.querySelectorAll('.open-details, .sheet').forEach(el=>{
   el.addEventListener('click', (e)=>{
+    // Empêche de déclencher l'événement si c'est un bouton dans la fiche qui est cliqué sur desktop
+    if (e.target.closest('.btn') && window.innerWidth > 768) return;
+    
     const card = e.currentTarget.closest('.sheet') || e.currentTarget;
     const cat = card.getAttribute('data-category');
     const key = isPartnerView ? `${cat}_partner` : cat;
