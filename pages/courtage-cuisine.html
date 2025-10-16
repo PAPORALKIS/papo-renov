@@ -51,39 +51,15 @@ img{max-width:100%;display:block}
 a{color:inherit}
 
 /* ====== NAVBAR (cohérente avec tes autres pages) ====== */
-/* Nav active (conserve ton style) */
-nav ul li a.active{color:var(--primary-color);font-weight:700}
-
-/* =========================
-   MASQUAGE DE LA BARRE DE DÉFILEMENT
-   ========================= */
-    nav ul {
-    /* Masque la scrollbar pour IE et Edge */
-    -ms-overflow-style: none;  
-    /* Masque la scrollbar pour Firefox */
-    scrollbar-width: none;  
-    
-    /* Assure que l'élément peut défiler si besoin */
-    overflow-x: auto; 
-}
-/* Masque la scrollbar pour Chrome, Safari et Opera */
-nav ul::-webkit-scrollbar {
-    display: none;
-    }
-    nav ul li a {
-      text-decoration: none;
-      color: #003366;
-      font-weight: 600;
-    }
-    nav ul li a.active {
-      text-decoration: underline;
-    }
-
-    .logo img {
-      max-height: 50px;
-      width: auto;
-    }
-
+.nav{position:sticky;top:0;z-index:40;background:rgba(255,255,255,.92);backdrop-filter:saturate(140%) blur(8px);border-bottom:1px solid rgba(15,23,42,.06)}
+.nav__in{max-width:var(--w);margin:auto;display:flex;align-items:center;gap:16px;padding:12px 20px}
+.logo{display:flex;align-items:center;gap:10px;font-weight:800;letter-spacing:.2px;color:var(--brand)}
+.logo__mark{width:34px;height:34px;border-radius:12px;background:conic-gradient(from 230deg,var(--brand),var(--brand-2));box-shadow:var(--shadow);position:relative}
+.logo__mark::after{content:"P";position:absolute;inset:0;display:grid;place-items:center;color:#fff;font-weight:900}
+.nav__links{margin-left:auto;display:flex;gap:6px;flex-wrap:wrap}
+.nav__links a{padding:10px 14px;border-radius:12px;text-decoration:none}
+.nav__links a.active{background:#eef2ff;color:var(--brand);font-weight:700}
+.nav__links a:hover{background:#f2f4ff}
 
 /* ====== HERO ====== */
 .hero{position:relative;overflow:hidden}
