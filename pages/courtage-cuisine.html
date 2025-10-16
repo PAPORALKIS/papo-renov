@@ -40,8 +40,7 @@ body::before{
   position:fixed;
   transform:rotate(-12deg);
   inset:0;
-  /* Utilisation du logo fourni dans l'instruction */
-  background:url("../img/logo.png") no-repeat center center;
+  background:url("..img/logo.png") no-repeat center center;
   background-size:30%;
   opacity:0.06;           /* ajuste la transparence (0.03 à 0.1 selon rendu souhaité) */
   z-index:-1;
@@ -100,15 +99,11 @@ h3 {
 .muted, .note, p {
   line-height: 1.65; /* Améliorer la lisibilité du texte courant */
 }
-/* Suppression du soulignement H1 avec la couleur accent */
-/* h1 u {
+/* Soulignement H1 avec la couleur accent */
+h1 u {
     text-decoration-color: var(--accent);
     text-decoration-thickness: 3px;
     text-underline-offset: 6px;
-} */
-/* Suppression de l'élément <u> dans le H1 */
-h1 u {
-    text-decoration: none;
 }
 
 
@@ -152,6 +147,7 @@ h1 u {
     border: 1px solid rgba(15,23,42,.08); /* Bordure plus légère */
     border-radius:16px;
     box-shadow:0 4px 18px rgba(8,15,40,.04); /* Ombre plus douce */
+    padding:18px;
     transition: transform 0.3s ease-out;
 }
 .card:hover {
@@ -297,7 +293,7 @@ summary{cursor:pointer;font-weight:700}
   <div class="hero__in">
     <div>
       <span class="badge">✅ <b>Offre 100% gratuite</b> (voir conditions)</span>
-      <h1>Je négocie pour vous le meilleur prix de votre cuisine</h1>
+      <h1>Je négocie pour vous le <u>meilleur prix</u> de votre cuisine</h1>
       <p class="lead">
         Grâce à mes **connaissances**, **partenaires** et **fournisseurs**, je compare et négocie vos devis cuisine.
         <br>**Condition** : vous me confiez la **pose** et les **travaux**. Aucuns frais de courtage pour vous.
