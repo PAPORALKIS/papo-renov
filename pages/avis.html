@@ -231,7 +231,6 @@ nav ul::-webkit-scrollbar {
 </head>
 <body>
 
-  <!-- Header identique aux autres pages -->
   <header>
     <div class="logo">
       <img src="../img/logo.png" alt="Logo Paporalkis" />
@@ -250,12 +249,10 @@ nav ul::-webkit-scrollbar {
 </nav>
   </header>
 
-  <!-- Section Avis -->
   <section class="avis-section">
     <h1>Vos avis sur Papo Rénov</h1>
     <p class="subtitle">Découvrez ce que nos clients disent de nos réalisations et services.</p>
 
-    <!-- Avis Sophie -->
     <div class="avis">
       <img src="../img/meuble-laura-1.jpg" alt="Montage de meubles en KIT"
            onclick="showZoom({
@@ -270,7 +267,6 @@ nav ul::-webkit-scrollbar {
       </div>
     </div>
 
-    <!-- Avis Laura -->
     <div class="avis">
       <img src="../img/escalier SPACEO.png" alt="Projet dressing Karim"
            onclick="showZoom({
@@ -286,8 +282,7 @@ nav ul::-webkit-scrollbar {
     </div>
   </section>
 
-  <!-- Zoom Viewer -->
-  <div class="zoom-viewer" id="zoomViewer">
+  <div class="zoom-viewer" id="zoomViewer" style="display: none;">
     <span class="close-btn">&times;</span>
     <div class="zoom-content-wrapper">
       <div class="zoom-main-content">
@@ -336,14 +331,34 @@ nav ul::-webkit-scrollbar {
 
       currentLinkedImageIndex = 0;
       zoomImage.src = imagesToDisplay[0];
+      // Le code JS doit toujours afficher le viewer ici
       zoomViewer.style.display = "flex";
+      
+      // Assurer que la première image est active
+      if (zoomLinkedImages.firstChild) {
+          zoomLinkedImages.firstChild.classList.add("active");
+      }
     }
 
     function navigateLinkedImages(direction) {
       if (!currentZoomData) return;
       const imagesToDisplay = [currentZoomData.src, ...(currentZoomData.linkedImages || [])];
-      currentLinkedImageIndex = (currentLinkedImageIndex + direction + imagesToDisplay.length) % imagesToDisplay.length;
+      
+      // Nouvelle logique pour la navigation circulaire
+      currentLinkedImageIndex = (currentLinkedImageIndex + direction);
+      if (currentLinkedImageIndex < 0) {
+          currentLinkedImageIndex = imagesToDisplay.length - 1;
+      } else if (currentLinkedImageIndex >= imagesToDisplay.length) {
+          currentLinkedImageIndex = 0;
+      }
+
       zoomImage.src = imagesToDisplay[currentLinkedImageIndex];
+      
+      // Mettre à jour la vignette active
+      document.querySelectorAll(".zoom-linked-images img").forEach(img => img.classList.remove("active"));
+      if (zoomLinkedImages.children[currentLinkedImageIndex]) {
+          zoomLinkedImages.children[currentLinkedImageIndex].classList.add("active");
+      }
     }
 
     zoomNavLeft.addEventListener("click", () => navigateLinkedImages(-1));
@@ -352,4 +367,3 @@ nav ul::-webkit-scrollbar {
   </script>
 </body>
 </html>
-}
