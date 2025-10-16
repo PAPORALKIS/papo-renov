@@ -2,12 +2,9 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Tarifs - Papo Rénov</title>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../style.css"><link rel="preconnect" href="https://cdnjs.cloudflare.com">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Courtage Cuisine – Offre 100% Gratuite | Papo-Rénov</title>
+<meta name="description" content="Service de courtage cuisine 100% gratuit : je négocie pour vous le meilleur prix auprès de mes partenaires et fournisseurs. Condition : me confier la pose et les travaux. Devis et comparatif offerts." />
 <style>
 /* ====== THEME ====== */
 :root{
@@ -42,7 +39,7 @@ body::before{
   transform:rotate(-12deg);
   inset:0;
   background:url("..img/logo.png") no-repeat center center;
-  background-size:35%;
+  background-size:30%;
   opacity:0.06;           /* ajuste la transparence (0.03 à 0.1 selon rendu souhaité) */
   z-index:-1;
   pointer-events:none;
@@ -132,233 +129,248 @@ summary{cursor:pointer;font-weight:700}
 </style>
 </head>
 <body>
-<!-- ===== NAV ===== -->
+<header>
+  <div class="logo">
+    <img src="../img/logo.png" alt="Logo Papo Rénov">
+  </div>
 <nav>
-<ul>
-<li><a href="../index.html">Accueil</a></li>
-<li><a href="devis.html">Demande de devis</a></li>
-<li><a href="realisations.html">Mes réalisations</a></li>
-<li><a href="tarifs.html">Tarifs</a></li>
-<li><a href="planning.html">Planning</a></li>
-<li><a href="contact.html">Contact</a></li>
-<li><a href="avis.html">Avis clients</a></li>
-<li><a href="courtage-cuisine.html">Courtage Cuisine</a></li>
-</ul>
+  <ul>
+    <li><a href="../index.html">Accueil</a></li>
+    <li><a href="devis.html">Demande de devis</a></li>
+    <li><a href="realisations.html">Mes réalisations</a></li>
+    <li><a href="tarifs.html">Tarifs</a></li>
+    <li><a href="planning.html">Planning</a></li>
+    <li><a href="contact.html">Contact</a></li>
+    <li><a href="avis.html">Avis clients</a></li>
+    <li><a class="active" href="courtage-cuisine.html">Courtage Cuisine</a></li>
+  </ul>
 </nav>
+
+</header>
+
 <!-- ===== HERO ===== -->
 <header class="hero">
-<div class="hero__in">
-<div>
-<span class="badge">✅ <b>Offre 100% gratuite</b> (voir conditions)</span>
-<h1>Je négocie pour vous le <u>meilleur prix</u> de votre cuisine</h1>
-<p class="lead">
+  <div class="hero__in">
+    <div>
+      <span class="badge">✅ <b>Offre 100% gratuite</b> (voir conditions)</span>
+      <h1>Je négocie pour vous le <u>meilleur prix</u> de votre cuisine</h1>
+      <p class="lead">
         Grâce à mes <b>connaissances</b>, <b>partenaires</b> et <b>fournisseurs</b>, je compare et négocie vos devis cuisine.
-        <br/><b>Condition</b> : vous me confiez la <b>pose</b> et les <b>travaux</b>. Aucuns frais de courtage pour vous.
+        <br><b>Condition</b> : vous me confiez la <b>pose</b> et les <b>travaux</b>. Aucuns frais de courtage pour vous.
       </p>
-<div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:12px">
-<a class="btn btn--accent" href="#brief">Obtenir mon comparatif gratuit</a>
-<a class="btn btn--ghost" href="#faq">Comment ça marche ?</a>
-</div>
-<div class="hero__card" style="margin-top:14px">
-<div style="display:flex;gap:10px;flex-wrap:wrap">
-<div style="display:flex;gap:8px;align-items:flex-start">
-<span aria-hidden="true">💶</span>
-<div>
-<b>Négociation prix &amp; remises</b>
-<div class="muted">Showrooms &amp; fournisseurs partenaires, sans favoritisme.</div>
-</div>
-</div>
-<div style="display:flex;gap:8px;align-items:flex-start">
-<span aria-hidden="true">📐</span>
-<div>
-<b>Plan &amp; validation technique</b>
-<div class="muted">Vérif. faisabilité avant commande.</div>
-</div>
-</div>
-<div style="display:flex;gap:8px;align-items:flex-start">
-<span aria-hidden="true">🧰</span>
-<div>
-<b>Pose sous contrôle</b>
-<div class="muted">Travaux par mes soins, garantie pro.</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-<!-- visuel -->
-<div aria-hidden="true" class="kv">
-<div style="text-align:center">
-<div style="font-weight:800;font-size:22px;color:var(--brand)">Courtage Cuisine</div>
-<div style="margin-top:4px;color:var(--muted)">Comparatif &amp; Négociation • 0€</div>
-<div style="height:10px"></div>
-<svg aria-label="Illustration cuisine" height="140" role="img" viewbox="0 0 220 140" width="220">
-<rect fill="#eaf2ff" height="80" rx="10" stroke="#c9d8f7" width="200" x="10" y="30"></rect>
-<rect fill="#ffffff" height="60" rx="8" stroke="#c9d8f7" width="60" x="20" y="40"></rect>
-<rect fill="#ffffff" height="25" rx="6" stroke="#c9d8f7" width="100" x="90" y="40"></rect>
-<rect fill="#ffffff" height="25" rx="6" stroke="#c9d8f7" width="100" x="90" y="75"></rect>
-<circle cx="50" cy="70" fill="#1c4b78" r="12"></circle>
-<rect fill="#1c4b78" height="6" opacity=".2" rx="3" width="160" x="30" y="110"></rect>
-</svg>
-</div>
-</div>
-</div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:12px">
+        <a href="#brief" class="btn btn--accent">Obtenir mon comparatif gratuit</a>
+        <a href="#faq" class="btn btn--ghost">Comment ça marche ?</a>
+      </div>
+      <div class="hero__card" style="margin-top:14px">
+        <div style="display:flex;gap:10px;flex-wrap:wrap">
+          <div style="display:flex;gap:8px;align-items:flex-start">
+            <span aria-hidden="true">💶</span>
+            <div>
+              <b>Négociation prix & remises</b>
+              <div class="muted">Showrooms & fournisseurs partenaires, sans favoritisme.</div>
+            </div>
+          </div>
+          <div style="display:flex;gap:8px;align-items:flex-start">
+            <span aria-hidden="true">📐</span>
+            <div>
+              <b>Plan & validation technique</b>
+              <div class="muted">Vérif. faisabilité avant commande.</div>
+            </div>
+          </div>
+          <div style="display:flex;gap:8px;align-items:flex-start">
+            <span aria-hidden="true">🧰</span>
+            <div>
+              <b>Pose sous contrôle</b>
+              <div class="muted">Travaux par mes soins, garantie pro.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- visuel -->
+    <div class="kv" aria-hidden="true">
+      <div style="text-align:center">
+        <div style="font-weight:800;font-size:22px;color:var(--brand)">Courtage Cuisine</div>
+        <div style="margin-top:4px;color:var(--muted)">Comparatif & Négociation • 0€</div>
+        <div style="height:10px"></div>
+        <svg width="220" height="140" viewBox="0 0 220 140" role="img" aria-label="Illustration cuisine">
+          <rect x="10" y="30" width="200" height="80" rx="10" fill="#eaf2ff" stroke="#c9d8f7"/>
+          <rect x="20" y="40" width="60" height="60" rx="8" fill="#ffffff" stroke="#c9d8f7"/>
+          <rect x="90" y="40" width="100" height="25" rx="6" fill="#ffffff" stroke="#c9d8f7"/>
+          <rect x="90" y="75" width="100" height="25" rx="6" fill="#ffffff" stroke="#c9d8f7"/>
+          <circle cx="50" cy="70" r="12" fill="#1c4b78"/>
+          <rect x="30" y="110" width="160" height="6" rx="3" fill="#1c4b78" opacity=".2"/>
+        </svg>
+      </div>
+    </div>
+  </div>
 </header>
+
 <!-- ===== VALEUR ===== -->
 <section class="section">
-<div class="grid-3">
-<article class="card">
-<h3>Gratuit pour vous</h3>
-<p class="muted">Mon service de courtage est à 0€. Ma rémunération provient des <b>travaux de pose</b> que vous me confiez (transparence totale).</p>
-</article>
-<article class="card">
-<h3>Indépendant &amp; transparent</h3>
-<p class="muted">Je consulte plusieurs enseignes/fournisseurs pour un comparatif honnête, selon vos critères (style, délais, budget).</p>
-</article>
-<article class="card">
-<h3>Gain de temps &amp; d’argent</h3>
-<p class="muted">Vous évitez les allers-retours en magasin ; je négocie pour vous pour obtenir le meilleur rapport qualité/prix.</p>
-</article>
-</div>
+  <div class="grid-3">
+    <article class="card">
+      <h3>Gratuit pour vous</h3>
+      <p class="muted">Mon service de courtage est à 0€. Ma rémunération provient des <b>travaux de pose</b> que vous me confiez (transparence totale).</p>
+    </article>
+    <article class="card">
+      <h3>Indépendant & transparent</h3>
+      <p class="muted">Je consulte plusieurs enseignes/fournisseurs pour un comparatif honnête, selon vos critères (style, délais, budget).</p>
+    </article>
+    <article class="card">
+      <h3>Gain de temps & d’argent</h3>
+      <p class="muted">Vous évitez les allers-retours en magasin ; je négocie pour vous pour obtenir le meilleur rapport qualité/prix.</p>
+    </article>
+  </div>
 </section>
+
 <!-- ===== ÉTAPES ===== -->
 <section class="section">
-<h2>Comment ça marche ?</h2>
-<div aria-label="Étapes du service" class="steps">
-<div class="step"><div class="num">1</div><b>Brief express</b><div class="muted">Dimensions, envies, budget — 10 min suffisent.</div></div>
-<div class="step"><div class="num">2</div><b>Comparatif</b><div class="muted">Je sollicite mes partenaires &amp; récupère des offres.</div></div>
-<div class="step"><div class="num">3</div><b>Négo &amp; conseils</b><div class="muted">Je défends vos intérêts &amp; sécurise le plan.</div></div>
-<div class="step"><div class="num">4</div><b>Choix final</b><div class="muted">Vous validez l’offre qui vous convient.</div></div>
-<div class="step"><div class="num">5</div><b>Pose par mes soins</b><div class="muted">Travaux réalisés avec garantie pro.</div></div>
-</div>
+  <h2>Comment ça marche ?</h2>
+  <div class="steps" aria-label="Étapes du service">
+    <div class="step"><div class="num">1</div><b>Brief express</b><div class="muted">Dimensions, envies, budget — 10 min suffisent.</div></div>
+    <div class="step"><div class="num">2</div><b>Comparatif</b><div class="muted">Je sollicite mes partenaires & récupère des offres.</div></div>
+    <div class="step"><div class="num">3</div><b>Négo & conseils</b><div class="muted">Je défends vos intérêts & sécurise le plan.</div></div>
+    <div class="step"><div class="num">4</div><b>Choix final</b><div class="muted">Vous validez l’offre qui vous convient.</div></div>
+    <div class="step"><div class="num">5</div><b>Pose par mes soins</b><div class="muted">Travaux réalisés avec garantie pro.</div></div>
+  </div>
 </section>
+
 <!-- ===== COMPARATIF TABLE ===== -->
 <section class="section">
-<h2>Comparatif type (exemple)</h2>
-<div style="overflow:auto">
-<table class="table" role="table">
-<thead>
-<tr><th>Critère</th><th>Enseigne A</th><th>Enseigne B</th><th>Fournisseur C</th><th>Objectif</th></tr>
-</thead>
-<tbody>
-<tr><td>Prix meubles</td><td>€€</td><td>€</td><td>€€€</td><td>€ le plus bas à qualité égale</td></tr>
-<tr><td>Plan de travail</td><td>Stratifié</td><td>Quartz</td><td>Compact HPL</td><td>Matériau adapté usage/budget</td></tr>
-<tr><td>Délais</td><td>2–3 sem</td><td>1–2 sem</td><td>4–5 sem</td><td>Synchronisé avec planning travaux</td></tr>
-<tr><td>Négociation</td><td><span class="badge-ok">-10% obtenu</span></td><td><span class="badge-ok">Livraison offerte</span></td><td><span class="badge-no">Non pertinent</span></td><td>Maximiser les avantages</td></tr>
-</tbody>
-</table>
-</div>
-<p class="note">Exemple indicatif. Le comparatif réel dépend de votre brief, marque choisie, matériaux et délais souhaités.</p>
+  <h2>Comparatif type (exemple)</h2>
+  <div style="overflow:auto">
+    <table class="table" role="table">
+      <thead>
+        <tr><th>Critère</th><th>Enseigne A</th><th>Enseigne B</th><th>Fournisseur C</th><th>Objectif</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Prix meubles</td><td>€€</td><td>€</td><td>€€€</td><td>€ le plus bas à qualité égale</td></tr>
+        <tr><td>Plan de travail</td><td>Stratifié</td><td>Quartz</td><td>Compact HPL</td><td>Matériau adapté usage/budget</td></tr>
+        <tr><td>Délais</td><td>2–3 sem</td><td>1–2 sem</td><td>4–5 sem</td><td>Synchronisé avec planning travaux</td></tr>
+        <tr><td>Négociation</td><td><span class="badge-ok">-10% obtenu</span></td><td><span class="badge-ok">Livraison offerte</span></td><td><span class="badge-no">Non pertinent</span></td><td>Maximiser les avantages</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="note">Exemple indicatif. Le comparatif réel dépend de votre brief, marque choisie, matériaux et délais souhaités.</p>
 </section>
+
 <!-- ===== GARANTIES ===== -->
 <section class="section">
-<div class="grid-3">
-<div class="card">
-<h3>Pas de frais cachés</h3>
-<p class="muted">Le courtage est gratuit. Vous ne payez que la cuisine choisie + la pose, avec devis détaillés.</p>
-</div>
-<div class="card">
-<h3>Assurance &amp; garanties</h3>
-<p class="muted">Travaux couverts par mes garanties pro (RC, décennale selon nature des travaux).</p>
-</div>
-<div class="card">
-<h3>Un seul interlocuteur</h3>
-<p class="muted">Je pilote vos devis, le planning et la pose jusqu’à la réception.</p>
-</div>
-</div>
+  <div class="grid-3">
+    <div class="card">
+      <h3>Pas de frais cachés</h3>
+      <p class="muted">Le courtage est gratuit. Vous ne payez que la cuisine choisie + la pose, avec devis détaillés.</p>
+    </div>
+    <div class="card">
+      <h3>Assurance & garanties</h3>
+      <p class="muted">Travaux couverts par mes garanties pro (RC, décennale selon nature des travaux).</p>
+    </div>
+    <div class="card">
+      <h3>Un seul interlocuteur</h3>
+      <p class="muted">Je pilote vos devis, le planning et la pose jusqu’à la réception.</p>
+    </div>
+  </div>
 </section>
+
 <!-- ===== FAQ ===== -->
-<section class="section" id="faq">
-<h2>Questions fréquentes</h2>
-<div class="card" style="display:grid;gap:10px">
-<details>
-<summary>Pourquoi c’est gratuit pour moi ?</summary>
-<p class="muted">Parce que je suis rémunéré sur la <b>prestation de pose/travaux</b> que vous me confiez. Aucuns frais de courtage ne vous sont facturés.</p>
-</details>
-<details>
-<summary>Êtes-vous lié à une enseigne ?</summary>
-<p class="muted">Non. Je consulte plusieurs marques/fournisseurs selon vos critères. Mon rôle : obtenir la meilleure proposition pour vous.</p>
-</details>
-<details>
-<summary>Que se passe-t-il si je ne vous confie pas la pose ?</summary>
-<p class="muted">Le service de courtage <b>gratuit</b> est conditionné à la réalisation des travaux par mes soins. Sans cette condition, le temps d’étude et de négociation fait l’objet d’un forfait.</p>
-</details>
-<details>
-<summary>En combien de temps puis-je avoir un comparatif ?</summary>
-<p class="muted">Généralement <b>48 à 72 h ouvrées</b> après le brief complet, selon la complexité et la réactivité des fournisseurs.</p>
-</details>
-</div>
+<section id="faq" class="section">
+  <h2>Questions fréquentes</h2>
+  <div class="card" style="display:grid;gap:10px">
+    <details>
+      <summary>Pourquoi c’est gratuit pour moi ?</summary>
+      <p class="muted">Parce que je suis rémunéré sur la <b>prestation de pose/travaux</b> que vous me confiez. Aucuns frais de courtage ne vous sont facturés.</p>
+    </details>
+    <details>
+      <summary>Êtes-vous lié à une enseigne ?</summary>
+      <p class="muted">Non. Je consulte plusieurs marques/fournisseurs selon vos critères. Mon rôle : obtenir la meilleure proposition pour vous.</p>
+    </details>
+    <details>
+      <summary>Que se passe-t-il si je ne vous confie pas la pose ?</summary>
+      <p class="muted">Le service de courtage <b>gratuit</b> est conditionné à la réalisation des travaux par mes soins. Sans cette condition, le temps d’étude et de négociation fait l’objet d’un forfait.</p>
+    </details>
+    <details>
+      <summary>En combien de temps puis-je avoir un comparatif ?</summary>
+      <p class="muted">Généralement <b>48 à 72 h ouvrées</b> après le brief complet, selon la complexité et la réactivité des fournisseurs.</p>
+    </details>
+  </div>
 </section>
+
 <!-- ===== FORMULAIRE ===== -->
-<section class="section" id="brief">
-<div class="cta">
-<div class="panel">
-<h2>Brief gratuit — lancez votre comparatif</h2>
-<p class="muted">Décrivez votre projet : je reviens vers vous rapidement avec une première estimation et les prochaines étapes.</p>
-<form class="form" id="briefForm" novalidate="">
-<div class="input">
-<label for="nom">Nom</label>
-<input id="nom" name="nom" placeholder="Votre nom" required="" type="text"/>
-</div>
-<div class="input">
-<label for="email">Email</label>
-<input id="email" name="email" placeholder="vous@exemple.fr" required="" type="email"/>
-</div>
-<div class="input">
-<label for="tel">Téléphone</label>
-<input id="tel" name="tel" placeholder="06 12 34 56 78" type="tel"/>
-</div>
-<div class="input">
-<label for="budget">Budget cuisine (hors pose)</label>
-<select id="budget" name="budget">
-<option value="">Sélectionnez…</option>
-<option>&lt; 3 000€</option>
-<option>3 000 – 6 000€</option>
-<option>6 000 – 10 000€</option>
-<option>&gt; 10 000€</option>
-</select>
-</div>
-<div class="input full">
-<label for="dimensions">Dimensions &amp; contraintes</label>
-<textarea id="dimensions" name="dimensions" placeholder="Ex : linéaire 3,20 m + retour 1,20 m, hauteur sous plafond 2,50 m, arrivée d’eau à gauche…" rows="3"></textarea>
-</div>
-<div class="input full">
-<label for="style">Style &amp; matériaux souhaités</label>
-<textarea id="style" name="style" placeholder="Ex : façades mates, poignées noires, plan de travail stratifié ou compact, crédence carrelage blanc…" rows="3"></textarea>
-</div>
-<div class="input full">
-<label class="input--check">
-<input id="cond" required="" type="checkbox"/>
-<span>Je comprends que le courtage est gratuit si je confie la <b>pose</b> et les <b>travaux</b> à Papo-Rénov.</span>
-</label>
-<div class="help">Sans la pose par Papo-Rénov, une étude payante peut être proposée.</div>
-</div>
-<div class="full" style="display:flex;gap:10px;flex-wrap:wrap">
-<button class="btn btn--accent" type="submit">Recevoir mon estimation</button>
-<a class="btn btn--ghost" href="contact.html">Contacter directement</a>
-</div>
-<p class="note" id="formMsg" role="status" style="margin:8px 0 0"></p>
-</form>
-</div>
-<div>
-<div class="card">
-<h3>Infos pratiques</h3>
-<ul class="muted" style="margin:8px 0 0 18px">
-<li>Zone : Bouches-du-Rhône (et proximité)</li>
-<li>Disponibilités : sur RDV</li>
-<li>Devis détaillé &amp; calendrier des travaux</li>
-</ul>
-</div>
-<div class="card" style="margin-top:12px">
-<h3>Mentions &amp; transparence</h3>
-<p class="muted">Le service de courtage est offert sous condition de confier la pose/travaux à Papo-Rénov. Les devis fournisseurs sont communiqués clairement — pas de marge cachée sur vos meubles. La rémunération provient de la prestation de pose et des travaux associés.</p>
-</div>
-</div>
-</div>
+<section id="brief" class="section">
+  <div class="cta">
+    <div class="panel">
+      <h2>Brief gratuit — lancez votre comparatif</h2>
+      <p class="muted">Décrivez votre projet : je reviens vers vous rapidement avec une première estimation et les prochaines étapes.</p>
+      <form id="briefForm" class="form" novalidate>
+        <div class="input">
+          <label for="nom">Nom</label>
+          <input id="nom" name="nom" type="text" required placeholder="Votre nom" />
+        </div>
+        <div class="input">
+          <label for="email">Email</label>
+          <input id="email" name="email" type="email" required placeholder="vous@exemple.fr" />
+        </div>
+        <div class="input">
+          <label for="tel">Téléphone</label>
+          <input id="tel" name="tel" type="tel" placeholder="06 12 34 56 78" />
+        </div>
+        <div class="input">
+          <label for="budget">Budget cuisine (hors pose)</label>
+          <select id="budget" name="budget">
+            <option value="">Sélectionnez…</option>
+            <option>&lt; 3 000€</option>
+            <option>3 000 – 6 000€</option>
+            <option>6 000 – 10 000€</option>
+            <option>&gt; 10 000€</option>
+          </select>
+        </div>
+        <div class="input full">
+          <label for="dimensions">Dimensions & contraintes</label>
+          <textarea id="dimensions" name="dimensions" rows="3" placeholder="Ex : linéaire 3,20 m + retour 1,20 m, hauteur sous plafond 2,50 m, arrivée d’eau à gauche…"></textarea>
+        </div>
+        <div class="input full">
+          <label for="style">Style & matériaux souhaités</label>
+          <textarea id="style" name="style" rows="3" placeholder="Ex : façades mates, poignées noires, plan de travail stratifié ou compact, crédence carrelage blanc…"></textarea>
+        </div>
+        <div class="input full">
+          <label class="input--check">
+            <input id="cond" type="checkbox" required />
+            <span>Je comprends que le courtage est gratuit si je confie la <b>pose</b> et les <b>travaux</b> à Papo-Rénov.</span>
+          </label>
+          <div class="help">Sans la pose par Papo-Rénov, une étude payante peut être proposée.</div>
+        </div>
+        <div class="full" style="display:flex;gap:10px;flex-wrap:wrap">
+          <button class="btn btn--accent" type="submit">Recevoir mon estimation</button>
+          <a class="btn btn--ghost" href="contact.html">Contacter directement</a>
+        </div>
+        <p id="formMsg" class="note" role="status" style="margin:8px 0 0"></p>
+      </form>
+    </div>
+    <div>
+      <div class="card">
+        <h3>Infos pratiques</h3>
+        <ul class="muted" style="margin:8px 0 0 18px">
+          <li>Zone : Bouches-du-Rhône (et proximité)</li>
+          <li>Disponibilités : sur RDV</li>
+          <li>Devis détaillé & calendrier des travaux</li>
+        </ul>
+      </div>
+      <div class="card" style="margin-top:12px">
+        <h3>Mentions & transparence</h3>
+        <p class="muted">Le service de courtage est offert sous condition de confier la pose/travaux à Papo-Rénov. Les devis fournisseurs sont communiqués clairement — pas de marge cachée sur vos meubles. La rémunération provient de la prestation de pose et des travaux associés.</p>
+      </div>
+    </div>
+  </div>
 </section>
+
 <!-- ===== FOOTER NOTE ===== -->
 <footer class="footer">
-<p>© Papo-Rénov — Courtage Cuisine &amp; Pose. Tous droits réservés.</p>
+  <p>© Papo-Rénov — Courtage Cuisine & Pose. Tous droits réservés.</p>
 </footer>
+
 <script>
 /* Accessibilité focus visible (simple) */
 (function(){document.addEventListener('keydown',e=>{if(e.key==='Tab'){document.body.classList.add('kbd')}})})();
