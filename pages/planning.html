@@ -2,58 +2,82 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8" />
-  <title>Planning - Papo Rénov</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="../style.css" />
-  <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet" /> <style>
-    /* ---------------------------------------------------------------- */
-    /* Styles copiés pour l'esthétique générale et la barre de navigation */
-    /* ---------------------------------------------------------------- */
-    body {
-      font-family: 'Poppins', sans-serif;
-      margin: 0;
-      padding: 0 1rem;
-      box-sizing: border-box;
-      overflow-x: hidden;
-      background: #f8f8f8; /* Fond légèrement grisé pour la page */
-    }
-    header {
-      max-width: 1200px; /* Élargissement du header pour la page de planning */
-      margin: 0 auto;
-      padding: 1rem 0;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      border-bottom: 1px solid #eee; /* Ligne de séparation */
-    }
-    nav ul {
-      list-style: none;
-      display: flex;
-      gap: 1.5rem; /* Espace entre les liens */
-      padding: 0;
-      margin: 0;
-      flex-wrap: wrap;
-      justify-content: flex-end;
-    }
-    nav ul li a {
-      text-decoration: none;
-      color: #003366;
-      font-weight: 600;
-      transition: color 0.3s, text-decoration 0.3s;
-    }
-    nav ul li a:hover {
-      color: #00509e;
-      text-decoration: underline;
-    }
-    nav ul li a.active {
-      text-decoration: underline;
-      color: #00509e; /* Couleur active plus visible */
-    }
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Planning - Papo Rénov</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../style.css"><link rel="preconnect" href="https://cdnjs.cloudflare.com">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 
-    .logo img {
-      max-height: 20px;
-      width: auto;
+<style>
+/* =========================
+   PALETTE / BASE
+   ========================= */
+:root{
+  --primary-color:#007bff;
+  --secondary-color:#212529;
+  --background-light:#f4f7f9;
+  --card-background:#ffffff;
+  --price-accent:#28a745;
+  --accent-orange:#ffc107;
+  --border-light:#e9ecef;
+  --shadow-color:rgba(0,0,0,.16);
+  --dark-blue-logo:#0a1f44;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  font-family:'Poppins',sans-serif;
+  background:var(--background-light);
+  color:var(--secondary-color);
+  line-height:1.6;
+  min-width:320px;
+}
+
+/* Nav active (conserve ton style) */
+nav ul li a.active{color:var(--primary-color);font-weight:700}
+
+/* =========================
+   MASQUAGE DE LA BARRE DE DÉFILEMENT
+   ========================= */
+    nav ul {
+    /* Masque la scrollbar pour IE et Edge */
+    -ms-overflow-style: none;  
+    /* Masque la scrollbar pour Firefox */
+    scrollbar-width: none;  
+    
+    /* Assure que l'élément peut défiler si besoin */
+    overflow-x: auto; 
+}
+/* Masque la scrollbar pour Chrome, Safari et Opera */
+nav ul::-webkit-scrollbar {
+    display: none;
+}
+
+/* =========================
+   SECTION HERO (TABLETTE)
+   ========================= */
+.content-section{
+  /* MODIFIÉ: Réduit le padding-top de 40px à 20px */
+  padding:20px 20px 40px; 
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  text-align:center;
+  position:relative;
+}
+h1{
+  color:var(--secondary-color);
+  margin:0 0 14px;
+  font-weight:800;
+  /* MODIFIÉ: Suppression du blocage et réglage de la taille à 1.2rem */
+  font-size:1.2rem; 
+}
+h1::after{
+  content:'';
+  display:block;
+  width:80px;height:4px;
+  background:var(--primary-color);
+  margin:18px auto 0;border-radius:2px;
     }
 
     /* ---------------------------------------------------------------- */
