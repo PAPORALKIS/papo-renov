@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Courtage Cuisine – Offre 100% Gratuite | Papo-Rénov</title>
 <meta name="description" content="Service de courtage cuisine 100% gratuit : je négocie pour vous le meilleur prix auprès de mes partenaires et fournisseurs. Condition : me confier la pose et les travaux. Devis et comparatif offerts." />
- <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../style.css">
 <style>
 /* ====== THEME ====== */
@@ -34,55 +34,64 @@ html,body{
   overflow-x:hidden;
 }
 
-/* === FILIGRANE LOGO Papo-Rénov === */
-body::before{
-  content:"";
-  position:fixed;
-  transform:rotate(-12deg);
-  inset:0;
-  background:url("..img/logo.png") no-repeat center center;
-  background-size:30%;
-  opacity:0.06;           /* ajuste la transparence (0.03 à 0.1 selon rendu souhaité) */
-  z-index:-1;
-  pointer-events:none;
-}
-
 img{max-width:100%;display:block}
 a{color:inherit}
 
+/* ====== FILIGRANE LOGO Papo-Rénov (rotation douce) ====== */
+body::before{
+  content:"";
+  position:fixed;
+  top:50%;
+  left:50%;
+  width:90vmin;               /* grand mais proportionnel à l’écran */
+  height:90vmin;
+  transform:translate(-50%,-50%) rotate(0deg);
+  transform-origin:center center;
+  background:url("../img/logo.png") no-repeat center / contain;
+  opacity:0.05;               /* transparence discrète */
+  z-index:-1;                 /* derrière tout le contenu */
+  pointer-events:none;
+  filter:drop-shadow(0 10px 30px rgba(0,0,0,.05)); /* léger relief design */
+  animation:watermark-spin 80s linear infinite;    /* rotation très lente */
+}
+@keyframes watermark-spin{
+  from{ transform:translate(-50%,-50%) rotate(0deg); }
+  to  { transform:translate(-50%,-50%) rotate(360deg); }
+}
+
 /* ====== NAVBAR (CONSERVÉE) ====== */
-.nav{position:sticky;top:0;z-index:40;background:rgba(255,255,255,.92);backdrop-filter:saturate(140%) blur(8px);border-bottom:1px solid rgba(15,23,42,.06);box-shadow:var(--shadow);} /* Ajout de shadow pour l'esthétique générale */
+.nav{position:sticky;top:0;z-index:40;background:rgba(255,255,255,.92);backdrop-filter:saturate(140%) blur(8px);border-bottom:1px solid rgba(15,23,42,.06);box-shadow:var(--shadow);}
 .nav__in{max-width:var(--w);margin:auto;display:flex;align-items:center;gap:16px;padding:12px 20px}
 .logo{display:flex;align-items:center;gap:10px;font-weight:800;letter-spacing:.2px;color:var(--brand)}
-.logo__mark{width:34px;height:34px;border-radius:12px;background:conic-gradient(from 230deg,var(--brand),var(--brand-2));box-shadow:0 4px 10px rgba(12, 18, 30, 0.2);position:relative} /* Ombre plus visible */
+.logo__mark{width:34px;height:34px;border-radius:12px;background:conic-gradient(from 230deg,var(--brand),var(--brand-2));box-shadow:0 4px 10px rgba(12, 18, 30, 0.2);position:relative}
 .logo__mark::after{content:"P";position:absolute;inset:0;display:grid;place-items:center;color:#fff;font-weight:900}
 .nav__links{margin-left:auto;display:flex;gap:6px;flex-wrap:wrap}
 .nav__links a{padding:10px 14px;border-radius:12px;text-decoration:none}
 .nav__links a.active{background:#eef2ff;color:var(--brand);font-weight:700}
 .nav__links a:hover{background:#f2f4ff}
 
-/* ====== TYPOGRAPHIE & HIÉRARCHIE (MODIFIÉE) ====== */
+/* ====== TYPOGRAPHIE & HIÉRARCHIE ====== */
 /* Utiliser Poppins pour les titres, Inter pour le corps */
 h1, h2, h3, .logo, .btn {
   font-family: 'Poppins', sans-serif;
-  letter-spacing: -0.2px; /* Rendre les titres plus compacts */
+  letter-spacing: -0.2px;
 }
 
 /* Améliorer l'espacement général des titres */
 h1{
-  margin: 12px 0 16px; /* Plus d'espace après H1 */
+  margin: 12px 0 16px;
   font-size:clamp(26px,3.2vw,44px);
   line-height:1.1;
 }
 h2 {
   margin: 0 0 24px;
   font-size: clamp(24px, 2.5vw, 36px);
-  text-align: center; /* Centrer les titres de section */
+  text-align: center;
   position: relative;
   padding-bottom: 8px;
   padding-top: 10px;
 }
-/* Décoration sous H2 */
+/* Barre décorative sous H2 (conservée) */
 h2::after {
     content: '';
     display: block;
@@ -97,15 +106,11 @@ h3 {
   font-size: 18px;
 }
 .muted, .note, p {
-  line-height: 1.65; /* Améliorer la lisibilité du texte courant */
-}
-/* Soulignement H1 avec la couleur accent */
-h1 u {
-    text-decoration-color: var(--accent);
-    text-decoration-thickness: 3px;
-    text-underline-offset: 6px;
+  line-height: 1.65;
 }
 
+/* >>> Désactivation de tout soulignement de mots <<< */
+u{ text-decoration: none !important; }
 
 /* ====== HERO ====== */
 .hero{position:relative;overflow:hidden}
@@ -116,54 +121,53 @@ h1 u {
 .lead{color:var(--muted);font-size:clamp(16px,1.6vw,18px)}
 .hero__card{
     background:var(--card);
-    border: none; /* Supprimer la bordure */
+    border: none;
     border-radius:var(--radius);
-    box-shadow:var(--shadow); /* Utiliser l'ombre standard */
+    box-shadow:var(--shadow);
     padding:20px;
 }
 .kv{aspect-ratio:4/3;border-radius:16px;border:1px solid var(--ring);background:linear-gradient(180deg,#ffffff 0%,#f8fbff 100%);display:grid;place-items:center}
 
-/* ====== BUTTONS (MODIFIÉ) ====== */
+/* ====== BUTTONS ====== */
 .btn{appearance:none;border:0;border-radius:14px;padding:12px 18px;background:var(--brand);color:#fff;font-weight:700;cursor:pointer;box-shadow:var(--shadow); transition: all 0.2s}
 .btn:hover{filter:brightness(1.06)}
 .btn--ghost{background:#fff;color:var(--brand);border:1px solid var(--ring)}
 .btn--accent{
     background:var(--accent);
-    color:var(--brand); /* Texte bleu marine sur fond jaune pour meilleur contraste */
-    box-shadow:0 6px 16px rgba(242,183,5,.4); /* Ombre plus visible pour l'action principale */
+    color:var(--brand);
+    box-shadow:0 6px 16px rgba(242,183,5,.4);
 }
 .btn--accent:hover{
     transform: translateY(-2px);
     box-shadow:0 8px 20px rgba(242,183,5,.5);
-    filter: none; /* Désactiver le filtre brightness si on utilise transform */
+    filter: none;
 }
 
-
-/* ====== SECTIONS (MODIFIÉ) ====== */
+/* ====== SECTIONS ====== */
 .section{max-width:var(--w);margin:34px auto;padding:0 20px}
 .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
 .card{
     background:var(--card);
-    border: 1px solid rgba(15,23,42,.08); /* Bordure plus légère */
+    border: 1px solid rgba(15,23,42,.08);
     border-radius:16px;
-    box-shadow:0 4px 18px rgba(8,15,40,.04); /* Ombre plus douce */
+    box-shadow:0 4px 18px rgba(8,15,40,.04);
     padding:18px;
     transition: transform 0.3s ease-out;
 }
 .card:hover {
-    transform: translateY(-3px); /* Effet au survol pour les cartes */
+    transform: translateY(-3px);
     box-shadow: 0 8px 22px rgba(8,15,40,.08);
 }
 .muted{color:var(--muted)}
 
-/* ====== STEPS (MODIFIÉ) ====== */
+/* ====== STEPS ====== */
 .steps{display:grid;grid-template-columns:repeat(5,1fr);gap:14px}
 .step{
     background:#fff;
-    border:1px solid var(--ring); /* Remplacer dashed par solid */
+    border:1px solid var(--ring);
     border-radius:14px;
     padding:16px;
-    box-shadow: none; /* Enlever l'ombre pour la clarté */
+    box-shadow: none;
     text-align: center;
 }
 .step .num{
@@ -175,29 +179,28 @@ h1 u {
     display:grid;
     place-items:center;
     font-weight:800;
-    margin: 0 auto 10px; /* Centrer le numéro */
+    margin: 0 auto 10px;
     box-shadow: 0 3px 8px rgba(12, 18, 30, 0.2);
 }
 
-/* ====== COMPARATIF (MODIFIÉ) ====== */
+/* ====== COMPARATIF ====== */
 .table{
     width:100%;
     border-collapse:separate;
     border-spacing:0;
     overflow:hidden;
-    border-radius:10px; /* Bordure un peu plus petite */
+    border-radius:10px;
     border:1px solid var(--ring);
     background:#fff;
     box-shadow:0 8px 20px rgba(8,15,40,.06);
 }
 .table th,.table td{padding:14px;border-bottom:1px solid rgba(12,18,30,.08);text-align:left;font-size:15px}
 .table thead th{
-    background:var(--brand-2); /* En-tête de tableau bleu plus soutenu */
+    background:var(--brand-2);
     color: #fff;
     font-weight: 600;
     border-bottom: none;
 }
-/* Badges de statut améliorés */
 .badge-ok{
     display:inline-block;
     background:var(--ok);
@@ -217,13 +220,13 @@ h1 u {
     font-size:12px
 }
 
-/* ====== FAQ (MODIFIÉ) ====== */
+/* ====== FAQ ====== */
 details{
     background:#fff;
-    border:1px solid rgba(15,23,42,.08); /* Bordure plus légère */
+    border:1px solid rgba(15,23,42,.08);
     border-radius:14px;
     padding:14px 16px;
-    box-shadow:0 4px 18px rgba(8,15,40,.04); /* Ombre plus douce */
+    box-shadow:0 4px 18px rgba(8,15,40,.04);
     transition: transform 0.3s ease-out;
 }
 details:hover {
@@ -232,15 +235,14 @@ details:hover {
 }
 summary{cursor:pointer;font-weight:700}
 
-/* ====== FORM (MODIFIÉ) ====== */
+/* ====== FORM ====== */
 .form{display:grid;grid-template-columns:1fr 1fr;gap:14px}
 .form .full{grid-column:1/-1}
 .input{display:grid;gap:6px}
 .input input,.input textarea,.input select{
   width:100%;padding:12px 13px;border-radius:12px;border:1px solid var(--ring);background:#fff;font:inherit;
-  transition: border-color 0.2s, box-shadow 0.2s; /* Ajout transition */
+  transition: border-color 0.2s, box-shadow 0.2s;
 }
-/* Amélioration du focus */
 .input input:focus, .input textarea:focus, .input select:focus {
     border-color: var(--brand);
     outline: none;
@@ -274,26 +276,26 @@ summary{cursor:pointer;font-weight:700}
   <div class="logo">
     <img src="../img/logo.png" alt="Logo Papo Rénov">
   </div>
-<nav>
-  <ul>
-    <li><a href="../index.html">Accueil</a></li>
-    <li><a href="devis.html">Demande de devis</a></li>
-    <li><a href="realisations.html">Mes réalisations</a></li>
-    <li><a href="tarifs.html">Tarifs</a></li>
-    <li><a href="planning.html">Planning</a></li>
-    <li><a href="contact.html">Contact</a></li>
-    <li><a href="avis.html">Avis clients</a></li>
-    <li><a class="active" href="courtage-cuisine.html">Courtage Cuisine</a></li>
-  </ul>
-</nav>
-
+  <nav>
+    <ul>
+      <li><a href="../index.html">Accueil</a></li>
+      <li><a href="devis.html">Demande de devis</a></li>
+      <li><a href="realisations.html">Mes réalisations</a></li>
+      <li><a href="tarifs.html">Tarifs</a></li>
+      <li><a href="planning.html">Planning</a></li>
+      <li><a href="contact.html">Contact</a></li>
+      <li><a href="avis.html">Avis clients</a></li>
+      <li><a class="active" href="courtage-cuisine.html">Courtage Cuisine</a></li>
+    </ul>
+  </nav>
 </header>
 
 <header class="hero">
   <div class="hero__in">
     <div>
       <span class="badge">✅ <b>Offre 100% gratuite</b> (voir conditions)</span>
-      <h1>Je négocie pour vous le <u>meilleur prix</u> de votre cuisine</h1>
+      <!-- Surlignement retiré : plus de <u> dans le H1 -->
+      <h1>Je négocie pour vous le meilleur prix de votre cuisine</h1>
       <p class="lead">
         Grâce à mes **connaissances**, **partenaires** et **fournisseurs**, je compare et négocie vos devis cuisine.
         <br>**Condition** : vous me confiez la **pose** et les **travaux**. Aucuns frais de courtage pour vous.
@@ -423,11 +425,11 @@ summary{cursor:pointer;font-weight:700}
     </details>
     <details>
       <summary>Que se passe-t-il si je ne vous confie pas la pose ?</summary>
-      <p class="muted">Le service de courtage **gratuit** est conditionné à la réalisation des travaux par mes soins. Sans cette condition, le temps d’étude et de négociation fait l’objet d’un forfait.</p>
+      <p class="muted">Le service de courtage <b>gratuit</b> est conditionné à la réalisation des travaux par mes soins. Sans cette condition, le temps d’étude et de négociation fait l’objet d’un forfait.</p>
     </details>
     <details>
       <summary>En combien de temps puis-je avoir un comparatif ?</summary>
-      <p class="muted">Généralement **48 à 72 h ouvrées** après le brief complet, selon la complexité et la réactivité des fournisseurs.</p>
+      <p class="muted">Généralement <b>48 à 72 h ouvrées</b> après le brief complet, selon la complexité et la réactivité des fournisseurs.</p>
     </details>
   </div>
 </section>
@@ -471,7 +473,7 @@ summary{cursor:pointer;font-weight:700}
         <div class="input full">
           <label class="input--check">
             <input id="cond" type="checkbox" required />
-            <span>Je comprends que le courtage est gratuit si je confie la **pose** et les **travaux** à Papo-Rénov.</span>
+            <span>Je comprends que le courtage est gratuit si je confie la <b>pose</b> et les <b>travaux</b> à Papo-Rénov.</span>
           </label>
           <div class="help">Sans la pose par Papo-Rénov, une étude payante peut être proposée.</div>
         </div>
