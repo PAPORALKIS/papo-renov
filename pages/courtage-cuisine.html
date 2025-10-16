@@ -37,26 +37,15 @@ html,body{
 img{max-width:100%;display:block}
 a{color:inherit}
 
-/* ====== FILIGRANE LOGO Papo-Rénov (rotation douce) ====== */
+/* ====== FILIGRANE LOGO Papo-Rénov (fixe & centré) ====== */
 body::before{
   content:"";
   position:fixed;
-  top:50%;
-  left:50%;
-  width:90vmin;               /* grand mais proportionnel à l’écran */
-  height:90vmin;
-  transform:translate(-50%,-50%) rotate(0deg);
-  transform-origin:center center;
-  background:url("../img/logo.png") no-repeat center / contain;
+  inset:0; /* couvre tout le viewport */
+  background:url("../img/logo.png") center center / 45vmin no-repeat;
   opacity:0.05;               /* transparence discrète */
   z-index:-1;                 /* derrière tout le contenu */
-  pointer-events:none;
-  filter:drop-shadow(0 10px 30px rgba(0,0,0,.05)); /* léger relief design */
-  animation:watermark-spin 80s linear infinite;    /* rotation très lente */
-}
-@keyframes watermark-spin{
-  from{ transform:translate(-50%,-50%) rotate(0deg); }
-  to  { transform:translate(-50%,-50%) rotate(360deg); }
+  pointer-events:none;        /* ne bloque aucun clic */
 }
 
 /* ====== NAVBAR (CONSERVÉE) ====== */
@@ -71,13 +60,10 @@ body::before{
 .nav__links a:hover{background:#f2f4ff}
 
 /* ====== TYPOGRAPHIE & HIÉRARCHIE ====== */
-/* Utiliser Poppins pour les titres, Inter pour le corps */
 h1, h2, h3, .logo, .btn {
   font-family: 'Poppins', sans-serif;
   letter-spacing: -0.2px;
 }
-
-/* Améliorer l'espacement général des titres */
 h1{
   margin: 12px 0 16px;
   font-size:clamp(26px,3.2vw,44px);
@@ -91,7 +77,7 @@ h2 {
   padding-bottom: 8px;
   padding-top: 10px;
 }
-/* Barre décorative sous H2 (conservée) */
+/* (ancienne barre décorative sous H2 supprimée ailleurs si besoin) */
 
 h3 {
   margin: 0 0 10px;
@@ -101,7 +87,7 @@ h3 {
   line-height: 1.65;
 }
 
-/* >>> Désactivation de tout soulignement de mots <<< */
+/* >>> Pas de soulignement forcé <<< */
 u{ text-decoration: none !important; }
 
 /* ====== HERO ====== */
@@ -109,7 +95,6 @@ u{ text-decoration: none !important; }
 .hero__in{max-width:var(--w);margin:auto;padding:42px 20px;display:grid;grid-template-columns:1.15fr .85fr;gap:28px;align-items:center}
 .badge{display:inline-flex;align-items:center;gap:8px;padding:6px 10px;border-radius:999px;background:#fff;border:1px solid var(--ring)}
 .badge b{color:var(--brand)}
-
 .lead{color:var(--muted);font-size:clamp(16px,1.6vw,18px)}
 .hero__card{
     background:var(--card);
@@ -286,7 +271,6 @@ summary{cursor:pointer;font-weight:700}
   <div class="hero__in">
     <div>
       <span class="badge">✅ <b>Offre 100% gratuite</b> (voir conditions)</span>
-      <!-- Surlignement retiré : plus de <u> dans le H1 -->
       <h1>Je négocie pour vous le meilleur prix de votre cuisine</h1>
       <p class="lead">
         Grâce à mes **connaissances**, **partenaires** et **fournisseurs**, je compare et négocie vos devis cuisine.
