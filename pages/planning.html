@@ -1,310 +1,239 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="utf-8" />
-  <title>planning - papo rénov</title>
+  <meta charset="UTF-8" />
+  <title>Planning - Papo Rénov</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link href="https://fonts.googleapis.com/css2?family=poppins:wght@400;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="../style.css" />
-
-  <style>
-    /* Général */
+  <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet" /> <style>
+    /* ---------------------------------------------------------------- */
+    /* Styles copiés pour l'esthétique générale et la barre de navigation */
+    /* ---------------------------------------------------------------- */
     body {
       font-family: 'Poppins', sans-serif;
-      background-color: #f4f7f6; /* Light background for a fresh look */
-      color: #333;
       margin: 0;
-      padding: 0;
+      padding: 0 1rem;
+      box-sizing: border-box;
+      overflow-x: hidden;
+      background: #f8f8f8; /* Fond légèrement grisé pour la page */
     }
-
-    /* Header */
     header {
-      background-color: #ffffff;
-      padding: 15px 20px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+      max-width: 1200px; /* Élargissement du header pour la page de planning */
+      margin: 0 auto;
+      padding: 1rem 0;
       display: flex;
-      justify-content: space-between;
       align-items: center;
-      position: sticky;
-      top: 0;
-      z-index: 1000;
+      justify-content: space-between;
+      border-bottom: 1px solid #eee; /* Ligne de séparation */
     }
-
-    header .logo img {
-      height: 40px; /* Adjust logo size */
-    }
-
-    header nav ul {
+    nav ul {
       list-style: none;
-      margin: 0;
-      padding: 0;
       display: flex;
+      gap: 1.5rem; /* Espace entre les liens */
+      padding: 0;
+      margin: 0;
+      flex-wrap: wrap;
+      justify-content: flex-end;
     }
-
-    header nav ul li {
-      margin-left: 25px;
-    }
-
-    header nav ul li a {
+    nav ul li a {
       text-decoration: none;
-      color: #555;
-      font-weight: 500;
-      transition: color 0.3s ease;
-      padding-bottom: 3px;
+      color: #003366;
+      font-weight: 600;
+      transition: color 0.3s, text-decoration 0.3s;
+    }
+    nav ul li a:hover {
+      color: #00509e;
+      text-decoration: underline;
+    }
+    nav ul li a.active {
+      text-decoration: underline;
+      color: #00509e; /* Couleur active plus visible */
     }
 
-    header nav ul li a:hover,
-    header nav ul li a.active {
-      color: #007bff; /* Highlight active/hovered link */
-      border-bottom: 2px solid #007bff;
+    .logo img {
+      max-height: 50px;
+      width: auto;
     }
 
-    /* Main Content */
-    .form-section {
-      padding: 40px 20px;
+    /* ---------------------------------------------------------------- */
+    /* Améliorations spécifiques à la page Planning */
+    /* ---------------------------------------------------------------- */
+
+    /* Section principale et titre */
+    .main-content-wrap {
       max-width: 1200px;
       margin: 20px auto;
-      background-color: #ffffff;
+      padding: 20px;
+      background: #fff;
       border-radius: 12px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    }
+    .main-content-wrap h1 {
+      text-align: center;
+      font-size: 2.5rem;
+      color: #003366;
+      margin-bottom: 10px;
+    }
+    .main-content-wrap > p {
+      text-align: center;
+      font-size: 1.1rem;
+      color: #555;
+      margin-bottom: 30px;
+    }
+    .main-content-wrap h2 {
+      margin-top: 40px;
+      margin-bottom: 25px;
+      font-size: 1.8rem;
+      color: #003366;
       text-align: center;
     }
 
-    .form-section h1 {
-      font-size: 2.8rem;
-      color: #333;
-      margin-bottom: 10px;
-      font-weight: 700;
-    }
-
-    .form-section p {
-      font-size: 1.1rem;
-      color: #666;
-      margin-bottom: 30px;
-    }
-
-    /* Calendar */
+    /* Calendrier plus large et moins long */
     .calendar-wrap {
-      margin-bottom: 40px;
-      padding: 0 10px; /* Slight padding for smaller screens */
+      padding: 0 8px;
     }
     .calendar-wrap iframe {
       width: 100%;
-      /* Adjusted height for better fit - consider using aspect-ratio if supported or JS for responsive height */
-      height: 450px; 
-      border: 1px solid #e0e0e0;
+      height: 450px; /* Hauteur réduite pour éviter le défilement */
+      border: 1px solid #ccc;
       border-radius: 8px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.04);
-      overflow: hidden; /* Ensure no scrollbars inside iframe */
     }
 
-    /* SOS Buttons */
+    /* Boutons SOS */
     .sos-buttons {
       display: flex;
       gap: 20px;
-      justify-content: center;
-      margin: 40px auto;
+      margin: 30px auto;
       flex-wrap: wrap;
+      justify-content: center;
     }
     .sos-buttons button {
       flex: 1;
-      min-width: 250px; /* Slightly larger buttons */
-      max-width: 300px;
-      padding: 16px 25px;
+      min-width: 250px;
+      padding: 14px 22px;
       font-weight: 600;
-      font-size: 1.1rem;
-      border: none;
-      border-radius: 30px; /* More rounded */
+      font-size: 1.05rem;
+      border: 0;
+      border-radius: 30px; /* Plus arrondis */
       color: #fff;
       cursor: pointer;
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
+      transition: transform 0.2s, box-shadow 0.2s;
     }
     .sos-buttons button:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
     }
-    .sos-poseur { background: #e74c3c; } /* Brighter red */
-    .sos-sav { background: #f39c12; color: #fff; } /* Brighter orange */
-    .sos-derniere-minute { background: #2ecc71; } /* Brighter green */
+    .sos-poseur { background: #d32f2f; }
+    .sos-sav { background: #fbc02d; color: #333; }
+    .sos-derniere-minute { background: #388e3c; }
 
-    /* Reservation Form */
-    .form-section h2 {
-      font-size: 2rem;
-      color: #333;
-      margin-top: 50px;
-      margin-bottom: 30px;
-      font-weight: 600;
-    }
-
-    .form-section form {
+    /* Formulaire de réservation amélioré (étiquettes en face des champs) */
+    .reservation-form {
       display: grid;
-      grid-template-columns: repeat(2, 1fr); /* Two columns for label and input */
-      gap: 20px 30px; /* Gap between rows and columns */
-      max-width: 800px; /* Max width for the form */
+      grid-template-columns: auto 1fr; /* 1ère colonne pour le label (auto), 2ème pour le champ (1fr) */
+      gap: 15px 25px;
+      max-width: 700px;
       margin: 0 auto;
+      padding: 15px;
       text-align: left;
     }
-
-    .form-section label {
-      font-weight: 500;
-      color: #555;
-      align-self: center; /* Vertically align label with input */
-      padding-right: 10px; /* Space between label and input */
+    .reservation-form label {
+      font-weight: 600;
+      color: #003366;
+      align-self: flex-start; /* Alignement en haut (pour le textarea) */
+      padding-top: 5px; /* Petit décalage pour aligner le texte */
     }
-
-    .form-section input[type="text"],
-    .form-section input[type="email"],
-    .form-section input[type="date"],
-    .form-section textarea {
-      width: 100%;
-      padding: 12px 15px;
+    .reservation-form input[type="text"],
+    .reservation-form input[type="email"],
+    .reservation-form input[type="date"],
+    .reservation-form textarea {
+      padding: 0.6rem;
       border: 1px solid #ccc;
-      border-radius: 8px;
+      border-radius: 6px;
       font-size: 1rem;
-      color: #333;
-      box-sizing: border-box; /* Include padding in width */
-      transition: border-color 0.3s ease, box-shadow 0.3s ease;
-    }
-
-    .form-section input:focus,
-    .form-section textarea:focus {
-      border-color: #007bff;
-      box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
-      outline: none;
-    }
-
-    .form-section textarea {
+      width: 100%;
+      box-sizing: border-box;
       resize: vertical;
-      min-height: 100px;
-      grid-column: 2 / 3; /* Span the second column for the message textarea */
     }
     
-    /* Make the label for the message span both columns on smaller screens */
-    .form-section label[for="message"] {
-        grid-column: 1 / 2;
+    /* Le textarea Message doit occuper toute la largeur sur la 2ème colonne */
+    .reservation-form textarea {
+        grid-column: 2 / 3;
     }
 
-    /* Adjust message label and input for better alignment */
-    .form-section label[for="message"] {
-        align-self: flex-start; /* Align to the top of the textarea */
-        padding-top: 12px; /* Match input padding */
-    }
-
-
+    /* Le bouton doit occuper toute la largeur sous la grille */
     .cta-button {
-      grid-column: 1 / -1; /* Button spans all columns */
-      background-color: #007bff;
+      grid-column: 1 / -1; 
+      background-color: #003366;
       color: white;
-      padding: 15px 30px;
+      padding: 0.75rem;
       border: none;
-      border-radius: 30px;
-      font-size: 1.1rem;
-      font-weight: 600;
+      border-radius: 6px;
       cursor: pointer;
-      transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
-      margin-top: 20px;
+      font-weight: 600;
+      font-size: 1.1rem;
+      transition: background-color 0.3s ease;
+      margin-top: 15px;
     }
-
     .cta-button:hover {
-      background-color: #0056b3;
-      transform: translateY(-2px);
-      box-shadow: 0 6px 15px rgba(0, 123, 255, 0.25);
+        background-color: #00509e;
     }
 
-    .form-section p.small-text {
-      font-size: 0.9em;
-      color: #888;
-      margin-top: 20px;
-      grid-column: 1 / -1; /* Span all columns */
+    .form-info {
+        grid-column: 1 / -1;
+        font-size: 0.9em;
+        color: #888;
+        text-align: center;
+        margin-top: -10px;
     }
 
     /* Footer */
     footer {
       text-align: center;
-      padding: 25px 20px;
-      background-color: #34495e; /* Darker footer */
-      color: #ecf0f1;
+      padding: 20px 1rem;
+      background-color: #003366;
+      color: #fff;
       font-size: 0.9rem;
       margin-top: 40px;
+      max-width: none; /* Occupe toute la largeur */
     }
 
-    /* Responsive adjustments */
+    /* Responsive */
+    @media (max-width: 900px) {
+        header nav ul {
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 10px;
+        }
+        header {
+            flex-direction: column;
+            text-align: center;
+        }
+    }
+
     @media (max-width: 768px) {
-      header {
-        flex-direction: column;
-        text-align: center;
-      }
-      header nav ul {
-        margin-top: 15px;
-        flex-wrap: wrap;
-        justify-content: center;
-      }
-      header nav ul li {
-        margin: 5px 10px;
-      }
-
-      .form-section h1 {
-        font-size: 2.2rem;
-      }
-      .form-section h2 {
-        font-size: 1.8rem;
-      }
-
-      .sos-buttons {
-        flex-direction: column;
-        align-items: center;
-      }
-      .sos-buttons button {
-        width: 90%;
-        min-width: unset;
-        max-width: 400px;
-      }
-
-      .form-section form {
-        grid-template-columns: 1fr; /* Single column layout for smaller screens */
-        gap: 15px;
-      }
-      .form-section label {
-        grid-column: 1 / -1; /* Label takes full width */
-      }
-      .form-section input,
-      .form-section textarea {
-        grid-column: 1 / -1; /* Input/textarea takes full width */
-      }
-      .form-section label[for="message"] {
-        padding-top: 0; /* Reset padding for message label */
-      }
-    }
-
-    @media (max-width: 480px) {
-      .form-section {
-        padding: 20px 10px;
-        margin: 10px auto;
-      }
-      header .logo img {
-        height: 35px;
-      }
-      header nav ul li {
-        margin: 3px 5px;
-        font-size: 0.9rem;
-      }
-      .form-section h1 {
-        font-size: 1.8rem;
-      }
-      .form-section p {
-        font-size: 1rem;
-      }
-      .calendar-wrap iframe {
-        height: 400px; /* Even shorter for very small screens */
-      }
-      .sos-buttons button {
-        font-size: 1rem;
-        padding: 14px 20px;
-      }
+        .reservation-form {
+            grid-template-columns: 1fr; /* Revenir à une colonne unique pour les petits écrans */
+            gap: 10px;
+            padding: 0;
+        }
+        .reservation-form label {
+            grid-column: 1 / -1; /* Label prend toute la largeur */
+            padding-top: 0;
+        }
+        .reservation-form input,
+        .reservation-form textarea {
+            grid-column: 1 / -1; /* Champ prend toute la largeur */
+        }
+        .calendar-wrap iframe {
+            height: 350px; /* Encore plus court */
+        }
+        .sos-buttons button {
+            min-width: unset;
+            width: 100%;
+            max-width: 350px;
+        }
     }
   </style>
 </head>
@@ -312,65 +241,63 @@
 
 <header>
   <div class="logo">
-    <img src="../img/logo.png" alt="logo papo rénov" />
+    <img src="../img/logo.png" alt="Logo Papo Rénov" />
   </div>
   <nav>
     <ul>
-      <li><a href="../index.html">accueil</a></li>
-      <li><a href="devis.html">demande de devis</a></li>
-      <li><a href="realisations.html">mes réalisations</a></li>
-      <li><a href="tarifs.html">tarifs</a></li>
-      <li><a href="courtage-cuisine.html">courtage cuisine</a></li>
-      <li><a href="planning.html" class="active">planning</a></li>
-      <li><a href="contact.html">contact</a></li>
-      <li><a href="avis.html">avis clients</a></li>
+      <li><a href="../index.html">Accueil</a></li>
+      <li><a href="devis.html">Demande de devis</a></li>
+      <li><a href="realisations.html">Mes réalisations</a></li>
+      <li><a href="tarifs.html">Tarifs</a></li>
+      <li><a href="courtage-cuisine.html">Courtage Cuisine</a></li>
+      <li><a href="planning.html" class="active">Planning</a></li>
+      <li><a href="contact.html">Contact</a></li>
+      <li><a href="avis.html">Avis clients</a></li>
     </ul>
   </nav>
 </header>
 
-<main class="form-section">
-  <div class="overlay">
-    <h1>planning</h1>
-    <p>consultez mes disponibilités ci-dessous :</p>
+<main class="main-content-wrap">
+  <h1>Planning</h1>
+  <p>Consultez mes disponibilités ci-dessous :</p>
 
-    <div class="calendar-wrap">
-      <iframe
-        src="https://calendar.google.com/calendar/embed?src=kpaporalkis.pro%40gmail.com&ctz=europe%2fparis"
-        frameborder="0" scrolling="no">
-      </iframe>
-    </div>
-
-    <div class="sos-buttons">
-      <button class="sos-poseur">🚨 SOS Poseur</button>
-      <button class="sos-sav">🛠️ SOS SAV</button>
-      <button class="sos-derniere-minute">⚡ SOS Dispo Dernière Minute</button>
-    </div>
-
-    <h2>réserver une date</h2>
-    <form action="https://formspree.io/f/mpwrpypd" method="post">
-      <input type="hidden" name="_captcha" value="false" />
-      <input type="hidden" name="_next" value="https://paporalkis.github.io/papo-renov/pages/confirmation.html" />
-
-      <label for="name">nom :</label>
-      <input id="name" type="text" name="name" required />
-
-      <label for="email">email :</label>
-      <input id="email" type="email" name="email" required />
-
-      <label for="date">date souhaitée :</label>
-      <input id="date" type="date" name="date" required />
-
-      <label for="message">message complémentaire :</label>
-      <textarea id="message" name="message" rows="4" placeholder="précisez vos besoins..."></textarea>
-
-      <button type="submit" class="cta-button">envoyer la demande</button>
-      <p class="small-text">* vous recevrez une réponse de confirmation par e-mail.</p>
-    </form>
+  <div class="calendar-wrap">
+    <iframe
+      src="https://calendar.google.com/calendar/embed?src=kpaporalkis.pro%40gmail.com&ctz=Europe%2FParis"
+      frameborder="0" scrolling="no">
+    </iframe>
   </div>
+
+  <div class="sos-buttons">
+    <button class="sos-poseur">🚨 SOS POSEUR</button>
+    <button class="sos-sav">🛠️ SOS SAV</button>
+    <button class="sos-derniere-minute">⚡ SOS DISPO DERNIÈRE MINUTE</button>
+  </div>
+
+  <h2>Réserver une date</h2>
+  <form action="https://formspree.io/f/mpwrpypd" method="POST" class="reservation-form">
+    <input type="hidden" name="_captcha" value="false" />
+    <input type="hidden" name="_next" value="https://paporalkis.github.io/papo-renov/pages/confirmation.html" />
+
+    <label for="name">Nom :</label>
+    <input id="name" type="text" name="name" required />
+
+    <label for="email">Email :</label>
+    <input id="email" type="email" name="email" required />
+
+    <label for="date">Date souhaitée :</label>
+    <input id="date" type="date" name="date" required />
+
+    <label for="message">Message complémentaire :</label>
+    <textarea id="message" name="message" rows="4" placeholder="Précisez vos besoins..."></textarea>
+
+    <button type="submit" class="cta-button">Envoyer la demande</button>
+    <p class="form-info">* Vous recevrez une réponse de confirmation par e-mail.</p>
+  </form>
 </main>
 
 <footer>
-  <p>&copy; 2025 paporalkis - tous droits réservés</p>
+  <p>&copy; 2025 Paporalkis - Tous droits réservés</p>
 </footer>
 
 </body>
