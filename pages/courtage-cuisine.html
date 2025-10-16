@@ -23,7 +23,28 @@
   --w:1200px;
 }
 *{box-sizing:border-box}
-html,body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial}
+html,body{
+  margin:0;
+  background:var(--bg);
+  color:var(--text);
+  font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial;
+  position:relative;
+  overflow-x:hidden;
+}
+
+/* === FILIGRANE LOGO Papo-Rénov === */
+body::before{
+  content:"";
+  position:fixed;
+  transform:rotate(-12deg);
+  inset:0;
+  background:url("..img/logo.png") no-repeat center center;
+  background-size:35%;
+  opacity:0.06;           /* ajuste la transparence (0.03 à 0.1 selon rendu souhaité) */
+  z-index:-1;
+  pointer-events:none;
+}
+
 img{max-width:100%;display:block}
 a{color:inherit}
 
