@@ -3,156 +3,829 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Tarifs Partenaires - Papo Rénov</title>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+<title>Grille Tarifaire Professionnelle - Papo Rénov</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
-:root{
-  --primary:#007bff;
-  --bg:#0f1220;
-  --panel:#ffffff;
-  --muted:#6c757d;
-  --accent:#ffc107;
-  --ok:#28a745;
-  --border:#e9ecef;
+/* Variables et Reset */
+:root {
+  --primary: #0a1f44; /* Bleu marine pro */
+  --secondary: #ffc107; /* Jaune accent */
+  --bg: #f4f7fa; /* Fond clair */
+  --panel: #ffffff;
+  --muted: #6c757d;
+  --ok: #28a745;
+  --border: #e9ecef;
+  --shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
 }
-*{box-sizing:border-box}
-html,body{margin:0;padding:0}
-body{font-family:'Poppins',sans-serif;background:linear-gradient(135deg,#0f1220 0%,#1b213a 100%);min-height:100vh;color:#111;display:flex;align-items:center;justify-content:center;padding:24px}
-.card{width:min(900px,96vw);background:var(--panel);border-radius:20px;box-shadow:0 30px 80px rgba(0,0,0,.35);overflow:hidden}
-.header{display:flex;align-items:center;gap:16px;padding:16px 20px;border-bottom:1px solid var(--border)}
-.header img{height:40px}
-.header h1{font-size:1.2rem;margin:0}
-.wrap{padding:20px}
-.notice{color:var(--muted);text-align:center;margin:0 0 12px}
-.form{display:flex;gap:10px;justify-content:center;margin:8px 0 20px}
-.form input{flex:1;max-width:320px;padding:12px 14px;border:1px solid var(--border);border-radius:12px;font-size:1rem}
-.form button{padding:12px 16px;border-radius:12px;border:1px solid var(--primary);background:var(--primary);color:#fff;font-weight:700;cursor:pointer}
-.error{color:#dc3545;text-align:center;min-height:20px}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body { 
+  font-family: 'Poppins', sans-serif; 
+  background: var(--bg); 
+  min-height: 100vh; 
+  color: #111; 
+  display: flex; 
+  align-items: flex-start; 
+  justify-content: center; 
+  padding: 30px 15px;
+}
+.card { 
+  width: min(1200px, 98vw); 
+  background: var(--panel); 
+  border-radius: 16px; 
+  box-shadow: var(--shadow); 
+  overflow: hidden;
+  margin-top: 30px;
+}
+/* Header */
+.header { 
+  display: flex; 
+  align-items: center; 
+  justify-content: space-between;
+  padding: 20px 30px; 
+  border-bottom: 2px solid var(--primary);
+  background: var(--primary);
+  color: #fff;
+}
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+.header img { height: 45px; filter: brightness(0) invert(1); }
+.header h1 { 
+  font-size: 1.5rem; 
+  margin: 0; 
+  font-weight: 700;
+}
+/* Espace sécurisé */
+.secure-area { padding: 30px; }
+.notice { 
+  color: var(--muted); 
+  text-align: center; 
+  margin: 0 0 20px;
+  font-size: 0.95rem;
+}
+.form { 
+  display: flex; 
+  gap: 10px; 
+  justify-content: center; 
+  margin: 8px 0 25px;
+}
+.form input { 
+  flex: 1; 
+  max-width: 300px; 
+  padding: 14px 18px; 
+  border: 1px solid var(--border); 
+  border-radius: 12px; 
+  font-size: 1rem;
+  transition: border-color 0.3s;
+}
+.form input:focus { border-color: var(--primary); outline: none; }
+.form button { 
+  padding: 14px 20px; 
+  border-radius: 12px; 
+  border: none;
+  background: var(--secondary); 
+  color: var(--primary); 
+  font-weight: 700; 
+  cursor: pointer;
+  transition: background 0.3s, transform 0.1s;
+}
+.form button:hover { background: #ffda6a; }
+.error { 
+  color: #dc3545; 
+  text-align: center; 
+  min-height: 20px;
+  margin-bottom: 15px;
+}
 
-/* grille tarifs partenaires */
-.sheets{display:none;justify-content:center;gap:18px;flex-wrap:wrap;padding:10px 0 26px}
-.sheet{width:220px;background:#fff;border:1px solid var(--border);border-radius:14px;box-shadow:0 12px 30px rgba(0,0,0,.12);padding:12px}
-.sheet .head{display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:6px}
-.badge{background:#0a1f44;color:#fff;padding:4px 8px;border-radius:8px;font-size:.8rem;font-weight:700}
-.sheet h3{font-size:1rem;margin:6px 0 8px;text-align:center}
-.sheet p{color:#6c757d;font-size:.9rem;margin:0 0 8px;text-align:center}
-.sheet .from{color:var(--ok);font-weight:700;text-align:center}
-.list{margin-top:10px;border-top:1px dashed var(--border);padding-top:8px}
-.list li{display:flex;justify-content:space-between;gap:10px;font-size:.92rem;padding:6px 0;border-bottom:1px dashed var(--border)}
-.list li:last-child{border-bottom:none}
-.footer{padding:14px 20px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
-.footer a{color:var(--primary);font-weight:700;text-decoration:none}
+/* Grille Tarifs Pro */
+#partner-content { 
+  padding-top: 20px; 
+  display: none; 
+}
+.tab-nav {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+  border-bottom: 1px solid var(--border);
+}
+.tab-nav button {
+  background: none;
+  border: none;
+  padding: 12px 20px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--muted);
+  border-bottom: 3px solid transparent;
+  transition: color 0.3s, border-bottom-color 0.3s;
+}
+.tab-nav button.active {
+  color: var(--primary);
+  border-bottom-color: var(--primary);
+}
+
+.tab-content { padding: 0 15px; }
+
+/* Styles pour les sections de tarifs (Sheets) */
+.sheets {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 25px;
+  margin-bottom: 30px;
+}
+
+.sheet {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  box-shadow: 0 8px 20px rgba(0,0,0,.05);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.sheet .head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+.badge {
+  background: var(--primary);
+  color: #fff;
+  padding: 5px 10px;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+.sheet h3 {
+  font-size: 1.25rem;
+  margin: 0;
+  color: var(--primary);
+}
+.sheet p {
+  color: var(--muted);
+  font-size: 0.9rem;
+  margin: 5px 0 15px;
+}
+.sheet .from {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--ok);
+  margin-bottom: 15px;
+  padding-bottom: 10px;
+  border-bottom: 1px dashed var(--border);
+}
+.list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  flex-grow: 1;
+}
+.list li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.95rem;
+  padding: 10px 0;
+  border-bottom: 1px dashed var(--border);
+}
+.list li:last-child {
+  border-bottom: none;
+}
+.list li strong {
+  font-family: 'Roboto Mono', monospace;
+  font-weight: 700;
+  color: var(--primary);
+  white-space: nowrap;
+}
+.list li span {
+  flex-grow: 1;
+}
+
+/* Devis Rapide */
+#devis-rapide-tab {
+  padding: 25px;
+}
+
+.devis-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 2px solid var(--primary);
+  padding-bottom: 15px;
+  margin-bottom: 20px;
+}
+
+#partner-logo-preview {
+  max-height: 50px;
+  max-width: 150px;
+  display: none;
+}
+
+.devis-actions {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.devis-actions button, .devis-actions input[type="file"] + label {
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.3s;
+  border: 1px solid var(--primary);
+}
+
+#print-devis, #clear-devis {
+  background: var(--primary);
+  color: #fff;
+  border: none;
+}
+
+#print-devis:hover, #clear-devis:hover { opacity: 0.9; }
+
+input[type="file"] { display: none; }
+
+.file-upload-label {
+  background: #fff;
+  color: var(--primary);
+  display: inline-block;
+  text-align: center;
+}
+
+.file-upload-label:hover { background: var(--border); }
+
+.devis-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+}
+
+.devis-table th, .devis-table td {
+  border: 1px solid var(--border);
+  padding: 10px;
+  text-align: left;
+}
+
+.devis-table th {
+  background: #e9eff6;
+  font-weight: 600;
+  color: var(--primary);
+}
+
+.devis-table input[type="number"] {
+  width: 60px;
+  padding: 5px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  text-align: right;
+  font-family: 'Roboto Mono', monospace;
+}
+
+.devis-table .unit-price, .devis-table .total-row, .devis-table .subtotal-cell {
+  text-align: right;
+  font-family: 'Roboto Mono', monospace;
+  font-weight: 600;
+}
+.devis-table .subtotal-cell {
+  background-color: #f7f7f7;
+}
+
+.devis-totals {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.totals-box {
+  width: 350px;
+  border: 2px solid var(--primary);
+  border-radius: 8px;
+  padding: 15px;
+}
+
+.totals-box p {
+  display: flex;
+  justify-content: space-between;
+  margin: 8px 0;
+  font-size: 1.1rem;
+}
+
+.totals-box .final {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--primary);
+  border-top: 1px solid var(--border);
+  padding-top: 10px;
+  margin-top: 10px;
+}
+
+/* Footer */
+.footer {
+  padding: 15px 30px;
+  border-top: 1px solid var(--border);
+  background: #fcfcfc;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.9rem;
+}
+.footer a {
+  color: var(--primary);
+  font-weight: 600;
+  text-decoration: none;
+  transition: color 0.3s;
+}
+.footer a:hover { color: var(--secondary); }
+
+/* Impression styles */
+@media print {
+  body { 
+    background: none; 
+    padding: 0;
+    justify-content: flex-start;
+    align-items: flex-start;
+  }
+  .card { 
+    width: 100%; 
+    box-shadow: none; 
+    margin: 0;
+    border-radius: 0;
+  }
+  .header, .tab-nav, .footer, .devis-actions, .list li .add-btn, .secure-area > .notice { 
+    display: none !important; 
+  }
+  #devis-rapide-tab { padding: 0; }
+  #partner-content { display: block !important; padding-top: 0; }
+  .tab-content { padding: 0; }
+  .devis-table th, .devis-table td { border-color: #ccc !important; }
+  .devis-table input, .devis-table .unit-price { display: none; }
+  .devis-table .total-row { 
+    display: table-cell; 
+    text-align: right; 
+    font-weight: 400;
+  }
+  .devis-totals { justify-content: flex-start; }
+  .totals-box { border-color: #000; }
+  
+  .devis-header {
+    display: flex !important;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid #000;
+  }
+  #partner-logo-preview { display: block !important; margin-right: 20px; }
+  #papo-logo-print { display: block !important; }
+  .devis-rapide-title {
+    font-size: 1.5rem;
+    color: #000 !important;
+    text-align: right;
+    width: 100%;
+  }
+}
+
+/* Styles pour les prix dans la grille */
+.list li strong {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.add-btn {
+  background: var(--primary);
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: 4px 8px;
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+.add-btn:hover {
+  background: var(--secondary);
+  color: var(--primary);
+}
+
 </style>
 </head>
 <body>
 <div class="card">
   <div class="header">
-    <img src="../img/logo.png" alt="Papo Rénov">
-    <h1>Tarifs Partenaires — Accès sécurisé</h1>
+    <div class="header-left">
+      <img src="../img/logo.png" alt="Papo Rénov">
+      <h1>Grille Tarifaire Professionnelle</h1>
+    </div>
+    <span class="badge">Accès Partenaire PRO</span>
   </div>
-  <div class="wrap">
-    <p class="notice">Entrez le <strong>code d’accès</strong> fourni pour consulter les tarifs partenaires.</p>
+  
+  <div class="secure-area">
+    <p class="notice">Veuillez entrer le <strong>code d’accès professionnel</strong> pour consulter l'intégralité des tarifs et outils dédiés.</p>
     <div class="form">
-      <input id="code" type="password" placeholder="Code d’accès" autocomplete="off" required>
-      <button id="enter">Valider</button>
+      <input id="code" type="password" placeholder="Code d’accès PRO" autocomplete="off" required>
+      <button id="enter">Accéder</button>
     </div>
     <div id="error" class="error"></div>
 
-    <!-- CONTENU PARTENAIRES -->
     <div id="partner-content" style="display:none">
-      <div class="sheets" id="partner-sheets">
-        <!-- Revêtements & Peinture -->
-        <article class="sheet">
-          <div class="head"><span class="badge">Partenaires</span></div>
-          <h3>Revêtements & Peinture</h3>
-          <p>Tarifs préférentiels main d’œuvre</p>
-          <div class="from">À partir de 18 € / m² (HT)</div>
-          <ul class="list">
-            <li><span>Peinture murs (2 couches)</span><strong>22–36 €/m²</strong></li>
-            <li><span>Peinture plafonds</span><strong>27–45 €/m²</strong></li>
-            <li><span>Carrelage sol (droit)</span><strong>30–55 €/m²</strong></li>
-            <li><span>Faïence murale</span><strong>35–65 €/m²</strong></li>
-            <li><span>Parquet flottant</span><strong>18–30 €/m²</strong></li>
-          </ul>
-        </article>
-
-        <!-- Plomberie & Sanitaires -->
-        <article class="sheet">
-          <div class="head"><span class="badge">Partenaires</span></div>
-          <h3>Plomberie & Sanitaires</h3>
-          <p>Forfaits optimisés</p>
-          <div class="from">SDB dès 3 150 € (HT)</div>
-          <ul class="list">
-            <li><span>SDB complète (M.O.)</span><strong>3 150–7 200 €</strong></li>
-            <li><span>Création point d’eau</span><strong>225–450 €/u</strong></li>
-            <li><span>WC suspendu (M.O.)</span><strong>400–675 €</strong></li>
-            <li><span>Douche à l’italienne</span><strong>1 080–2 250 €</strong></li>
-            <li><span>Chauffe-eau (pose)</span><strong>225–400 €</strong></li>
-          </ul>
-        </article>
-
-        <!-- Électricité & Plâtrerie -->
-        <article class="sheet">
-          <div class="head"><span class="badge">Partenaires</span></div>
-          <h3>Électricité & Plâtrerie</h3>
-          <p>Grille dédiée récurrence / volume</p>
-          <div class="from">Cloison dès 40 €/m² (Fourn. + M.O.)</div>
-          <ul class="list">
-            <li><span>Cloison placo (F+M.O.)</span><strong>40–60 €/m²</strong></li>
-            <li><span>Doublage isolant (F+M.O.)</span><strong>50–75 €/m²</strong></li>
-            <li><span>Prise / inter (M.O.)</span><strong>70–110 €/u</strong></li>
-            <li><span>Tableau électrique</span><strong>810–1 620 €</strong></li>
-            <li><span>VMC simple flux</span><strong>315–585 €</strong></li>
-          </ul>
-        </article>
-
-        <!-- Autres Prestations -->
-        <article class="sheet">
-          <div class="head"><span class="badge">Partenaires</span></div>
-          <h3>Autres Prestations</h3>
-          <p>Agencement & menuiserie</p>
-          <div class="from">Sur devis</div>
-          <ul class="list">
-            <li><span>Agencement sur mesure</span><strong>Devis spécial</strong></li>
-            <li><span>Menuiserie intérieure</span><strong>Devis spécial</strong></li>
-            <li><span>Démolition / évacuation</span><strong>Devis spécial</strong></li>
-          </ul>
-        </article>
+      
+      <div class="tab-nav">
+        <button class="tab-btn active" data-tab="tarifs-pro">Grille Tarifaire Détaillée</button>
+        <button class="tab-btn" data-tab="devis-rapide">Générateur de Devis Rapide</button>
       </div>
 
+      <div class="tab-content">
+        <div id="tarifs-pro-tab" class="tab-pane active">
+          <p class="notice" style="margin-bottom: 30px;">
+            **Tarifs Partenaires NETS (Hors Taxes)** — Valables sur volume et récurrence. Matériaux non inclus (sauf mention F+M.O.).
+          </p>
+          <div class="sheets" id="partner-sheets">
+
+            <article class="sheet" data-category="Revetement">
+              <div class="head"><h3>Revêtements Sols & Murs</h3></div>
+              <p>Main d'œuvre (M.O.) | Pose de qualité PRO</p>
+              <div class="from">À partir de 18 € / m² (HT) M.O.</div>
+              <ul class="list">
+                <li data-presta="Peinture Murs (2 couches PRO)"><span>Peinture Murs (2 couches PRO)</span><strong>22–36 €/m²<button class="add-btn" data-price-min="22" data-price-max="36">Ajouter</button></strong></li>
+                <li data-presta="Peinture Plafonds Mat PRO"><span>Peinture Plafonds Mat PRO</span><strong>27–45 €/m²<button class="add-btn" data-price-min="27" data-price-max="45">Ajouter</button></strong></li>
+                <li data-presta="Carrelage Sol Standard (Droit)"><span>Carrelage Sol Standard (Droit)</span><strong>30–55 €/m²<button class="add-btn" data-price-min="30" data-price-max="55">Ajouter</button></strong></li>
+                <li data-presta="Faïence Murale (M.O.)"><span>Faïence Murale (M.O.)</span><strong>35–65 €/m²<button class="add-btn" data-price-min="35" data-price-max="65">Ajouter</button></strong></li>
+                <li data-presta="Parquet Flottant (M.O.)"><span>Parquet Flottant Standard</span><strong>18–30 €/m²<button class="add-btn" data-price-min="18" data-price-max="30">Ajouter</button></strong></li>
+                <li data-presta="Sols PVC / Vinyle (M.O.)"><span>Sols PVC / Vinyle (M.O.)</span><strong>15–25 €/m²<button class="add-btn" data-price-min="15" data-price-max="25">Ajouter</button></strong></li>
+              </ul>
+            </article>
+
+            <article class="sheet" data-category="Plomberie">
+              <div class="head"><h3>Plomberie & Sanitaires</h3></div>
+              <p>Forfaits M.O. optimisés pour rénovation complète</p>
+              <div class="from">SDB Complète dès 3 150 € (HT) M.O.</div>
+              <ul class="list">
+                <li data-presta="Rénovation SDB Complète (M.O.)"><span>Rénovation SDB Complète (M.O.)</span><strong>3 150–7 200 €<button class="add-btn" data-price-min="3150" data-price-max="7200">Ajouter</button></strong></li>
+                <li data-presta="Création Point d’Eau (M.O. / u)"><span>Création Point d’Eau (M.O. / u)</span><strong>225–450 €/u<button class="add-btn" data-price-min="225" data-price-max="450">Ajouter</button></strong></li>
+                <li data-presta="Installation WC Suspendu (M.O.)"><span>Installation WC Suspendu (M.O.)</span><strong>400–675 €<button class="add-btn" data-price-min="400" data-price-max="675">Ajouter</button></strong></li>
+                <li data-presta="Création Douche à l’Italienne (M.O.)"><span>Création Douche à l’Italienne (M.O.)</span><strong>1 080–2 250 €<button class="add-btn" data-price-min="1080" data-price-max="2250">Ajouter</button></strong></li>
+                <li data-presta="Pose Chauffe-Eau (M.O.)"><span>Pose Chauffe-Eau (M.O.)</span><strong>225–400 €<button class="add-btn" data-price-min="225" data-price-max="400">Ajouter</button></strong></li>
+                <li data-presta="Installation Cuisine (Réseaux M.O.)"><span>Installation Cuisine (Réseaux M.O.)</span><strong>750–1 500 €<button class="add-btn" data-price-min="750" data-price-max="1500">Ajouter</button></strong></li>
+              </ul>
+            </article>
+
+            <article class="sheet" data-category="Electricite">
+              <div class="head"><h3>Électricité & Plâtrerie</h3></div>
+              <p>Grille dédiée récurrence / volume | F+M.O. inclus si spécifié</p>
+              <div class="from">Cloison dès 40 €/m² (F+M.O.)</div>
+              <ul class="list">
+                <li data-presta="Cloison Placo Simple (F+M.O.)"><span>Cloison Placo Simple (F+M.O.)</span><strong>40–60 €/m²<button class="add-btn" data-price-min="40" data-price-max="60">Ajouter</button></strong></li>
+                <li data-presta="Doublage Isolant Mur (F+M.O.)"><span>Doublage Isolant Mur (F+M.O.)</span><strong>50–75 €/m²<button class="add-btn" data-price-min="50" data-price-max="75">Ajouter</button></strong></li>
+                <li data-presta="Création Prise / Inter (M.O. / u)"><span>Création Prise / Inter (M.O. / u)</span><strong>70–110 €/u<button class="add-btn" data-price-min="70" data-price-max="110">Ajouter</button></strong></li>
+                <li data-presta="Remplacement Tableau Électrique"><span>Remplacement Tableau Électrique</span><strong>810–1 620 €<button class="add-btn" data-price-min="810" data-price-max="1620">Ajouter</button></strong></li>
+                <li data-presta="Installation VMC Simple Flux (M.O.)"><span>Installation VMC Simple Flux (M.O.)</span><strong>315–585 €<button class="add-btn" data-price-min="315" data-price-max="585">Ajouter</button></strong></li>
+                <li data-presta="Spot LED Encastré (M.O. / u)"><span>Spot LED Encastré (M.O. / u)</span><strong>45–75 €/u<button class="add-btn" data-price-min="45" data-price-max="75">Ajouter</button></strong></li>
+              </ul>
+            </article>
+
+            <article class="sheet" data-category="Menuiserie">
+              <div class="head"><h3>Menuiserie & Agencement</h3></div>
+              <p>Pose M.O. | Fabrication sur devis</p>
+              <div class="from">Portes Intérieures dès 120 € (M.O.)</div>
+              <ul class="list">
+                <li data-presta="Pose Bloc Porte Intérieur"><span>Pose Bloc Porte Intérieur</span><strong>120–250 €<button class="add-btn" data-price-min="120" data-price-max="250">Ajouter</button></strong></li>
+                <li data-presta="Pose Fenêtre PVC Standard"><span>Pose Fenêtre PVC Standard</span><strong>180–350 €/u<button class="add-btn" data-price-min="180" data-price-max="350">Ajouter</button></strong></li>
+                <li data-presta="Aménagement Placard (M.O.)"><span>Aménagement Placard (M.O.)</span><strong>450–900 €<button class="add-btn" data-price-min="450" data-price-max="900">Ajouter</button></strong></li>
+                <li data-presta="Agencement Cuisine (Pose M.O.)"><span>Agencement Cuisine (Pose M.O.)</span><strong>900–2 500 €<button class="add-btn" data-price-min="900" data-price-max="2500">Ajouter</button></strong></li>
+                <li data-presta="Création Meuble Sur Mesure"><span>Création Meuble Sur Mesure</span><strong>Devis Spécial</strong></li>
+              </ul>
+            </article>
+            
+            <article class="sheet" data-category="Divers">
+              <div class="head"><h3>Déconstruction & Divers</h3></div>
+              <p>Forfaits Démolition & Évacuation (M.O.)</p>
+              <div class="from">Sur Devis selon volume / accès</div>
+              <ul class="list">
+                <li data-presta="Démolition Cloison Légère (M.O.)"><span>Démolition Cloison Légère (M.O.)</span><strong>15–25 €/m²<button class="add-btn" data-price-min="15" data-price-max="25">Ajouter</button></strong></li>
+                <li data-presta="Dépose et Évacuation Salle de Bain"><span>Dépose / Évacuation SDB (Forfait)</span><strong>500–950 €<button class="add-btn" data-price-min="500" data-price-max="950">Ajouter</button></strong></li>
+                <li data-presta="Protection & Préparation Chantier"><span>Protection & Préparation Chantier</span><strong>Forfait Jours</strong></li>
+                <li data-presta="Nettoyage Fin de Chantier (M.O. / jr)"><span>Nettoyage Fin de Chantier (M.O. / jr)</span><strong>300–450 €/jr<button class="add-btn" data-price-min="300" data-price-max="450">Ajouter</button></strong></li>
+              </ul>
+            </article>
+
+          </div>
+        </div>
+
+        <div id="devis-rapide-tab" class="tab-pane" style="display:none;">
+          <h2 style="text-align: center; color: var(--primary); margin-bottom: 25px;">Outil : Générateur de Devis Rapide</h2>
+
+          <div class="devis-header">
+            <img id="partner-logo-preview" src="" alt="Logo Partenaire" style="display:none;">
+            <div class="devis-titles">
+               <h3 class="devis-rapide-title">DEVIS ESTIMATIF - <span id="partner-name-display">Votre Client</span></h3>
+               <p style="font-size: 0.9rem; color: var(--muted); margin: 0; text-align: right;">Généré par <span style="font-weight: 600;">[Nom du Partenaire]</span> - Tarifs Papo Rénov PRO</p>
+            </div>
+          </div>
+          
+          <div class="devis-actions">
+            <input type="file" id="logo-upload" accept="image/*">
+            <label for="logo-upload" class="file-upload-label">Importer votre Logo</label>
+            <button id="print-devis">Imprimer le Devis</button>
+            <button id="clear-devis">Vider le Devis</button>
+            <input type="text" id="client-name" placeholder="Nom du client" style="padding: 8px; border-radius: 4px; border: 1px solid var(--border);">
+            <input type="text" id="partner-name" placeholder="Nom de votre entreprise" style="padding: 8px; border-radius: 4px; border: 1px solid var(--border);">
+          </div>
+
+          <table class="devis-table">
+            <thead>
+              <tr>
+                <th style="width: 50%;">Prestation (Description)</th>
+                <th style="width: 10%;">Quantité</th>
+                <th style="width: 15%;">Prix Unitaire HT (€)</th>
+                <th style="width: 10%;">Unité</th>
+                <th style="width: 15%;">Total HT (€)</th>
+              </tr>
+            </thead>
+            <tbody id="devis-lines">
+              </tbody>
+          </table>
+
+          <div class="devis-totals">
+            <div class="totals-box">
+              <p>Sous-Total (HT) : <span id="subtotal">0.00 €</span></p>
+              <p>Taux de TVA (20% par défaut) : <span>20.00 %</span></p>
+              <p>Montant TVA : <span id="tva-amount">0.00 €</span></p>
+              <p class="final">TOTAL TTC : <span id="total-ttc">0.00 €</span></p>
+            </div>
+          </div>
+          <p style="text-align: center; margin-top: 30px; font-size: 0.85rem; color: #a0a0a0;">*Tarifs indicatifs. Le devis final engage le Partenaire auprès de son client.</p>
+        </div>
+      </div>
+      
       <div class="footer">
         <a href="tarifs.html">← Retour Tarifs Publics</a>
-        <a href="devis.html">Demander un devis partenaire</a>
+        <span>Documentation PRO et Matériaux : Accès ici</span>
       </div>
     </div>
   </div>
 </div>
 
 <script>
-const ACCESS_CODE = "papo2025"; // 👈 Change-le si besoin
-const input = document.getElementById('code');
-const btn = document.getElementById('enter');
-const err = document.getElementById('error');
-const content = document.getElementById('partner-content');
-const sheets = document.getElementById('partner-sheets');
+// ---------- CONFIGURATION ----------
+const ACCESS_CODE = "PROPAPO2025!"; 
 
-function openIfValid(){
-  const val = (input.value || '').trim();
-  if(!val){ err.textContent = "Merci de saisir le code."; return; }
-  if(val === ACCESS_CODE){
-    err.textContent = "";
-    content.style.display = 'block';
-    sheets.style.display = 'flex';
-    // lock UI
-    document.querySelector('.form').style.display = 'none';
-    document.querySelector('.notice').textContent = "Accès confirmé — Tarifs Partenaires";
-  }else{
-    err.textContent = "Code invalide. Réessayez.";
-  }
+// ---------- ÉLÉMENTS DU DOM ----------
+const inputCode = document.getElementById('code');
+const btnEnter = document.getElementById('enter');
+const errorDiv = document.getElementById('error');
+const partnerContent = document.getElementById('partner-content');
+const noticeText = document.querySelector('.secure-area > .notice');
+const secureForm = document.querySelector('.form');
+const tabButtons = document.querySelectorAll('.tab-btn');
+const tabPanes = document.querySelectorAll('.tab-pane');
+
+// Éléments du Générateur de Devis
+const devisLines = document.getElementById('devis-lines');
+const subtotalSpan = document.getElementById('subtotal');
+const tvaAmountSpan = document.getElementById('tva-amount');
+const totalTTC = document.getElementById('total-ttc');
+const addButtons = document.querySelectorAll('.add-btn');
+const printButton = document.getElementById('print-devis');
+const clearButton = document.getElementById('clear-devis');
+const logoUpload = document.getElementById('logo-upload');
+const logoPreview = document.getElementById('partner-logo-preview');
+const clientNameInput = document.getElementById('client-name');
+const partnerNameInput = document.getElementById('partner-name');
+const partnerNameDisplay = document.getElementById('partner-name-display');
+
+// Panier de Devis (Tableau d'objets)
+let devisCart = [];
+const TVA_RATE = 0.20; // 20% de TVA
+
+// ---------- FONCTIONS DE BASE ----------
+
+/**
+ * Gère l'accès sécurisé.
+ */
+function openIfValid() {
+    const val = (inputCode.value || '').trim();
+    if (!val) { errorDiv.textContent = "Veuillez saisir le code d’accès professionnel."; return; }
+    if (val === ACCESS_CODE) {
+        errorDiv.textContent = "";
+        partnerContent.style.display = 'block';
+        
+        // Cacher le formulaire de connexion
+        secureForm.style.display = 'none';
+        noticeText.textContent = "ACCÈS PRO CONFIRMÉ — Bienvenue Partenaire !";
+        noticeText.style.color = 'var(--primary)';
+        noticeText.style.fontWeight = '600';
+
+        // Afficher le premier onglet actif (Tarifs Pro)
+        document.getElementById('tarifs-pro-tab').style.display = 'block';
+    } else {
+        errorDiv.textContent = "Code PRO invalide. Veuillez vérifier vos identifiants.";
+    }
 }
 
-btn.addEventListener('click', openIfValid);
-input.addEventListener('keydown', (e)=>{ if(e.key === 'Enter') openIfValid(); });
+/**
+ * Gère le changement d'onglet.
+ */
+function switchTab(targetTabId) {
+    tabPanes.forEach(pane => {
+        pane.style.display = 'none';
+        pane.classList.remove('active');
+    });
+
+    tabButtons.forEach(button => {
+        button.classList.remove('active');
+    });
+
+    const activePane = document.getElementById(targetTabId);
+    if (activePane) {
+        activePane.style.display = 'block';
+        activePane.classList.add('active');
+        document.querySelector(`.tab-btn[data-tab="${targetTabId}"]`).classList.add('active');
+    }
+}
+
+// ---------- FONCTIONS DE DEVIS RAPIDE ----------
+
+/**
+ * Ajoute une prestation à la liste du devis.
+ */
+function addPrestation(event) {
+    const btn = event.target;
+    const listItem = btn.closest('li');
+    const prestationName = listItem.dataset.presta;
+    let priceMin = parseFloat(btn.dataset.priceMin);
+    let priceMax = parseFloat(btn.dataset.priceMax);
+
+    if (isNaN(priceMin) || isNaN(priceMax)) {
+        alert("Prestation sur Devis Spécial. Veuillez contacter le support Papo Rénov.");
+        return;
+    }
+    
+    // Utiliser le prix minimum par défaut
+    const unitPrice = priceMin.toFixed(2);
+    
+    const newItem = {
+        name: prestationName,
+        quantity: 1,
+        unitPrice: parseFloat(unitPrice),
+        unit: prestationName.includes('/m²') ? 'm²' : (prestationName.includes('/u') ? 'u' : 'forfait')
+    };
+
+    // Vérifier si la prestation est déjà dans le panier
+    const existingItem = devisCart.find(item => item.name === newItem.name);
+    if (existingItem) {
+        existingItem.quantity++;
+    } else {
+        devisCart.push(newItem);
+    }
+    
+    renderDevis();
+    switchTab('devis-rapide'); // Basculer automatiquement vers l'outil de devis
+}
+
+/**
+ * Met à jour la quantité pour une ligne de devis.
+ */
+function updateQuantity(index, newQuantity) {
+    newQuantity = parseInt(newQuantity);
+    if (isNaN(newQuantity) || newQuantity < 0) return;
+    devisCart[index].quantity = newQuantity;
+    renderDevis();
+}
+
+/**
+ * Met à jour le prix unitaire pour une ligne de devis.
+ */
+function updateUnitPrice(index, newPrice) {
+    newPrice = parseFloat(newPrice);
+    if (isNaN(newPrice) || newPrice < 0) return;
+    devisCart[index].unitPrice = newPrice;
+    renderDevis();
+}
+
+/**
+ * Supprime une ligne de devis.
+ */
+function removePrestation(index) {
+    devisCart.splice(index, 1);
+    renderDevis();
+}
+
+/**
+ * Recalcule et affiche le devis complet.
+ */
+function renderDevis() {
+    devisLines.innerHTML = ''; // Vider le tableau
+    let subtotal = 0;
+
+    if (devisCart.length === 0) {
+        devisLines.innerHTML = '<tr><td colspan="5" style="text-align: center; color: var(--muted);">Aucune prestation ajoutée. Ajoutez des articles depuis la Grille Tarifaire.</td></tr>';
+    }
+
+    devisCart.forEach((item, index) => {
+        const totalHT = item.quantity * item.unitPrice;
+        subtotal += totalHT;
+
+        const row = devisLines.insertRow();
+        row.innerHTML = `
+            <td>${item.name}</td>
+            <td><input type="number" min="0" value="${item.quantity}" onchange="updateQuantity(${index}, this.value)"></td>
+            <td><input type="number" min="0" step="0.01" value="${item.unitPrice.toFixed(2)}" onchange="updateUnitPrice(${index}, this.value)" class="unit-price"> €</td>
+            <td>${item.unit}</td>
+            <td class="total-row">${totalHT.toFixed(2)} € <button style="float: right; color: #dc3545; border: none; background: none; cursor: pointer;" onclick="removePrestation(${index})">×</button></td>
+        `;
+    });
+
+    // Mise à jour des totaux
+    const tvaAmount = subtotal * TVA_RATE;
+    const totalTTCValue = subtotal + tvaAmount;
+
+    subtotalSpan.textContent = subtotal.toFixed(2) + ' €';
+    tvaAmountSpan.textContent = tvaAmount.toFixed(2) + ' €';
+    totalTTC.textContent = totalTTCValue.toFixed(2) + ' €';
+}
+
+/**
+ * Vide la liste de devis.
+ */
+function clearDevis() {
+    if (confirm("Êtes-vous sûr de vouloir vider le devis ? Cette action est irréversible.")) {
+        devisCart = [];
+        renderDevis();
+        logoPreview.src = '';
+        logoPreview.style.display = 'none';
+        clientNameInput.value = '';
+        partnerNameInput.value = '';
+        partnerNameDisplay.textContent = 'Votre Client';
+        document.getElementById('logo-upload').value = ''; // Réinitialiser le champ file
+        alert("Le devis a été vidé.");
+    }
+}
+
+/**
+ * Gère l'importation de logo.
+ */
+function handleLogoUpload(event) {
+    const file = event.target.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            logoPreview.src = e.target.result;
+            logoPreview.style.display = 'block';
+        }
+        reader.readAsDataURL(file);
+    }
+}
+
+/**
+ * Gère la saisie des noms pour l'impression.
+ */
+function updateNames() {
+    const client = clientNameInput.value.trim() || 'Votre Client';
+    const partner = partnerNameInput.value.trim() || '[Nom du Partenaire]';
+    partnerNameDisplay.textContent = client;
+    document.querySelector('.devis-rapide-title').textContent = `DEVIS ESTIMATIF - ${client}`;
+    document.querySelector('.devis-titles p span').textContent = partner;
+}
+
+
+// ---------- GESTIONNAIRES D'ÉVÉNEMENTS ----------
+
+// Connexion
+btnEnter.addEventListener('click', openIfValid);
+inputCode.addEventListener('keydown', (e) => { if (e.key === 'Enter') openIfValid(); });
+
+// Navigation par onglets
+tabButtons.forEach(button => {
+    button.addEventListener('click', (e) => {
+        switchTab(e.target.dataset.tab);
+    });
+});
+
+// Ajout de prestation au devis
+addButtons.forEach(button => {
+    button.addEventListener('click', addPrestation);
+});
+
+// Actions Devis
+printButton.addEventListener('click', () => {
+    // S'assurer que les noms sont à jour avant d'imprimer
+    updateNames();
+    window.print();
+});
+clearButton.addEventListener('click', clearDevis);
+logoUpload.addEventListener('change', handleLogoUpload);
+
+// Mettre à jour les noms en direct
+clientNameInput.addEventListener('input', updateNames);
+partnerNameInput.addEventListener('input', updateNames);
+
+// Rendre le devis initialement vide
+document.addEventListener('DOMContentLoaded', renderDevis);
+
 </script>
 </body>
 </html>
