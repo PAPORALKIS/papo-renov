@@ -267,6 +267,7 @@
       object-fit: contain;
       border-radius: 10px;
       box-shadow: 0 0 20px rgba(0,0,0,0.5); /* Ombre pour l'image principale */
+      cursor: pointer; /* Indique qu'elle est cliquable pour fermer */
     }
 
     .zoom-comment {
@@ -765,7 +766,7 @@
     const zoomNavLeft = document.getElementById("zoomNavLeft");
     const zoomNavRight = document.getElementById("zoomNavRight");
     const closeBtn = document.querySelector('.close-btn');
-    const mainHeader = document.getElementById('mainHeader'); // Sélection du header
+    const mainHeader = document.querySelector('header'); // Correction : Utiliser querySelector('header') pour sélectionner la balise <header>
     const pageTitle = document.getElementById('pageTitle'); // Sélection du titre de la page
     const filtersContainer = document.getElementById('filtersContainer'); // Sélection des filtres
 
@@ -1655,16 +1656,24 @@
       }, 400); // Doit correspondre à la durée de la transition CSS
     }
 
-    zoomViewer.addEventListener('click', (e) => {
-        const isClickOnViewerBackground = e.target === zoomViewer;
-        const isClickOnCloseButton = e.target === closeBtn;
-        
-        const isClickOnImage = (e.target.tagName === 'IMG' && e.target.id === 'zoomImage') || e.target.closest('.zoom-linked-images img');
+    // NOUVELLES MODIFICATIONS ICI POUR LE DEZOOM
+    
+    // 1. Fermeture en cliquant sur la croix (Demande #1)
+    closeBtn.addEventListener('click', closeZoom);
+    
+    // 2. Fermeture en cliquant sur l'image zoomée elle-même (Demande #2)
+    zoomImage.addEventListener('click', closeZoom);
 
-        if ((isClickOnViewerBackground || isClickOnCloseButton) && !isClickOnImage) {
+    // 3. Fermeture en cliquant sur le fond (Background)
+    zoomViewer.addEventListener('click', (e) => {
+        // Seule la cible directe du clic doit être le conteneur principal (le fond)
+        // Les clics sur les autres éléments (images liées, commentaire, flèches) ne déclencheront pas cette condition.
+        if (e.target === zoomViewer) {
             closeZoom();
         }
     });
+
+    // FIN DES NOUVELLES MODIFICATIONS
 
     document.querySelectorAll('.filters button').forEach(btn => {
       btn.addEventListener('click', () => {
