@@ -39,18 +39,26 @@ nav ul li a.active{color:var(--primary-color);font-weight:700}
 /* =========================
    MASQUAGE DE LA BARRE DE DÉFILEMENT
    ========================= */
-nav ul {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-  overflow-x: auto;
+    nav ul {
+    /* Masque la scrollbar pour IE et Edge */
+    -ms-overflow-style: none;  
+    /* Masque la scrollbar pour Firefox */
+    scrollbar-width: none;  
+    
+    /* Assure que l'élément peut défiler si besoin */
+    overflow-x: auto; 
 }
-nav ul::-webkit-scrollbar { display: none; }
+/* Masque la scrollbar pour Chrome, Safari et Opera */
+nav ul::-webkit-scrollbar {
+    display: none;
+}
 
 /* =========================
    SECTION HERO (TABLETTE)
    ========================= */
 .content-section{
-  padding:20px 20px 40px;
+  /* MODIFIÉ: Réduit le padding-top de 40px à 20px */
+  padding:20px 20px 40px; 
   display:flex;
   flex-direction:column;
   align-items:center;
@@ -61,176 +69,235 @@ h1{
   color:var(--secondary-color);
   margin:0 0 14px;
   font-weight:800;
-  font-size:1.2rem;
+  /* MODIFIÉ: Suppression du blocage et réglage de la taille à 1.2rem */
+  font-size:1.2rem; 
 }
 h1::after{
   content:'';
-  display:block;width:80px;height:4px;background:var(--primary-color);
+  display:block;
+  width:80px;height:4px;
+  background:var(--primary-color);
   margin:18px auto 0;border-radius:2px;
-}
+    }
 
-/* ---------------------------------------------------------------- */
-/* Améliorations spécifiques à la page Planning                     */
-/* ---------------------------------------------------------------- */
-.main-content-wrap {
-  max-width: 1200px;
-  margin: 20px auto;
-  padding: 20px;
-  background: #fff;
-  border-radius: 12px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-}
-.main-content-wrap h1 {
-  text-align: center;
-  font-size: 2.5rem;
-  color: #003366;
-  margin-bottom: 10px;
-}
-.main-content-wrap > p {
-  text-align: center;
-  font-size: 1.1rem;
-  color: #555;
-  margin-bottom: 30px;
-}
-.main-content-wrap h2 {
-  margin-top: 40px;
-  margin-bottom: 25px;
-  font-size: 1.8rem;
-  color: #003366;
-  text-align: center;
-}
+    /* ---------------------------------------------------------------- */
+    /* Améliorations spécifiques à la page Planning */
+    /* ---------------------------------------------------------------- */
 
-/* Calendrier + iFrame */
-.calendar-wrap { padding: 0 8px; }
+    /* Section principale et titre */
+    .main-content-wrap {
+      max-width: 1200px;
+      margin: 20px auto;
+      padding: 20px;
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    }
+    .main-content-wrap h1 {
+      text-align: center;
+      font-size: 2.5rem;
+      color: #003366;
+      margin-bottom: 10px;
+    }
+    .main-content-wrap > p {
+      text-align: center;
+      font-size: 1.1rem;
+      color: #555;
+      margin-bottom: 30px;
+    }
+    .main-content-wrap h2 {
+      margin-top: 40px;
+      margin-bottom: 25px;
+      font-size: 1.8rem;
+      color: #003366;
+      text-align: center;
+    }
 
-/* ===== Mini calendrier cliquable (ajouté) ===== */
-.mini-cal {
-  max-width: 700px;
-  margin: 0 auto 16px auto;
-  background:#fff;
-  border:1px solid #e6e8ec;
-  border-radius:12px;
-  box-shadow:0 6px 16px rgba(0,0,0,.06);
-  overflow:hidden;
-}
-.mini-cal-header{
-  display:flex;align-items:center;justify-content:space-between;
-  padding:10px 14px;border-bottom:1px solid #eef0f3;
-}
-.mini-cal-header .title{font-weight:700}
-.mini-cal-header button{
-  border:0;background:transparent;cursor:pointer;font-size:1.1rem;padding:6px 10px;
-}
-.mini-cal-grid{
-  display:grid;
-  grid-template-columns: repeat(7, 1fr);
-  gap:6px;
-  padding:10px;
-}
-.mini-cal .dow{font-weight:600;font-size:.85rem;text-align:center;color:#667085}
-.mini-cal .day{
-  text-align:center;padding:10px 0;border-radius:8px;cursor:pointer;
-  border:1px solid transparent;user-select:none;
-}
-.mini-cal .day:hover{border-color:#c9defd;background:#f3f8ff}
-.mini-cal .day.disabled{opacity:.35;cursor:not-allowed}
-.mini-cal .day.today{outline:2px solid var(--primary-color);outline-offset:2px;border-radius:10px}
+    /* Calendrier plus large et moins long */
+    .calendar-wrap {
+      padding: 0 8px;
+      /* AJOUTÉ : Rend la zone cliquable visuellement */
+      cursor: pointer; 
+      position: relative; /* Pour le positionnement du message */
+    }
+    .calendar-wrap iframe {
+      width: 100%;
+      height: 450px; /* Hauteur réduite pour éviter le défilement */
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      /* AJOUTÉ : Le calendrier doit apparaître au-dessus du message d'avertissement */
+      position: relative; 
+      z-index: 1; 
+    }
+    
+    /* Overlay pour bloquer les clics sur l'iframe et donner un effet cliquable */
+    /* Ceci est la seule façon de bloquer les clics sur l'iframe sans la masquer complètement */
+    .calendar-wrap::after {
+        content: "Cliquez pour Réserver une Date";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 51, 102, 0.7); /* Bleu semi-transparent */
+        color: white;
+        font-size: 1.5rem;
+        font-weight: 700;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 8px;
+        z-index: 10; /* Doit être au-dessus de l'iframe */
+        opacity: 0; /* Masqué par défaut */
+        transition: opacity 0.3s;
+        pointer-events: none; /* Permet aux événements de souris de passer à l'élément parent */
+    }
+    /* AJOUTÉ : Affichage de l'overlay au survol */
+    .calendar-wrap:hover::after {
+        opacity: 1;
+    }
 
-/* iFrame Google Calendar */
-.calendar-wrap iframe {
-  width: 100%;
-  height: 450px; /* Hauteur réduite pour éviter le défilement */
-  border: 1px solid #ccc;
-  border-radius: 8px;
-}
 
-/* Boutons SOS */
-.sos-buttons {
-  display: flex;
-  gap: 20px;
-  margin: 30px auto;
-  flex-wrap: wrap;
-  justify-content: center;
-}
-.sos-buttons button {
-  flex: 1;
-  min-width: 250px;
-  padding: 14px 22px;
-  font-weight: 600;
-  font-size: 1.05rem;
-  border: 0;border-radius: 30px;
-  color: #fff;cursor: pointer;
-  transition: transform 0.2s, box-shadow 0.2s;
-}
-.sos-buttons button:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(0,0,0,0.15);}
-.sos-poseur { background: #d32f2f; }
-.sos-sav { background: #fbc02d; color: #333; }
-.sos-derniere-minute { background: #388e3c; }
+    /* Boutons SOS */
+    .sos-buttons {
+      display: flex;
+      gap: 20px;
+      margin: 30px auto;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .sos-buttons button {
+      flex: 1;
+      min-width: 250px;
+      padding: 14px 22px;
+      font-weight: 600;
+      font-size: 1.05rem;
+      border: 0;
+      border-radius: 30px; /* Plus arrondis */
+      color: #fff;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .sos-buttons button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+    }
+    .sos-poseur { background: #d32f2f; }
+    .sos-sav { background: #fbc02d; color: #333; }
+    .sos-derniere-minute { background: #388e3c; }
 
-/* Formulaire existant */
-.reservation-form {
-  display: grid;
-  grid-template-columns: auto 1fr;
-  gap: 15px 25px;
-  max-width: 700px;
-  margin: 0 auto;
-  padding: 15px;
-  text-align: left;
-}
-.reservation-form label {
-  font-weight: 600;color: #003366;align-self: flex-start;padding-top: 5px;
-}
-.reservation-form input[type="text"],
-.reservation-form input[type="email"],
-.reservation-form input[type="date"],
-.reservation-form textarea {
-  padding: 0.6rem;border: 1px solid #ccc;border-radius: 6px;font-size: 1rem;width: 100%;box-sizing: border-box;resize: vertical;
-}
-.reservation-form textarea { grid-column: 2 / 3; }
-.cta-button {
-  grid-column: 1 / -1;background-color: #003366;color: white;padding: 0.75rem;border: none;border-radius: 6px;cursor: pointer;font-weight: 600;font-size: 1.1rem;transition: background-color 0.3s ease;margin-top: 15px;
-}
-.cta-button:hover { background-color: #00509e; }
-.form-info { grid-column: 1 / -1;font-size: 0.9em;color: #888;text-align: center;margin-top: -10px; }
+    /* Formulaire de réservation amélioré (étiquettes en face des champs) */
+    /* AJOUTÉ : ID pour pouvoir y faire défiler l'écran */
+    #reservation-section {
+        /* Uniquement pour s'assurer que l'ID n'affecte pas le layout existant */
+    }
+    .reservation-form {
+      display: grid;
+      grid-template-columns: auto 1fr; /* 1ère colonne pour le label (auto), 2ème pour le champ (1fr) */
+      gap: 15px 25px;
+      max-width: 700px;
+      margin: 0 auto;
+      padding: 15px;
+      text-align: left;
+    }
+    .reservation-form label {
+      font-weight: 600;
+      color: #003366;
+      align-self: flex-start; /* Alignement en haut (pour le textarea) */
+      padding-top: 5px; /* Petit décalage pour aligner le texte */
+    }
+    .reservation-form input[type="text"],
+    .reservation-form input[type="email"],
+    .reservation-form input[type="date"],
+    .reservation-form textarea {
+      padding: 0.6rem;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 1rem;
+      width: 100%;
+      box-sizing: border-box;
+      resize: vertical;
+    }
+    
+    /* Le textarea Message doit occuper toute la largeur sur la 2ème colonne */
+    .reservation-form textarea {
+        grid-column: 2 / 3;
+    }
 
-/* ===== MODAL formulaire (ajouté) ===== */
-.modal {
-  position: fixed; inset: 0; background: rgba(0,0,0,.45);
-  display: none; align-items: center; justify-content: center; padding: 16px; z-index: 9999;
-}
-.modal.open{ display: flex; }
-.modal-card{
-  width: 95%; max-width: 720px; background:#fff; border-radius: 14px;
-  box-shadow: 0 16px 40px rgba(0,0,0,.25); overflow: hidden;
-}
-.modal-head{
-  display:flex;align-items:center;justify-content:space-between;
-  padding:14px 18px;border-bottom:1px solid #eef0f3;background:#f9fbff;
-}
-.modal-title{font-weight:800}
-.modal-close{
-  border:0;background:transparent;font-size:1.2rem;cursor:pointer;padding:6px 10px;
-}
+    /* Le bouton doit occuper toute la largeur sous la grille */
+    .cta-button {
+      grid-column: 1 / -1; 
+      background-color: #003366;
+      color: white;
+      padding: 0.75rem;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 1.1rem;
+      transition: background-color 0.3s ease;
+      margin-top: 15px;
+    }
+    .cta-button:hover {
+        background-color: #00509e;
+    }
 
-/* Footer */
-footer {
-  text-align: center;padding: 20px 1rem;background-color: #003366;color: #fff;
-  font-size: 0.9rem;margin-top: 40px;max-width: none;
-}
+    .form-info {
+        grid-column: 1 / -1;
+        font-size: 0.9em;
+        color: #888;
+        text-align: center;
+        margin-top: -10px;
+    }
 
-/* Responsive */
-@media (max-width: 900px) {
-  header nav ul { gap: 1rem; justify-content: center; margin-top: 10px; }
-  header { flex-direction: column;text-align: center; }
-}
-@media (max-width: 768px) {
-  .reservation-form { grid-template-columns: 1fr; gap: 10px; padding: 0; }
-  .reservation-form label { grid-column: 1 / -1; padding-top: 0; }
-  .reservation-form input, .reservation-form textarea { grid-column: 1 / -1; }
-  .calendar-wrap iframe { height: 350px; }
-  .sos-buttons button { min-width: unset; width: 100%; max-width: 350px; }
-}
-</style>
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 20px 1rem;
+      background-color: #003366;
+      color: #fff;
+      font-size: 0.9rem;
+      margin-top: 40px;
+      max-width: none; /* Occupe toute la largeur */
+    }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+        header nav ul {
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 10px;
+        }
+        header {
+            flex-direction: column;
+            text-align: center;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .reservation-form {
+            grid-template-columns: 1fr; /* Revenir à une colonne unique pour les petits écrans */
+            gap: 10px;
+            padding: 0;
+        }
+        .reservation-form label {
+            grid-column: 1 / -1; /* Label prend toute la largeur */
+            padding-top: 0;
+        }
+        .reservation-form input,
+        .reservation-form textarea {
+            grid-column: 1 / -1; /* Champ prend toute la largeur */
+        }
+        .calendar-wrap iframe {
+            height: 350px; /* Encore plus court */
+        }
+        .sos-buttons button {
+            min-width: unset;
+            width: 100%;
+            max-width: 350px;
+        }
+    }
+  </style>
 </head>
 <body>
 
@@ -238,53 +305,38 @@ footer {
   <div class="logo">
     <img src="../img/logo.png" alt="Logo Papo Rénov" />
   </div>
-  <nav>
-    <ul>
-      <li><a href="../index.html">Accueil</a></li>
-      <li><a href="devis.html">Demande de devis</a></li>
-      <li><a href="realisations.html">Mes réalisations</a></li>
-      <li><a href="tarifs.html">Tarifs</a></li>
-      <li><a class="active" href="planning.html">Planning</a></li>
-      <li><a href="contact.html">Contact</a></li>
-      <li><a href="avis.html">Avis clients</a></li>
-      <li><a href="courtage-cuisine.html">Courtage Cuisine</a></li>
-    </ul>
-  </nav>
+<nav>
+  <ul>
+    <li><a href="../index.html">Accueil</a></li>
+    <li><a href="devis.html">Demande de devis</a></li>
+    <li><a href="realisations.html">Mes réalisations</a></li>
+    <li><a href="tarifs.html">Tarifs</a></li>
+    <li><a class="active" href="planning.html">Planning</a></li>
+    <li><a href="contact.html">Contact</a></li>
+    <li><a href="avis.html">Avis clients</a></li>
+    <li><a href="courtage-cuisine.html">Courtage Cuisine</a></li>
+  </ul>
+</nav>
 </header>
 
 <main class="main-content-wrap">
   <h1>Planning</h1>
   <p>Consultez mes disponibilités ci-dessous :</p>
 
-  <div class="calendar-wrap">
-
-    <!-- ===== Mini calendrier cliquable (ajouté) ===== -->
-    <div class="mini-cal" id="miniCal" aria-label="Sélecteur de date">
-      <div class="mini-cal-header">
-        <button type="button" id="calPrev" aria-label="Mois précédent">‹</button>
-        <div class="title" id="calTitle">Mois Année</div>
-        <button type="button" id="calNext" aria-label="Mois suivant">›</button>
-      </div>
-      <div class="mini-cal-grid" id="calGrid">
-        <!-- Jours de la semaine -->
-      </div>
-    </div>
-    <!-- / mini calendrier -->
-
+  <div class="calendar-wrap" onclick="scrollToReservation()">
     <iframe
       src="https://calendar.google.com/calendar/embed?src=kpaporalkis.pro%40gmail.com&ctz=Europe%2FParis"
       frameborder="0" scrolling="no">
     </iframe>
   </div>
-
   <div class="sos-buttons">
     <button class="sos-poseur">🚨 SOS POSEUR</button>
     <button class="sos-sav">🛠️ SOS SAV</button>
     <button class="sos-derniere-minute">⚡ SOS DISPO DERNIÈRE MINUTE</button>
   </div>
 
-  <h2>Réserver une date</h2>
-  <form action="https://formspree.io/f/mpwrpypd" method="POST" class="reservation-form" id="formBasPage">
+  <h2 id="reservation-section">Réserver une date</h2>
+  <form action="https://formspree.io/f/mpwrpypd" method="POST" class="reservation-form">
     <input type="hidden" name="_captcha" value="false" />
     <input type="hidden" name="_next" value="https://paporalkis.github.io/papo-renov/pages/confirmation.html" />
 
@@ -305,130 +357,20 @@ footer {
   </form>
 </main>
 
-<!-- ===== MODAL formulaire (ajouté) ===== -->
-<div class="modal" id="modal">
-  <div class="modal-card">
-    <div class="modal-head">
-      <div class="modal-title">Réserver une date</div>
-      <button class="modal-close" id="modalClose" aria-label="Fermer">✕</button>
-    </div>
-    <form action="https://formspree.io/f/mpwrpypd" method="POST" class="reservation-form" id="modalForm">
-      <input type="hidden" name="_captcha" value="false" />
-      <input type="hidden" name="_next" value="https://paporalkis.github.io/papo-renov/pages/confirmation.html" />
-
-      <label for="m_name">Nom :</label>
-      <input id="m_name" type="text" name="name" required />
-
-      <label for="m_email">Email :</label>
-      <input id="m_email" type="email" name="email" required />
-
-      <label for="m_date">Date souhaitée :</label>
-      <input id="m_date" type="date" name="date" required />
-
-      <label for="m_message">Message complémentaire :</label>
-      <textarea id="m_message" name="message" rows="4" placeholder="Précisez vos besoins..."></textarea>
-
-      <button type="submit" class="cta-button">Envoyer la demande</button>
-      <p class="form-info">* Vous recevrez une réponse de confirmation par e-mail.</p>
-    </form>
-  </div>
-</div>
-
 <footer>
   <p>&copy; 2025 Paporalkis - Tous droits réservés</p>
 </footer>
 
 <script>
-(function(){
-  // ===== Utilitaires de date
-  const pad = n => String(n).padStart(2,'0');
-  const toInputValue = (d)=>`${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
-
-  // ===== Mini calendrier
-  const grid = document.getElementById('calGrid');
-  const title = document.getElementById('calTitle');
-  const btnPrev = document.getElementById('calPrev');
-  const btnNext = document.getElementById('calNext');
-
-  let view = new Date(); // mois affiché
-
-  function renderCalendar(date){
-    // En-têtes jours
-    const dows = ['Lun','Mar','Mer','Jeu','Ven','Sam','Dim'];
-    grid.innerHTML = '';
-    dows.forEach(txt=>{
-      const el = document.createElement('div');
-      el.className='dow';
-      el.textContent=txt;
-      grid.appendChild(el);
-    });
-
-    const y = date.getFullYear();
-    const m = date.getMonth();
-    title.textContent = new Intl.DateTimeFormat('fr-FR',{month:'long', year:'numeric'}).format(date);
-
-    const first = new Date(y,m,1);
-    const startIdx = (first.getDay() + 6) % 7; // Lundi=0
-    const daysInMonth = new Date(y, m+1, 0).getDate();
-
-    // jours vides avant
-    for(let i=0;i<startIdx;i++){
-      const empty = document.createElement('div');
-      empty.className='day disabled';
-      empty.textContent=' ';
-      grid.appendChild(empty);
+    function scrollToReservation() {
+        // Cible l'élément h2 qui est juste au-dessus du formulaire
+        const reservationSection = document.getElementById('reservation-section');
+        
+        if (reservationSection) {
+            // Fait défiler la page jusqu'à cet élément avec une animation douce
+            reservationSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
     }
-
-    // jours du mois
-    const todayStr = toInputValue(new Date());
-    for(let d=1; d<=daysInMonth; d++){
-      const el = document.createElement('div');
-      el.className='day';
-      el.textContent = d;
-      const dayDate = new Date(y,m,d);
-      const val = toInputValue(dayDate);
-      if(val===todayStr) el.classList.add('today');
-
-      el.addEventListener('click', ()=> openModalWithDate(val));
-      grid.appendChild(el);
-    }
-  }
-
-  btnPrev.addEventListener('click', ()=>{ view.setMonth(view.getMonth()-1); renderCalendar(view); });
-  btnNext.addEventListener('click', ()=>{ view.setMonth(view.getMonth()+1); renderCalendar(view); });
-
-  renderCalendar(view);
-
-  // ===== Modal + pré-remplissage
-  const modal = document.getElementById('modal');
-  const modalClose = document.getElementById('modalClose');
-  const mDate = document.getElementById('m_date');
-  const mName = document.getElementById('m_name');
-  const mEmail = document.getElementById('m_email');
-  const mMsg = document.getElementById('m_message');
-
-  function openModalWithDate(dateStr){
-    mDate.value = dateStr;
-    modal.classList.add('open');
-    // Focus premier champ utile
-    (mName.value ? (mEmail.value? mMsg : mEmail) : mName).focus();
-  }
-  function closeModal(){ modal.classList.remove('open'); }
-
-  modalClose.addEventListener('click', closeModal);
-  modal.addEventListener('click', (e)=>{ if(e.target===modal) closeModal(); });
-  document.addEventListener('keydown', (e)=>{ if(e.key==='Escape') closeModal(); });
-
-  // Optionnel pratique : cliquer sur le champ "Date souhaitée" du formulaire bas de page ouvre le modal
-  const baseDateInput = document.getElementById('date');
-  baseDateInput.addEventListener('focus', ()=> {
-    // Si l’utilisateur préfère, on peut prendre la valeur courante
-    if(baseDateInput.value) mDate.value = baseDateInput.value;
-    modal.classList.add('open');
-  });
-
-  // Quand on soumet le formulaire du modal, on n’altère rien d’autre (action identique).
-})();
 </script>
 
 </body>
