@@ -77,21 +77,10 @@ h1::after{content:'';display:block;width:80px;height:4px;background:var(--primar
 .cta-button:hover{background-color:#00509e}
 .form-info{grid-column:1/-1;font-size:.9em;color:#888;text-align:center;margin-top:-10px}
 
-/* Modales SOS - Adaptation Responsive */
-.modal{
-  position:fixed;inset:0;background:rgba(0,0,0,.45);display:none;
-  align-items:center;justify-content:center;z-index:9999;
-  padding:20px; /* Ajout d'un padding pour éviter que la modale touche les bords sur mobile */
-  overflow-y: auto; /* Permet le scroll dans le fond si nécessaire */
-}
+/* Modales SOS (version de ton fichier) */
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.45);display:none;align-items:center;justify-content:center;z-index:9999;padding:20px}
 .modal.open{display:flex}
-.modal-card{
-  background:#fff;border-radius:14px;box-shadow:0 20px 60px rgba(0,0,0,.25);
-  max-width:720px; /* Reste la taille max */
-  width:100%; /* S'assure que la carte utilise toute la largeur disponible jusqu'à max-width */
-  overflow:hidden;
-  margin: auto; /* Centre la carte dans la modale */
-}
+.modal-card{background:#fff;border-radius:14px;box-shadow:0 20px 60px rgba(0,0,0,.25);max-width:720px;width:100%;overflow:hidden}
 .modal-header{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;background:#003366;color:#fff}
 .modal-header h3{margin:0;font-size:1.2rem}
 .modal-close{background:transparent;border:0;color:#fff;font-size:1.4rem;cursor:pointer}
@@ -100,12 +89,6 @@ h1::after{content:'';display:block;width:80px;height:4px;background:var(--primar
 .sos-form .full{grid-column:1/-1}
 .sos-form label{font-weight:600;font-size:.95rem;color:#003366}
 .sos-form input,.sos-form textarea,.sos-form select{width:100%;padding:.6rem;border:1px solid #d7d7d7;border-radius:8px;font-size:1rem}
-.partner-list{display:grid;grid-template-columns:1fr 1fr;gap:8px;border:1px solid #eee;padding:10px;border-radius:8px;max-height:160px;overflow:auto}
-.partner-item{display:flex;gap:8px;align-items:center}
-.badge{display:inline-block;background:#eef5ff;color:#003366;padding:2px 8px;border-radius:999px;font-size:.8rem;font-weight:600}
-.btn-primary{background:#003366;color:#fff;border:none;border-radius:10px;padding:.8rem 1rem;font-weight:700;cursor:pointer}
-.btn-primary:hover{filter:brightness(1.05)}
-.help{font-size:.86rem;color:#666}
 
 /* Footer */
 footer{text-align:center;padding:20px 1rem;background-color:#003366;color:#fff;font-size:.9rem;margin-top:40px}
@@ -122,19 +105,6 @@ footer{text-align:center;padding:20px 1rem;background-color:#003366;color:#fff;f
   .calendar-wrap iframe{height:350px}
   .sos-buttons button{min-width:unset;width:100%;max-width:350px}
   .sos-form{grid-template-columns:1fr}
-  .partner-list{grid-template-columns:1fr}
-  /* Ajustement de la modale pour les petits écrans */
-  .modal-card{
-    border-radius: 0; /* Plus esthétique sur mobile */
-    min-height: 100vh; /* Permet à la modale de prendre toute la hauteur */
-    margin: 0; /* Enlève la marge pour coller aux bords */
-    max-width: 100%;
-    overflow-y: auto; /* Permet le scroll dans la modale */
-  }
-  .modal{
-    padding: 0; /* Enlève le padding du fond */
-    align-items: flex-start; /* Positionne le contenu en haut pour un meilleur affichage mobile */
-  }
 }
 </style>
 </head>
@@ -201,6 +171,8 @@ footer{text-align:center;padding:20px 1rem;background-color:#003366;color:#fff;f
   <p>&copy; 2025 Paporalkis - Tous droits réservés</p>
 </footer>
 
+<!-- ========= MODALES ========= -->
+<!-- SOS POSEUR -->
 <div class="modal" id="modal-poseur" aria-hidden="true">
   <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="poseur-title">
     <div class="modal-header">
@@ -229,12 +201,12 @@ footer{text-align:center;padding:20px 1rem;background-color:#003366;color:#fff;f
         <input name="files" type="file" class="full" multiple />
 
         <button class="btn-primary full" type="submit">Envoyer la demande</button>
-        <div class="help full">Le premier poseur qui accepte remporte la demande. Les autres seront automatiquement bloqués. (Demande envoyée à tous les poseurs partenaires).</div>
       </form>
     </div>
   </div>
 </div>
 
+<!-- SOS SAV -->
 <div class="modal" id="modal-sav" aria-hidden="true">
   <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="sav-title">
     <div class="modal-header">
@@ -254,7 +226,6 @@ footer{text-align:center;padding:20px 1rem;background-color:#003366;color:#fff;f
         <input name="clientAddress" type="text" class="full" placeholder="N°, rue, ville" />
         <label>Date souhaitée</label>
         <input name="dateStart" type="date" required />
-        <label>—</label><div></div>
         <label class="full">Description du SAV</label>
         <textarea name="description" rows="4" class="full" required></textarea>
 
@@ -262,12 +233,12 @@ footer{text-align:center;padding:20px 1rem;background-color:#003366;color:#fff;f
         <input name="files" type="file" class="full" multiple />
 
         <button class="btn-primary full" type="submit">Envoyer la demande</button>
-        <div class="help full">Le premier poseur qui accepte remporte la demande. Les autres seront automatiquement bloqués. (Demande envoyée à tous les poseurs SAV partenaires).</div>
       </form>
     </div>
   </div>
 </div>
 
+<!-- SOS DISPO DERNIÈRE MINUTE -->
 <div class="modal" id="modal-derniere" aria-hidden="true">
   <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="derniere-title">
     <div class="modal-header">
@@ -295,21 +266,22 @@ footer{text-align:center;padding:20px 1rem;background-color:#003366;color:#fff;f
         <input name="files" type="file" class="full" multiple />
 
         <button class="btn-primary full" type="submit">Notifier les magasins</button>
-        <div class="help full">Le premier magasin qui accepte confirme la mission. Les autres seront automatiquement bloqués. (Notification envoyée à tous les magasins partenaires).</div>
       </form>
     </div>
   </div>
 </div>
+<!-- ======== FIN MODALES ======== -->
+
 <script>
   function scrollToReservation(){
     const reservationSection=document.getElementById('reservation-section');
     if(reservationSection){reservationSection.scrollIntoView({behavior:'smooth',block:'start'});}
   }
 
-  // ✅ URL du Web App (guillemets droits, 1 seule ligne)
+  // URL du Web App
   const SCRIPT_WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbyDaxItj7apWyLqdGdyZU4OJktybuYtRhV_-m0TFMFtISnJvT-Syr38t7P26kzU1UBQ/exec';
 
-  // Listes partenaires (à compléter avec tes vrais contacts)
+  // Listes partenaires (envoi automatique à TOUS)
   const PARTNERS_POSEURS = [
     {name:'Poseur A', email:'poseurA@example.com'},
     {name:'Poseur B', email:'poseurB@example.com'}
@@ -340,15 +312,7 @@ footer{text-align:center;padding:20px 1rem;background-color:#003366;color:#fff;f
     });
   });
 
-  // Suppression de la fonction renderPartners car la sélection est supprimée.
-  /* function renderPartners(containerId, list){
-    // ... (Code supprimé)
-  }
-  renderPartners('partnerPoseurs', PARTNERS_POSEURS);
-  renderPartners('partnerSAV', PARTNERS_SAV);
-  renderPartners('partnerStores', PARTNERS_STORES); */
-
-  /* ===== Envoi des 3 formulaires vers Google Apps Script (avec envoi à tous) ===== */
+  // ===== Envoi des 3 formulaires vers Google Apps Script (TOUS les partenaires) =====
   function uuid(){
     if(window.crypto?.randomUUID) return crypto.randomUUID();
     return 'req-'+Math.random().toString(36).slice(2)+Date.now();
@@ -360,20 +324,14 @@ footer{text-align:center;padding:20px 1rem;background-color:#003366;color:#fff;f
     fd.append('action','createRequest');
     fd.append('requestId', reqId);
 
-    // Tous les partenaires de la liste sont sélectionnés
-    const selected = partnerList;
-
-    if(selected.length===0){
-      alert('Erreur: La liste des partenaires est vide. Veuillez vérifier les constantes PARTNERS.');
-      return;
-    }
-    fd.append('recipients', JSON.stringify(selected));
+    // Envoi à toute la liste (plus de sélection)
+    fd.append('recipients', JSON.stringify(partnerList));
 
     try{
       const res = await fetch(SCRIPT_WEB_APP_URL, {method:'POST', body:fd});
       const data = await res.json();
       if(data.status==='OK'){
-        alert('Demande envoyée. Un e-mail avec liens Accepter/Refuser a été transmis aux partenaires sélectionnés.');
+        alert('Demande envoyée à tous les partenaires. Le premier qui accepte remporte la demande.');
         form.reset();
         document.querySelectorAll('.modal.open').forEach(m=>m.classList.remove('open'));
       }else{
@@ -386,17 +344,18 @@ footer{text-align:center;padding:20px 1rem;background-color:#003366;color:#fff;f
     }
   }
 
+  // Bind des 3 formulaires
   document.getElementById('form-poseur').addEventListener('submit', e=>{
     e.preventDefault();
-    submitSosForm(e.target, PARTNERS_POSEURS); // Envoi à tous les poseurs
+    submitSosForm(e.target, PARTNERS_POSEURS);
   });
   document.getElementById('form-sav').addEventListener('submit', e=>{
     e.preventDefault();
-    submitSosForm(e.target, PARTNERS_SAV); // Envoi à tous les poseurs SAV
+    submitSosForm(e.target, PARTNERS_SAV);
   });
   document.getElementById('form-derniere').addEventListener('submit', e=>{
     e.preventDefault();
-    submitSosForm(e.target, PARTNERS_STORES); // Envoi à tous les magasins
+    submitSosForm(e.target, PARTNERS_STORES);
   });
 </script>
 
