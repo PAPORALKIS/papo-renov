@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tarifs Partenaires - Papo Rénov</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --primary:#007bff;
+  --bg:#0f1220;
+  --panel:#ffffff;
+  --muted:#6c757d;
+  --accent:#ffc107;
+  --ok:#28a745;
+  --border:#e9ecef;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{font-family:'Poppins',sans-serif;background:linear-gradient(135deg,#0f1220 0%,#1b213a 100%);min-height:100vh;color:#111;display:flex;align-items:center;justify-content:center;padding:24px}
+.card{width:min(900px,96vw);background:var(--panel);border-radius:20px;box-shadow:0 30px 80px rgba(0,0,0,.35);overflow:hidden}
+.header{display:flex;align-items:center;gap:16px;padding:16px 20px;border-bottom:1px solid var(--border)}
+.header img{height:40px}
+.header h1{font-size:1.2rem;margin:0}
+.wrap{padding:20px}
+.notice{color:var(--muted);text-align:center;margin:0 0 12px}
+.form{display:flex;gap:10px;justify-content:center;margin:8px 0 20px}
+.form input{flex:1;max-width:320px;padding:12px 14px;border:1px solid var(--border);border-radius:12px;font-size:1rem}
+.form button{padding:12px 16px;border-radius:12px;border:1px solid var(--primary);background:var(--primary);color:#fff;font-weight:700;cursor:pointer}
+.error{color:#dc3545;text-align:center;min-height:20px}
+
+/* grille tarifs partenaires */
+.sheets{display:none;justify-content:center;gap:18px;flex-wrap:wrap;padding:10px 0 26px}
+.sheet{width:220px;background:#fff;border:1px solid var(--border);border-radius:14px;box-shadow:0 12px 30px rgba(0,0,0,.12);padding:12px}
+.sheet .head{display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:6px}
+.badge{background:#0a1f44;color:#fff;padding:4px 8px;border-radius:8px;font-size:.8rem;font-weight:700}
+.sheet h3{font-size:1rem;margin:6px 0 8px;text-align:center}
+.sheet p{color:#6c757d;font-size:.9rem;margin:0 0 8px;text-align:center}
+.sheet .from{color:var(--ok);font-weight:700;text-align:center}
+.list{margin-top:10px;border-top:1px dashed var(--border);padding-top:8px}
+.list li{display:flex;justify-content:space-between;gap:10px;font-size:.92rem;padding:6px 0;border-bottom:1px dashed var(--border)}
+.list li:last-child{border-bottom:none}
+.footer{padding:14px 20px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
+.footer a{color:var(--primary);font-weight:700;text-decoration:none}
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="header">
+    <img src="../img/logo.png" alt="Papo Rénov">
+    <h1>Tarifs Partenaires — Accès sécurisé</h1>
+  </div>
+  <div class="wrap">
+    <p class="notice">Entrez le <strong>code d’accès</strong> fourni pour consulter les tarifs partenaires.</p>
+    <div class="form">
+      <input id="code" type="password" placeholder="Code d’accès" autocomplete="off" required>
+      <button id="enter">Valider</button>
+    </div>
+    <div id="error" class="error"></div>
+
+    <!-- CONTENU PARTENAIRES -->
+    <div id="partner-content" style="display:none">
+      <div class="sheets" id="partner-sheets">
+        <!-- Revêtements & Peinture -->
+        <article class="sheet">
+          <div class="head"><span class="badge">Partenaires</span></div>
+          <h3>Revêtements & Peinture</h3>
+          <p>Tarifs préférentiels main d’œuvre</p>
+          <div class="from">À partir de 18 € / m² (HT)</div>
+          <ul class="list">
+            <li><span>Peinture murs (2 couches)</span><strong>22–36 €/m²</strong></li>
+            <li><span>Peinture plafonds</span><strong>27–45 €/m²</strong></li>
+            <li><span>Carrelage sol (droit)</span><strong>30–55 €/m²</strong></li>
+            <li><span>Faïence murale</span><strong>35–65 €/m²</strong></li>
+            <li><span>Parquet flottant</span><strong>18–30 €/m²</strong></li>
+          </ul>
+        </article>
+
+        <!-- Plomberie & Sanitaires -->
+        <article class="sheet">
+          <div class="head"><span class="badge">Partenaires</span></div>
+          <h3>Plomberie & Sanitaires</h3>
+          <p>Forfaits optimisés</p>
+          <div class="from">SDB dès 3 150 € (HT)</div>
+          <ul class="list">
+            <li><span>SDB complète (M.O.)</span><strong>3 150–7 200 €</strong></li>
+            <li><span>Création point d’eau</span><strong>225–450 €/u</strong></li>
+            <li><span>WC suspendu (M.O.)</span><strong>400–675 €</strong></li>
+            <li><span>Douche à l’italienne</span><strong>1 080–2 250 €</strong></li>
+            <li><span>Chauffe-eau (pose)</span><strong>225–400 €</strong></li>
+          </ul>
+        </article>
+
+        <!-- Électricité & Plâtrerie -->
+        <article class="sheet">
+          <div class="head"><span class="badge">Partenaires</span></div>
+          <h3>Électricité & Plâtrerie</h3>
+          <p>Grille dédiée récurrence / volume</p>
+          <div class="from">Cloison dès 40 €/m² (Fourn. + M.O.)</div>
+          <ul class="list">
+            <li><span>Cloison placo (F+M.O.)</span><strong>40–60 €/m²</strong></li>
+            <li><span>Doublage isolant (F+M.O.)</span><strong>50–75 €/m²</strong></li>
+            <li><span>Prise / inter (M.O.)</span><strong>70–110 €/u</strong></li>
+            <li><span>Tableau électrique</span><strong>810–1 620 €</strong></li>
+            <li><span>VMC simple flux</span><strong>315–585 €</strong></li>
+          </ul>
+        </article>
+
+        <!-- Autres Prestations -->
+        <article class="sheet">
+          <div class="head"><span class="badge">Partenaires</span></div>
+          <h3>Autres Prestations</h3>
+          <p>Agencement & menuiserie</p>
+          <div class="from">Sur devis</div>
+          <ul class="list">
+            <li><span>Agencement sur mesure</span><strong>Devis spécial</strong></li>
+            <li><span>Menuiserie intérieure</span><strong>Devis spécial</strong></li>
+            <li><span>Démolition / évacuation</span><strong>Devis spécial</strong></li>
+          </ul>
+        </article>
+      </div>
+
+      <div class="footer">
+        <a href="tarifs.html">← Retour Tarifs Publics</a>
+        <a href="devis.html">Demander un devis partenaire</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const ACCESS_CODE = "papo2025"; // 👈 Change-le si besoin
+const input = document.getElementById('code');
+const btn = document.getElementById('enter');
+const err = document.getElementById('error');
+const content = document.getElementById('partner-content');
+const sheets = document.getElementById('partner-sheets');
+
+function openIfValid(){
+  const val = (input.value || '').trim();
+  if(!val){ err.textContent = "Merci de saisir le code."; return; }
+  if(val === ACCESS_CODE){
+    err.textContent = "";
+    content.style.display = 'block';
+    sheets.style.display = 'flex';
+    // lock UI
+    document.querySelector('.form').style.display = 'none';
+    document.querySelector('.notice').textContent = "Accès confirmé — Tarifs Partenaires";
+  }else{
+    err.textContent = "Code invalide. Réessayez.";
+  }
+}
+
+btn.addEventListener('click', openIfValid);
+input.addEventListener('keydown', (e)=>{ if(e.key === 'Enter') openIfValid(); });
+</script>
+</body>
+</html>
