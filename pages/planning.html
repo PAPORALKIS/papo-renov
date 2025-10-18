@@ -5,7 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Planning - Papo Rénov</title>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../style.css"><link rel="preconnect" href="https://cdnjs.cloudflare.com">
+<link rel="stylesheet" href="../style.css">
+<link rel="preconnect" href="https://cdnjs.cloudflare.com">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 
 <style>
@@ -30,23 +31,15 @@ body{
   min-width:320px;
 }
 nav ul li a.active{color:var(--primary-color);font-weight:700}
-
-/* Masquage scroll nav */
 nav ul{-ms-overflow-style:none;scrollbar-width:none;overflow-x:auto}
 nav ul::-webkit-scrollbar{display:none}
-
-/* Section */
 .content-section{padding:20px 20px 40px;display:flex;flex-direction:column;align-items:center;text-align:center;position:relative}
 h1{color:var(--secondary-color);margin:0 0 14px;font-weight:800;font-size:1.2rem}
 h1::after{content:'';display:block;width:80px;height:4px;background:var(--primary-color);margin:18px auto 0;border-radius:2px}
-
-/* Contenu principal */
 .main-content-wrap{max-width:1200px;margin:20px auto;padding:20px;background:#fff;border-radius:12px;box-shadow:0 4px 15px rgba(0,0,0,.05)}
 .main-content-wrap h1{text-align:center;font-size:2.5rem;color:#003366;margin-bottom:10px}
 .main-content-wrap>p{text-align:center;font-size:1.1rem;color:#555;margin-bottom:30px}
 .main-content-wrap h2{margin-top:40px;margin-bottom:25px;font-size:1.8rem;color:#003366;text-align:center}
-
-/* Calendrier */
 .calendar-wrap{padding:0 8px;cursor:pointer;position:relative}
 .calendar-wrap iframe{width:100%;height:450px;border:1px solid #ccc;border-radius:8px;position:relative;z-index:1}
 .calendar-wrap::after{
@@ -56,17 +49,12 @@ h1::after{content:'';display:block;width:80px;height:4px;background:var(--primar
   border-radius:8px;z-index:10;opacity:0;transition:opacity .3s;pointer-events:none
 }
 .calendar-wrap:hover::after{opacity:1}
-
-/* Boutons SOS */
 .sos-buttons{display:flex;gap:20px;margin:30px auto;flex-wrap:wrap;justify-content:center}
 .sos-buttons button{flex:1;min-width:250px;padding:14px 22px;font-weight:600;font-size:1.05rem;border:0;border-radius:30px;color:#fff;cursor:pointer;transition:transform .2s,box-shadow .2s}
 .sos-buttons button:hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(0,0,0,.15)}
 .sos-poseur{background:#d32f2f}
 .sos-sav{background:#fbc02d;color:#333}
 .sos-derniere-minute{background:#388e3c}
-
-/* Formulaire réservation existant (inchangé) */
-#reservation-section{}
 .reservation-form{display:grid;grid-template-columns:auto 1fr;gap:15px 25px;max-width:700px;margin:0 auto;padding:15px;text-align:left}
 .reservation-form label{font-weight:600;color:#003366;align-self:flex-start;padding-top:5px}
 .reservation-form input[type="text"],
@@ -77,8 +65,6 @@ h1::after{content:'';display:block;width:80px;height:4px;background:var(--primar
 .cta-button{grid-column:1/-1;background-color:#003366;color:#fff;padding:.75rem;border:none;border-radius:6px;cursor:pointer;font-weight:600;font-size:1.1rem;transition:background-color .3s ease;margin-top:15px}
 .cta-button:hover{background-color:#00509e}
 .form-info{grid-column:1/-1;font-size:.9em;color:#888;text-align:center;margin-top:-10px}
-
-/* Modales SOS */
 .modal{position:fixed;inset:0;background:rgba(0,0,0,.45);display:none;align-items:center;justify-content:center;z-index:9999;padding:20px}
 .modal.open{display:flex}
 .modal-card{background:#fff;border-radius:14px;box-shadow:0 20px 60px rgba(0,0,0,.25);max-width:720px;width:100%;overflow:hidden}
@@ -96,11 +82,7 @@ h1::after{content:'';display:block;width:80px;height:4px;background:var(--primar
 .btn-primary{background:#003366;color:#fff;border:none;border-radius:10px;padding:.8rem 1rem;font-weight:700;cursor:pointer}
 .btn-primary:hover{filter:brightness(1.05)}
 .help{font-size:.86rem;color:#666}
-
-/* Footer */
 footer{text-align:center;padding:20px 1rem;background-color:#003366;color:#fff;font-size:.9rem;margin-top:40px}
-
-/* Responsive */
 @media (max-width:900px){
   header nav ul{gap:1rem;justify-content:center;margin-top:10px}
   header{flex-direction:column;text-align:center}
@@ -122,18 +104,18 @@ footer{text-align:center;padding:20px 1rem;background-color:#003366;color:#fff;f
   <div class="logo">
     <img src="../img/logo.png" alt="Logo Papo Rénov" />
   </div>
-<nav>
-  <ul>
-    <li><a href="../index.html">Accueil</a></li>
-    <li><a href="devis.html">Demande de devis</a></li>
-    <li><a href="realisations.html">Mes réalisations</a></li>
-    <li><a href="tarifs.html">Tarifs</a></li>
-    <li><a class="active" href="planning.html">Planning</a></li>
-    <li><a href="contact.html">Contact</a></li>
-    <li><a href="avis.html">Avis clients</a></li>
-    <li><a href="courtage-cuisine.html">Courtage Cuisine</a></li>
-  </ul>
-</nav>
+  <nav>
+    <ul>
+      <li><a href="../index.html">Accueil</a></li>
+      <li><a href="devis.html">Demande de devis</a></li>
+      <li><a href="realisations.html">Mes réalisations</a></li>
+      <li><a href="tarifs.html">Tarifs</a></li>
+      <li><a class="active" href="planning.html">Planning</a></li>
+      <li><a href="contact.html">Contact</a></li>
+      <li><a href="avis.html">Avis clients</a></li>
+      <li><a href="courtage-cuisine.html">Courtage Cuisine</a></li>
+    </ul>
+  </nav>
 </header>
 
 <main class="main-content-wrap">
@@ -141,10 +123,7 @@ footer{text-align:center;padding:20px 1rem;background-color:#003366;color:#fff;f
   <p>Consultez mes disponibilités ci-dessous :</p>
 
   <div class="calendar-wrap" onclick="scrollToReservation()">
-    <iframe
-      src="https://calendar.google.com/calendar/embed?src=kpaporalkis.pro%40gmail.com&ctz=Europe%2FParis"
-      frameborder="0" scrolling="no">
-    </iframe>
+    <iframe src="https://calendar.google.com/calendar/embed?src=kpaporalkis.pro%40gmail.com&ctz=Europe%2FParis" frameborder="0" scrolling="no"></iframe>
   </div>
 
   <div class="sos-buttons">
@@ -157,19 +136,14 @@ footer{text-align:center;padding:20px 1rem;background-color:#003366;color:#fff;f
   <form action="https://formspree.io/f/mpwrpypd" method="POST" class="reservation-form">
     <input type="hidden" name="_captcha" value="false" />
     <input type="hidden" name="_next" value="https://paporalkis.github.io/papo-renov/pages/confirmation.html" />
-
     <label for="name">Nom :</label>
     <input id="name" type="text" name="name" required />
-
     <label for="email">Email :</label>
     <input id="email" type="email" name="email" required />
-
     <label for="date">Date souhaitée :</label>
     <input id="date" type="date" name="date" required />
-
     <label for="message">Message complémentaire :</label>
     <textarea id="message" name="message" rows="4" placeholder="Précisez vos besoins..."></textarea>
-
     <button type="submit" class="cta-button">Envoyer la demande</button>
     <p class="form-info">* Vous recevrez une réponse de confirmation par e-mail.</p>
   </form>
@@ -179,247 +153,61 @@ footer{text-align:center;padding:20px 1rem;background-color:#003366;color:#fff;f
   <p>&copy; 2025 Paporalkis - Tous droits réservés</p>
 </footer>
 
-<!-- ========= MODALES ========= -->
-<!-- SOS POSEUR -->
-<div class="modal" id="modal-poseur" aria-hidden="true">
-  <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="poseur-title">
-    <div class="modal-header">
-      <h3 id="poseur-title">🚨 SOS Poseur</h3>
-      <button class="modal-close" data-close>&times;</button>
-    </div>
-    <div class="modal-body">
-      <form id="form-poseur" class="sos-form">
-        <input type="hidden" name="type" value="SOS_POSEUR"/>
-        <label>Nom complet</label>
-        <input name="clientName" type="text" required />
-        <label>Email</label>
-        <input name="clientEmail" type="email" required />
-        <label>Téléphone</label>
-        <input name="clientPhone" type="text" required />
-        <label>Adresse chantier</label>
-        <input name="clientAddress" type="text" class="full" placeholder="N°, rue, ville" />
-        <label>Dates souhaitées (début)</label>
-        <input name="dateStart" type="date" required />
-        <label>Dates souhaitées (fin)</label>
-        <input name="dateEnd" type="date" />
-        <label class="full">Description de la demande</label>
-        <textarea name="description" rows="4" class="full" required></textarea>
-
-        <div class="full">
-          <span class="badge">Sélection des poseurs</span>
-          <div id="partnerPoseurs" class="partner-list"></div>
-          <div class="help">Coche les poseurs à notifier.</div>
-        </div>
-
-        <label class="full">Pièces jointes (plans, photos)</label>
-        <input name="files" type="file" class="full" multiple />
-
-        <button class="btn-primary full" type="submit">Envoyer la demande</button>
-        <div class="help full">Le premier poseur qui accepte remporte la demande. Les autres seront automatiquement bloqués.</div>
-      </form>
-    </div>
-  </div>
-</div>
-
-<!-- SOS SAV -->
-<div class="modal" id="modal-sav" aria-hidden="true">
-  <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="sav-title">
-    <div class="modal-header">
-      <h3 id="sav-title">🛠️ SOS SAV</h3>
-      <button class="modal-close" data-close>&times;</button>
-    </div>
-    <div class="modal-body">
-      <form id="form-sav" class="sos-form">
-        <input type="hidden" name="type" value="SOS_SAV"/>
-        <label>Nom complet</label>
-        <input name="clientName" type="text" required />
-        <label>Email</label>
-        <input name="clientEmail" type="email" required />
-        <label>Téléphone</label>
-        <input name="clientPhone" type="text" required />
-        <label>Adresse intervention</label>
-        <input name="clientAddress" type="text" class="full" placeholder="N°, rue, ville" />
-        <label>Date souhaitée</label>
-        <input name="dateStart" type="date" required />
-        <label>—</label><div></div>
-        <label class="full">Description du SAV</label>
-        <textarea name="description" rows="4" class="full" required></textarea>
-
-        <div class="full">
-          <span class="badge">Sélection des poseurs</span>
-          <div id="partnerSAV" class="partner-list"></div>
-          <div class="help">Coche les poseurs à notifier.</div>
-        </div>
-
-        <label class="full">Pièces jointes</label>
-        <input name="files" type="file" class="full" multiple />
-
-        <button class="btn-primary full" type="submit">Envoyer la demande</button>
-        <div class="help full">Le premier poseur qui accepte remporte la demande. Les autres seront automatiquement bloqués.</div>
-      </form>
-    </div>
-  </div>
-</div>
-
-<!-- SOS DISPO DERNIÈRE MINUTE -->
-<div class="modal" id="modal-derniere" aria-hidden="true">
-  <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="derniere-title">
-    <div class="modal-header">
-      <h3 id="derniere-title">⚡ SOS Dispo Dernière Minute</h3>
-      <button class="modal-close" data-close>&times;</button>
-    </div>
-    <div class="modal-body">
-      <form id="form-derniere" class="sos-form">
-        <input type="hidden" name="type" value="SOS_DERNIERE_MINUTE"/>
-        <label>Nom du poseur</label>
-        <input name="fitterName" type="text" required />
-        <label>Email du poseur</label>
-        <input name="fitterEmail" type="email" required />
-        <label>Téléphone du poseur</label>
-        <input name="fitterPhone" type="text" required />
-        <label>Date de disponibilité</label>
-        <input name="availableDate" type="date" required />
-        <label>Zone d’intervention</label>
-        <input name="area" type="text" />
-
-        <label class="full">Description (compétences, créneau, etc.)</label>
-        <textarea name="description" rows="4" class="full" required></textarea>
-
-        <div class="full">
-          <span class="badge">Sélection des magasins</span>
-          <div id="partnerStores" class="partner-list"></div>
-          <div class="help">Coche les magasins à notifier.</div>
-        </div>
-
-        <label class="full">Pièces jointes (photos, assurances, etc.)</label>
-        <input name="files" type="file" class="full" multiple />
-
-        <button class="btn-primary full" type="submit">Notifier les magasins</button>
-        <div class="help full">Le premier magasin qui accepte confirme la mission. Les autres seront automatiquement bloqués.</div>
-      </form>
-    </div>
-  </div>
-</div>
-<!-- ======== FIN MODALES ======== -->
-
 <script>
-  function scrollToReservation(){
-    const reservationSection=document.getElementById('reservation-section');
-    if(reservationSection){reservationSection.scrollIntoView({behavior:'smooth',block:'start'});}
-  }
+function scrollToReservation(){
+  const reservationSection=document.getElementById('reservation-section');
+  if(reservationSection){reservationSection.scrollIntoView({behavior:'smooth',block:'start'});}
+}
 
-  /* ======================
-     CONFIG (À ADAPTER)
-     ====================== */
-  const SCRIPT_WEB_APP_URL =
- 'https://script.google.com/macros/s/AKfycbyDaxItj7apWyLqdGdyZU4OJktybuYtRhV_-m0TFMFtISnJvT-Syr38t7P26kzU1UBQ/exec’;
+// ✅ correction ici : guillemets droits + une seule ligne
+const SCRIPT_WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbyDaxItj7apWyLqdGdyZU4OJktybuYtRhV_-m0TFMFtISnJvT-Syr38t7P26kzU1UBQ/exec';
 
-  // Liste de partenaires (à compléter)
-  const PARTNERS_POSEURS = [
-    {name:'Poseur A', email:'poseurA@example.com'},
-    {name:'Poseur B', email:'poseurB@example.com'}
-  ];
-  const PARTNERS_SAV = [
-    {name:'Poseur SAV 1', email:'sav1@example.com'},
-    {name:'Poseur SAV 2', email:'sav2@example.com'}
-  ];
-  const PARTNERS_STORES = [
-    {name:'Magasin X', email:'magasinX@example.com'},
-    {name:'Magasin Y', email:'magasinY@example.com'}
-  ];
+const PARTNERS_POSEURS = [
+  {name:'Poseur A', email:'poseurA@example.com'},
+  {name:'Poseur B', email:'poseurB@example.com'}
+];
+const PARTNERS_SAV = [
+  {name:'Poseur SAV 1', email:'sav1@example.com'},
+  {name:'Poseur SAV 2', email:'sav2@example.com'}
+];
+const PARTNERS_STORES = [
+  {name:'Magasin X', email:'magasinX@example.com'},
+  {name:'Magasin Y', email:'magasinY@example.com'}
+];
 
-  /* ======================
-     UI Modales
-     ====================== */
-  document.querySelectorAll('.sos-buttons button').forEach(btn=>{
-    btn.addEventListener('click',()=>{
-      const id=btn.getAttribute('data-modal');
-      const modal=document.getElementById(id);
-      if(modal){modal.classList.add('open');}
-    });
+document.querySelectorAll('.sos-buttons button').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    const id=btn.getAttribute('data-modal');
+    const modal=document.getElementById(id);
+    if(modal){modal.classList.add('open');}
   });
-  document.querySelectorAll('[data-close]').forEach(x=>{
-    x.addEventListener('click',()=>x.closest('.modal').classList.remove('open'));
+});
+document.querySelectorAll('[data-close]').forEach(x=>{
+  x.addEventListener('click',()=>x.closest('.modal').classList.remove('open'));
+});
+document.querySelectorAll('.modal').forEach(m=>{
+  m.addEventListener('click',e=>{
+    if(e.target===m){m.classList.remove('open');}
   });
-  document.querySelectorAll('.modal').forEach(m=>{
-    m.addEventListener('click',e=>{
-      if(e.target===m){m.classList.remove('open');}
-    });
+});
+
+function renderPartners(containerId,list){
+  const box=document.getElementById(containerId);
+  if(!box)return;
+  box.innerHTML='';
+  list.forEach((p,i)=>{
+    const id=containerId+'_p_'+i;
+    const item=document.createElement('label');
+    item.className='partner-item';
+    item.innerHTML=`<input type="checkbox" value="${p.email}" data-name="${p.name}" id="${id}">
+                    <span>${p.name}</span>
+                    <span class="badge">${p.email}</span>`;
+    box.appendChild(item);
   });
-
-  // Alimente les listes de partenaires
-  function renderPartners(containerId, list){
-    const box=document.getElementById(containerId);
-    box.innerHTML='';
-    list.forEach((p,i)=>{
-      const id=containerId+'_p_'+i;
-      const item=document.createElement('label');
-      item.className='partner-item';
-      item.innerHTML=`
-        <input type="checkbox" value="${p.email}" data-name="${p.name}" id="${id}">
-        <span>${p.name}</span>
-        <span class="badge">${p.email}</span>
-      `;
-      box.appendChild(item);
-    });
-  }
-  renderPartners('partnerPoseurs', PARTNERS_POSEURS);
-  renderPartners('partnerSAV', PARTNERS_SAV);
-  renderPartners('partnerStores', PARTNERS_STORES);
-
-  /* ======================
-     Soumission des 3 formulaires
-     ====================== */
-  function uuid(){
-    if(window.crypto?.randomUUID) return crypto.randomUUID();
-    return 'req-'+Math.random().toString(36).slice(2)+Date.now();
-  }
-
-  async function submitSosForm(form, partnerContainerId){
-    const reqId = uuid();
-    const fd = new FormData(form);
-    fd.append('action','createRequest');
-    fd.append('requestId', reqId);
-
-    // Récupère les partenaires sélectionnés
-    const selected = Array.from(document.querySelectorAll('#'+partnerContainerId+' input[type="checkbox"]:checked'))
-      .map(c=>({email:c.value, name:c.dataset.name}));
-    if(selected.length===0){
-      alert('Sélectionne au moins un partenaire.');
-      return;
-    }
-    fd.append('recipients', JSON.stringify(selected));
-
-    try{
-      const res = await fetch(SCRIPT_WEB_APP_URL, {method:'POST', body:fd});
-      const data = await res.json();
-      if(data.status==='OK'){
-        alert('Demande envoyée. Un e-mail avec liens Accepter/Refuser a été transmis aux partenaires sélectionnés.');
-        form.reset();
-        document.querySelectorAll('#'+partnerContainerId+' input[type="checkbox"]').forEach(c=>c.checked=false);
-        document.querySelectorAll('.modal.open').forEach(m=>m.classList.remove('open'));
-      }else{
-        console.error(data);
-        alert('Erreur serveur: '+(data.message||'inconnue'));
-      }
-    }catch(e){
-      console.error(e);
-      alert('Impossible de contacter le serveur. Vérifie l’URL du script.');
-    }
-  }
-
-  document.getElementById('form-poseur').addEventListener('submit', e=>{
-    e.preventDefault();
-    submitSosForm(e.target, 'partnerPoseurs');
-  });
-  document.getElementById('form-sav').addEventListener('submit', e=>{
-    e.preventDefault();
-    submitSosForm(e.target, 'partnerSAV');
-  });
-  document.getElementById('form-derniere').addEventListener('submit', e=>{
-    e.preventDefault();
-    submitSosForm(e.target, 'partnerStores');
-  });
+}
+renderPartners('partnerPoseurs',PARTNERS_POSEURS);
+renderPartners('partnerSAV',PARTNERS_SAV);
+renderPartners('partnerStores',PARTNERS_STORES);
 </script>
 
 </body>
