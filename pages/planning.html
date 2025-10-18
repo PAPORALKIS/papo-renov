@@ -2,184 +2,241 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Courtage Cuisine – Offre 100% Gratuite | Papo-Rénov</title>
-<meta name="description" content="Service de courtage cuisine 100% gratuit : je négocie pour vous le meilleur prix auprès de mes partenaires et fournisseurs. Condition : me confier la pose et les travaux. Devis et comparatif offerts." />
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../style.css">
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Planning - Papo Rénov</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../style.css"><link rel="preconnect" href="https://cdnjs.cloudflare.com">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
 <style>
-/* ====== THEME ====== */
+/* =========================
+   PALETTE / BASE
+   ========================= */
 :root{
-  --brand:#0b2a4a;       /* Bleu marine Papo-Rénov */
-  --brand-2:#1c4b78;
-  --accent:#f2b705;
-  --bg:#f6f8fc;
-  --text:#0f172a;
-  --muted:#667085;
-  --card:#ffffff;
-  --ring:rgba(12,18,30,.12);
-  --ok:#0c6c3e;
-  --danger:#b42318;
-  --shadow:0 10px 26px rgba(8,15,40,.06), 0 2px 8px rgba(8,15,40,.05);
-  --radius:18px;
-  --w:1200px;
+  --primary-color:#007bff;
+  --secondary-color:#212529;
+  --background-light:#f4f7f9;
+  --card-background:#ffffff;
+  --price-accent:#28a745;
+  --accent-orange:#ffc107;
+  --border-light:#e9ecef;
+  --shadow-color:rgba(0,0,0,.16);
+  --dark-blue-logo:#0a1f44;
 }
 *{box-sizing:border-box}
-html,body{
-  margin:0;
-  background:var(--bg);
-  color:var(--text);
-  font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial;
+html,body{margin:0;padding:0}
+body{
+  font-family:'Poppins',sans-serif;
+  background:var(--background-light);
+  color:var(--secondary-color);
+  line-height:1.6;
+  min-width:320px;
+}
+
+/* Nav active (conserve ton style) */
+nav ul li a.active{color:var(--primary-color);font-weight:700}
+
+/* =========================
+   MASQUAGE DE LA BARRE DE DÉFILEMENT
+   ========================= */
+nav ul {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  overflow-x: auto;
+}
+nav ul::-webkit-scrollbar { display: none; }
+
+/* =========================
+   SECTION HERO (TABLETTE)
+   ========================= */
+.content-section{
+  padding:20px 20px 40px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  text-align:center;
   position:relative;
-  overflow-x:hidden;
 }
-
-img{max-width:100%;display:block}
-a{color:inherit}
-
-/* ====== FILIGRANE LOGO Papo-Rénov (fixe & centré) ====== */
-body::before{
-  content:"";
-  position:fixed;
-  inset:0; /* couvre tout le viewport */
-  background:url("../img/logo.png") center center / 45vmin no-repeat;
-  opacity:0.008;
-  z-index:-1;
-  pointer-events:none;
+h1{
+  color:var(--secondary-color);
+  margin:0 0 14px;
+  font-weight:800;
+  font-size:1.2rem;
 }
-
-/* ====== NAVBAR (CONSERVÉE) ====== */
-.nav{position:sticky;top:0;z-index:40;background:rgba(255,255,255,.92);backdrop-filter:saturate(140%) blur(8px);border-bottom:1px solid rgba(15,23,42,.06);box-shadow:var(--shadow);}
-.nav__in{max-width:var(--w);margin:auto;display:flex;align-items:center;gap:16px;padding:12px 20px}
-.logo{display:flex;align-items:center;gap:10px;font-weight:800;letter-spacing:.2px;color:var(--brand)}
-.logo__mark{width:34px;height:34px;border-radius:12px;background:conic-gradient(from 230deg,var(--brand),var(--brand-2));box-shadow:0 4px 10px rgba(12, 18, 30, 0.2);position:relative}
-.logo__mark::after{content:"P";position:absolute;inset:0;display:grid;place-items:center;color:#fff;font-weight:900}
-.nav__links{margin-left:auto;display:flex;gap:6px;flex-wrap:wrap}
-.nav__links a{padding:10px 14px;border-radius:12px;text-decoration:none}
-.nav__links a.active{background:#eef2ff;color:var(--brand);font-weight:700}
-.nav__links a:hover{background:#f2f4ff}
-
-/* ====== TYPO ====== */
-h1, h2, h3, .logo, .btn { font-family: 'Poppins', sans-serif; letter-spacing:-0.2px; }
-h1{ margin:12px 0 16px; font-size:clamp(26px,3.2vw,44px); line-height:1.1; }
-h2{ margin:0 0 24px; font-size:clamp(24px,2.5vw,36px); text-align:center; position:relative; padding-bottom:8px; padding-top:10px; }
-h3{ margin:0 0 10px; font-size:18px; }
-.muted, .note, p { line-height:1.65; }
-u{ text-decoration:none !important; }
-
-/* ====== HERO ====== */
-.hero{
-  position:relative;
-  overflow:hidden;
-  background-color:#ffffff;
-  padding-bottom:42px;
-}
-.hero::before {
+h1::after{
   content:'';
-  position:absolute; inset:0;
-  background:url('../img/cuisine-flou.jpg') center top no-repeat;
-  background-size:cover;
-  filter:grayscale(100%) blur(4px) brightness(1.4);
-  opacity:.8; z-index:1;
+  display:block;width:80px;height:4px;background:var(--primary-color);
+  margin:18px auto 0;border-radius:2px;
 }
-.hero__in{
-  max-width:var(--w); margin:auto; padding:42px 20px;
-  display:grid; grid-template-columns:1fr; gap:28px; align-items:center;
-  position:relative; z-index:2;
+
+/* ---------------------------------------------------------------- */
+/* Améliorations spécifiques à la page Planning                     */
+/* ---------------------------------------------------------------- */
+.main-content-wrap {
+  max-width: 1200px;
+  margin: 20px auto;
+  padding: 20px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
 }
-.badge{display:inline-flex;align-items:center;gap:8px;padding:6px 10px;border-radius:999px;background:#fff;border:1px solid var(--ring)}
-.badge b{color:var(--brand)}
-.lead{color:var(--muted);font-size:clamp(16px,1.6vw,18px)}
-.hero__card{background:var(--card);border:none;border-radius:var(--radius);box-shadow:var(--shadow);padding:20px;position:relative;z-index:3}
-.kv{display:none !important}
-
-/* ====== BUTTONS ====== */
-.btn{appearance:none;border:0;border-radius:14px;padding:12px 18px;background:var(--brand);color:#fff;font-weight:700;cursor:pointer;box-shadow:var(--shadow);transition:all .2s}
-.btn:hover{filter:brightness(1.06)}
-.btn--ghost{background:#fff;color:var(--brand);border:1px solid var(--ring)}
-.btn--accent{background:var(--accent);color:var(--brand);box-shadow:0 6px 16px rgba(242,183,5,.4)}
-.btn--accent:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(242,183,5,.5);filter:none}
-
-/* ====== LAYOUT ====== */
-.section{max-width:var(--w);margin:34px auto;padding:0 20px}
-.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
-.card{background:var(--card);border:1px solid rgba(15,23,42,.08);border-radius:16px;box-shadow:0 4px 18px rgba(8,15,40,.04);padding:18px;transition:transform .3s ease-out}
-.card:hover{transform:translateY(-3px);box-shadow:0 8px 22px rgba(8,15,40,.08)}
-.muted{color:var(--muted)}
-
-/* ====== STEPS ====== */
-.steps{display:grid;grid-template-columns:repeat(5,1fr);gap:14px}
-.step{background:#fff;border:1px solid var(--ring);border-radius:14px;padding:16px;box-shadow:none;text-align:center}
-.step .num{width:30px;height:30px;border-radius:999px;background:var(--brand);color:#fff;display:grid;place-items:center;font-weight:800;margin:0 auto 10px;box-shadow:0 3px 8px rgba(12, 18, 30, 0.2)}
-
-/* ====== TABLE ====== */
-.table{width:100%;border-collapse:separate;border-spacing:0;overflow:hidden;border-radius:10px;border:1px solid var(--ring);background:#fff;box-shadow:0 8px 20px rgba(8,15,40,.06)}
-.table th,.table td{padding:14px;border-bottom:1px solid rgba(12,18,30,.08);text-align:left;font-size:15px}
-.table thead th{background:var(--brand-2);color:#fff;font-weight:600;border-bottom:none}
-.badge-ok{display:inline-block;background:var(--ok);color:#fff;padding:4px 8px;border-radius:999px;font-weight:700;font-size:12px}
-.badge-no{display:inline-block;background:var(--danger);color:#fff;padding:4px 8px;border-radius:999px;font-weight:700;font-size:12px}
-
-/* ====== FAQ ====== */
-details{background:#fff;border:1px solid rgba(15,23,42,.08);border-radius:14px;padding:14px 16px;box-shadow:0 4px 18px rgba(8,15,40,.04);transition:transform .3s ease-out}
-details:hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(8,15,40,.06)}
-summary{cursor:pointer;font-weight:700}
-
-/* ====== FORM ====== */
-.form{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-.form .full{grid-column:1/-1}
-.input{display:grid;gap:6px}
-.input input,.input textarea,.input select{
-  width:100%;padding:12px 13px;border-radius:12px;border:1px solid var(--ring);background:#fff;font:inherit;transition:border-color .2s, box-shadow .2s;
+.main-content-wrap h1 {
+  text-align: center;
+  font-size: 2.5rem;
+  color: #003366;
+  margin-bottom: 10px;
 }
-.input input:focus,.input textarea:focus,.input select:focus{border-color:var(--brand);outline:none;box-shadow:0 0 0 3px rgba(11,42,74,.1)}
-.help{font-size:12px;color:var(--muted)}
-.note{font-size:14px;color:var(--muted)}
-
-/* ====== CTA ====== */
-.cta{display:grid;grid-template-columns:1.2fr .8fr;gap:18px;align-items:center}
-.cta .panel{background:linear-gradient(180deg,#ffffff 0%,#f9fbff 100%);border:1px solid var(--ring);border-radius:18px;box-shadow:var(--shadow);padding:18px}
-
-/* ====== FOOTER ====== */
-.footer{max-width:var(--w);margin:24px auto 56px;padding:0 20px;color:var(--muted);font-size:14px}
-
-/* ====== CALENDAR + MODAL (AJOUT) ====== */
-.kal{max-width:var(--w);margin:34px auto;padding:0 20px}
-.kal__grid{background:#fff;border:1px solid var(--ring);border-radius:16px;box-shadow:var(--shadow);overflow:hidden}
-.kal__head{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;border-bottom:1px solid rgba(15,23,42,.08)}
-.kal__btn{background:#fff;border:1px solid var(--ring);border-radius:10px;padding:8px 10px;cursor:pointer}
-.kal__month{font-weight:700}
-.kal__table{width:100%;border-collapse:collapse}
-.kal__table th,.kal__table td{width:14.285%;text-align:center;padding:12px}
-.kal__table th{font-weight:600;color:var(--muted);background:#fafbff;border-bottom:1px solid rgba(15,23,42,.08)}
-.kal__day{border:1px solid transparent;border-radius:10px;padding:10px;cursor:pointer}
-.kal__day:hover{background:#f7f9ff;border-color:#e6ecff}
-.kal__day--muted{color:#98a2b3}
-.kal__day--today{outline:2px solid #e6ecff}
-
-/* Modal */
-.modal{position:fixed;inset:0;background:rgba(2,6,23,.5);display:none;align-items:center;justify-content:center;padding:20px;z-index:999}
-.modal__in{width:min(640px,96vw);background:#fff;border-radius:18px;box-shadow:var(--shadow);padding:18px}
-.modal__title{margin:0 0 12px;text-align:center}
-.modal__close{position:absolute;right:18px;top:18px;background:#fff;border:1px solid var(--ring);border-radius:10px;padding:6px 10px;cursor:pointer}
-.modal__foot{margin-top:8px;color:var(--muted);font-size:14px}
-
-/* ====== RESPONSIVE ====== */
-@media (max-width:980px){
-  .hero__in{grid-template-columns:1fr;gap:18px}
-  .grid-3{grid-template-columns:1fr 1fr}
-  .steps{grid-template-columns:1fr 1fr;gap:12px}
-  .cta{grid-template-columns:1fr}
-  .form{grid-template-columns:1fr}
+.main-content-wrap > p {
+  text-align: center;
+  font-size: 1.1rem;
+  color: #555;
+  margin-bottom: 30px;
 }
-@media (max-width:640px){
-  .grid-3{grid-template-columns:1fr}
+.main-content-wrap h2 {
+  margin-top: 40px;
+  margin-bottom: 25px;
+  font-size: 1.8rem;
+  color: #003366;
+  text-align: center;
+}
+
+/* Calendrier + iFrame */
+.calendar-wrap { padding: 0 8px; }
+
+/* ===== Mini calendrier cliquable (ajouté) ===== */
+.mini-cal {
+  max-width: 700px;
+  margin: 0 auto 16px auto;
+  background:#fff;
+  border:1px solid #e6e8ec;
+  border-radius:12px;
+  box-shadow:0 6px 16px rgba(0,0,0,.06);
+  overflow:hidden;
+}
+.mini-cal-header{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:10px 14px;border-bottom:1px solid #eef0f3;
+}
+.mini-cal-header .title{font-weight:700}
+.mini-cal-header button{
+  border:0;background:transparent;cursor:pointer;font-size:1.1rem;padding:6px 10px;
+}
+.mini-cal-grid{
+  display:grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap:6px;
+  padding:10px;
+}
+.mini-cal .dow{font-weight:600;font-size:.85rem;text-align:center;color:#667085}
+.mini-cal .day{
+  text-align:center;padding:10px 0;border-radius:8px;cursor:pointer;
+  border:1px solid transparent;user-select:none;
+}
+.mini-cal .day:hover{border-color:#c9defd;background:#f3f8ff}
+.mini-cal .day.disabled{opacity:.35;cursor:not-allowed}
+.mini-cal .day.today{outline:2px solid var(--primary-color);outline-offset:2px;border-radius:10px}
+
+/* iFrame Google Calendar */
+.calendar-wrap iframe {
+  width: 100%;
+  height: 450px; /* Hauteur réduite pour éviter le défilement */
+  border: 1px solid #ccc;
+  border-radius: 8px;
+}
+
+/* Boutons SOS */
+.sos-buttons {
+  display: flex;
+  gap: 20px;
+  margin: 30px auto;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.sos-buttons button {
+  flex: 1;
+  min-width: 250px;
+  padding: 14px 22px;
+  font-weight: 600;
+  font-size: 1.05rem;
+  border: 0;border-radius: 30px;
+  color: #fff;cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.sos-buttons button:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(0,0,0,0.15);}
+.sos-poseur { background: #d32f2f; }
+.sos-sav { background: #fbc02d; color: #333; }
+.sos-derniere-minute { background: #388e3c; }
+
+/* Formulaire existant */
+.reservation-form {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 15px 25px;
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 15px;
+  text-align: left;
+}
+.reservation-form label {
+  font-weight: 600;color: #003366;align-self: flex-start;padding-top: 5px;
+}
+.reservation-form input[type="text"],
+.reservation-form input[type="email"],
+.reservation-form input[type="date"],
+.reservation-form textarea {
+  padding: 0.6rem;border: 1px solid #ccc;border-radius: 6px;font-size: 1rem;width: 100%;box-sizing: border-box;resize: vertical;
+}
+.reservation-form textarea { grid-column: 2 / 3; }
+.cta-button {
+  grid-column: 1 / -1;background-color: #003366;color: white;padding: 0.75rem;border: none;border-radius: 6px;cursor: pointer;font-weight: 600;font-size: 1.1rem;transition: background-color 0.3s ease;margin-top: 15px;
+}
+.cta-button:hover { background-color: #00509e; }
+.form-info { grid-column: 1 / -1;font-size: 0.9em;color: #888;text-align: center;margin-top: -10px; }
+
+/* ===== MODAL formulaire (ajouté) ===== */
+.modal {
+  position: fixed; inset: 0; background: rgba(0,0,0,.45);
+  display: none; align-items: center; justify-content: center; padding: 16px; z-index: 9999;
+}
+.modal.open{ display: flex; }
+.modal-card{
+  width: 95%; max-width: 720px; background:#fff; border-radius: 14px;
+  box-shadow: 0 16px 40px rgba(0,0,0,.25); overflow: hidden;
+}
+.modal-head{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:14px 18px;border-bottom:1px solid #eef0f3;background:#f9fbff;
+}
+.modal-title{font-weight:800}
+.modal-close{
+  border:0;background:transparent;font-size:1.2rem;cursor:pointer;padding:6px 10px;
+}
+
+/* Footer */
+footer {
+  text-align: center;padding: 20px 1rem;background-color: #003366;color: #fff;
+  font-size: 0.9rem;margin-top: 40px;max-width: none;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  header nav ul { gap: 1rem; justify-content: center; margin-top: 10px; }
+  header { flex-direction: column;text-align: center; }
+}
+@media (max-width: 768px) {
+  .reservation-form { grid-template-columns: 1fr; gap: 10px; padding: 0; }
+  .reservation-form label { grid-column: 1 / -1; padding-top: 0; }
+  .reservation-form input, .reservation-form textarea { grid-column: 1 / -1; }
+  .calendar-wrap iframe { height: 350px; }
+  .sos-buttons button { min-width: unset; width: 100%; max-width: 350px; }
 }
 </style>
 </head>
 <body>
+
 <header>
   <div class="logo">
-    <img src="../img/logo.png" alt="Logo Papo Rénov">
+    <img src="../img/logo.png" alt="Logo Papo Rénov" />
   </div>
   <nav>
     <ul>
@@ -187,423 +244,192 @@ summary{cursor:pointer;font-weight:700}
       <li><a href="devis.html">Demande de devis</a></li>
       <li><a href="realisations.html">Mes réalisations</a></li>
       <li><a href="tarifs.html">Tarifs</a></li>
-      <li><a href="planning.html">Planning</a></li>
+      <li><a class="active" href="planning.html">Planning</a></li>
       <li><a href="contact.html">Contact</a></li>
       <li><a href="avis.html">Avis clients</a></li>
-      <li><a class="active" href="courtage-cuisine.html">Courtage Cuisine</a></li>
+      <li><a href="courtage-cuisine.html">Courtage Cuisine</a></li>
     </ul>
   </nav>
 </header>
 
-<header class="hero">
-  <div class="hero__in">
-    <div>
-      <span class="badge">✅ <b>Offre 100% gratuite</b> (voir conditions)</span>
-      <h1>Je négocie pour vous le meilleur prix de votre cuisine</h1>
-      <p class="lead">
-        Grâce à mes **connaissances**, **partenaires** et **fournisseurs**, je compare et négocie vos devis cuisine.
-        <br>**Condition** : vous me confiez la **pose** et les **travaux**. Aucuns frais de courtage pour vous.
-      </p>
-      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:12px">
-        <a href="#brief" class="btn btn--accent">Obtenir mon comparatif gratuit</a>
-        <a href="#faq" class="btn btn--ghost">Comment ça marche ?</a>
+<main class="main-content-wrap">
+  <h1>Planning</h1>
+  <p>Consultez mes disponibilités ci-dessous :</p>
+
+  <div class="calendar-wrap">
+
+    <!-- ===== Mini calendrier cliquable (ajouté) ===== -->
+    <div class="mini-cal" id="miniCal" aria-label="Sélecteur de date">
+      <div class="mini-cal-header">
+        <button type="button" id="calPrev" aria-label="Mois précédent">‹</button>
+        <div class="title" id="calTitle">Mois Année</div>
+        <button type="button" id="calNext" aria-label="Mois suivant">›</button>
       </div>
-      <div class="hero__card" style="margin-top:14px">
-        <div style="display:flex;gap:10px;flex-wrap:wrap">
-          <div style="display:flex;gap:8px;align-items:flex-start">
-            <span aria-hidden="true">💶</span>
-            <div>
-              <b>Négociation prix & remises</b>
-              <div class="muted">Showrooms & fournisseurs partenaires, sans favoritisme.</div>
-            </div>
-          </div>
-          <div style="display:flex;gap:8px;align-items:flex-start">
-            <span aria-hidden="true">📐</span>
-            <div>
-              <b>Plan & validation technique</b>
-              <div class="muted">Vérif. faisabilité avant commande.</div>
-            </div>
-          </div>
-          <div style="display:flex;gap:8px;align-items:flex-start">
-            <span aria-hidden="true">🧰</span>
-            <div>
-              <b>Pose sous contrôle</b>
-              <div class="muted">Travaux par mes soins, garantie pro.</div>
-            </div>
-          </div>
-        </div>
+      <div class="mini-cal-grid" id="calGrid">
+        <!-- Jours de la semaine -->
       </div>
     </div>
+    <!-- / mini calendrier -->
+
+    <iframe
+      src="https://calendar.google.com/calendar/embed?src=kpaporalkis.pro%40gmail.com&ctz=Europe%2FParis"
+      frameborder="0" scrolling="no">
+    </iframe>
+  </div>
+
+  <div class="sos-buttons">
+    <button class="sos-poseur">🚨 SOS POSEUR</button>
+    <button class="sos-sav">🛠️ SOS SAV</button>
+    <button class="sos-derniere-minute">⚡ SOS DISPO DERNIÈRE MINUTE</button>
+  </div>
+
+  <h2>Réserver une date</h2>
+  <form action="https://formspree.io/f/mpwrpypd" method="POST" class="reservation-form" id="formBasPage">
+    <input type="hidden" name="_captcha" value="false" />
+    <input type="hidden" name="_next" value="https://paporalkis.github.io/papo-renov/pages/confirmation.html" />
+
+    <label for="name">Nom :</label>
+    <input id="name" type="text" name="name" required />
+
+    <label for="email">Email :</label>
+    <input id="email" type="email" name="email" required />
+
+    <label for="date">Date souhaitée :</label>
+    <input id="date" type="date" name="date" required />
+
+    <label for="message">Message complémentaire :</label>
+    <textarea id="message" name="message" rows="4" placeholder="Précisez vos besoins..."></textarea>
+
+    <button type="submit" class="cta-button">Envoyer la demande</button>
+    <p class="form-info">* Vous recevrez une réponse de confirmation par e-mail.</p>
+  </form>
+</main>
+
+<!-- ===== MODAL formulaire (ajouté) ===== -->
+<div class="modal" id="modal">
+  <div class="modal-card">
+    <div class="modal-head">
+      <div class="modal-title">Réserver une date</div>
+      <button class="modal-close" id="modalClose" aria-label="Fermer">✕</button>
     </div>
-</header>
+    <form action="https://formspree.io/f/mpwrpypd" method="POST" class="reservation-form" id="modalForm">
+      <input type="hidden" name="_captcha" value="false" />
+      <input type="hidden" name="_next" value="https://paporalkis.github.io/papo-renov/pages/confirmation.html" />
 
-<section class="section">
-  <div class="grid-3">
-    <article class="card">
-      <h3>Gratuit pour vous</h3>
-      <p class="muted">Mon service de courtage est à 0€. Ma rémunération provient des <b>travaux de pose</b> que vous me confiez (transparence totale).</p>
-    </article>
-    <article class="card">
-      <h3>Indépendant & transparent</h3>
-      <p class="muted">Je consulte plusieurs enseignes/fournisseurs pour un comparatif honnête, selon vos critères (style, délais, budget).</p>
-    </article>
-    <article class="card">
-      <h3>Gain de temps & d’argent</h3>
-      <p class="muted">Vous évitez les allers-retours en magasin ; je négocie pour vous pour obtenir le meilleur rapport qualité/prix.</p>
-    </article>
-  </div>
-</section>
+      <label for="m_name">Nom :</label>
+      <input id="m_name" type="text" name="name" required />
 
-<section class="section">
-  <h2>Comment ça marche ?</h2>
-  <div class="steps" aria-label="Étapes du service">
-    <div class="step"><div class="num">1</div><b>Brief express</b><div class="muted">Dimensions, envies, budget — 10 min suffisent.</div></div>
-    <div class="step"><div class="num">2</div><b>Comparatif</b><div class="muted">Je sollicite mes partenaires & récupère des offres.</div></div>
-    <div class="step"><div class="num">3</div><b>Négo & conseils</b><div class="muted">Je défends vos intérêts & sécurise le plan.</div></div>
-    <div class="step"><div class="num">4</div><b>Choix final</b><div class="muted">Vous validez l’offre qui vous convient.</div></div>
-    <div class="step"><div class="num">5</div><b>Pose par mes soins</b><div class="muted">Travaux réalisés avec garantie pro.</div></div>
-  </div>
-</section>
+      <label for="m_email">Email :</label>
+      <input id="m_email" type="email" name="email" required />
 
-<section class="section">
-  <h2>Comparatif type (exemple)</h2>
-  <div style="overflow:auto">
-    <table class="table" role="table">
-      <thead>
-        <tr><th>Critère</th><th>Enseigne A</th><th>Enseigne B</th><th>Fournisseur C</th><th>Objectif</th></tr>
-      </thead>
-      <tbody>
-        <tr><td>Prix meubles</td><td>€€</td><td>€</td><td>€€€</td><td>€ le plus bas à qualité égale</td></tr>
-        <tr><td>Plan de travail</td><td>Stratifié</td><td>Quartz</td><td>Compact HPL</td><td>Matériau adapté usage/budget</td></tr>
-        <tr><td>Délais</td><td>2–3 sem</td><td>1–2 sem</td><td>4–5 sem</td><td>Synchronisé avec planning travaux</td></tr>
-        <tr><td>Négociation</td><td><span class="badge-ok">-10% obtenu</span></td><td><span class="badge-ok">Livraison offerte</span></td><td><span class="badge-no">Non pertinent</span></td><td>Maximiser les avantages</td></tr>
-      </tbody>
-    </table>
-  </div>
-  <p class="note">Exemple indicatif. Le comparatif réel dépend de votre brief, marque choisie, matériaux et délais souhaités.</p>
-</section>
+      <label for="m_date">Date souhaitée :</label>
+      <input id="m_date" type="date" name="date" required />
 
-<section class="section">
-  <div class="grid-3">
-    <div class="card">
-      <h3>Pas de frais cachés</h3>
-      <p class="muted">Le courtage est gratuit. Vous ne payez que la cuisine choisie + la pose, avec devis détaillés.</p>
-    </div>
-    <div class="card">
-      <h3>Assurance & garanties</h3>
-      <p class="muted">Travaux couverts par mes garanties pro (RC, décennale selon nature des travaux).</p>
-    </div>
-    <div class="card">
-      <h3>Un seul interlocuteur</h3>
-      <p class="muted">Je pilote vos devis, le planning et la pose jusqu’à la réception.</p>
-    </div>
-  </div>
-</section>
+      <label for="m_message">Message complémentaire :</label>
+      <textarea id="m_message" name="message" rows="4" placeholder="Précisez vos besoins..."></textarea>
 
-<section id="faq" class="section">
-  <h2>Questions fréquentes</h2>
-  <div class="card" style="display:grid;gap:10px">
-    <details>
-      <summary>Pourquoi c’est gratuit pour moi ?</summary>
-      <p class="muted">Parce que je suis rémunéré sur la <b>prestation de pose/travaux</b> que vous me confiez. Aucuns frais de courtage ne vous sont facturés.</p>
-    </details>
-    <details>
-      <summary>Êtes-vous lié à une enseigne ?</summary>
-      <p class="muted">Non. Je consulte plusieurs marques/fournisseurs selon vos critères. Mon rôle : obtenir la meilleure proposition pour vous.</p>
-    </details>
-    <details>
-      <summary>Que se passe-t-il si je ne vous confie pas la pose ?</summary>
-      <p class="muted">Le service de courtage <b>gratuit</b> est conditionné à la réalisation des travaux par mes soins. Sans cette condition, le temps d’étude et de négociation fait l’objet d’un forfait.</p>
-    </details>
-    <details>
-      <summary>En combien de temps puis-je avoir un comparatif ?</summary>
-      <p class="muted">Généralement <b>48 à 72 h ouvrées</b> après le brief complet, selon la complexité et la réactivité des fournisseurs.</p>
-    </details>
-  </div>
-</section>
-
-<!-- ==== CALENDRIER CLIQUABLE + MODAL “RÉSERVER UNE DATE” (AJOUT) ==== -->
-<section class="kal" aria-labelledby="kalTitle">
-  <h2 id="kalTitle">Choisissez une date pour réserver</h2>
-  <div class="kal__grid">
-    <div class="kal__head">
-      <button class="kal__btn" type="button" id="kalPrev" aria-label="Mois précédent">◀</button>
-      <div class="kal__month" id="kalMonth"></div>
-      <button class="kal__btn" type="button" id="kalNext" aria-label="Mois suivant">▶</button>
-    </div>
-    <table class="kal__table" aria-label="Calendrier">
-      <thead>
-        <tr>
-          <th>Lun</th><th>Mar</th><th>Mer</th><th>Jeu</th><th>Ven</th><th>Sam</th><th>Dim</th>
-        </tr>
-      </thead>
-      <tbody id="kalBody"><!-- lignes générées JS --></tbody>
-    </table>
-  </div>
-</section>
-
-<div class="modal" id="bookingModal" aria-hidden="true" role="dialog" aria-labelledby="bookingTitle">
-  <div class="modal__in">
-    <button class="modal__close" type="button" id="bookingClose" aria-label="Fermer">✕</button>
-    <h3 class="modal__title" id="bookingTitle">Réserver une date</h3>
-    <form id="bookingForm" class="form">
-      <div class="input">
-        <label for="b_nom">Nom</label>
-        <input id="b_nom" name="nom" type="text" required placeholder="Votre nom">
-      </div>
-      <div class="input">
-        <label for="b_email">Email</label>
-        <input id="b_email" name="email" type="email" required placeholder="vous@exemple.fr">
-      </div>
-      <div class="input">
-        <label for="b_date">Date souhaitée</label>
-        <input id="b_date" name="date" type="date" required>
-      </div>
-      <div class="input full">
-        <label for="b_msg">Message complémentaire</label>
-        <textarea id="b_msg" name="message" rows="3" placeholder="Votre message..."></textarea>
-      </div>
-      <div class="full" style="display:flex;gap:10px;flex-wrap:wrap">
-        <button class="btn btn--accent" type="submit">Envoyer la demande</button>
-      </div>
-      <p class="modal__foot">* Vous recevrez une réponse de confirmation par e-mail.</p>
+      <button type="submit" class="cta-button">Envoyer la demande</button>
+      <p class="form-info">* Vous recevrez une réponse de confirmation par e-mail.</p>
     </form>
   </div>
 </div>
-<!-- ==== FIN AJOUT ==== -->
 
-<section id="brief" class="section">
-  <div class="cta">
-    <div class="panel">
-      <h2>Brief gratuit — lancez votre comparatif</h2>
-      <p class="muted">Décrivez votre projet : je reviens vers vous rapidement avec une première estimation et les prochaines étapes.</p>
-      <form id="briefForm" class="form" novalidate>
-        <div class="input">
-          <label for="nom">Nom</label>
-          <input id="nom" name="nom" type="text" required placeholder="Votre nom" />
-        </div>
-        <div class="input">
-          <label for="email">Email</label>
-          <input id="email" name="email" type="email" required placeholder="vous@exemple.fr" />
-        </div>
-        <div class="input">
-          <label for="tel">Téléphone</label>
-          <input id="tel" name="tel" type="tel" placeholder="06 12 34 56 78" />
-        </div>
-        <div class="input">
-          <label for="budget">Budget cuisine (hors pose)</label>
-          <select id="budget" name="budget">
-            <option value="">Sélectionnez…</option>
-            <option>&lt; 3 000€</option>
-            <option>3 000 – 6 000€</option>
-            <option>6 000 – 10 000€</option>
-            <option>&gt; 10 000€</option>
-          </select>
-        </div>
-        <div class="input full">
-          <label for="dimensions">Dimensions & contraintes</label>
-          <textarea id="dimensions" name="dimensions" rows="3" placeholder="Ex : linéaire 3,20 m + retour 1,20 m, hauteur sous plafond 2,50 m, arrivée d’eau à gauche…"></textarea>
-        </div>
-        <div class="input full">
-          <label for="style">Style & matériaux souhaités</label>
-          <textarea id="style" name="style" rows="3" placeholder="Ex : façades mates, poignées noires, plan de travail stratifié ou compact, crédence carrelage blanc…"></textarea>
-        </div>
-        <div class="input full">
-          <label class="input--check">
-            <input id="cond" type="checkbox" required />
-            <span>Je comprends que le courtage est gratuit si je confie la <b>pose</b> et les <b>travaux</b> à Papo-Rénov.</span>
-          </label>
-          <div class="help">Sans la pose par Papo-Rénov, une étude payante peut être proposée.</div>
-        </div>
-        <div class="full" style="display:flex;gap:10px;flex-wrap:wrap">
-          <button class="btn btn--accent" type="submit">Recevoir mon estimation</button>
-          <a class="btn btn--ghost" href="contact.html">Contacter directement</a>
-        </div>
-        <p id="formMsg" class="note" role="status" style="margin:8px 0 0"></p>
-      </form>
-    </div>
-    <div>
-      <div class="card">
-        <h3>Infos pratiques</h3>
-        <ul class="muted" style="margin:8px 0 0 18px">
-          <li>Zone : Bouches-du-Rhône (et proximité)</li>
-          <li>Disponibilités : sur RDV</li>
-          <li>Devis détaillé & calendrier des travaux</li>
-        </ul>
-      </div>
-      <div class="card" style="margin-top:12px">
-        <h3>Mentions & transparence</h3>
-        <p class="muted">Le service de courtage est offert sous condition de confier la pose/travaux à Papo-Rénov. Les devis fournisseurs sont communiqués clairement — pas de marge cachée sur vos meubles. La rémunération provient de la prestation de pose et des travaux associés.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<footer class="footer">
-  <p>© Papo-Rénov — Courtage Cuisine & Pose. Tous droits réservés.</p>
+<footer>
+  <p>&copy; 2025 Paporalkis - Tous droits réservés</p>
 </footer>
 
 <script>
-/* Accessibilité focus visible (simple) */
-(function(){document.addEventListener('keydown',e=>{if(e.key==='Tab'){document.body.classList.add('kbd')}})})();
-
-/* Formulaire comparatif existant */
-const form = document.getElementById('briefForm');
-const formMsg = document.getElementById('formMsg');
-form?.addEventListener('submit', (e)=>{
-  e.preventDefault();
-  const nom = document.getElementById('nom').value.trim();
-  const email = document.getElementById('email').value.trim();
-  const cond = document.getElementById('cond').checked;
-  if(!nom || !email || !cond){
-    formMsg.textContent = "Merci de compléter les champs requis et d’accepter la condition de gratuité liée à la pose.";
-    formMsg.style.color = "#b42318";
-    return;
-  }
-  formMsg.textContent = "Merci ! Je vous recontacte rapidement pour démarrer le comparatif.";
-  formMsg.style.color = "#0c6c3e";
-  form.reset();
-  window.scrollTo({top:0,behavior:'smooth'});
-});
-
-/* Défilement fluide sur les ancres */
-document.querySelectorAll('a[href^="#"]').forEach(a=>{
-  a.addEventListener('click',e=>{
-    const id=a.getAttribute('href');
-    if(id.length>1){
-      e.preventDefault();
-      document.querySelector(id)?.scrollIntoView({behavior:'smooth',block:'start'});
-    }
-  });
-});
-
-/* =========================
-   CALENDRIER + MODAL (AJOUT)
-   ========================= */
 (function(){
-  const kalBody = document.getElementById('kalBody');
-  const kalMonth = document.getElementById('kalMonth');
-  const prevBtn = document.getElementById('kalPrev');
-  const nextBtn = document.getElementById('kalNext');
+  // ===== Utilitaires de date
+  const pad = n => String(n).padStart(2,'0');
+  const toInputValue = (d)=>`${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
 
-  let view = new Date();  // mois affiché
-  view.setDate(1);
+  // ===== Mini calendrier
+  const grid = document.getElementById('calGrid');
+  const title = document.getElementById('calTitle');
+  const btnPrev = document.getElementById('calPrev');
+  const btnNext = document.getElementById('calNext');
 
-  function pad(n){ return String(n).padStart(2,'0'); }
-  function fmtDateISO(d){ return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`; }
+  let view = new Date(); // mois affiché
 
-  function render(){
-    // Libellé mois
-    const formatter = new Intl.DateTimeFormat('fr-FR',{month:'long', year:'numeric'});
-    kalMonth.textContent = formatter.format(view);
+  function renderCalendar(date){
+    // En-têtes jours
+    const dows = ['Lun','Mar','Mer','Jeu','Ven','Sam','Dim'];
+    grid.innerHTML = '';
+    dows.forEach(txt=>{
+      const el = document.createElement('div');
+      el.className='dow';
+      el.textContent=txt;
+      grid.appendChild(el);
+    });
 
-    // Calcul bornes
-    const startDay = (view.getDay() + 6) % 7; // Lundi=0
-    const daysInMonth = new Date(view.getFullYear(), view.getMonth()+1, 0).getDate();
+    const y = date.getFullYear();
+    const m = date.getMonth();
+    title.textContent = new Intl.DateTimeFormat('fr-FR',{month:'long', year:'numeric'}).format(date);
 
-    // Jour précédent pour remplir la première ligne
-    const prevMonth = new Date(view.getFullYear(), view.getMonth(), 0);
-    const prevDays = prevMonth.getDate();
+    const first = new Date(y,m,1);
+    const startIdx = (first.getDay() + 6) % 7; // Lundi=0
+    const daysInMonth = new Date(y, m+1, 0).getDate();
 
-    // Vider
-    kalBody.innerHTML = '';
+    // jours vides avant
+    for(let i=0;i<startIdx;i++){
+      const empty = document.createElement('div');
+      empty.className='day disabled';
+      empty.textContent=' ';
+      grid.appendChild(empty);
+    }
 
-    let day = 1, nextDay = 1;
-    for(let row=0; row<6; row++){
-      const tr = document.createElement('tr');
+    // jours du mois
+    const todayStr = toInputValue(new Date());
+    for(let d=1; d<=daysInMonth; d++){
+      const el = document.createElement('div');
+      el.className='day';
+      el.textContent = d;
+      const dayDate = new Date(y,m,d);
+      const val = toInputValue(dayDate);
+      if(val===todayStr) el.classList.add('today');
 
-      for(let col=0; col<7; col++){
-        const td = document.createElement('td');
-        const cell = document.createElement('button');
-        cell.type = 'button';
-        cell.className = 'kal__day';
-
-        if(row === 0 && col < startDay){
-          // jours du mois précédent (mutés)
-          const d = prevDays - startDay + col + 1;
-          cell.textContent = d;
-          cell.classList.add('kal__day--muted');
-          cell.disabled = true;
-        } else if(day > daysInMonth){
-          // jours du mois suivant (mutés)
-          cell.textContent = nextDay++;
-          cell.classList.add('kal__day--muted');
-          cell.disabled = true;
-        } else {
-          // jour courant du mois
-          cell.textContent = day;
-          const selectedDate = new Date(view.getFullYear(), view.getMonth(), day);
-
-          // repérer aujourd'hui
-          const now = new Date();
-          if(selectedDate.toDateString() === now.toDateString()){
-            cell.classList.add('kal__day--today');
-          }
-
-          cell.addEventListener('click', ()=>{
-            openBooking(selectedDate);
-          });
-
-          day++;
-        }
-
-        td.appendChild(cell);
-        tr.appendChild(td);
-      }
-
-      kalBody.appendChild(tr);
-      if(day > daysInMonth) break;
+      el.addEventListener('click', ()=> openModalWithDate(val));
+      grid.appendChild(el);
     }
   }
 
-  prevBtn.addEventListener('click', ()=>{
-    view.setMonth(view.getMonth()-1);
-    render();
-  });
-  nextBtn.addEventListener('click', ()=>{
-    view.setMonth(view.getMonth()+1);
-    render();
-  });
+  btnPrev.addEventListener('click', ()=>{ view.setMonth(view.getMonth()-1); renderCalendar(view); });
+  btnNext.addEventListener('click', ()=>{ view.setMonth(view.getMonth()+1); renderCalendar(view); });
 
-  // Modal réservation
-  const modal = document.getElementById('bookingModal');
-  const closeBtn = document.getElementById('bookingClose');
-  const dateInput = document.getElementById('b_date');
-  const formBooking = document.getElementById('bookingForm');
+  renderCalendar(view);
 
-  function openBooking(dateObj){
-    // Préremplir la date (format yyyy-mm-dd pour l'input[type=date])
-    const y = dateObj.getFullYear();
-    const m = String(dateObj.getMonth()+1).padStart(2,'0');
-    const d = String(dateObj.getDate()).padStart(2,'0');
-    dateInput.value = `${y}-${m}-${d}`;
+  // ===== Modal + pré-remplissage
+  const modal = document.getElementById('modal');
+  const modalClose = document.getElementById('modalClose');
+  const mDate = document.getElementById('m_date');
+  const mName = document.getElementById('m_name');
+  const mEmail = document.getElementById('m_email');
+  const mMsg = document.getElementById('m_message');
 
-    modal.style.display = 'flex';
-    modal.setAttribute('aria-hidden','false');
-    // focus premier champ
-    setTimeout(()=>document.getElementById('b_nom').focus(), 0);
+  function openModalWithDate(dateStr){
+    mDate.value = dateStr;
+    modal.classList.add('open');
+    // Focus premier champ utile
+    (mName.value ? (mEmail.value? mMsg : mEmail) : mName).focus();
   }
+  function closeModal(){ modal.classList.remove('open'); }
 
-  function closeBooking(){
-    modal.style.display = 'none';
-    modal.setAttribute('aria-hidden','true');
-    formBooking.reset();
-  }
+  modalClose.addEventListener('click', closeModal);
+  modal.addEventListener('click', (e)=>{ if(e.target===modal) closeModal(); });
+  document.addEventListener('keydown', (e)=>{ if(e.key==='Escape') closeModal(); });
 
-  closeBtn.addEventListener('click', closeBooking);
-  modal.addEventListener('click', (e)=>{ if(e.target === modal){ closeBooking(); } });
-  document.addEventListener('keydown', (e)=>{ if(e.key==='Escape' && modal.getAttribute('aria-hidden')==='false'){ closeBooking(); } });
-
-  // Soumission (affichage local seulement, pas d’envoi mail ici)
-  formBooking.addEventListener('submit', (e)=>{
-    e.preventDefault();
-    // Ici, brancher l'envoi si besoin (fetch/Formspree/etc.)
-    alert("Demande envoyée. Vous recevrez une réponse de confirmation par e-mail.");
-    closeBooking();
+  // Optionnel pratique : cliquer sur le champ "Date souhaitée" du formulaire bas de page ouvre le modal
+  const baseDateInput = document.getElementById('date');
+  baseDateInput.addEventListener('focus', ()=> {
+    // Si l’utilisateur préfère, on peut prendre la valeur courante
+    if(baseDateInput.value) mDate.value = baseDateInput.value;
+    modal.classList.add('open');
   });
 
-  render();
+  // Quand on soumet le formulaire du modal, on n’altère rien d’autre (action identique).
 })();
 </script>
+
 </body>
 </html>
