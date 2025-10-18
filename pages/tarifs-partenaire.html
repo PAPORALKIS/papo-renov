@@ -66,7 +66,8 @@ body {
     transition: color 0.3s, border-bottom 0.3s;
     border-bottom: 2px solid transparent;
 }
-.navbar-links a:hover {
+.navbar-links a:hover,
+.navbar-links a.active-nav {
     color: var(--secondary);
     border-bottom-color: var(--secondary);
 }
@@ -503,14 +504,15 @@ input[type="file"] { display: none; }
     <div id="partner-content" style="display:none">
       
       <div class="tab-nav">
-        <button class="tab-btn active" data-tab="tarifs-pro">Grille Tarifaire Détaillée</button>
-        <button class="tab-btn" data-tab="devis-rapide">Générateur de Devis Rapide</button>
+        <!-- Alignement data-tab ⇄ id corrigé -->
+        <button class="tab-btn active" data-tab="tarifs-pro-tab">Grille Tarifaire Détaillée</button>
+        <button class="tab-btn" data-tab="devis-rapide-tab">Générateur de Devis Rapide</button>
       </div>
 
       <div class="tab-content">
         <div id="tarifs-pro-tab" class="tab-pane active">
           <p class="notice" style="margin-bottom: 30px;">
-            **Tarifs Partenaires NETS (Hors Taxes)** — Valables sur volume et récurrence. Matériaux non inclus (sauf mention F+M.O.).
+            <strong>Tarifs Partenaires NETS (Hors Taxes)</strong> — Valables sur volume et récurrence. Matériaux non inclus (sauf mention F+M.O.).
           </p>
           <div class="sheets" id="partner-sheets">
 
@@ -672,9 +674,7 @@ const TVA_RATE = 0.20; // 20% de TVA
 
 // ---------- FONCTIONS DE BASE ----------
 
-/**
- * Gère l'accès sécurisé.
- */
+/** Gère l'accès sécurisé. */
 function openIfValid() {
     const val = (inputCode.value || '').trim();
     if (!val) { errorDiv.textContent = "Veuillez saisir le code d’accès professionnel."; return; }
@@ -698,9 +698,7 @@ function openIfValid() {
     }
 }
 
-/**
- * Gère le changement d'onglet.
- */
+/** Gère le changement d'onglet. */
 function switchTab(targetTabId) {
     tabPanes.forEach(pane => {
         pane.style.display = 'none';
@@ -715,27 +713,23 @@ function switchTab(targetTabId) {
     if (activePane) {
         activePane.style.display = 'block';
         activePane.classList.add('active');
-        document.querySelector(`.tab-btn[data-tab="${targetTabId}"]`).classList.add('active');
+        const btn = document.querySelector(`.tab-btn[data-tab="${targetTabId}"]`);
+        if (btn) btn.classList.add('active');
     }
 }
 
 // ---------- FONCTIONS DE DEVIS RAPIDE ----------
 
-/**
- * Initialise les écouteurs d'événements pour tous les boutons "Ajouter".
- */
+/** Initialise les écouteurs d'événements pour tous les boutons "Ajouter". */
 function initAddButtons() {
     const buttons = document.querySelectorAll('.add-btn');
     buttons.forEach(button => {
-        // Pour être sûr qu'il n'y ait qu'un seul écouteur:
         button.removeEventListener('click', addPrestation); 
         button.addEventListener('click', addPrestation);
     });
 }
 
-/**
- * Ajoute une prestation à la liste du devis.
- */
+/** Ajoute une prestation à la liste du devis. */
 function addPrestation(event) {
     const btn = event.target;
     const listItem = btn.closest('li');
@@ -747,18 +741,15 @@ function addPrestation(event) {
         return;
     }
     
-    // Utiliser le prix minimum par défaut
+    // Prix unitaire par défaut = prix mini
     const unitPrice = priceMin;
     
-    // Déterminer l'unité
+    // Déterminer l'unité en lisant le libellé de prix (fiable)
+    const priceLabel = (listItem.querySelector('strong')?.textContent || '').toLowerCase();
     let unit = 'forfait';
-    if (prestationName.includes('/m²')) {
-        unit = 'm²';
-    } else if (prestationName.includes('/u')) {
-        unit = 'u';
-    } else if (prestationName.includes('/jr')) {
-        unit = 'jr';
-    }
+    if (priceLabel.includes('€/m²')) unit = 'm²';
+    else if (priceLabel.includes('€/u')) unit = 'u';
+    else if (priceLabel.includes('€/jr')) unit = 'jr';
 
     const newItem = {
         name: prestationName.replace(/\s\(M\.O\.\s\/\s\S+\)|\s\(M\.O\.\)|\s\(F\+M\.O\.\)/g, '').trim(), 
@@ -767,7 +758,7 @@ function addPrestation(event) {
         unit: unit
     };
 
-    const existingItem = devisCart.find(item => item.name === newItem.name);
+    const existingItem = devisCart.find(item => item.name === newItem.name && item.unit === newItem.unit);
     if (existingItem) {
         existingItem.quantity++;
     } else {
@@ -775,12 +766,11 @@ function addPrestation(event) {
     }
     
     renderDevis();
-    switchTab('devis-rapide'); // Basculer automatiquement vers l'outil de devis
+    // Basculer automatiquement vers l'outil de devis (ID corrigé)
+    switchTab('devis-rapide-tab');
 }
 
-/**
- * Met à jour la quantité pour une ligne de devis.
- */
+/** Met à jour la quantité pour une ligne de devis. */
 function updateQuantity(inputElement, index) {
     let newQuantity = parseInt(inputElement.value);
 
@@ -797,9 +787,7 @@ function updateQuantity(inputElement, index) {
     }
 }
 
-/**
- * Met à jour le prix unitaire pour une ligne de devis.
- */
+/** Met à jour le prix unitaire pour une ligne de devis. */
 function updateUnitPrice(inputElement, index) {
     let newPrice = parseFloat(inputElement.value);
     
@@ -812,17 +800,13 @@ function updateUnitPrice(inputElement, index) {
     renderDevis();
 }
 
-/**
- * Supprime une ligne de devis.
- */
+/** Supprime une ligne de devis. */
 function removePrestation(index) {
     devisCart.splice(index, 1);
     renderDevis();
 }
 
-/**
- * Recalcule et affiche le devis complet.
- */
+/** Recalcule et affiche le devis complet. */
 function renderDevis() {
     devisLines.innerHTML = ''; 
     let subtotal = 0;
@@ -842,11 +826,11 @@ function renderDevis() {
             <td><input type="number" min="0" value="${item.quantity}" onchange="updateQuantity(this, ${index})"></td>
             <td class="unit-price"><input type="number" min="0" step="0.01" value="${item.unitPrice.toFixed(2)}" onchange="updateUnitPrice(this, ${index})"></td>
             <td>${item.unit}</td>
-            <td class="total-row">${totalHT.toFixed(2)} € <button style="float: right; color: #dc3545; border: none; background: none; cursor: pointer;" onclick="removePrestation(${index})">×</button></td>
+            <td class="total-row">${totalHT.toFixed(2)} € <button title="Supprimer la ligne" style="float: right; color: #dc3545; border: none; background: none; cursor: pointer;" onclick="removePrestation(${index})">×</button></td>
         `;
     });
 
-    // Mise à jour des totaux
+    // Totaux
     const tvaAmount = subtotal * TVA_RATE;
     const totalTTCValue = subtotal + tvaAmount;
 
@@ -855,9 +839,7 @@ function renderDevis() {
     totalTTC.textContent = totalTTCValue.toFixed(2) + ' €';
 }
 
-/**
- * Vide la liste de devis.
- */
+/** Vide la liste de devis. */
 function clearDevis() {
     if (confirm("Êtes-vous sûr de vouloir vider le devis ? Cette action est irréversible.")) {
         devisCart = [];
@@ -873,9 +855,7 @@ function clearDevis() {
     }
 }
 
-/**
- * Gère l'importation de logo.
- */
+/** Gère l'importation de logo. */
 function handleLogoUpload(event) {
     const file = event.target.files[0];
     if (file) {
@@ -888,9 +868,7 @@ function handleLogoUpload(event) {
     }
 }
 
-/**
- * Gère la saisie des noms pour l'impression.
- */
+/** Met à jour les noms (client / entreprise) */
 function updateNames() {
     const client = clientNameInput.value.trim() || 'Votre Client';
     const partner = partnerNameInput.value.trim() || '[Nom du Partenaire]';
@@ -898,7 +876,6 @@ function updateNames() {
     partnerCompanyDisplay.textContent = partner;
     document.querySelector('.devis-rapide-title').textContent = `DEVIS ESTIMATIF - ${client}`;
 }
-
 
 // ---------- GESTIONNAIRES D'ÉVÉNEMENTS ----------
 
@@ -909,7 +886,7 @@ inputCode.addEventListener('keydown', (e) => { if (e.key === 'Enter') openIfVali
 // Navigation par onglets
 tabButtons.forEach(button => {
     button.addEventListener('click', (e) => {
-        switchTab(e.target.dataset.tab);
+        switchTab(e.currentTarget.dataset.tab);
     });
 });
 
@@ -921,14 +898,14 @@ printButton.addEventListener('click', () => {
 clearButton.addEventListener('click', clearDevis);
 logoUpload.addEventListener('change', handleLogoUpload);
 
-// Mettre à jour les noms en direct
+// Mise à jour des noms en direct
 clientNameInput.addEventListener('input', updateNames);
 partnerNameInput.addEventListener('input', updateNames);
 
 // Rendre le devis initialement vide
 document.addEventListener('DOMContentLoaded', renderDevis);
 
-// Rendre les fonctions accessibles au scope global pour les appels onchange/onclick dans le tableau
+// Exposer quelques fonctions globales (pour onchange/onclick inline)
 window.updateQuantity = updateQuantity;
 window.updateUnitPrice = updateUnitPrice;
 window.removePrestation = removePrestation;
