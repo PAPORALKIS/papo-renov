@@ -225,17 +225,11 @@ footer{text-align:center;padding:20px 1rem;background-color:#003366;color:#fff;f
         <label class="full">Description de la demande</label>
         <textarea name="description" rows="4" class="full" required></textarea>
 
-        <div class="full">
-          <span class="badge">Sélection des poseurs</span>
-          <div id="partnerPoseurs" class="partner-list"></div>
-          <div class="help">Coche les poseurs à notifier.</div>
-        </div>
-
         <label class="full">Pièces jointes (plans, photos)</label>
         <input name="files" type="file" class="full" multiple />
 
         <button class="btn-primary full" type="submit">Envoyer la demande</button>
-        <div class="help full">Le premier poseur qui accepte remporte la demande. Les autres seront automatiquement bloqués.</div>
+        <div class="help full">Le premier poseur qui accepte remporte la demande. Les autres seront automatiquement bloqués. (Demande envoyée à tous les poseurs partenaires).</div>
       </form>
     </div>
   </div>
@@ -264,17 +258,11 @@ footer{text-align:center;padding:20px 1rem;background-color:#003366;color:#fff;f
         <label class="full">Description du SAV</label>
         <textarea name="description" rows="4" class="full" required></textarea>
 
-        <div class="full">
-          <span class="badge">Sélection des poseurs</span>
-          <div id="partnerSAV" class="partner-list"></div>
-          <div class="help">Coche les poseurs à notifier.</div>
-        </div>
-
         <label class="full">Pièces jointes</label>
         <input name="files" type="file" class="full" multiple />
 
         <button class="btn-primary full" type="submit">Envoyer la demande</button>
-        <div class="help full">Le premier poseur qui accepte remporte la demande. Les autres seront automatiquement bloqués.</div>
+        <div class="help full">Le premier poseur qui accepte remporte la demande. Les autres seront automatiquement bloqués. (Demande envoyée à tous les poseurs SAV partenaires).</div>
       </form>
     </div>
   </div>
@@ -303,17 +291,11 @@ footer{text-align:center;padding:20px 1rem;background-color:#003366;color:#fff;f
         <label class="full">Description (compétences, créneau, etc.)</label>
         <textarea name="description" rows="4" class="full" required></textarea>
 
-        <div class="full">
-          <span class="badge">Sélection des magasins</span>
-          <div id="partnerStores" class="partner-list"></div>
-          <div class="help">Coche les magasins à notifier.</div>
-        </div>
-
         <label class="full">Pièces jointes (photos, assurances, etc.)</label>
         <input name="files" type="file" class="full" multiple />
 
         <button class="btn-primary full" type="submit">Notifier les magasins</button>
-        <div class="help full">Le premier magasin qui accepte confirme la mission. Les autres seront automatiquement bloqués.</div>
+        <div class="help full">Le premier magasin qui accepte confirme la mission. Les autres seront automatiquement bloqués. (Notification envoyée à tous les magasins partenaires).</div>
       </form>
     </div>
   </div>
@@ -358,44 +340,31 @@ footer{text-align:center;padding:20px 1rem;background-color:#003366;color:#fff;f
     });
   });
 
-  // Alimente les listes de partenaires
-  function renderPartners(containerId, list){
-    const box=document.getElementById(containerId);
-    if(!box) return;
-    box.innerHTML='';
-    list.forEach((p,i)=>{
-      const id=containerId+'_p_'+i;
-      const item=document.createElement('label');
-      item.className='partner-item';
-      item.innerHTML=`
-        <input type="checkbox" value="${p.email}" data-name="${p.name}" id="${id}">
-        <span>${p.name}</span>
-        <span class="badge">${p.email}</span>
-      `;
-      box.appendChild(item);
-    });
+  // Suppression de la fonction renderPartners car la sélection est supprimée.
+  /* function renderPartners(containerId, list){
+    // ... (Code supprimé)
   }
   renderPartners('partnerPoseurs', PARTNERS_POSEURS);
   renderPartners('partnerSAV', PARTNERS_SAV);
-  renderPartners('partnerStores', PARTNERS_STORES);
+  renderPartners('partnerStores', PARTNERS_STORES); */
 
-  /* ===== Envoi des 3 formulaires vers Google Apps Script ===== */
+  /* ===== Envoi des 3 formulaires vers Google Apps Script (avec envoi à tous) ===== */
   function uuid(){
     if(window.crypto?.randomUUID) return crypto.randomUUID();
     return 'req-'+Math.random().toString(36).slice(2)+Date.now();
   }
 
-  async function submitSosForm(form, partnerContainerId){
+  async function submitSosForm(form, partnerList){
     const reqId = uuid();
     const fd = new FormData(form);
     fd.append('action','createRequest');
     fd.append('requestId', reqId);
 
-    // Partenaires cochés
-    const selected = Array.from(document.querySelectorAll('#'+partnerContainerId+' input[type="checkbox"]:checked'))
-      .map(c=>({email:c.value, name:c.dataset.name}));
+    // Tous les partenaires de la liste sont sélectionnés
+    const selected = partnerList;
+
     if(selected.length===0){
-      alert('Sélectionne au moins un partenaire.');
+      alert('Erreur: La liste des partenaires est vide. Veuillez vérifier les constantes PARTNERS.');
       return;
     }
     fd.append('recipients', JSON.stringify(selected));
@@ -406,7 +375,6 @@ footer{text-align:center;padding:20px 1rem;background-color:#003366;color:#fff;f
       if(data.status==='OK'){
         alert('Demande envoyée. Un e-mail avec liens Accepter/Refuser a été transmis aux partenaires sélectionnés.');
         form.reset();
-        document.querySelectorAll('#'+partnerContainerId+' input[type="checkbox"]').forEach(c=>c.checked=false);
         document.querySelectorAll('.modal.open').forEach(m=>m.classList.remove('open'));
       }else{
         console.error(data);
@@ -420,15 +388,15 @@ footer{text-align:center;padding:20px 1rem;background-color:#003366;color:#fff;f
 
   document.getElementById('form-poseur').addEventListener('submit', e=>{
     e.preventDefault();
-    submitSosForm(e.target, 'partnerPoseurs');
+    submitSosForm(e.target, PARTNERS_POSEURS); // Envoi à tous les poseurs
   });
   document.getElementById('form-sav').addEventListener('submit', e=>{
     e.preventDefault();
-    submitSosForm(e.target, 'partnerSAV');
+    submitSosForm(e.target, PARTNERS_SAV); // Envoi à tous les poseurs SAV
   });
   document.getElementById('form-derniere').addEventListener('submit', e=>{
     e.preventDefault();
-    submitSosForm(e.target, 'partnerStores');
+    submitSosForm(e.target, PARTNERS_STORES); // Envoi à tous les magasins
   });
 </script>
 
