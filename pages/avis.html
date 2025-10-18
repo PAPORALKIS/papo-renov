@@ -38,195 +38,273 @@ nav ul li a.active{color:var(--primary-color);font-weight:700}
 /* =========================
    MASQUAGE DE LA BARRE DE DÉFILEMENT
    ========================= */
-    nav ul {
-    /* Masque la scrollbar pour IE et Edge */
-    -ms-overflow-style: none;  
-    /* Masque la scrollbar pour Firefox */
-    scrollbar-width: none;  
-    
-    /* Assure que l'élément peut défiler si besoin */
-    overflow-x: auto; 
-    }
-/* Masque la scrollbar pour Chrome, Safari et Opera */
+nav ul {
+  -ms-overflow-style: none;  
+  scrollbar-width: none;  
+  overflow-x: auto; 
+}
 nav ul::-webkit-scrollbar {
-    display: none;
+  display: none;
 }
 
 /* =========================
    SECTION HERO (TABLETTE)
    ========================= */
 .content-section{
-  /* MODIFIÉ: Réduit le padding-top de 40px à 20px */
   padding:20px 20px 40px; 
   display:flex;
   flex-direction:column;
   align-items:center;
   text-align:center;
   position:relative;
-    }
-    .avis-section {
-      width: 90%;
-      max-width: 900px;
-      margin: 40px auto;
-    }
-    .avis-section h1 {
-      text-align: center;
-      font-size: 2em;
-      margin-bottom: 10px;
-    }
-    .avis-section p.subtitle {
-      text-align: center;
-      margin-bottom: 30px;
-      color: #666;
-    }
-    .avis {
-      background: white;
-      padding: 20px;
-      margin-bottom: 20px;
-      border-radius: 10px;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-      display: flex;
-      align-items: center;
-      gap: 20px;
-    }
-    .avis img {
-      width: 80px;
-      height: 60px;
-      object-fit: cover;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: transform 0.3s;
-
-      @media (max-width: 768px) {
-  .avis img {
-    width: 60px;
-    height: auto;
-  }
+}
+.avis-section {
+  width: 90%;
+  max-width: 900px;
+  margin: 40px auto;
+}
+.avis-section h1 {
+  text-align: center;
+  font-size: 2em;
+  margin-bottom: 10px;
+}
+.avis-section p.subtitle {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #666;
 }
 
+/* --- BTN DONNEZ VOTRE AVIS --- */
+.btn-avis {
+  display:inline-block;
+  margin: 0 auto 30px;
+  padding: 12px 18px;
+  border:none;
+  border-radius:10px;
+  background: var(--primary-color);
+  color:#fff;
+  font-weight:600;
+  cursor:pointer;
+  box-shadow:0 6px 16px var(--shadow-color);
+  transition: transform .15s ease, box-shadow .15s ease, opacity .15s ease;
+}
+.btn-avis:hover { transform: translateY(-1px); box-shadow:0 8px 18px var(--shadow-color);}
+.btn-avis:active { transform: translateY(0); opacity:.9; }
+
+/* --- LISTE AVIS --- */
+.avis {
+  background: white;
+  padding: 20px;
+  margin-bottom: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+.avis img {
+  width: 80px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: transform 0.3s;
+}
+@media (max-width: 768px) {
+  .avis img { width: 60px; height: auto; }
+}
 @media (max-width: 480px) {
+  .avis img { width: 50px; height: auto; }
+}
+.avis img:hover { transform: scale(1.05); }
+.avis-content { flex: 1; }
+.avis strong { color: #0d2c54; }
+
+/* --- Zoom Viewer --- */
+.zoom-viewer {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.9);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  z-index: 1000;
+  padding: 10px;
+  box-sizing: border-box;
+}
+.zoom-image-container img {
+  max-width: 90%;
+  max-height: 75vh;
+  border-radius: 10px;
+  box-shadow: 0 0 20px rgba(0,0,0,0.5);
+}
+.zoom-comment {
+  color: white;
+  margin-top: 15px;
+  font-size: 1em;
+  text-align: center;
+  max-width: 600px;
+}
+.zoom-linked-images-container {
+  display: flex;
+  align-items: center;
+  margin-top: 15px;
+  gap: 10px;
+  width: 100%;
+  justify-content: center;
+}
+.zoom-linked-images {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding: 5px;
+  scroll-behavior: smooth;
+}
+.zoom-linked-images img {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 6px;
+  cursor: pointer;
+  border: 2px solid transparent;
+  flex-shrink: 0;
+}
+.zoom-linked-images img.active { border-color: #007bff; }
+.nav-arrow {
+  background: rgba(0,0,0,0.5);
+  border: none;
+  color: white;
+  font-size: 1.5em;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 50%;
+}
+.close-btn {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  font-size: 2em;
+  color: white;
+  cursor: pointer;
+}
+
+/* --- Responsive --- */
+@media (max-width: 768px) {
+  .avis {
+    flex-direction: column;
+    align-items: flex-start;
+  }
   .avis img {
-    width: 50px;
+    width: 100%;
     height: auto;
+    max-width: 300px;
+  }
+  .zoom-image-container img {
+    max-width: 95%;
+    max-height: 60vh;
+  }
+  .zoom-linked-images img {
+    width: 60px;
+    height: 60px;
+  }
+  .zoom-comment {
+    font-size: 0.9em;
+    max-width: 90%;
   }
 }
-    .avis img:hover {
-      transform: scale(1.05);
-    }
-    .avis-content {
-      flex: 1;
-    }
-    .avis strong {
-      color: #0d2c54;
-    }
+@media (max-width: 480px) {
+  .nav-arrow {
+    font-size: 1.2em;
+    padding: 3px 6px;
+  }
+  .zoom-linked-images img {
+    width: 50px;
+    height: 50px;
+  }
+}
 
-    /* --- Zoom Viewer --- */
-    .zoom-viewer {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background: rgba(0,0,0,0.9);
-      display: none;
-      align-items: center;
-      justify-content: center;
-      flex-direction: column;
-      z-index: 1000;
-      padding: 10px;
-      box-sizing: border-box;
-    }
-    .zoom-image-container img {
-      max-width: 90%;
-      max-height: 75vh;
-      border-radius: 10px;
-      box-shadow: 0 0 20px rgba(0,0,0,0.5);
-    }
-    .zoom-comment {
-      color: white;
-      margin-top: 15px;
-      font-size: 1em;
-      text-align: center;
-      max-width: 600px;
-    }
-    .zoom-linked-images-container {
-      display: flex;
-      align-items: center;
-      margin-top: 15px;
-      gap: 10px;
-      width: 100%;
-      justify-content: center;
-    }
-    .zoom-linked-images {
-      display: flex;
-      gap: 8px;
-      overflow-x: auto;
-      padding: 5px;
-      scroll-behavior: smooth;
-    }
-    .zoom-linked-images img {
-      width: 80px;
-      height: 80px;
-      object-fit: cover;
-      border-radius: 6px;
-      cursor: pointer;
-      border: 2px solid transparent;
-      flex-shrink: 0;
-    }
-    .zoom-linked-images img.active {
-      border-color: #007bff;
-    }
-    .nav-arrow {
-      background: rgba(0,0,0,0.5);
-      border: none;
-      color: white;
-      font-size: 1.5em;
-      cursor: pointer;
-      padding: 4px 8px;
-      border-radius: 50%;
-    }
-    .close-btn {
-      position: absolute;
-      top: 20px;
-      right: 20px;
-      font-size: 2em;
-      color: white;
-      cursor: pointer;
-    }
+/* =========================
+   MODALE AVIS
+   ========================= */
+.modal-avis {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.6);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 18px;
+  z-index: 1100; /* au-dessus du zoom viewer */
+}
+.modal-avis.open { display:flex; }
 
-    /* --- Responsive --- */
-    @media (max-width: 768px) {
-      .avis {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-      .avis img {
-        width: 100%;
-        height: auto;
-        max-width: 300px;
-      }
-      .zoom-image-container img {
-        max-width: 95%;
-        max-height: 60vh;
-      }
-      .zoom-linked-images img {
-        width: 60px;
-        height: 60px;
-      }
-      .zoom-comment {
-        font-size: 0.9em;
-        max-width: 90%;
-      }
-    }
+.modal-avis__card {
+  width: 100%;
+  max-width: 640px;
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: 0 12px 30px rgba(0,0,0,.18);
+  overflow: hidden;
+}
+.modal-avis__header {
+  padding: 16px 18px;
+  background: #0a1f44;
+  color: #fff;
+  display:flex;
+  align-items:center;
+  justify-content: space-between;
+}
+.modal-avis__title { margin:0; font-size:1.1rem; font-weight:600; }
+.modal-avis__close {
+  border:none; background:transparent; color:#fff; font-size:1.5rem; cursor:pointer;
+}
+.modal-avis__body {
+  padding: 18px;
+  display: grid;
+  gap: 14px;
+}
+.form-row { display:grid; gap:8px; }
+.form-row.inline { grid-template-columns: 1fr 1fr; gap:12px; }
+.form-row label { font-weight:600; font-size:.95rem; }
+.form-row input[type="text"],
+.form-row input[type="email"],
+.form-row textarea,
+.form-row input[type="file"]{
+  width:100%;
+  padding:12px 12px;
+  border:1px solid var(--border-light);
+  border-radius:10px;
+  background:#fff;
+  outline:none;
+}
+.form-row textarea{ min-height:140px; resize:vertical; }
+.form-hint{ font-size:.85rem; color:#6b7280; }
 
-    @media (max-width: 480px) {
-      .nav-arrow {
-        font-size: 1.2em;
-        padding: 3px 6px;
-      }
-      .zoom-linked-images img {
-        width: 50px;
-        height: 50px;
-      }
-    }
+.modal-avis__footer{
+  padding: 16px 18px;
+  display:flex;
+  align-items:center;
+  justify-content:flex-end;
+  gap:10px;
+  border-top:1px solid var(--border-light);
+  background:#fafafa;
+}
+.btn-secondary{
+  background:#e9ecef; color:#111; border:none; border-radius:10px; padding:10px 14px; cursor:pointer;
+}
+.btn-primary{
+  background:var(--primary-color); color:#fff; border:none; border-radius:10px; padding:10px 14px; cursor:pointer;
+  font-weight:600;
+}
+
+/* Mobile modal adjustments */
+@media (max-width:480px){
+  .modal-avis__body{ padding:14px; }
+  .modal-avis__footer{ padding:12px 14px; }
+  .form-row.inline{ grid-template-columns: 1fr; }
+}
   </style>
 </head>
 <body>
@@ -235,23 +313,28 @@ nav ul::-webkit-scrollbar {
     <div class="logo">
       <img src="../img/logo.png" alt="Logo Paporalkis" />
     </div>
-   <nav>
-  <ul>
-    <li><a href="../index.html">Accueil</a></li>
-    <li><a href="devis.html">Demande de devis</a></li>
-    <li><a href="realisations.html">Mes réalisations</a></li>
-    <li><a href="tarifs.html">Tarifs</a></li>
-    <li><a href="planning.html">Planning</a></li>
-    <li><a href="contact.html">Contact</a></li>
-    <li><a class="active" href="avis.html">Avis clients</a></li>
-    <li><a href="courtage-cuisine.html">Courtage Cuisine</a></li>
-  </ul>
-</nav>
+    <nav>
+      <ul>
+        <li><a href="../index.html">Accueil</a></li>
+        <li><a href="devis.html">Demande de devis</a></li>
+        <li><a href="realisations.html">Mes réalisations</a></li>
+        <li><a href="tarifs.html">Tarifs</a></li>
+        <li><a href="planning.html">Planning</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li><a class="active" href="avis.html">Avis clients</a></li>
+        <li><a href="courtage-cuisine.html">Courtage Cuisine</a></li>
+      </ul>
+    </nav>
   </header>
 
   <section class="avis-section">
     <h1>Vos avis sur Papo Rénov</h1>
     <p class="subtitle">Découvrez ce que nos clients disent de nos réalisations et services.</p>
+
+    <!-- BOUTON D’OUVERTURE DU FORMULAIRE AVIS -->
+    <div style="text-align:center;">
+      <button id="openReviewBtn" class="btn-avis">Donnez votre avis</button>
+    </div>
 
     <div class="avis">
       <img src="../img/meuble-laura-1.jpg" alt="Montage de meubles en KIT"
@@ -282,6 +365,64 @@ nav ul::-webkit-scrollbar {
     </div>
   </section>
 
+  <!-- MODALE : FORMULAIRE POUR LAISSER UN AVIS -->
+  <div id="modalAvis" class="modal-avis" aria-hidden="true">
+    <div class="modal-avis__card" role="dialog" aria-modal="true" aria-labelledby="modalAvisTitle">
+      <div class="modal-avis__header">
+        <h3 id="modalAvisTitle" class="modal-avis__title">Laisser un avis</h3>
+        <button type="button" class="modal-avis__close" id="closeReviewBtn" aria-label="Fermer">×</button>
+      </div>
+      <div class="modal-avis__body">
+        <!--
+          Envoi direct par email (avec pièces jointes) via FormSubmit.
+          L’email reçu ira à kpaporalkis.pro@gmail.com pour validation avant publication.
+        -->
+        <form id="avisForm" action="https://formsubmit.co/kpaporalkis.pro@gmail.com" method="POST" enctype="multipart/form-data">
+          <!-- Paramètres FormSubmit -->
+          <input type="hidden" name="_subject" value="Nouvel avis client - Papo Rénov">
+          <input type="hidden" name="_template" value="table">
+          <input type="text" name="_honey" style="display:none">
+          <!-- Redirection après envoi (revient sur la page d'avis) -->
+          <input type="hidden" name="_next" value="https://paporalkis.github.io/papo-renov/pages/avis.html">
+
+          <div class="form-row inline">
+            <div>
+              <label for="last_name">Nom (obligatoire)</label>
+              <input id="last_name" name="Nom" type="text" autocomplete="family-name" required>
+            </div>
+            <div>
+              <label for="first_name">Prénom (obligatoire)</label>
+              <input id="first_name" name="Prénom" type="text" autocomplete="given-name" required>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <label for="email">E-mail (obligatoire)</label>
+            <input id="email" name="E-mail" type="email" autocomplete="email" required>
+            <div class="form-hint">Vos coordonnées ne seront pas affichées publiquement.</div>
+          </div>
+
+          <div class="form-row">
+            <label for="message">Votre avis (obligatoire)</label>
+            <textarea id="message" name="Avis" placeholder="Racontez votre expérience..." required></textarea>
+          </div>
+
+          <div class="form-row">
+            <label for="photos">Ajouter des photos (optionnel)</label>
+            <input id="photos" name="Photos" type="file" accept="image/*" multiple>
+            <div class="form-hint">Formats image uniquement (JPG, PNG, etc.).</div>
+          </div>
+
+          <div class="modal-avis__footer">
+            <button type="button" class="btn-secondary" id="cancelReviewBtn">Annuler</button>
+            <button type="submit" class="btn-primary">Envoyer mon avis</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Viewer Image Zoom -->
   <div class="zoom-viewer" id="zoomViewer" style="display: none;">
     <span class="close-btn">&times;</span>
     <div class="zoom-content-wrapper">
@@ -300,6 +441,7 @@ nav ul::-webkit-scrollbar {
   </div>
 
   <script>
+    /* ====== ZOOM VIEWER (existant) ====== */
     const zoomViewer = document.getElementById("zoomViewer");
     const zoomImage = document.getElementById("zoomImage");
     const zoomComment = document.getElementById("zoomComment");
@@ -331,10 +473,8 @@ nav ul::-webkit-scrollbar {
 
       currentLinkedImageIndex = 0;
       zoomImage.src = imagesToDisplay[0];
-      // Le code JS doit toujours afficher le viewer ici
       zoomViewer.style.display = "flex";
       
-      // Assurer que la première image est active
       if (zoomLinkedImages.firstChild) {
           zoomLinkedImages.firstChild.classList.add("active");
       }
@@ -343,18 +483,13 @@ nav ul::-webkit-scrollbar {
     function navigateLinkedImages(direction) {
       if (!currentZoomData) return;
       const imagesToDisplay = [currentZoomData.src, ...(currentZoomData.linkedImages || [])];
-      
-      // Nouvelle logique pour la navigation circulaire
       currentLinkedImageIndex = (currentLinkedImageIndex + direction);
       if (currentLinkedImageIndex < 0) {
           currentLinkedImageIndex = imagesToDisplay.length - 1;
       } else if (currentLinkedImageIndex >= imagesToDisplay.length) {
           currentLinkedImageIndex = 0;
       }
-
       zoomImage.src = imagesToDisplay[currentLinkedImageIndex];
-      
-      // Mettre à jour la vignette active
       document.querySelectorAll(".zoom-linked-images img").forEach(img => img.classList.remove("active"));
       if (zoomLinkedImages.children[currentLinkedImageIndex]) {
           zoomLinkedImages.children[currentLinkedImageIndex].classList.add("active");
@@ -364,6 +499,33 @@ nav ul::-webkit-scrollbar {
     zoomNavLeft.addEventListener("click", () => navigateLinkedImages(-1));
     zoomNavRight.addEventListener("click", () => navigateLinkedImages(1));
     closeBtn.addEventListener("click", () => { zoomViewer.style.display = "none"; });
+
+    /* ====== MODALE AVIS ====== */
+    const openReviewBtn  = document.getElementById('openReviewBtn');
+    const modalAvis      = document.getElementById('modalAvis');
+    const closeReviewBtn = document.getElementById('closeReviewBtn');
+    const cancelReviewBtn= document.getElementById('cancelReviewBtn');
+    const avisForm       = document.getElementById('avisForm');
+
+    function openModalAvis(){ modalAvis.classList.add('open'); modalAvis.setAttribute('aria-hidden','false'); }
+    function closeModalAvis(){ modalAvis.classList.remove('open'); modalAvis.setAttribute('aria-hidden','true'); }
+
+    openReviewBtn.addEventListener('click', openModalAvis);
+    closeReviewBtn.addEventListener('click', closeModalAvis);
+    cancelReviewBtn.addEventListener('click', closeModalAvis);
+
+    // Fermer si clic en dehors de la carte
+    modalAvis.addEventListener('click', (e)=>{
+      if(e.target === modalAvis){ closeModalAvis(); }
+    });
+
+    // Validation HTML5 par défaut : rien d'autre à faire.
+    // Le formulaire envoie l'avis (et photos) par email à kpaporalkis.pro@gmail.com
+    // via FormSubmit quand il est soumis.
+    avisForm.addEventListener('submit', ()=> {
+      // Option: on peut fermer la modale immédiatement après l'envoi.
+      closeModalAvis();
+    });
   </script>
 </body>
 </html>
