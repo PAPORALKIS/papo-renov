@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Grille Tarifaire Professionnelle - Papo Rénov</title>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../style.css">
 <style>
 /* Variables et Reset */
 :root {
@@ -30,53 +29,64 @@ body {
   align-items: center; 
   justify-content: flex-start; 
 }
+/* Barre de Navigation Globale — alignée aux autres pages (logo cliquable) */
+.navbar {
+    width: 100%;
+    background-color: var(--primary);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    padding: 15px 0;
+    margin-bottom: 20px; 
+}
+.navbar-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.navbar-logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+}
+.navbar-logo img{
+    height: 48px;
+    width: auto;
+    display: block;
+    filter: brightness(0) invert(1);
+}
+.navbar-links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    gap: 25px;
+}
+.navbar-links a {
+    color: #fff;
+    text-decoration: none;
+    font-weight: 500;
+    padding: 5px 0;
+    transition: color 0.3s, border-bottom 0.3s;
+    border-bottom: 2px solid transparent;
+    white-space: nowrap;
+}
+.navbar-links a:hover,
+.navbar-links a.active-nav {
+    color: var(--secondary);
+    border-bottom-color: var(--secondary);
+}
 
-/* ===== NAVBAR – identique aux autres pages ===== */
-nav {
-  width: 100%;
-  background: var(--primary);
-  color: #fff;
-  position: sticky;
-  top: 0;
-  z-index: 1000;
-}
-nav ul{
-  max-width:1200px;
-  margin:0 auto;
-  padding:12px 16px;
-  list-style:none;
-  display:flex;
-  gap:18px;
-  flex-wrap:wrap;
-  align-items:center;
-}
-nav ul li{
-  display:inline-flex;
-}
-nav a{
-  color:#fff;
-  text-decoration:none;
-  padding:6px 8px;
-  border-bottom:2px solid transparent;
-  transition:color .25s, border-color .25s;
-  white-space:nowrap;
-}
-nav a:hover,
-nav a.active{
-  color:var(--secondary);
-  border-color:var(--secondary);
-}
-
-/* Carte / contenu */
 .card { 
   width: min(1200px, 98vw); 
   background: var(--panel); 
   border-radius: 16px; 
   box-shadow: var(--shadow); 
   overflow: hidden;
-  margin: 20px auto 30px;
+  margin-bottom: 30px;
 }
-
 /* Header spécifique au contenu de la carte (après connexion) */
 .header { 
   display: flex; 
@@ -98,7 +108,6 @@ nav a.active{
   margin: 0; 
   font-weight: 700;
 }
-
 /* Espace sécurisé */
 .secure-area { padding: 30px; }
 .notice { 
@@ -112,11 +121,9 @@ nav a.active{
   gap: 10px; 
   justify-content: center; 
   margin: 8px 0 25px;
-  flex-wrap: wrap;
 }
 .form input { 
   flex: 1; 
-  min-width: 220px;
   max-width: 300px; 
   padding: 14px 18px; 
   border: 1px solid var(--border); 
@@ -153,8 +160,6 @@ nav a.active{
   justify-content: center;
   margin-bottom: 20px;
   border-bottom: 1px solid var(--border);
-  gap: 8px;
-  flex-wrap: wrap;
 }
 .tab-nav button {
   background: none;
@@ -426,7 +431,7 @@ input[type="file"] { display: none; }
     justify-content: flex-start;
     align-items: flex-start;
   }
-  nav, .header, .tab-nav, .footer, .devis-actions, .list li .add-btn, .secure-area > .notice, .secure-area > .form, .secure-area > .error, 
+  .navbar, .header, .tab-nav, .footer, .devis-actions, .list li .add-btn, .secure-area > .notice, .secure-area > .form, .secure-area > .error, 
   .devis-table input, .devis-table button { 
     display: none !important; 
   }
@@ -473,20 +478,20 @@ input[type="file"] { display: none; }
 </head>
 <body>
 
-<!-- ===== NAVBAR (copiée/alignée sur le site) ===== -->
-<nav>
-  <ul>
-    <li><a href="../index.html">Accueil</a></li>
-    <li><a href="./realisations.html">Réalisations</a></li>
-    <li><a href="./services.html">Services</a></li>
-    <li><a href="./tarifs.html">Tarifs</a></li>
-    <li><a href="./planning.html">Planning</a></li>
-    <li><a href="./avis.html">Avis</a></li>
-    <li><a href="./devis.html">Devis</a></li>
-    <li><a href="./courtage-cuisine.html">Courtage Cuisine</a></li>
-    <li><a class="active" href="./tarifs-partenaire.html">Espace PRO</a></li>
-    <li><a href="./contact.html">Contact</a></li>
-  </ul>
+<nav class="navbar">
+    <div class="navbar-content">
+        <!-- Logo cliquable vers l'accueil, comme sur les autres pages -->
+        <a href="index.html" class="navbar-logo" aria-label="Papo Rénov - Accueil">
+            <img src="img/logo-papo-renov.png" alt="Papo Rénov">
+        </a>
+        <ul class="navbar-links">
+            <li><a href="index.html">Accueil</a></li>
+            <li><a href="services.html">Services</a></li>
+            <li><a href="tarifs.html">Tarifs Publics</a></li>
+            <li><a href="#" class="active-nav">Espace PRO</a></li>
+            <li><a href="contact.html">Contact PRO</a></li>
+        </ul>
+    </div>
 </nav>
 
 <div class="card">
@@ -509,6 +514,7 @@ input[type="file"] { display: none; }
     <div id="partner-content" style="display:none">
       
       <div class="tab-nav">
+        <!-- Alignement data-tab ⇄ id corrigé -->
         <button class="tab-btn active" data-tab="tarifs-pro-tab">Grille Tarifaire Détaillée</button>
         <button class="tab-btn" data-tab="devis-rapide-tab">Générateur de Devis Rapide</button>
       </div>
@@ -637,7 +643,7 @@ input[type="file"] { display: none; }
       </div>
       
       <div class="footer">
-        <a href="./tarifs.html">← Retour Tarifs Publics</a>
+        <a href="tarifs.html">← Retour Tarifs Publics</a>
         <span>Documentation PRO et Matériaux : Accès ici</span>
       </div>
     </div>
@@ -748,7 +754,7 @@ function addPrestation(event) {
     // Prix unitaire par défaut = prix mini
     const unitPrice = priceMin;
     
-    // Déterminer l'unité
+    // Déterminer l'unité en lisant le libellé de prix (fiable)
     const priceLabel = (listItem.querySelector('strong')?.textContent || '').toLowerCase();
     let unit = 'forfait';
     if (priceLabel.includes('€/m²')) unit = 'm²';
@@ -770,7 +776,8 @@ function addPrestation(event) {
     }
     
     renderDevis();
-    // >>> PAS de bascule automatique vers l'onglet Devis <<<
+    // Suppression de la redirection automatique vers l'onglet "Générateur de Devis"
+    // (le reste de la fonction reste inchangé)
 }
 
 /** Met à jour la quantité pour une ligne de devis. */
