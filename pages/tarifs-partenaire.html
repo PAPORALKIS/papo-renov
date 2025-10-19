@@ -1,543 +1,262 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Grille Tarifaire Professionnelle - Papo Rénov</title>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
-/* Variables et Reset */
-:root {
-  --primary: #0a1f44; /* Bleu marine pro */
-  --secondary: #ffc107; /* Jaune accent */
-  --bg: #f4f7fa; /* Fond clair */
-  --panel: #ffffff;
-  --muted: #6c757d;
-  --ok: #28a745;
-  --border: #e9ecef;
-  --shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+/* =============== Reset & Variables =============== */
+:root{
+  --primary:#0a1f44;
+  --secondary:#ffc107;
+  --bg:#f4f7fa;
+  --panel:#fff;
+  --muted:#6c757d;
+  --ok:#28a745;
+  --border:#e9ecef;
+  --shadow:0 10px 30px rgba(0,0,0,.08);
 }
-* { box-sizing: border-box; }
-html, body { margin: 0; padding: 0; }
-html, body { overflow-x: hidden; } /* Empêche le scroll horizontal global */
-body { 
-  font-family: 'Poppins', sans-serif; 
-  background: var(--bg); 
-  min-height: 100vh; 
-  color: #111; 
-  display: flex; 
-  flex-direction: column; 
-  align-items: center; 
-  justify-content: flex-start; 
-  -webkit-text-size-adjust: 100%;
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+html,body{overflow-x:hidden} /* Empêche le scroll horizontal global */
+body{
+  font-family:'Poppins',sans-serif;
+  background:var(--bg);
+  color:#111;
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
 }
 
-/* ===== NAVBAR – scrollable uniquement pour le menu ===== */
-nav {
-  width: 100%;
-  background: var(--primary);
-  color: #fff;
-  position: sticky;
-  top: 0;
-  z-index: 1000;
-  overflow: hidden; /* le nav lui-même ne déborde pas */
+/* =============== HEADER (identique à tes autres pages) =============== */
+header{
+  background:#fff;
+  padding:10px 20px;
+  box-shadow:0 2px 4px rgba(0,0,0,.16);
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  width:100%;
+  position:sticky; top:0; z-index:50;
 }
-nav .nav-inner {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 10px 12px;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-nav .logo {
-  flex: 0 0 auto;
-  display: inline-flex;
-  align-items: center;
-}
-nav .logo img{
-  height: 40px;
-  width: auto;
-  display: block;
-  filter: brightness(0) invert(1);
-}
-nav .nav-scroll {
-  flex: 1 1 auto;
-  overflow-x: auto;           /* <- le scroll horizontal est ici uniquement */
-  -webkit-overflow-scrolling: touch;
-  scrollbar-width: thin;
-}
-nav .nav-scroll::-webkit-scrollbar { height: 6px; }
-nav .nav-scroll::-webkit-scrollbar-thumb { background: rgba(255,255,255,.35); border-radius: 3px; }
-
+.logo img{max-height:50px;width:auto}
 nav ul{
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  display: inline-flex;
-  gap: 18px;
-  white-space: nowrap;        /* évite le retour à la ligne, force le scroll */
+  list-style:none; margin:0; padding:0;
+  display:flex; gap:20px;
+  overflow-x:auto;                 /* <- scroll horizontal uniquement sur la nav */
+  -ms-overflow-style:none; scrollbar-width:none;
 }
-nav li{ flex: 0 0 auto; }
-nav a{
-  color:#fff;
+nav ul::-webkit-scrollbar{display:none}
+nav ul li a{
   text-decoration:none;
-  padding:6px 8px;
-  border-bottom:2px solid transparent;
-  transition:color .25s, border-color .25s;
+  color:#003366;
+  font-weight:600;
+  white-space:nowrap;
+  padding:5px 0;
+  transition:color .25s;
 }
-nav a:hover,
-nav a.active{
-  color:var(--secondary);
-  border-color:var(--secondary);
+nav ul li a:hover{color:var(--primary)}
+nav ul li a.active{color:#007bff; font-weight:700; text-decoration:underline}
+
+/* =============== Carte / Contenu =============== */
+.card{
+  width:min(1200px,100%);          /* évite les 98vw qui débordent */
+  background:var(--panel);
+  border-radius:16px;
+  box-shadow:var(--shadow);
+  overflow:hidden;
+  margin:20px auto 30px;
 }
 
-/* Carte / contenu */
-.card { 
-  width: min(1200px, 100%);  /* évite les 98vw qui peuvent créer du débordement */
-  background: var(--panel); 
-  border-radius: 16px; 
-  box-shadow: var(--shadow); 
-  overflow: hidden;
-  margin: 20px auto 30px;
+/* =============== En-tête panneau PRO =============== */
+.header{
+  display:flex; justify-content:space-between; align-items:center; gap:12px;
+  padding:20px 24px; border-bottom:2px solid var(--primary);
+  background:var(--primary); color:#fff;
 }
+.header-left{display:flex; align-items:center; gap:12px; min-width:0}
+.header img{height:45px; filter:brightness(0) invert(1); flex-shrink:0}
+.header h1{
+  font-size:clamp(1.15rem,1.6vw,1.5rem);
+  margin:0; font-weight:700; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+}
+.badge{background:var(--secondary); color:#000; padding:5px 10px; border-radius:6px; font-weight:700}
 
-/* Header spécifique au contenu de la carte (après connexion) */
-.header { 
-  display: flex; 
-  align-items: center; 
-  justify-content: space-between;
-  padding: 20px 30px; 
-  border-bottom: 2px solid var(--primary);
-  background: var(--primary);
-  color: #fff;
-  gap: 12px;
+/* =============== Zone sécurisée =============== */
+.secure-area{padding:22px}
+.notice{color:var(--muted); text-align:center; margin:0 0 16px}
+.form{display:flex; gap:10px; justify-content:center; margin:8px 0 22px; flex-wrap:wrap}
+.form input{
+  flex:1 1 260px; max-width:320px; padding:12px 14px;
+  border:1px solid var(--border); border-radius:12px; font-size:1rem;
 }
-.header-left {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-  min-width: 0;
+.form input:focus{border-color:var(--primary); outline:none}
+.form button{
+  padding:12px 16px; border-radius:12px; border:none;
+  background:var(--secondary); color:var(--primary); font-weight:700; cursor:pointer;
+  min-width:160px;
 }
-.header img { height: 45px; filter: brightness(0) invert(1); flex-shrink: 0; }
-.header h1 { 
-  font-size: clamp(1.15rem, 1.6vw, 1.5rem);
-  margin: 0; 
-  font-weight: 700;
-  line-height: 1.2;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
+.form button:hover{background:#ffda6a}
+.error{color:#dc3545; text-align:center; min-height:20px; margin-bottom:10px}
 
-/* Espace sécurisé */
-.secure-area { padding: 22px; }
-.notice { 
-  color: var(--muted); 
-  text-align: center; 
-  margin: 0 0 16px;
-  font-size: 0.95rem;
+/* =============== Tabs & contenu =============== */
+#partner-content{padding-top:10px; display:none}
+.tab-nav{
+  display:flex; justify-content:center; gap:6px; margin-bottom:16px;
+  border-bottom:1px solid var(--border); padding:0 10px 6px;
+  overflow-x:auto; scrollbar-width:none;
 }
-.form { 
-  display: flex; 
-  gap: 10px; 
-  justify-content: center; 
-  margin: 8px 0 22px;
-  flex-wrap: wrap;
+.tab-nav::-webkit-scrollbar{display:none}
+.tab-nav button{
+  background:none; border:none; padding:10px 14px; cursor:pointer;
+  font-size:.98rem; font-weight:600; color:var(--muted);
+  border-bottom:3px solid transparent; white-space:nowrap;
 }
-.form input { 
-  flex: 1 1 260px; 
-  max-width: 320px; 
-  padding: 12px 14px; 
-  border: 1px solid var(--border); 
-  border-radius: 12px; 
-  font-size: 1rem;
-  transition: border-color 0.3s;
-}
-.form input:focus { border-color: var(--primary); outline: none; }
-.form button { 
-  padding: 12px 16px; 
-  border-radius: 12px; 
-  border: none;
-  background: var(--secondary); 
-  color: var(--primary); 
-  font-weight: 700; 
-  cursor: pointer;
-  transition: background 0.3s, transform 0.1s;
-  min-width: 160px;
-}
-.form button:hover { background: #ffda6a; }
-.error { 
-  color: #dc3545; 
-  text-align: center; 
-  min-height: 20px;
-  margin-bottom: 10px;
-}
+.tab-nav button.active{color:var(--primary); border-bottom-color:var(--primary)}
+.tab-content{padding:0 10px 10px}
 
-/* Grille Tarifs Pro */
-#partner-content { 
-  padding-top: 10px; 
-  display: none; 
+/* =============== Grilles de tarifs (cards) =============== */
+.sheets{
+  display:grid; grid-template-columns:repeat(auto-fit, minmax(280px,1fr));
+  gap:18px; margin-bottom:22px;
 }
-.tab-nav {
-  display: flex;
-  justify-content: center;
-  gap: 6px;
-  margin-bottom: 16px;
-  border-bottom: 1px solid var(--border);
-  padding: 0 10px 6px;
-  overflow-x: auto;
-  scrollbar-width: none;
+.sheet{
+  background:var(--panel); border:1px solid var(--border); border-radius:10px;
+  box-shadow:0 8px 20px rgba(0,0,0,.05); padding:16px; display:flex; flex-direction:column;
 }
-.tab-nav::-webkit-scrollbar { display: none; }
-.tab-nav button {
-  background: none;
-  border: none;
-  padding: 10px 14px;
-  cursor: pointer;
-  font-size: 0.98rem;
-  font-weight: 600;
-  color: var(--muted);
-  border-bottom: 3px solid transparent;
-  transition: color 0.3s, border-bottom-color 0.3s;
-  white-space: nowrap;
+.sheet .head{display:flex; justify-content:space-between; align-items:center; gap:10px; margin-bottom:10px}
+.sheet h3{font-size:1.1rem; margin:0; color:var(--primary)}
+.sheet p{color:var(--muted); font-size:.9rem; margin:4px 0 10px}
+.sheet .from{
+  font-size:1rem; font-weight:700; color:var(--ok);
+  margin-bottom:10px; padding-bottom:8px; border-bottom:1px dashed var(--border);
 }
-.tab-nav button.active {
-  color: var(--primary);
-  border-bottom-color: var(--primary);
+.list{list-style:none; padding:0; margin:0; flex-grow:1}
+.list li{
+  display:grid; grid-template-columns:1fr auto; align-items:center; gap:10px;
+  font-size:.95rem; padding:10px 0; border-bottom:1px dashed var(--border);
 }
+.list li:last-child{border-bottom:none}
+.list li strong{font-family:'Roboto Mono',monospace; font-weight:700; color:var(--primary); white-space:nowrap}
+.add-btn{
+  background:var(--primary); color:#fff; border:none; border-radius:4px; padding:4px 8px;
+  font-size:.8rem; cursor:pointer;
+}
+.add-btn:hover{background:var(--secondary); color:var(--primary)}
 
-.tab-content { padding: 0 10px 10px; }
+/* =============== Devis rapide =============== */
+#devis-rapide-tab{padding:16px 8px 20px}
+.devis-header{
+  display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;
+  border-bottom:2px solid var(--primary); padding-bottom:10px; margin-bottom:14px;
+}
+#partner-logo-preview{max-height:46px; max-width:160px; display:none}
+.devis-actions{display:flex; flex-wrap:wrap; gap:10px; margin-bottom:14px}
+.devis-actions button, .devis-actions input[type="file"] + label{
+  padding:10px 14px; border-radius:8px; font-weight:600; cursor:pointer; border:1px solid var(--primary)
+}
+#print-devis,#clear-devis{background:var(--primary); color:#fff; border:none}
+input[type="file"]{display:none}
+.file-upload-label{background:#fff; color:var(--primary); display:inline-block}
 
-/* Sections de tarifs (Sheets) */
-.sheets {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 18px;
-  margin-bottom: 22px;
+/* Table responsive : scroll interne uniquement */
+.table-responsive{
+  width:100%;
+  overflow-x:auto; -webkit-overflow-scrolling:touch;
+  border:1px solid var(--border); border-radius:8px; background:#fff;
 }
-.sheet {
-  background: var(--panel);
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  box-shadow: 0 8px 20px rgba(0,0,0,.05);
-  padding: 16px;
-  display: flex;
-  flex-direction: column;
-}
-.sheet .head {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 10px;
-  gap: 10px;
-}
-.sheet h3 {
-  font-size: 1.1rem;
-  margin: 0;
-  color: var(--primary);
-}
-.sheet p {
-  color: var(--muted);
-  font-size: 0.9rem;
-  margin: 4px 0 10px;
-}
-.sheet .from {
-  font-size: 1rem;
-  font-weight: 700;
-  color: var(--ok);
-  margin-bottom: 10px;
-  padding-bottom: 8px;
-  border-bottom: 1px dashed var(--border);
-}
-.list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  flex-grow: 1;
-}
-.list li {
-  display: grid;
-  grid-template-columns: 1fr auto;
-  align-items: center;
-  gap: 10px;
-  font-size: 0.95rem;
-  padding: 10px 0;
-  border-bottom: 1px dashed var(--border);
-}
-.list li:last-child { border-bottom: none; }
-.list li strong {
-  font-family: 'Roboto Mono', monospace;
-  font-weight: 700;
-  color: var(--primary);
-  white-space: nowrap;
-}
-.add-btn {
-  background: var(--primary);
-  color: #fff;
-  border: none;
-  border-radius: 4px;
-  padding: 4px 8px;
-  font-size: 0.8rem;
-  cursor: pointer;
-  transition: background 0.3s;
-}
-.add-btn:hover {
-  background: var(--secondary);
-  color: var(--primary);
-}
-
-/* Devis Rapide */
-#devis-rapide-tab {
-  padding: 16px 8px 20px;
-}
-.devis-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-bottom: 2px solid var(--primary);
-  padding-bottom: 10px;
-  margin-bottom: 14px;
-  gap: 10px;
-  flex-wrap: wrap;
-}
-#partner-logo-preview {
-  max-height: 46px;
-  max-width: 160px;
-  display: none;
-}
-
-/* Actions du devis */
-.devis-actions {
-  display: flex;
-  flex-wrap: wrap; 
-  gap: 10px;
-  margin-bottom: 14px;
-}
-.devis-actions button, .devis-actions input[type="file"] + label {
-  padding: 10px 14px;
-  border-radius: 8px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: opacity 0.3s;
-  border: 1px solid var(--primary);
-  flex: 0 0 auto;
-}
-#print-devis, #clear-devis {
-  background: var(--primary);
-  color: #fff;
-  border: none;
-}
-#print-devis:hover, #clear-devis:hover { opacity: 0.92; }
-input[type="file"] { display: none; }
-.file-upload-label {
-  background: #fff;
-  color: var(--primary);
-  display: inline-block;
-  text-align: center;
-}
-.file-upload-label:hover { background: var(--border); }
-
-/* Table devis – wrapper responsive (scroll interne uniquement ici) */
-.table-responsive {
-  width: 100%;
-  overflow-x: auto;                 /* scroll interne pour le tableau uniquement */
-  -webkit-overflow-scrolling: touch;
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  background: #fff;
-}
-.devis-table {
-  width: 100%;
-  border-collapse: collapse;
-  min-width: 720px;                /* largeur mini, n’affecte pas la page grâce au wrapper */
-}
-.devis-table th, .devis-table td {
-  border-bottom: 1px solid var(--border);
-  padding: 10px;
-  text-align: left;
-  vertical-align: middle;
-}
-.devis-table th {
-  background: #e9eff6;
-  font-weight: 600;
-  color: var(--primary);
-}
-.devis-table input[type="number"] {
-  width: 70px;
-  padding: 6px 8px;
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  text-align: right;
-  font-family: 'Roboto Mono', monospace;
-}
-.devis-table .unit-price {
-  text-align: right;
-  font-family: 'Roboto Mono', monospace;
-  font-weight: 600;
-  white-space: nowrap;
-}
-.devis-table .total-row, .devis-table .subtotal-cell {
-  text-align: right;
-  font-family: 'Roboto Mono', monospace;
-  font-weight: 600;
-}
-.devis-table .subtotal-cell { background-color: #f7f7f7; }
+.devis-table{width:100%; border-collapse:collapse; min-width:720px}
+.devis-table th,.devis-table td{border-bottom:1px solid var(--border); padding:10px; text-align:left; vertical-align:middle}
+.devis-table th{background:#e9eff6; font-weight:600; color:var(--primary)}
+.devis-table input[type="number"]{width:70px; padding:6px 8px; border:1px solid var(--border); border-radius:6px; text-align:right; font-family:'Roboto Mono',monospace}
+.devis-table .unit-price{text-align:right; font-family:'Roboto Mono',monospace; font-weight:600; white-space:nowrap}
+.devis-table .total-row,.devis-table .subtotal-cell{text-align:right; font-family:'Roboto Mono',monospace; font-weight:600}
+.devis-table .subtotal-cell{background:#f7f7f7}
 
 /* Totaux */
-.devis-totals {
-  display: flex;
-  justify-content: flex-end;
-  padding: 8px 0;
-}
-.totals-box {
-  width: 100%;
-  max-width: 420px;
-  border: 2px solid var(--primary);
-  border-radius: 8px;
-  padding: 12px;
-  background: #fff;
-}
-.totals-box p {
-  display: flex;
-  justify-content: space-between;
-  margin: 8px 0;
-  font-size: 1rem;
-}
-.totals-box .final {
-  font-size: 1.2rem;
-  font-weight: 700;
-  color: var(--primary);
-  border-top: 1px solid var(--border);
-  padding-top: 8px;
-  margin-top: 8px;
-}
+.devis-totals{display:flex; justify-content:flex-end; padding:8px 0}
+.totals-box{width:100%; max-width:420px; border:2px solid var(--primary); border-radius:8px; padding:12px; background:#fff}
+.totals-box p{display:flex; justify-content:space-between; margin:8px 0; font-size:1rem}
+.totals-box .final{font-size:1.2rem; font-weight:700; color:var(--primary); border-top:1px solid var(--border); padding-top:8px; margin-top:8px}
 
 /* Footer */
-.footer {
-  padding: 12px 18px;
-  border-top: 1px solid var(--border);
-  background: #fcfcfc;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 10px;
-  font-size: 0.92rem;
-  flex-wrap: wrap;
+.footer{
+  padding:12px 18px; border-top:1px solid var(--border); background:#fcfcfc;
+  display:flex; justify-content:space-between; align-items:center; gap:10px; font-size:.92rem; flex-wrap:wrap
 }
-.footer a {
-  color: var(--primary);
-  font-weight: 600;
-  text-decoration: none;
-  transition: color 0.3s;
-}
-.footer a:hover { color: var(--secondary); }
+.footer a{color:var(--primary); font-weight:600; text-decoration:none}
+.footer a:hover{color:var(--secondary)}
 
-/* =========================
-   MEDIA QUERIES
-   ========================= */
-@media (max-width: 992px){
-  .sheets { grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; }
-  .sheet { padding: 14px; }
-  .header { padding: 16px; }
+/* =============== Media queries =============== */
+@media (max-width:992px){
+  .sheets{grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:16px}
+  .sheet{padding:14px}
+  .header{padding:16px}
 }
-@media (max-width: 768px){
-  .list li { grid-template-columns: 1fr; gap: 6px; }
-  .list li strong { order: 2; }
-  .add-btn { order: 3; width: 100%; justify-self: start; }
-  .header-left h1 { white-space: normal; }
-  .form { gap: 8px; }
-  .form button { width: 100%; }
+@media (max-width:768px){
+  .list li{grid-template-columns:1fr; gap:6px}
+  .list li strong{order:2}
+  .add-btn{order:3; width:100%}
+  .header-left h1{white-space:normal}
+  .form{gap:8px}
+  .form button{width:100%}
 }
-@media (max-width: 600px){
-  .header { flex-direction: column; align-items: flex-start; gap: 8px; }
-  .badge { align-self: flex-end; }
-  .devis-actions { gap: 8px; }
-  .devis-actions button, .file-upload-label { flex: 1 1 160px; text-align: center; }
-  .totals-box { max-width: 100%; }
+@media (max-width:600px){
+  .header{flex-direction:column; align-items:flex-start; gap:8px}
+  .badge{align-self:flex-end}
+  .devis-actions button,.file-upload-label{flex:1 1 160px; text-align:center}
+  .totals-box{max-width:100%}
 }
-@media (max-width: 420px){
-  .form input { min-width: 0; width: 100%; max-width: 100%; }
-  .header img { height: 36px; }
+@media (max-width:420px){
+  .form input{min-width:0; width:100%}
+  .header img{height:36px}
 }
 
-/* Impression */
-@media print {
-  body { 
-    background: none; 
-    padding: 0;
-    justify-content: flex-start;
-    align-items: flex-start;
-  }
-  nav, .header, .tab-nav, .footer, .devis-actions, .list li .add-btn, .secure-area > .notice, .secure-area > .form, .secure-area > .error, 
-  .devis-table input, .devis-table button { 
-    display: none !important; 
-  }
-  .card { 
-    width: 100%; 
-    box-shadow: none; 
-    margin: 0;
-    border-radius: 0;
-  }
-  #devis-rapide-tab { padding: 0; }
-  #partner-content { display: block !important; padding-top: 0; }
-  .tab-content { padding: 0; }
-  .devis-table th, .devis-table td { border-color: #ccc !important; }
-  .devis-table .unit-price { display: table-cell; text-align: right; font-weight: 400; }
-  .devis-table .total-row { display: table-cell; text-align: right; font-weight: 400; }
-  .devis-totals { justify-content: flex-start; }
-  .totals-box { border-color: #000; }
-  .devis-header {
-    display: flex !important;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    border-bottom: 2px solid #000;
-  }
-  #partner-logo-preview { display: block !important; margin-right: 20px; }
-  .devis-rapide-title {
-    font-size: 1.5rem;
-    color: #000 !important;
-    text-align: right;
-    width: 100%;
-  }
+/* =============== Impression =============== */
+@media print{
+  header,.header,.tab-nav,.footer,.devis-actions,.list li .add-btn,.secure-area>.notice,.secure-area>.form,.secure-area>.error,
+  .devis-table input,.devis-table button{display:none !important}
+  .card{width:100%; box-shadow:none; margin:0; border-radius:0}
+  #devis-rapide-tab{padding:0}
+  #partner-content{display:block !important; padding-top:0}
+  .devis-table th,.devis-table td{border-color:#ccc !important}
 }
 </style>
 </head>
 <body>
 
-<!-- ===== NAVBAR ===== -->
-<nav>
-  <div class="nav-inner">
-    <a href="../index.html" class="logo" aria-label="Papo Rénov - Accueil">
-      <img src="../img/logo.png" alt="Papo Rénov">
-    </a>
-    <div class="nav-scroll">
-      <ul>
-        <li><a href="../index.html">Accueil</a></li>
-        <li><a href="./realisations.html">Réalisations</a></li>
-        <li><a href="./services.html">Services</a></li>
-        <li><a href="./tarifs.html">Tarifs</a></li>
-        <li><a href="./planning.html">Planning</a></li>
-        <li><a href="./avis.html">Avis</a></li>
-        <li><a href="./devis.html">Devis</a></li>
-        <li><a href="./courtage-cuisine.html">Courtage Cuisine</a></li>
-        <li><a class="active" href="./tarifs-partenaire.html">Espace PRO</a></li>
-        <li><a href="./contact.html">Contact</a></li>
-      </ul>
-    </div>
+<!-- ===== HEADER identique aux autres pages ===== -->
+<header>
+  <div class="logo">
+    <img src="../img/logo.png" alt="Logo Papo Rénov">
   </div>
-</nav>
+  <nav>
+    <ul>
+      <li><a href="../index.html">Accueil</a></li>
+      <li><a href="devis.html">Demande de devis</a></li>
+      <li><a href="realisations.html">Mes réalisations</a></li>
+      <li><a href="tarifs.html">Tarifs</a></li>
+      <li><a href="planning.html">Planning</a></li>
+      <li><a class="active" href="tarifs-partenaire.html">Espace PRO</a></li>
+      <li><a href="contact.html">Contact</a></li>
+      <li><a href="avis.html">Avis clients</a></li>
+      <li><a href="courtage-cuisine.html">Courtage Cuisine</a></li>
+    </ul>
+  </nav>
+</header>
+<!-- =========================================== -->
 
 <div class="card">
   <div class="header">
     <div class="header-left">
-      <img src="https://via.placeholder.com/150x45?text=LOGO+PR" alt="Papo Rénov"> 
+      <img src="../img/logo.png" alt="Papo Rénov">
       <h1>Grille Tarifaire Professionnelle</h1>
     </div>
     <span class="badge">Accès Partenaire PRO</span>
   </div>
-  
+
   <div class="secure-area">
     <p class="notice">Veuillez entrer le <strong>code d’accès professionnel</strong> pour consulter l'intégralité des tarifs et outils dédiés.</p>
     <div class="form">
@@ -547,19 +266,20 @@ input[type="file"] { display: none; }
     <div id="error" class="error"></div>
 
     <div id="partner-content" style="display:none">
-      
       <div class="tab-nav">
         <button class="tab-btn active" data-tab="tarifs-pro-tab">Grille Tarifaire Détaillée</button>
         <button class="tab-btn" data-tab="devis-rapide-tab">Générateur de Devis Rapide</button>
       </div>
 
       <div class="tab-content">
+        <!-- ===== Onglet Tarifs ===== -->
         <div id="tarifs-pro-tab" class="tab-pane active">
-          <p class="notice" style="margin-bottom: 18px;">
+          <p class="notice" style="margin-bottom:18px;">
             <strong>Tarifs Partenaires NETS (Hors Taxes)</strong> — Valables sur volume et récurrence. Matériaux non inclus (sauf mention F+M.O.).
           </p>
-          <div class="sheets" id="partner-sheets">
 
+          <div class="sheets" id="partner-sheets">
+            <!-- Revêtements -->
             <article class="sheet" data-category="Revetement">
               <div class="head"><h3>Revêtements Sols & Murs</h3></div>
               <p>Main d'œuvre (M.O.) | Pose de qualité PRO</p>
@@ -574,6 +294,7 @@ input[type="file"] { display: none; }
               </ul>
             </article>
 
+            <!-- Plomberie -->
             <article class="sheet" data-category="Plomberie">
               <div class="head"><h3>Plomberie & Sanitaires</h3></div>
               <p>Forfaits M.O. optimisés pour rénovation complète</p>
@@ -588,6 +309,7 @@ input[type="file"] { display: none; }
               </ul>
             </article>
 
+            <!-- Électricité -->
             <article class="sheet" data-category="Electricite">
               <div class="head"><h3>Électricité & Plâtrerie</h3></div>
               <p>Grille dédiée récurrence / volume | F+M.O. inclus si spécifié</p>
@@ -602,19 +324,7 @@ input[type="file"] { display: none; }
               </ul>
             </article>
 
-            <article class="sheet" data-category="Menuiserie">
-              <div class="head"><h3>Menuiserie & Agencement</h3></div>
-              <p>Pose M.O. | Fabrication sur devis</p>
-              <div class="from">Portes Intérieures dès 120 € (M.O.)</div>
-              <ul class="list">
-                <li data-presta="Pose Bloc Porte Intérieur"><span>Pose Bloc Porte Intérieur</span><strong>120–250 €<button class="add-btn" data-price-min="120" data-price-max="250">Ajouter</button></strong></li>
-                <li data-presta="Pose Fenêtre PVC Standard"><span>Pose Fenêtre PVC Standard</span><strong>180–350 €/u<button class="add-btn" data-price-min="180" data-price-max="350">Ajouter</button></strong></li>
-                <li data-presta="Aménagement Placard (M.O.)"><span>Aménagement Placard (M.O.)</span><strong>450–900 €<button class="add-btn" data-price-min="450" data-price-max="900">Ajouter</button></strong></li>
-                <li data-presta="Agencement Cuisine (Pose M.O.)"><span>Agencement Cuisine (Pose M.O.)</span><strong>900–2 500 €<button class="add-btn" data-price-min="900" data-price-max="2500">Ajouter</button></strong></li>
-                <li data-presta="Création Meuble Sur Mesure"><span>Création Meuble Sur Mesure</span><strong>Devis Spécial</strong></li>
-              </ul>
-            </article>
-            
+            <!-- Divers -->
             <article class="sheet" data-category="Divers">
               <div class="head"><h3>Déconstruction & Divers</h3></div>
               <p>Forfaits Démolition & Évacuation (M.O.)</p>
@@ -626,20 +336,20 @@ input[type="file"] { display: none; }
                 <li data-presta="Nettoyage Fin de Chantier (M.O. / jr)"><span>Nettoyage Fin de Chantier (M.O. / jr)</span><strong>300–450 €/jr<button class="add-btn" data-price-min="300" data-price-max="450">Ajouter</button></strong></li>
               </ul>
             </article>
-
           </div>
         </div>
 
+        <!-- ===== Onglet Devis ===== -->
         <div id="devis-rapide-tab" class="tab-pane" style="display:none;">
-          <h2 style="text-align: center; color: var(--primary); margin-bottom: 14px;">Outil : Générateur de Devis Rapide</h2>
+          <h2 style="text-align:center; color:var(--primary); margin-bottom:14px;">Outil : Générateur de Devis Rapide</h2>
 
           <div class="devis-header">
-            <img id="partner-logo-preview" src="" alt="Logo Partenaire" style="display:none;">
+            <img id="partner-logo-preview" src="" alt="Logo Partenaire" />
             <div class="devis-titles">
                <h3 class="devis-rapide-title">DEVIS ESTIMATIF - <span id="partner-name-display">Votre Client</span></h3>
             </div>
           </div>
-          
+
           <div class="devis-actions">
             <button id="print-devis">🖨️ Imprimer / Enregistrer en PDF</button>
             <button id="clear-devis">🗑️ Vider le Devis</button>
@@ -648,7 +358,7 @@ input[type="file"] { display: none; }
           </div>
 
           <div class="table-responsive">
-            <table class="devis-table" id="devis-table">
+            <table class="devis-table">
               <thead>
                 <tr>
                   <th>Prestation</th>
@@ -662,7 +372,7 @@ input[type="file"] { display: none; }
               <tbody id="devis-lines"></tbody>
               <tfoot>
                 <tr id="devis-subtotal-row" style="display:none;">
-                  <td colspan="4" style="text-align: right;"><strong>Sous-Total HT (M.O. Estimée) :</strong></td>
+                  <td colspan="4" style="text-align:right;"><strong>Sous-Total HT (M.O. Estimée) :</strong></td>
                   <td class="subtotal-cell"><span id="subtotal">0.00 €</span></td>
                   <td></td>
                 </tr>
@@ -678,25 +388,22 @@ input[type="file"] { display: none; }
               <p class="final">TOTAL TTC : <span id="total-ttc">0.00 €</span></p>
             </div>
           </div>
-
         </div>
-
       </div>
-      
+
       <div class="footer">
-        <a href="./tarifs.html">← Retour Tarifs Publics</a>
+        <a href="tarifs.html">← Retour Tarifs Publics</a>
         <span>Documentation PRO et Matériaux : Accès ici</span>
       </div>
-
     </div>
   </div>
 </div>
 
 <script>
-// ---------- CONFIGURATION ----------
-const ACCESS_CODE = "PROPAPO2025!"; 
+/* ================== CONFIG ================== */
+const ACCESS_CODE = "PROPAPO2025!";
 
-// ---------- ÉLÉMENTS DU DOM ----------
+/* ================== DOM HOOKS ================== */
 const inputCode = document.getElementById('code');
 const btnEnter = document.getElementById('enter');
 const errorDiv = document.getElementById('error');
@@ -706,7 +413,6 @@ const secureForm = document.querySelector('.form');
 const tabButtons = document.querySelectorAll('.tab-btn');
 const tabPanes = document.querySelectorAll('.tab-pane');
 
-// Éléments du Générateur de Devis
 const devisLines = document.getElementById('devis-lines');
 const subtotalSpan = document.getElementById('subtotal');
 const totalMOEl = document.getElementById('total-mo');
@@ -718,233 +424,140 @@ const clearButton = document.getElementById('clear-devis');
 const logoUpload = document.getElementById('logo-upload');
 const logoPreview = document.getElementById('partner-logo-preview');
 
-// Panier de Devis (Tableau d'objets)
+/* ================== STATE ================== */
 let devisCart = [];
-const TVA_RATE = 0.20; // 20% de TVA
+const TVA_RATE = 0.20;
 
-// ---------- FONCTIONS DE BASE ----------
-
-/** Gère l'accès sécurisé. */
-function openIfValid() {
-    const val = (inputCode.value || '').trim();
-    if (!val) { errorDiv.textContent = "Veuillez saisir le code d’accès professionnel."; return; }
-    if (val === ACCESS_CODE) {
-        errorDiv.textContent = "";
-        partnerContent.style.display = 'block';
-        
-        // Cacher le formulaire de connexion
-        secureForm.style.display = 'none';
-        noticeText.textContent = "ACCÈS PRO CONFIRMÉ — Bienvenue Partenaire !";
-        noticeText.style.color = 'var(--primary)';
-        noticeText.style.fontWeight = '600';
-
-        // Afficher le premier onglet actif (Tarifs Pro)
-        document.getElementById('tarifs-pro-tab').style.display = 'block';
-        
-        // Initialiser les écouteurs d'événements des boutons "Ajouter"
-        initAddButtons(); 
-    } else {
-        errorDiv.textContent = "Code PRO invalide. Veuillez vérifier vos identifiants.";
-    }
+/* ================== ACCESS ================== */
+function openIfValid(){
+  const val = (inputCode.value||'').trim();
+  if(!val){ errorDiv.textContent="Veuillez saisir le code d’accès professionnel."; return; }
+  if(val === ACCESS_CODE){
+    errorDiv.textContent="";
+    partnerContent.style.display='block';
+    secureForm.style.display='none';
+    noticeText.textContent="ACCÈS PRO CONFIRMÉ — Bienvenue Partenaire !";
+    noticeText.style.color='var(--primary)';
+    noticeText.style.fontWeight='600';
+    document.getElementById('tarifs-pro-tab').style.display='block';
+    initAddButtons();
+  }else{
+    errorDiv.textContent="Code PRO invalide. Veuillez vérifier vos identifiants.";
+  }
 }
 
-/** Gère le changement d'onglet. */
-function switchTab(targetTabId) {
-    tabPanes.forEach(pane => {
-        pane.style.display = 'none';
-        pane.classList.remove('active');
-    });
-
-    tabButtons.forEach(button => {
-        button.classList.remove('active');
-    });
-
-    const activePane = document.getElementById(targetTabId);
-    if (activePane) {
-        activePane.style.display = 'block';
-        activePane.classList.add('active');
-        const btn = document.querySelector(`.tab-btn[data-tab="${targetTabId}"]`);
-        if (btn) btn.classList.add('active');
-    }
+/* ================== TABS ================== */
+function switchTab(targetId){
+  tabPanes.forEach(p=>{p.style.display='none'; p.classList.remove('active');});
+  tabButtons.forEach(b=>b.classList.remove('active'));
+  const pane=document.getElementById(targetId);
+  if(pane){ pane.style.display='block'; pane.classList.add('active'); }
+  const btn=document.querySelector(`.tab-btn[data-tab="${targetId}"]`);
+  if(btn) btn.classList.add('active');
 }
 
-// ---------- FONCTIONS DE DEVIS RAPIDE ----------
-
-/** Initialise les écouteurs d'événements pour tous les boutons "Ajouter". */
-function initAddButtons() {
-    const buttons = document.querySelectorAll('.add-btn');
-    buttons.forEach(button => {
-        button.removeEventListener('click', addPrestation); 
-        button.addEventListener('click', addPrestation);
-    });
+/* ================== ADD BUTTONS ================== */
+function initAddButtons(){
+  document.querySelectorAll('.add-btn').forEach(b=>{
+    b.removeEventListener('click', addPrestation);
+    b.addEventListener('click', addPrestation);
+  });
 }
 
-/** Ajoute une prestation à la liste du devis (sans redirection d’onglet). */
-function addPrestation(event) {
-    const btn = event.target;
-    const listItem = btn.closest('li');
-    const prestationName = listItem.dataset.presta;
-    let priceMin = parseFloat(btn.dataset.priceMin);
-    let priceMax = parseFloat(btn.dataset.priceMax);
+function addPrestation(e){
+  const btn=e.target;
+  const li=btn.closest('li');
+  const name=li.dataset.presta;
+  const priceMin=parseFloat(btn.dataset.priceMin);
+  const priceMax=parseFloat(btn.dataset.priceMax);
+  if(isNaN(priceMin) && isNaN(priceMax)){ alert("Prestation sur Devis Spécial. Veuillez contacter le support Papo Rénov."); return; }
+  const unitPrice = (!isNaN(priceMin)&&!isNaN(priceMax)) ? (priceMin+priceMax)/2 : (isNaN(priceMin)?priceMax:priceMin);
 
-    if (isNaN(priceMin) && isNaN(priceMax)) {
-        alert("Prestation sur Devis Spécial. Veuillez contacter le support Papo Rénov.");
-        return;
-    }
-    
-    const unitPrice = !isNaN(priceMin) && !isNaN(priceMax) ? (priceMin + priceMax)/2 : (isNaN(priceMin) ? priceMax : priceMin);
-    
-    // Déterminer l'unité en lisant le libellé de prix (fiable)
-    const priceLabel = (listItem.querySelector('strong')?.textContent || '').toLowerCase();
-    let unit = 'forfait';
-    if (priceLabel.includes('€/m²')) unit = 'm²';
-    else if (priceLabel.includes('€/u')) unit = 'u';
-    else if (priceLabel.includes('€/jr')) unit = 'jr';
+  const label=(li.querySelector('strong')?.textContent||'').toLowerCase();
+  let unit='forfait';
+  if(label.includes('€/m²')) unit='m²';
+  else if(label.includes('€/u')) unit='u';
+  else if(label.includes('€/jr')) unit='jr';
 
-    const newItem = {
-        name: prestationName.replace(/\s\(M\.O\.\s\/\s\S+\)|\s\(M\.O\.\)|\s\(F\+M\.O\.\)/g, '').trim(), 
-        quantity: 1,
-        unitPrice: parseFloat(unitPrice.toFixed(2)),
-        unit: unit
-    };
-
-    const existingItem = devisCart.find(item => item.name === newItem.name && item.unit === newItem.unit);
-    if (existingItem) {
-        existingItem.quantity++;
-    } else {
-        devisCart.push(newItem);
-    }
-    
-    renderDevis();
+  const newItem={name:name.replace(/\s\(M\.O\.\s*\/\s*\S+\)|\s\(M\.O\.\)|\s\(F\+M\.O\.\)/g,'').trim(), quantity:1, unitPrice:parseFloat(unitPrice.toFixed(2)), unit};
+  const existing=devisCart.find(i=>i.name===newItem.name && i.unit===newItem.unit);
+  if(existing) existing.quantity++; else devisCart.push(newItem);
+  renderDevis();
 }
 
-/** Met à jour la quantité pour une ligne de devis. */
-function updateQuantity(inputElement, index) {
-    let newQuantity = parseInt(inputElement.value);
+/* ================== DEVIS RENDER ================== */
+function updateQuantity(el,i){
+  let q=parseInt(el.value);
+  if(isNaN(q)||q<0){ q=0; el.value=0; }
+  if(q===0){ removePrestation(i); } else { devisCart[i].quantity=q; renderDevis(); }
+}
+function updateUnitPrice(el,i){
+  let p=parseFloat(el.value);
+  if(isNaN(p)||p<0){ p=devisCart[i].unitPrice; el.value=p.toFixed(2); }
+  devisCart[i].unitPrice=parseFloat(p.toFixed(2));
+  renderDevis();
+}
+function removePrestation(i){ devisCart.splice(i,1); renderDevis(); }
 
-    if (isNaN(newQuantity) || newQuantity < 0) {
-        newQuantity = 0;
-        inputElement.value = 0;
-    }
-
-    if (newQuantity === 0) {
-        removePrestation(index);
-    } else {
-        devisCart[index].quantity = newQuantity;
-        renderDevis();
-    }
+function renderDevis(){
+  const tbody=devisLines; tbody.innerHTML='';
+  let subtotal=0;
+  if(devisCart.length===0){
+    tbody.innerHTML='<tr><td colspan="6" style="text-align:center; color:var(--muted);">Aucune prestation ajoutée. Ajoutez des articles depuis la Grille Tarifaire.</td></tr>';
+  }
+  devisCart.forEach((it,i)=>{
+    const total=it.quantity*it.unitPrice; subtotal+=total;
+    const row=tbody.insertRow();
+    row.innerHTML=`
+      <td>${it.name}</td>
+      <td><input type="number" min="0" value="${it.quantity}" onchange="updateQuantity(this,${i})"></td>
+      <td class="unit-price"><input type="number" min="0" step="0.01" value="${it.unitPrice.toFixed(2)}" onchange="updateUnitPrice(this,${i})"></td>
+      <td>${it.unit}</td>
+      <td class="total-row">${total.toFixed(2)} €</td>
+      <td><button style="color:#dc3545; border:1px solid #dc3545; background:transparent; padding:4px 8px; border-radius:4px; cursor:pointer;" onclick="removePrestation(${i})">Supprimer</button></td>
+    `;
+  });
+  const tva=subtotal*TVA_RATE, ttc=subtotal+tva;
+  subtotalSpan.textContent=subtotal.toFixed(2)+' €';
+  totalMOEl.textContent=subtotal.toFixed(2)+' €';
+  totalHTEl.textContent=subtotal.toFixed(2)+' €';
+  tvaEl.textContent=tva.toFixed(2)+' €';
+  totalTTCEl.textContent=ttc.toFixed(2)+' €';
 }
 
-/** Met à jour le prix unitaire pour une ligne de devis. */
-function updateUnitPrice(inputElement, index) {
-    let newPrice = parseFloat(inputElement.value);
-    
-    if (isNaN(newPrice) || newPrice < 0) {
-        newPrice = devisCart[index].unitPrice; 
-        inputElement.value = newPrice.toFixed(2);
-    }
-    
-    devisCart[index].unitPrice = parseFloat(newPrice.toFixed(2));
-    renderDevis();
+/* ================== MISC ================== */
+function clearDevis(){
+  if(confirm("Êtes-vous sûr de vouloir vider le devis ? Cette action est irréversible.")){
+    devisCart=[]; renderDevis();
+    logoPreview.src=''; logoPreview.style.display='none';
+    document.getElementById('logo-upload').value='';
+    alert("Le devis a été vidé.");
+  }
+}
+function handleLogoUpload(e){
+  const f=e.target.files?.[0]; if(!f) return;
+  const r=new FileReader();
+  r.onload=ev=>{ logoPreview.src=ev.target.result; logoPreview.style.display='block'; };
+  r.readAsDataURL(f);
 }
 
-/** Supprime une ligne de devis. */
-function removePrestation(index) {
-    devisCart.splice(index, 1);
-    renderDevis();
-}
-
-/** Recalcule et affiche le devis complet. */
-function renderDevis() {
-    const tbody = devisLines;
-    tbody.innerHTML = ''; 
-    let subtotal = 0;
-
-    if (devisCart.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; color: var(--muted);">Aucune prestation ajoutée. Ajoutez des articles depuis la Grille Tarifaire.</td></tr>';
-    }
-
-    devisCart.forEach((item, index) => {
-        const totalHT = item.quantity * item.unitPrice;
-        subtotal += totalHT;
-
-        const row = tbody.insertRow();
-        
-        row.innerHTML = `
-            <td>${item.name}</td>
-            <td><input type="number" min="0" value="${item.quantity}" onchange="updateQuantity(this, ${index})"></td>
-            <td class="unit-price"><input type="number" min="0" step="0.01" value="${item.unitPrice.toFixed(2)}" onchange="updateUnitPrice(this, ${index})"></td>
-            <td>${item.unit}</td>
-            <td class="total-row">${totalHT.toFixed(2)} €</td>
-            <td><button title="Supprimer la ligne" style="color: #dc3545; border: 1px solid #dc3545; background: transparent; padding: 4px 8px; border-radius: 4px; cursor: pointer;" onclick="removePrestation(${index})">Supprimer</button></td>
-        `;
-    });
-
-    // Totaux
-    const tvaAmount = subtotal * TVA_RATE;
-    const totalTTCValue = subtotal + tvaAmount;
-
-    subtotalSpan.textContent = subtotal.toFixed(2) + ' €';
-    totalMOEl.textContent = subtotal.toFixed(2) + ' €';
-    totalHTEl.textContent = subtotal.toFixed(2) + ' €';
-    tvaEl.textContent = tvaAmount.toFixed(2) + ' €';
-    totalTTCEl.textContent = totalTTCValue.toFixed(2) + ' €';
-}
-
-/** Vide la liste de devis. */
-function clearDevis() {
-    if (confirm("Êtes-vous sûr de vouloir vider le devis ? Cette action est irréversible.")) {
-        devisCart = [];
-        renderDevis();
-        logoPreview.src = '';
-        logoPreview.style.display = 'none';
-        document.getElementById('logo-upload').value = ''; 
-        alert("Le devis a été vidé.");
-    }
-}
-
-/** Gère l'importation de logo. */
-function handleLogoUpload(event) {
-    const file = event.target.files[0];
-    if (file) {
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            logoPreview.src = e.target.result;
-            logoPreview.style.display = 'block';
-        }
-        reader.readAsDataURL(file);
-    }
-}
-
-// ---------- GESTIONNAIRES D'ÉVÉNEMENTS ----------
-
-// Connexion
+/* ================== Events ================== */
 btnEnter.addEventListener('click', openIfValid);
-inputCode.addEventListener('keydown', (e) => { if (e.key === 'Enter') openIfValid(); });
+inputCode.addEventListener('keydown', e=>{ if(e.key==='Enter') openIfValid(); });
 
-// Navigation par onglets
-tabButtons.forEach(button => {
-    button.addEventListener('click', (e) => {
-        switchTab(e.currentTarget.dataset.tab);
-    });
-});
+tabButtons.forEach(b=>b.addEventListener('click', e=>switchTab(e.currentTarget.dataset.tab)));
 
-// Actions Devis
-printButton.addEventListener('click', () => {
-    window.print();
-});
-clearButton.addEventListener('click', clearDevis);
-logoUpload.addEventListener('change', handleLogoUpload);
+printButton?.addEventListener('click', ()=>window.print());
+clearButton?.addEventListener('click', clearDevis);
+logoUpload?.addEventListener('change', handleLogoUpload);
 
-// Rendre le devis initialement vide
 document.addEventListener('DOMContentLoaded', renderDevis);
 
-// Exposer fonctions globales (pour onchange/onclick inline)
-window.updateQuantity = updateQuantity;
-window.updateUnitPrice = updateUnitPrice;
-window.removePrestation = removePrestation;
-window.clearDevis = clearDevis;
+/* Expose pour inline events */
+window.updateQuantity=updateQuantity;
+window.updateUnitPrice=updateUnitPrice;
+window.removePrestation=removePrestation;
+window.clearDevis=clearDevis;
 </script>
 </body>
 </html>
-
