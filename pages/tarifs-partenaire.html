@@ -16,16 +16,10 @@
   --ok: #28a745;
   --border: #e9ecef;
   --shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-  
-  /* Variables spécifiques de contact.html pour la cohérence de la navigation */
-  --primary-color:#007bff;
-  --secondary-color:#212529;
-  --background-light:#f4f7f9;
-  --card-background:#ffffff;
-  --shadow-color:rgba(0,0,0,.16);
 }
 * { box-sizing: border-box; }
 html, body { margin: 0; padding: 0; }
+html, body { overflow-x: hidden; } /* Empêche le scroll horizontal global */
 body { 
   font-family: 'Poppins', sans-serif; 
   background: var(--bg); 
@@ -38,56 +32,74 @@ body {
   -webkit-text-size-adjust: 100%;
 }
 
-/* =========================
-   STYLES HEADER / NAVIGATION (Importés de contact.html)
-   ========================= */
-header {
-    background-color: var(--card-background);
-    padding: 10px 20px;
-    box-shadow: 0 2px 4px var(--shadow-color);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-    margin-bottom: 20px; /* Séparation du contenu pro */
-    position: sticky;
-    top: 0;
-    z-index: 50;
+/* ===== NAVBAR – scrollable uniquement pour le menu ===== */
+nav {
+  width: 100%;
+  background: var(--primary);
+  color: #fff;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  overflow: hidden; /* le nav lui-même ne déborde pas */
 }
-.logo img {
-    max-height: 50px;
-    width: auto;
+nav .nav-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 10px 12px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
-nav ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: flex;
-    gap: 20px;
-    overflow-x: auto;
-    -ms-overflow-style: none;  
-    scrollbar-width: none;  
+nav .logo {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
 }
-nav ul::-webkit-scrollbar { display: none; }
-nav ul li a {
-    text-decoration: none;
-    color: #003366; /* Couleur de lien du contact.html */
-    font-weight: 600;
-    white-space: nowrap;
-    padding: 5px 0;
-    transition: color 0.3s;
+nav .logo img{
+  height: 40px;
+  width: auto;
+  display: block;
+  filter: brightness(0) invert(1);
 }
-nav ul li a:hover { color: var(--primary); }
-nav ul li a.active{color:var(--primary-color);font-weight:700; text-decoration: underline;} 
+nav .nav-scroll {
+  flex: 1 1 auto;
+  overflow-x: auto;           /* <- le scroll horizontal est ici uniquement */
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+}
+nav .nav-scroll::-webkit-scrollbar { height: 6px; }
+nav .nav-scroll::-webkit-scrollbar-thumb { background: rgba(255,255,255,.35); border-radius: 3px; }
 
-/* Carte / conteneur principal */
+nav ul{
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: inline-flex;
+  gap: 18px;
+  white-space: nowrap;        /* évite le retour à la ligne, force le scroll */
+}
+nav li{ flex: 0 0 auto; }
+nav a{
+  color:#fff;
+  text-decoration:none;
+  padding:6px 8px;
+  border-bottom:2px solid transparent;
+  transition:color .25s, border-color .25s;
+}
+nav a:hover,
+nav a.active{
+  color:var(--secondary);
+  border-color:var(--secondary);
+}
+
+/* Carte / contenu */
 .card { 
-  width: min(1200px, 98vw); 
+  width: min(1200px, 100%);  /* évite les 98vw qui peuvent créer du débordement */
   background: var(--panel); 
   border-radius: 16px; 
   box-shadow: var(--shadow); 
   overflow: hidden;
-  margin: 12px auto 30px;
+  margin: 20px auto 30px;
 }
 
 /* Header spécifique au contenu de la carte (après connexion) */
@@ -95,19 +107,19 @@ nav ul li a.active{color:var(--primary-color);font-weight:700; text-decoration: 
   display: flex; 
   align-items: center; 
   justify-content: space-between;
-  gap: 12px;
-  padding: 20px 24px; 
+  padding: 20px 30px; 
   border-bottom: 2px solid var(--primary);
   background: var(--primary);
   color: #fff;
+  gap: 12px;
 }
 .header-left {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 15px;
   min-width: 0;
 }
-.header img { height: 40px; filter: brightness(0) invert(1); flex-shrink: 0; }
+.header img { height: 45px; filter: brightness(0) invert(1); flex-shrink: 0; }
 .header h1 { 
   font-size: clamp(1.15rem, 1.6vw, 1.5rem);
   margin: 0; 
@@ -117,7 +129,6 @@ nav ul li a.active{color:var(--primary-color);font-weight:700; text-decoration: 
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-.badge { white-space: nowrap; }
 
 /* Espace sécurisé */
 .secure-area { padding: 22px; }
@@ -327,10 +338,10 @@ input[type="file"] { display: none; }
 }
 .file-upload-label:hover { background: var(--border); }
 
-/* Table devis – wrapper responsive */
+/* Table devis – wrapper responsive (scroll interne uniquement ici) */
 .table-responsive {
   width: 100%;
-  overflow-x: auto;
+  overflow-x: auto;                 /* scroll interne pour le tableau uniquement */
   -webkit-overflow-scrolling: touch;
   border: 1px solid var(--border);
   border-radius: 8px;
@@ -339,7 +350,7 @@ input[type="file"] { display: none; }
 .devis-table {
   width: 100%;
   border-collapse: collapse;
-  min-width: 720px; /* évite la casse des colonnes en petit écran, scroll horizontal prévu */
+  min-width: 720px;                /* largeur mini, n’affecte pas la page grâce au wrapper */
 }
 .devis-table th, .devis-table td {
   border-bottom: 1px solid var(--border);
@@ -458,7 +469,7 @@ input[type="file"] { display: none; }
     justify-content: flex-start;
     align-items: flex-start;
   }
-  header, .header, .tab-nav, .footer, .devis-actions, .list li .add-btn, .secure-area > .notice, .secure-area > .form, .secure-area > .error, 
+  nav, .header, .tab-nav, .footer, .devis-actions, .list li .add-btn, .secure-area > .notice, .secure-area > .form, .secure-area > .error, 
   .devis-table input, .devis-table button { 
     display: none !important; 
   }
@@ -495,24 +506,28 @@ input[type="file"] { display: none; }
 </head>
 <body>
 
-<header>
-  <div class="logo">
-    <img src="../img/logo.png" alt="Logo Papo Rénov">
+<!-- ===== NAVBAR ===== -->
+<nav>
+  <div class="nav-inner">
+    <a href="../index.html" class="logo" aria-label="Papo Rénov - Accueil">
+      <img src="../img/logo.png" alt="Papo Rénov">
+    </a>
+    <div class="nav-scroll">
+      <ul>
+        <li><a href="../index.html">Accueil</a></li>
+        <li><a href="./realisations.html">Réalisations</a></li>
+        <li><a href="./services.html">Services</a></li>
+        <li><a href="./tarifs.html">Tarifs</a></li>
+        <li><a href="./planning.html">Planning</a></li>
+        <li><a href="./avis.html">Avis</a></li>
+        <li><a href="./devis.html">Devis</a></li>
+        <li><a href="./courtage-cuisine.html">Courtage Cuisine</a></li>
+        <li><a class="active" href="./tarifs-partenaire.html">Espace PRO</a></li>
+        <li><a href="./contact.html">Contact</a></li>
+      </ul>
+    </div>
   </div>
-  <nav>
-    <ul>
-      <li><a href="../index.html">Accueil</a></li>
-      <li><a href="devis.html">Demande de devis</a></li>
-      <li><a href="realisations.html">Mes réalisations</a></li>
-      <li><a href="tarifs.html">Tarifs</a></li>
-      <li><a href="planning.html">Planning</a></li>
-      <li><a href="contact.html">Contact</a></li>
-      <li><a href="avis.html">Avis clients</a></li>
-      <li><a href="courtage-cuisine.html">Courtage Cuisine</a></li>
-      <li><a class="active" href="#">Espace PRO</a></li>
-    </ul>
-  </nav>
-</header>
+</nav>
 
 <div class="card">
   <div class="header">
@@ -621,15 +636,15 @@ input[type="file"] { display: none; }
           <div class="devis-header">
             <img id="partner-logo-preview" src="" alt="Logo Partenaire" style="display:none;">
             <div class="devis-titles">
-               <h3 class="devis-rapide-title">DEVIS ESTIMATIF - <span id="partner-name-preview">Partenaire PRO</span></h3>
+               <h3 class="devis-rapide-title">DEVIS ESTIMATIF - <span id="partner-name-display">Votre Client</span></h3>
             </div>
           </div>
           
           <div class="devis-actions">
             <button id="print-devis">🖨️ Imprimer / Enregistrer en PDF</button>
             <button id="clear-devis">🗑️ Vider le Devis</button>
-            <input type="file" id="partner-logo-upload" accept="image/*">
-            <label for="partner-logo-upload" class="file-upload-label">🔗 Ajouter votre Logo</label>
+            <input type="file" id="logo-upload" accept="image/*">
+            <label for="logo-upload" class="file-upload-label">🔗 Ajouter votre Logo</label>
           </div>
 
           <div class="table-responsive">
@@ -638,13 +653,13 @@ input[type="file"] { display: none; }
                 <tr>
                   <th>Prestation</th>
                   <th>Quantité</th>
+                  <th>Prix Unitaire HT (€)</th>
                   <th>Unité</th>
-                  <th>Prix Unitaire HT</th>
                   <th>Total HT</th>
                   <th>Actions</th>
                 </tr>
               </thead>
-              <tbody></tbody>
+              <tbody id="devis-lines"></tbody>
               <tfoot>
                 <tr id="devis-subtotal-row" style="display:none;">
                   <td colspan="4" style="text-align: right;"><strong>Sous-Total HT (M.O. Estimée) :</strong></td>
@@ -657,13 +672,10 @@ input[type="file"] { display: none; }
 
           <div class="devis-totals">
             <div class="totals-box">
-              <p>Sous-Total HT (M.O.) : <strong id="total-mo">0.00 €</strong></p>
-              <p>Estimation Matériaux (Optionnel) : 
-                <input type="number" id="mat-estimate" placeholder="0" value="0" min="0" style="width: 90px; text-align: right; margin-left: 10px;"> €
-              </p>
-              <p>Total HT : <strong id="total-ht">0.00 €</strong></p>
-              <p>TVA (20%) : <strong id="tva">0.00 €</strong></p>
-              <p class="final">TOTAL TTC : <strong id="total-ttc">0.00 €</strong></p>
+              <p>Sous-Total (HT) : <span id="total-mo">0.00 €</span></p>
+              <p>Total HT : <span id="total-ht">0.00 €</span></p>
+              <p>TVA (20%) : <span id="tva">0.00 €</span></p>
+              <p class="final">TOTAL TTC : <span id="total-ttc">0.00 €</span></p>
             </div>
           </div>
 
@@ -671,159 +683,268 @@ input[type="file"] { display: none; }
 
       </div>
       
+      <div class="footer">
+        <a href="./tarifs.html">← Retour Tarifs Publics</a>
+        <span>Documentation PRO et Matériaux : Accès ici</span>
+      </div>
+
     </div>
   </div>
-  
-  <footer class="footer">
-    <p>© 2024 Papo Rénov. Tous droits réservés.</p>
-    <p>Besoin d'aide ? <a href="contact.html">Contactez le Support PRO</a></p>
-  </footer>
 </div>
 
 <script>
-document.addEventListener('DOMContentLoaded', () => {
-    const accessCode = 'PROPAPO2025!'; // Code d'accès
-    const codeInput = document.getElementById('code');
-    const enterButton = document.getElementById('enter');
-    const errorDiv = document.getElementById('error');
-    const partnerContent = document.getElementById('partner-content');
-    const tabButtons = document.querySelectorAll('.tab-nav button');
-    const tabPanes = document.querySelectorAll('.tab-pane');
-    const partnerSheets = document.getElementById('partner-sheets');
-    const devisTableBody = document.querySelector('#devis-table tbody');
-    const subtotalDisplay = document.getElementById('subtotal');
-    const totalMoDisplay = document.getElementById('total-mo');
-    const totalHtDisplay = document.getElementById('total-ht');
-    const tvaDisplay = document.getElementById('tva');
-    const totalTtcDisplay = document.getElementById('total-ttc');
-    const matEstimateInput = document.getElementById('mat-estimate');
-    const printDevisButton = document.getElementById('print-devis');
-    const clearDevisButton = document.getElementById('clear-devis');
-    const logoUploadInput = document.getElementById('partner-logo-upload');
-    const logoPreview = document.getElementById('partner-logo-preview');
-    const devisSubtotalRow = document.getElementById('devis-subtotal-row');
+// ---------- CONFIGURATION ----------
+const ACCESS_CODE = "PROPAPO2025!"; 
 
-    // Accès sécurisé
-    enterButton.addEventListener('click', checkAccess);
-    codeInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') checkAccess(); });
-    function checkAccess() {
-        if ((codeInput.value || '').toUpperCase() === accessCode) {
-            errorDiv.textContent = '';
-            partnerContent.style.display = 'block';
-            document.querySelector('.secure-area > .notice').style.display = 'none';
-            document.querySelector('.secure-area > .form').style.display = 'none';
-        } else {
-            errorDiv.textContent = 'Code d’accès invalide. Veuillez réessayer.';
-        }
+// ---------- ÉLÉMENTS DU DOM ----------
+const inputCode = document.getElementById('code');
+const btnEnter = document.getElementById('enter');
+const errorDiv = document.getElementById('error');
+const partnerContent = document.getElementById('partner-content');
+const noticeText = document.querySelector('.secure-area > .notice');
+const secureForm = document.querySelector('.form');
+const tabButtons = document.querySelectorAll('.tab-btn');
+const tabPanes = document.querySelectorAll('.tab-pane');
+
+// Éléments du Générateur de Devis
+const devisLines = document.getElementById('devis-lines');
+const subtotalSpan = document.getElementById('subtotal');
+const totalMOEl = document.getElementById('total-mo');
+const totalHTEl = document.getElementById('total-ht');
+const tvaEl = document.getElementById('tva');
+const totalTTCEl = document.getElementById('total-ttc');
+const printButton = document.getElementById('print-devis');
+const clearButton = document.getElementById('clear-devis');
+const logoUpload = document.getElementById('logo-upload');
+const logoPreview = document.getElementById('partner-logo-preview');
+
+// Panier de Devis (Tableau d'objets)
+let devisCart = [];
+const TVA_RATE = 0.20; // 20% de TVA
+
+// ---------- FONCTIONS DE BASE ----------
+
+/** Gère l'accès sécurisé. */
+function openIfValid() {
+    const val = (inputCode.value || '').trim();
+    if (!val) { errorDiv.textContent = "Veuillez saisir le code d’accès professionnel."; return; }
+    if (val === ACCESS_CODE) {
+        errorDiv.textContent = "";
+        partnerContent.style.display = 'block';
+        
+        // Cacher le formulaire de connexion
+        secureForm.style.display = 'none';
+        noticeText.textContent = "ACCÈS PRO CONFIRMÉ — Bienvenue Partenaire !";
+        noticeText.style.color = 'var(--primary)';
+        noticeText.style.fontWeight = '600';
+
+        // Afficher le premier onglet actif (Tarifs Pro)
+        document.getElementById('tarifs-pro-tab').style.display = 'block';
+        
+        // Initialiser les écouteurs d'événements des boutons "Ajouter"
+        initAddButtons(); 
+    } else {
+        errorDiv.textContent = "Code PRO invalide. Veuillez vérifier vos identifiants.";
     }
-    
-    // Navigation par onglets
+}
+
+/** Gère le changement d'onglet. */
+function switchTab(targetTabId) {
+    tabPanes.forEach(pane => {
+        pane.style.display = 'none';
+        pane.classList.remove('active');
+    });
+
     tabButtons.forEach(button => {
-        button.addEventListener('click', () => {
-            tabButtons.forEach(btn => btn.classList.remove('active'));
-            tabPanes.forEach(pane => pane.style.display = 'none');
-            button.classList.add('active');
-            const targetTab = document.getElementById(button.dataset.tab);
-            if (targetTab) targetTab.style.display = 'block';
-        });
+        button.classList.remove('active');
     });
 
-    // Devis – calculs
-    function calculateTotals() {
-        let subtotalMO = 0;
-        const rows = devisTableBody.querySelectorAll('tr');
-        devisSubtotalRow.style.display = rows.length ? 'table-row' : 'none';
-
-        rows.forEach(row => {
-            const qtyInput = row.querySelector('.qty-input');
-            const unitPriceCell = row.querySelector('.unit-price');
-            const totalCell = row.querySelector('.total-row');
-            const qty = parseFloat(qtyInput.value) || 0;
-            const unitPrice = parseFloat(unitPriceCell.dataset.price) || 0;
-            const rowTotal = qty * unitPrice;
-            subtotalMO += rowTotal;
-            totalCell.textContent = rowTotal.toFixed(2).replace('.', ',') + ' €';
-        });
-
-        const matEstimate = parseFloat(matEstimateInput.value) || 0;
-        const totalHT = subtotalMO + matEstimate;
-        const tvaAmount = totalHT * 0.20;
-        const totalTTC = totalHT + tvaAmount;
-
-        subtotalDisplay.textContent = subtotalMO.toFixed(2).replace('.', ',') + ' €';
-        totalMoDisplay.textContent = subtotalMO.toFixed(2).replace('.', ',') + ' €';
-        totalHtDisplay.textContent = totalHT.toFixed(2).replace('.', ',') + ' €';
-        tvaDisplay.textContent = tvaAmount.toFixed(2).replace('.', ',') + ' €';
-        totalTtcDisplay.textContent = totalTTC.toFixed(2).replace('.', ',') + ' €';
+    const activePane = document.getElementById(targetTabId);
+    if (activePane) {
+        activePane.style.display = 'block';
+        activePane.classList.add('active');
+        const btn = document.querySelector(`.tab-btn[data-tab="${targetTabId}"]`);
+        if (btn) btn.classList.add('active');
     }
+}
 
-    function removeRow(button) {
-        button.closest('tr').remove();
-        calculateTotals();
-    }
+// ---------- FONCTIONS DE DEVIS RAPIDE ----------
 
-    // Ajout d'une prestation au devis (sans redirection d’onglet)
-    partnerSheets.addEventListener('click', (e) => {
-        if (e.target.classList.contains('add-btn')) {
-            const button = e.target;
-            const listItem = button.closest('li');
-            const prestaName = listItem.dataset.presta;
-            const priceMin = parseFloat(button.dataset.priceMin);
-            const priceMax = parseFloat(button.dataset.priceMax);
-            let unitPrice = priceMin;
-            if (!isNaN(priceMin) && !isNaN(priceMax)) unitPrice = (priceMin + priceMax) / 2;
-            else if (isNaN(priceMin) && !isNaN(priceMax)) unitPrice = priceMax;
-
-            const unitText = listItem.querySelector('strong').textContent.match(/(€\/\w+|€|\/\w+)/);
-            let unit = 'Forfait';
-            if (unitText) {
-              unit = unitText[0].replace('€/','').replace('/','').replace('€','').trim();
-            }
-
-            const newRow = devisTableBody.insertRow();
-            newRow.innerHTML = `
-                <td>${prestaName}</td>
-                <td><input type="number" class="qty-input" value="1" min="0.01" step="any"></td>
-                <td>${unit}</td>
-                <td class="unit-price" data-price="${unitPrice}">${unitPrice.toFixed(2).replace('.', ',')} €</td>
-                <td class="total-row"></td>
-                <td><button class="remove-btn" style="background: #dc3545; color: white; border: none; padding: 6px 10px; border-radius: 4px; cursor: pointer;">X</button></td>
-            `;
-            newRow.querySelector('.qty-input').addEventListener('input', calculateTotals);
-            newRow.querySelector('.remove-btn').addEventListener('click', (ev) => removeRow(ev.target));
-            calculateTotals();
-        }
+/** Initialise les écouteurs d'événements pour tous les boutons "Ajouter". */
+function initAddButtons() {
+    const buttons = document.querySelectorAll('.add-btn');
+    buttons.forEach(button => {
+        button.removeEventListener('click', addPrestation); 
+        button.addEventListener('click', addPrestation);
     });
+}
 
-    // Saisie des matériaux
-    matEstimateInput.addEventListener('input', calculateTotals);
+/** Ajoute une prestation à la liste du devis (sans redirection d’onglet). */
+function addPrestation(event) {
+    const btn = event.target;
+    const listItem = btn.closest('li');
+    const prestationName = listItem.dataset.presta;
+    let priceMin = parseFloat(btn.dataset.priceMin);
+    let priceMax = parseFloat(btn.dataset.priceMax);
+
+    if (isNaN(priceMin) && isNaN(priceMax)) {
+        alert("Prestation sur Devis Spécial. Veuillez contacter le support Papo Rénov.");
+        return;
+    }
     
-    // Actions Devis
-    clearDevisButton.addEventListener('click', () => {
-        if (confirm("Êtes-vous sûr de vouloir vider le devis ?")) {
-            devisTableBody.innerHTML = '';
-            matEstimateInput.value = '0';
-            calculateTotals();
-        }
-    });
-    printDevisButton.addEventListener('click', () => window.print());
+    const unitPrice = !isNaN(priceMin) && !isNaN(priceMax) ? (priceMin + priceMax)/2 : (isNaN(priceMin) ? priceMax : priceMin);
+    
+    // Déterminer l'unité en lisant le libellé de prix (fiable)
+    const priceLabel = (listItem.querySelector('strong')?.textContent || '').toLowerCase();
+    let unit = 'forfait';
+    if (priceLabel.includes('€/m²')) unit = 'm²';
+    else if (priceLabel.includes('€/u')) unit = 'u';
+    else if (priceLabel.includes('€/jr')) unit = 'jr';
 
-    // Logo partenaire
-    logoUploadInput.addEventListener('change', function(e) {
-        if (e.target.files && e.target.files[0]) {
-            const file = e.target.files[0];
-            const reader = new FileReader();
-            reader.onload = function(event) {
-                logoPreview.src = event.target.result;
-                logoPreview.style.display = 'block';
-            };
-            reader.readAsDataURL(file);
-        }
+    const newItem = {
+        name: prestationName.replace(/\s\(M\.O\.\s\/\s\S+\)|\s\(M\.O\.\)|\s\(F\+M\.O\.\)/g, '').trim(), 
+        quantity: 1,
+        unitPrice: parseFloat(unitPrice.toFixed(2)),
+        unit: unit
+    };
+
+    const existingItem = devisCart.find(item => item.name === newItem.name && item.unit === newItem.unit);
+    if (existingItem) {
+        existingItem.quantity++;
+    } else {
+        devisCart.push(newItem);
+    }
+    
+    renderDevis();
+}
+
+/** Met à jour la quantité pour une ligne de devis. */
+function updateQuantity(inputElement, index) {
+    let newQuantity = parseInt(inputElement.value);
+
+    if (isNaN(newQuantity) || newQuantity < 0) {
+        newQuantity = 0;
+        inputElement.value = 0;
+    }
+
+    if (newQuantity === 0) {
+        removePrestation(index);
+    } else {
+        devisCart[index].quantity = newQuantity;
+        renderDevis();
+    }
+}
+
+/** Met à jour le prix unitaire pour une ligne de devis. */
+function updateUnitPrice(inputElement, index) {
+    let newPrice = parseFloat(inputElement.value);
+    
+    if (isNaN(newPrice) || newPrice < 0) {
+        newPrice = devisCart[index].unitPrice; 
+        inputElement.value = newPrice.toFixed(2);
+    }
+    
+    devisCart[index].unitPrice = parseFloat(newPrice.toFixed(2));
+    renderDevis();
+}
+
+/** Supprime une ligne de devis. */
+function removePrestation(index) {
+    devisCart.splice(index, 1);
+    renderDevis();
+}
+
+/** Recalcule et affiche le devis complet. */
+function renderDevis() {
+    const tbody = devisLines;
+    tbody.innerHTML = ''; 
+    let subtotal = 0;
+
+    if (devisCart.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; color: var(--muted);">Aucune prestation ajoutée. Ajoutez des articles depuis la Grille Tarifaire.</td></tr>';
+    }
+
+    devisCart.forEach((item, index) => {
+        const totalHT = item.quantity * item.unitPrice;
+        subtotal += totalHT;
+
+        const row = tbody.insertRow();
+        
+        row.innerHTML = `
+            <td>${item.name}</td>
+            <td><input type="number" min="0" value="${item.quantity}" onchange="updateQuantity(this, ${index})"></td>
+            <td class="unit-price"><input type="number" min="0" step="0.01" value="${item.unitPrice.toFixed(2)}" onchange="updateUnitPrice(this, ${index})"></td>
+            <td>${item.unit}</td>
+            <td class="total-row">${totalHT.toFixed(2)} €</td>
+            <td><button title="Supprimer la ligne" style="color: #dc3545; border: 1px solid #dc3545; background: transparent; padding: 4px 8px; border-radius: 4px; cursor: pointer;" onclick="removePrestation(${index})">Supprimer</button></td>
+        `;
     });
 
-    // Init
-    calculateTotals(); 
+    // Totaux
+    const tvaAmount = subtotal * TVA_RATE;
+    const totalTTCValue = subtotal + tvaAmount;
+
+    subtotalSpan.textContent = subtotal.toFixed(2) + ' €';
+    totalMOEl.textContent = subtotal.toFixed(2) + ' €';
+    totalHTEl.textContent = subtotal.toFixed(2) + ' €';
+    tvaEl.textContent = tvaAmount.toFixed(2) + ' €';
+    totalTTCEl.textContent = totalTTCValue.toFixed(2) + ' €';
+}
+
+/** Vide la liste de devis. */
+function clearDevis() {
+    if (confirm("Êtes-vous sûr de vouloir vider le devis ? Cette action est irréversible.")) {
+        devisCart = [];
+        renderDevis();
+        logoPreview.src = '';
+        logoPreview.style.display = 'none';
+        document.getElementById('logo-upload').value = ''; 
+        alert("Le devis a été vidé.");
+    }
+}
+
+/** Gère l'importation de logo. */
+function handleLogoUpload(event) {
+    const file = event.target.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            logoPreview.src = e.target.result;
+            logoPreview.style.display = 'block';
+        }
+        reader.readAsDataURL(file);
+    }
+}
+
+// ---------- GESTIONNAIRES D'ÉVÉNEMENTS ----------
+
+// Connexion
+btnEnter.addEventListener('click', openIfValid);
+inputCode.addEventListener('keydown', (e) => { if (e.key === 'Enter') openIfValid(); });
+
+// Navigation par onglets
+tabButtons.forEach(button => {
+    button.addEventListener('click', (e) => {
+        switchTab(e.currentTarget.dataset.tab);
+    });
 });
+
+// Actions Devis
+printButton.addEventListener('click', () => {
+    window.print();
+});
+clearButton.addEventListener('click', clearDevis);
+logoUpload.addEventListener('change', handleLogoUpload);
+
+// Rendre le devis initialement vide
+document.addEventListener('DOMContentLoaded', renderDevis);
+
+// Exposer fonctions globales (pour onchange/onclick inline)
+window.updateQuantity = updateQuantity;
+window.updateUnitPrice = updateUnitPrice;
+window.removePrestation = removePrestation;
+window.clearDevis = clearDevis;
 </script>
 </body>
 </html>
+
