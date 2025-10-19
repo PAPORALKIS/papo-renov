@@ -29,55 +29,17 @@ body {
   align-items: center; 
   justify-content: flex-start; 
 }
-/* Barre de Navigation Globale — alignée aux autres pages (logo cliquable) */
-.navbar {
-    width: 100%;
-    background-color: var(--primary);
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    padding: 15px 0;
-    margin-bottom: 20px; 
-}
-.navbar-content {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 15px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-.navbar-logo {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    text-decoration: none;
-}
-.navbar-logo img{
-    height: 48px;
-    width: auto;
-    display: block;
-    filter: brightness(0) invert(1);
-}
-.navbar-links {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: flex;
-    gap: 25px;
-}
-.navbar-links a {
-    color: #fff;
-    text-decoration: none;
-    font-weight: 500;
-    padding: 5px 0;
-    transition: color 0.3s, border-bottom 0.3s;
-    border-bottom: 2px solid transparent;
-    white-space: nowrap;
-}
-.navbar-links a:hover,
-.navbar-links a.active-nav {
-    color: var(--secondary);
-    border-bottom-color: var(--secondary);
-}
+
+/* ====== NAVBAR (CONSERVÉE) ====== */
+.nav{position:sticky;top:0;z-index:40;background:rgba(255,255,255,.92);backdrop-filter:saturate(140%) blur(8px);border-bottom:1px solid rgba(15,23,42,.06);box-shadow:var(--shadow);}
+.nav__in{max-width:var(--w);margin:auto;display:flex;align-items:center;gap:16px;padding:12px 20px}
+.logo{display:flex;align-items:center;gap:10px;font-weight:800;letter-spacing:.2px;color:var(--brand)}
+.logo__mark{width:34px;height:34px;border-radius:12px;background:conic-gradient(from 230deg,var(--brand),var(--brand-2));box-shadow:0 4px 10px rgba(12, 18, 30, 0.2);position:relative}
+.logo__mark::after{content:"P";position:absolute;inset:0;display:grid;place-items:center;color:#fff;font-weight:900}
+.nav__links{margin-left:auto;display:flex;gap:6px;flex-wrap:wrap}
+.nav__links a{padding:10px 14px;border-radius:12px;text-decoration:none}
+.nav__links a.active{background:#eef2ff;color:var(--brand);font-weight:700}
+.nav__links a:hover{background:#f2f4ff}
 
 .card { 
   width: min(1200px, 98vw); 
