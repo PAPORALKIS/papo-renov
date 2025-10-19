@@ -35,6 +35,7 @@ body {
   flex-direction: column; 
   align-items: center; 
   justify-content: flex-start; 
+  -webkit-text-size-adjust: 100%;
 }
 
 /* =========================
@@ -48,7 +49,10 @@ header {
     justify-content: space-between;
     align-items: center;
     width: 100%;
-    margin-bottom: 20px; /* Ajout d'une marge pour séparer du contenu pro */
+    margin-bottom: 20px; /* Séparation du contenu pro */
+    position: sticky;
+    top: 0;
+    z-index: 50;
 }
 .logo img {
     max-height: 50px;
@@ -61,15 +65,10 @@ nav ul {
     display: flex;
     gap: 20px;
     overflow-x: auto;
-    /* Masquage de la scrollbar pour IE et Edge */
     -ms-overflow-style: none;  
-    /* Masque la scrollbar pour Firefox */
     scrollbar-width: none;  
 }
-/* Masque la scrollbar pour Chrome, Safari et Opera */
-nav ul::-webkit-scrollbar {
-    display: none;
-}
+nav ul::-webkit-scrollbar { display: none; }
 nav ul li a {
     text-decoration: none;
     color: #003366; /* Couleur de lien du contact.html */
@@ -78,30 +77,26 @@ nav ul li a {
     padding: 5px 0;
     transition: color 0.3s;
 }
-nav ul li a:hover {
-    color: var(--primary); 
-}
-/* Style actif (conserve le style de contact.html) */
+nav ul li a:hover { color: var(--primary); }
 nav ul li a.active{color:var(--primary-color);font-weight:700; text-decoration: underline;} 
 
-
-/* Anciens styles de navbar désactivés/supprimés pour le nettoyage */
-
-
+/* Carte / conteneur principal */
 .card { 
   width: min(1200px, 98vw); 
   background: var(--panel); 
   border-radius: 16px; 
   box-shadow: var(--shadow); 
   overflow: hidden;
-  margin-bottom: 30px;
+  margin: 12px auto 30px;
 }
+
 /* Header spécifique au contenu de la carte (après connexion) */
 .header { 
   display: flex; 
   align-items: center; 
   justify-content: space-between;
-  padding: 20px 30px; 
+  gap: 12px;
+  padding: 20px 24px; 
   border-bottom: 2px solid var(--primary);
   background: var(--primary);
   color: #fff;
@@ -109,32 +104,40 @@ nav ul li a.active{color:var(--primary-color);font-weight:700; text-decoration: 
 .header-left {
   display: flex;
   align-items: center;
-  gap: 15px;
+  gap: 12px;
+  min-width: 0;
 }
-.header img { height: 45px; filter: brightness(0) invert(1); }
+.header img { height: 40px; filter: brightness(0) invert(1); flex-shrink: 0; }
 .header h1 { 
-  font-size: 1.5rem; 
+  font-size: clamp(1.15rem, 1.6vw, 1.5rem);
   margin: 0; 
   font-weight: 700;
+  line-height: 1.2;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
+.badge { white-space: nowrap; }
+
 /* Espace sécurisé */
-.secure-area { padding: 30px; }
+.secure-area { padding: 22px; }
 .notice { 
   color: var(--muted); 
   text-align: center; 
-  margin: 0 0 20px;
+  margin: 0 0 16px;
   font-size: 0.95rem;
 }
 .form { 
   display: flex; 
   gap: 10px; 
   justify-content: center; 
-  margin: 8px 0 25px;
+  margin: 8px 0 22px;
+  flex-wrap: wrap;
 }
 .form input { 
-  flex: 1; 
-  max-width: 300px; 
-  padding: 14px 18px; 
+  flex: 1 1 260px; 
+  max-width: 320px; 
+  padding: 12px 14px; 
   border: 1px solid var(--border); 
   border-radius: 12px; 
   font-size: 1rem;
@@ -142,7 +145,7 @@ nav ul li a.active{color:var(--primary-color);font-weight:700; text-decoration: 
 }
 .form input:focus { border-color: var(--primary); outline: none; }
 .form button { 
-  padding: 14px 20px; 
+  padding: 12px 16px; 
   border-radius: 12px; 
   border: none;
   background: var(--secondary); 
@@ -150,92 +153,90 @@ nav ul li a.active{color:var(--primary-color);font-weight:700; text-decoration: 
   font-weight: 700; 
   cursor: pointer;
   transition: background 0.3s, transform 0.1s;
+  min-width: 160px;
 }
 .form button:hover { background: #ffda6a; }
 .error { 
   color: #dc3545; 
   text-align: center; 
   min-height: 20px;
-  margin-bottom: 15px;
+  margin-bottom: 10px;
 }
 
 /* Grille Tarifs Pro */
 #partner-content { 
-  padding-top: 20px; 
+  padding-top: 10px; 
   display: none; 
 }
 .tab-nav {
   display: flex;
   justify-content: center;
-  margin-bottom: 20px;
+  gap: 6px;
+  margin-bottom: 16px;
   border-bottom: 1px solid var(--border);
+  padding: 0 10px 6px;
+  overflow-x: auto;
+  scrollbar-width: none;
 }
+.tab-nav::-webkit-scrollbar { display: none; }
 .tab-nav button {
   background: none;
   border: none;
-  padding: 12px 20px;
+  padding: 10px 14px;
   cursor: pointer;
-  font-size: 1rem;
+  font-size: 0.98rem;
   font-weight: 600;
   color: var(--muted);
   border-bottom: 3px solid transparent;
   transition: color 0.3s, border-bottom-color 0.3s;
+  white-space: nowrap;
 }
 .tab-nav button.active {
   color: var(--primary);
   border-bottom-color: var(--primary);
 }
 
-.tab-content { padding: 0 15px; }
+.tab-content { padding: 0 10px 10px; }
 
-/* Styles pour les sections de tarifs (Sheets) */
+/* Sections de tarifs (Sheets) */
 .sheets {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-  gap: 25px;
-  margin-bottom: 30px;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 18px;
+  margin-bottom: 22px;
 }
-
 .sheet {
   background: var(--panel);
   border: 1px solid var(--border);
   border-radius: 10px;
   box-shadow: 0 8px 20px rgba(0,0,0,.05);
-  padding: 20px;
+  padding: 16px;
   display: flex;
   flex-direction: column;
 }
-
 .sheet .head {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 15px;
-}
-.badge {
-  background: var(--primary);
-  color: #fff;
-  padding: 5px 10px;
-  border-radius: 6px;
-  font-size: 0.85rem;
-  font-weight: 600;
+  margin-bottom: 10px;
+  gap: 10px;
 }
 .sheet h3 {
-  font-size: 1.25rem;
+  font-size: 1.1rem;
   margin: 0;
   color: var(--primary);
 }
 .sheet p {
   color: var(--muted);
   font-size: 0.9rem;
-  margin: 5px 0 15px;
+  margin: 4px 0 10px;
 }
 .sheet .from {
-  font-size: 1.1rem;
+  font-size: 1rem;
   font-weight: 700;
   color: var(--ok);
-  margin-bottom: 15px;
-  padding-bottom: 10px;
+  margin-bottom: 10px;
+  padding-bottom: 8px;
   border-bottom: 1px dashed var(--border);
 }
 .list {
@@ -245,32 +246,20 @@ nav ul li a.active{color:var(--primary-color);font-weight:700; text-decoration: 
   flex-grow: 1;
 }
 .list li {
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: 1fr auto;
   align-items: center;
   gap: 10px;
   font-size: 0.95rem;
   padding: 10px 0;
   border-bottom: 1px dashed var(--border);
 }
-.list li:last-child {
-  border-bottom: none;
-}
+.list li:last-child { border-bottom: none; }
 .list li strong {
   font-family: 'Roboto Mono', monospace;
   font-weight: 700;
   color: var(--primary);
   white-space: nowrap;
-}
-.list li span {
-  flex-grow: 1;
-}
-
-/* Styles pour les prix dans la grille */
-.list li strong {
-  display: flex;
-  align-items: center;
-  gap: 10px;
 }
 .add-btn {
   background: var(--primary);
@@ -278,10 +267,9 @@ nav ul li a.active{color:var(--primary-color);font-weight:700; text-decoration: 
   border: none;
   border-radius: 4px;
   padding: 4px 8px;
-  font-size: 0.75rem;
+  font-size: 0.8rem;
   cursor: pointer;
   transition: background 0.3s;
-  pointer-events: auto; 
 }
 .add-btn:hover {
   background: var(--secondary);
@@ -290,139 +278,141 @@ nav ul li a.active{color:var(--primary-color);font-weight:700; text-decoration: 
 
 /* Devis Rapide */
 #devis-rapide-tab {
-  padding: 25px;
+  padding: 16px 8px 20px;
 }
-
 .devis-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   border-bottom: 2px solid var(--primary);
-  padding-bottom: 15px;
-  margin-bottom: 20px;
+  padding-bottom: 10px;
+  margin-bottom: 14px;
+  gap: 10px;
+  flex-wrap: wrap;
 }
-
 #partner-logo-preview {
-  max-height: 50px;
-  max-width: 150px;
+  max-height: 46px;
+  max-width: 160px;
   display: none;
 }
 
+/* Actions du devis */
 .devis-actions {
   display: flex;
   flex-wrap: wrap; 
-  gap: 15px;
-  margin-bottom: 20px;
+  gap: 10px;
+  margin-bottom: 14px;
 }
-
 .devis-actions button, .devis-actions input[type="file"] + label {
-  padding: 10px 20px;
+  padding: 10px 14px;
   border-radius: 8px;
   font-weight: 600;
   cursor: pointer;
   transition: opacity 0.3s;
   border: 1px solid var(--primary);
+  flex: 0 0 auto;
 }
-
 #print-devis, #clear-devis {
   background: var(--primary);
   color: #fff;
   border: none;
 }
-
-#print-devis:hover, #clear-devis:hover { opacity: 0.9; }
-
+#print-devis:hover, #clear-devis:hover { opacity: 0.92; }
 input[type="file"] { display: none; }
-
 .file-upload-label {
   background: #fff;
   color: var(--primary);
   display: inline-block;
   text-align: center;
 }
-
 .file-upload-label:hover { background: var(--border); }
 
+/* Table devis – wrapper responsive */
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: #fff;
+}
 .devis-table {
   width: 100%;
   border-collapse: collapse;
-  margin-bottom: 20px;
+  min-width: 720px; /* évite la casse des colonnes en petit écran, scroll horizontal prévu */
 }
-
 .devis-table th, .devis-table td {
-  border: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
   padding: 10px;
   text-align: left;
+  vertical-align: middle;
 }
-
 .devis-table th {
   background: #e9eff6;
   font-weight: 600;
   color: var(--primary);
 }
-
 .devis-table input[type="number"] {
-  width: 60px;
-  padding: 5px;
+  width: 70px;
+  padding: 6px 8px;
   border: 1px solid var(--border);
-  border-radius: 4px;
+  border-radius: 6px;
   text-align: right;
   font-family: 'Roboto Mono', monospace;
 }
-
 .devis-table .unit-price {
-    text-align: right;
-    font-family: 'Roboto Mono', monospace;
-    font-weight: 600;
-    white-space: nowrap;
+  text-align: right;
+  font-family: 'Roboto Mono', monospace;
+  font-weight: 600;
+  white-space: nowrap;
 }
-
 .devis-table .total-row, .devis-table .subtotal-cell {
   text-align: right;
   font-family: 'Roboto Mono', monospace;
   font-weight: 600;
 }
-.devis-table .subtotal-cell {
-  background-color: #f7f7f7;
-}
+.devis-table .subtotal-cell { background-color: #f7f7f7; }
 
+/* Totaux */
 .devis-totals {
   display: flex;
   justify-content: flex-end;
+  padding: 8px 0;
 }
-
 .totals-box {
-  width: 350px;
+  width: 100%;
+  max-width: 420px;
   border: 2px solid var(--primary);
   border-radius: 8px;
-  padding: 15px;
+  padding: 12px;
+  background: #fff;
 }
-
 .totals-box p {
   display: flex;
   justify-content: space-between;
   margin: 8px 0;
-  font-size: 1.1rem;
+  font-size: 1rem;
 }
-
 .totals-box .final {
-  font-size: 1.3rem;
+  font-size: 1.2rem;
   font-weight: 700;
   color: var(--primary);
   border-top: 1px solid var(--border);
-  padding-top: 10px;
-  margin-top: 10px;
+  padding-top: 8px;
+  margin-top: 8px;
 }
 
 /* Footer */
 .footer {
-  padding: 15px 30px;
+  padding: 12px 18px;
   border-top: 1px solid var(--border);
   background: #fcfcfc;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: 0.9rem;
+  gap: 10px;
+  font-size: 0.92rem;
+  flex-wrap: wrap;
 }
 .footer a {
   color: var(--primary);
@@ -432,7 +422,35 @@ input[type="file"] { display: none; }
 }
 .footer a:hover { color: var(--secondary); }
 
-/* Impression styles */
+/* =========================
+   MEDIA QUERIES
+   ========================= */
+@media (max-width: 992px){
+  .sheets { grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; }
+  .sheet { padding: 14px; }
+  .header { padding: 16px; }
+}
+@media (max-width: 768px){
+  .list li { grid-template-columns: 1fr; gap: 6px; }
+  .list li strong { order: 2; }
+  .add-btn { order: 3; width: 100%; justify-self: start; }
+  .header-left h1 { white-space: normal; }
+  .form { gap: 8px; }
+  .form button { width: 100%; }
+}
+@media (max-width: 600px){
+  .header { flex-direction: column; align-items: flex-start; gap: 8px; }
+  .badge { align-self: flex-end; }
+  .devis-actions { gap: 8px; }
+  .devis-actions button, .file-upload-label { flex: 1 1 160px; text-align: center; }
+  .totals-box { max-width: 100%; }
+}
+@media (max-width: 420px){
+  .form input { min-width: 0; width: 100%; max-width: 100%; }
+  .header img { height: 36px; }
+}
+
+/* Impression */
 @media print {
   body { 
     background: none; 
@@ -440,7 +458,6 @@ input[type="file"] { display: none; }
     justify-content: flex-start;
     align-items: flex-start;
   }
-  /* Masquer le header global en mode impression */
   header, .header, .tab-nav, .footer, .devis-actions, .list li .add-btn, .secure-area > .notice, .secure-area > .form, .secure-area > .error, 
   .devis-table input, .devis-table button { 
     display: none !important; 
@@ -455,20 +472,10 @@ input[type="file"] { display: none; }
   #partner-content { display: block !important; padding-top: 0; }
   .tab-content { padding: 0; }
   .devis-table th, .devis-table td { border-color: #ccc !important; }
-  
-  .devis-table .unit-price { 
-      display: table-cell; 
-      text-align: right; 
-      font-weight: 400;
-  }
-  .devis-table .total-row { 
-    display: table-cell; 
-    text-align: right; 
-    font-weight: 400;
-  }
+  .devis-table .unit-price { display: table-cell; text-align: right; font-weight: 400; }
+  .devis-table .total-row { display: table-cell; text-align: right; font-weight: 400; }
   .devis-totals { justify-content: flex-start; }
   .totals-box { border-color: #000; }
-  
   .devis-header {
     display: flex !important;
     flex-direction: row;
@@ -492,20 +499,21 @@ input[type="file"] { display: none; }
   <div class="logo">
     <img src="../img/logo.png" alt="Logo Papo Rénov">
   </div>
-<nav>
-  <ul>
-    <li><a href="../index.html">Accueil</a></li>
-    <li><a href="devis.html">Demande de devis</a></li>
-    <li><a href="realisations.html">Mes réalisations</a></li>
-    <li><a href="tarifs.html">Tarifs</a></li>
-    <li><a href="planning.html">Planning</a></li>
-    <li><a href="contact.html">Contact</a></li>
-    <li><a href="avis.html">Avis clients</a></li>
-    <li><a href="courtage-cuisine.html">Courtage Cuisine</a></li>
-    <li><a class="active" href="#">Espace PRO</a></li>
-  </ul>
-</nav>
+  <nav>
+    <ul>
+      <li><a href="../index.html">Accueil</a></li>
+      <li><a href="devis.html">Demande de devis</a></li>
+      <li><a href="realisations.html">Mes réalisations</a></li>
+      <li><a href="tarifs.html">Tarifs</a></li>
+      <li><a href="planning.html">Planning</a></li>
+      <li><a href="contact.html">Contact</a></li>
+      <li><a href="avis.html">Avis clients</a></li>
+      <li><a href="courtage-cuisine.html">Courtage Cuisine</a></li>
+      <li><a class="active" href="#">Espace PRO</a></li>
+    </ul>
+  </nav>
 </header>
+
 <div class="card">
   <div class="header">
     <div class="header-left">
@@ -532,7 +540,7 @@ input[type="file"] { display: none; }
 
       <div class="tab-content">
         <div id="tarifs-pro-tab" class="tab-pane active">
-          <p class="notice" style="margin-bottom: 30px;">
+          <p class="notice" style="margin-bottom: 18px;">
             <strong>Tarifs Partenaires NETS (Hors Taxes)</strong> — Valables sur volume et récurrence. Matériaux non inclus (sauf mention F+M.O.).
           </p>
           <div class="sheets" id="partner-sheets">
@@ -608,7 +616,7 @@ input[type="file"] { display: none; }
         </div>
 
         <div id="devis-rapide-tab" class="tab-pane" style="display:none;">
-          <h2 style="text-align: center; color: var(--primary); margin-bottom: 25px;">Outil : Générateur de Devis Rapide</h2>
+          <h2 style="text-align: center; color: var(--primary); margin-bottom: 14px;">Outil : Générateur de Devis Rapide</h2>
 
           <div class="devis-header">
             <img id="partner-logo-preview" src="" alt="Logo Partenaire" style="display:none;">
@@ -620,38 +628,38 @@ input[type="file"] { display: none; }
           <div class="devis-actions">
             <button id="print-devis">🖨️ Imprimer / Enregistrer en PDF</button>
             <button id="clear-devis">🗑️ Vider le Devis</button>
-            
             <input type="file" id="partner-logo-upload" accept="image/*">
             <label for="partner-logo-upload" class="file-upload-label">🔗 Ajouter votre Logo</label>
           </div>
 
-          <table class="devis-table" id="devis-table">
-            <thead>
-              <tr>
-                <th>Prestation</th>
-                <th>Quantité</th>
-                <th>Unité</th>
-                <th>Prix Unitaire HT</th>
-                <th>Total HT</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              </tbody>
-            <tfoot>
-              <tr id="devis-subtotal-row" style="display:none;">
-                <td colspan="4" style="text-align: right;"><strong>Sous-Total HT (M.O. Estimée) :</strong></td>
-                <td class="subtotal-cell"><span id="subtotal">0.00 €</span></td>
-                <td></td>
-              </tr>
-            </tfoot>
-          </table>
+          <div class="table-responsive">
+            <table class="devis-table" id="devis-table">
+              <thead>
+                <tr>
+                  <th>Prestation</th>
+                  <th>Quantité</th>
+                  <th>Unité</th>
+                  <th>Prix Unitaire HT</th>
+                  <th>Total HT</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+              <tfoot>
+                <tr id="devis-subtotal-row" style="display:none;">
+                  <td colspan="4" style="text-align: right;"><strong>Sous-Total HT (M.O. Estimée) :</strong></td>
+                  <td class="subtotal-cell"><span id="subtotal">0.00 €</span></td>
+                  <td></td>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
 
           <div class="devis-totals">
             <div class="totals-box">
               <p>Sous-Total HT (M.O.) : <strong id="total-mo">0.00 €</strong></p>
               <p>Estimation Matériaux (Optionnel) : 
-                <input type="number" id="mat-estimate" placeholder="0" value="0" min="0" style="width: 80px; text-align: right; margin-left: 10px;"> €
+                <input type="number" id="mat-estimate" placeholder="0" value="0" min="0" style="width: 90px; text-align: right; margin-left: 10px;"> €
               </p>
               <p>Total HT : <strong id="total-ht">0.00 €</strong></p>
               <p>TVA (20%) : <strong id="tva">0.00 €</strong></p>
@@ -674,7 +682,7 @@ input[type="file"] { display: none; }
 
 <script>
 document.addEventListener('DOMContentLoaded', () => {
-    const accessCode = 'PROPAPO2025!'; // Code d'accès simulé
+    const accessCode = 'PROPAPO2025!'; // Code d'accès
     const codeInput = document.getElementById('code');
     const enterButton = document.getElementById('enter');
     const errorDiv = document.getElementById('error');
@@ -695,16 +703,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const logoPreview = document.getElementById('partner-logo-preview');
     const devisSubtotalRow = document.getElementById('devis-subtotal-row');
 
-    // 1. Gestion de l'accès sécurisé
+    // Accès sécurisé
     enterButton.addEventListener('click', checkAccess);
-    codeInput.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') {
-            checkAccess();
-        }
-    });
-
+    codeInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') checkAccess(); });
     function checkAccess() {
-        if (codeInput.value.toUpperCase() === accessCode) {
+        if ((codeInput.value || '').toUpperCase() === accessCode) {
             errorDiv.textContent = '';
             partnerContent.style.display = 'block';
             document.querySelector('.secure-area > .notice').style.display = 'none';
@@ -714,54 +717,39 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
     
-    // 2. Navigation par onglets
+    // Navigation par onglets
     tabButtons.forEach(button => {
         button.addEventListener('click', () => {
-            // Désactiver tous les boutons et masques
             tabButtons.forEach(btn => btn.classList.remove('active'));
             tabPanes.forEach(pane => pane.style.display = 'none');
-
-            // Activer le bouton cliqué et le panneau correspondant
             button.classList.add('active');
             const targetTab = document.getElementById(button.dataset.tab);
-            if (targetTab) {
-                targetTab.style.display = 'block';
-            }
+            if (targetTab) targetTab.style.display = 'block';
         });
     });
 
-    // 3. Logique du Devis Rapide
+    // Devis – calculs
     function calculateTotals() {
         let subtotalMO = 0;
         const rows = devisTableBody.querySelectorAll('tr');
-        
-        if (rows.length === 0) {
-          devisSubtotalRow.style.display = 'none';
-        } else {
-          devisSubtotalRow.style.display = 'table-row';
-        }
+        devisSubtotalRow.style.display = rows.length ? 'table-row' : 'none';
 
         rows.forEach(row => {
             const qtyInput = row.querySelector('.qty-input');
             const unitPriceCell = row.querySelector('.unit-price');
             const totalCell = row.querySelector('.total-row');
-
             const qty = parseFloat(qtyInput.value) || 0;
-            // Récupère le prix de base HT (qui est masqué ou mis dans un data-attribute)
             const unitPrice = parseFloat(unitPriceCell.dataset.price) || 0;
-
             const rowTotal = qty * unitPrice;
             subtotalMO += rowTotal;
-            
             totalCell.textContent = rowTotal.toFixed(2).replace('.', ',') + ' €';
         });
 
         const matEstimate = parseFloat(matEstimateInput.value) || 0;
         const totalHT = subtotalMO + matEstimate;
-        const tvaAmount = totalHT * 0.20; // TVA à 20%
+        const tvaAmount = totalHT * 0.20;
         const totalTTC = totalHT + tvaAmount;
 
-        // Mise à jour de l'affichage
         subtotalDisplay.textContent = subtotalMO.toFixed(2).replace('.', ',') + ' €';
         totalMoDisplay.textContent = subtotalMO.toFixed(2).replace('.', ',') + ' €';
         totalHtDisplay.textContent = totalHT.toFixed(2).replace('.', ',') + ' €';
@@ -774,25 +762,23 @@ document.addEventListener('DOMContentLoaded', () => {
         calculateTotals();
     }
 
-    // Ajout d'une prestation au devis
+    // Ajout d'une prestation au devis (sans redirection d’onglet)
     partnerSheets.addEventListener('click', (e) => {
         if (e.target.classList.contains('add-btn')) {
             const button = e.target;
             const listItem = button.closest('li');
             const prestaName = listItem.dataset.presta;
-            
-            // On prend la moyenne des prix pour le prix unitaire par défaut dans le devis rapide
             const priceMin = parseFloat(button.dataset.priceMin);
             const priceMax = parseFloat(button.dataset.priceMax);
-            let unitPrice = priceMin; // On prend le prix min par défaut, ou la moyenne si on veut
-            if (!isNaN(priceMin) && !isNaN(priceMax)) {
-                unitPrice = (priceMin + priceMax) / 2;
-            } else if (isNaN(priceMin) && !isNaN(priceMax)) {
-                 unitPrice = priceMax;
-            }
+            let unitPrice = priceMin;
+            if (!isNaN(priceMin) && !isNaN(priceMax)) unitPrice = (priceMin + priceMax) / 2;
+            else if (isNaN(priceMin) && !isNaN(priceMax)) unitPrice = priceMax;
 
-            const unitText = listItem.querySelector('strong').textContent.match(/(\/\w+|€)$/);
-            const unit = unitText ? unitText[0].replace('/', '').replace('€', '').trim() : 'Forfait';
+            const unitText = listItem.querySelector('strong').textContent.match(/(€\/\w+|€|\/\w+)/);
+            let unit = 'Forfait';
+            if (unitText) {
+              unit = unitText[0].replace('€/','').replace('/','').replace('€','').trim();
+            }
 
             const newRow = devisTableBody.insertRow();
             newRow.innerHTML = `
@@ -801,21 +787,18 @@ document.addEventListener('DOMContentLoaded', () => {
                 <td>${unit}</td>
                 <td class="unit-price" data-price="${unitPrice}">${unitPrice.toFixed(2).replace('.', ',')} €</td>
                 <td class="total-row"></td>
-                <td><button class="remove-btn" style="background: #dc3545; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer;">X</button></td>
+                <td><button class="remove-btn" style="background: #dc3545; color: white; border: none; padding: 6px 10px; border-radius: 4px; cursor: pointer;">X</button></td>
             `;
-
-            // Ajout des écouteurs sur la nouvelle ligne
             newRow.querySelector('.qty-input').addEventListener('input', calculateTotals);
-            newRow.querySelector('.remove-btn').addEventListener('click', (e) => removeRow(e.target));
-
+            newRow.querySelector('.remove-btn').addEventListener('click', (ev) => removeRow(ev.target));
             calculateTotals();
         }
     });
 
-    // Écouteur pour la saisie des matériaux et le recalcul
+    // Saisie des matériaux
     matEstimateInput.addEventListener('input', calculateTotals);
     
-    // 4. Actions Devis
+    // Actions Devis
     clearDevisButton.addEventListener('click', () => {
         if (confirm("Êtes-vous sûr de vouloir vider le devis ?")) {
             devisTableBody.innerHTML = '';
@@ -823,17 +806,13 @@ document.addEventListener('DOMContentLoaded', () => {
             calculateTotals();
         }
     });
+    printDevisButton.addEventListener('click', () => window.print());
 
-    printDevisButton.addEventListener('click', () => {
-        window.print();
-    });
-
-    // 5. Gestion du Logo Partenaire
+    // Logo partenaire
     logoUploadInput.addEventListener('change', function(e) {
         if (e.target.files && e.target.files[0]) {
             const file = e.target.files[0];
             const reader = new FileReader();
-
             reader.onload = function(event) {
                 logoPreview.src = event.target.result;
                 logoPreview.style.display = 'block';
@@ -842,7 +821,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Initialisation
+    // Init
     calculateTotals(); 
 });
 </script>
