@@ -29,7 +29,7 @@ body {
   align-items: center; 
   justify-content: flex-start; 
 }
-/* Barre de Navigation Globale */
+/* Barre de Navigation Globale — alignée aux autres pages (logo cliquable) */
 .navbar {
     width: 100%;
     background-color: var(--primary);
@@ -46,10 +46,16 @@ body {
     align-items: center;
 }
 .navbar-logo {
-    color: #fff;
-    font-size: 1.5rem;
-    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
     text-decoration: none;
+}
+.navbar-logo img{
+    height: 48px;
+    width: auto;
+    display: block;
+    filter: brightness(0) invert(1);
 }
 .navbar-links {
     list-style: none;
@@ -65,6 +71,7 @@ body {
     padding: 5px 0;
     transition: color 0.3s, border-bottom 0.3s;
     border-bottom: 2px solid transparent;
+    white-space: nowrap;
 }
 .navbar-links a:hover,
 .navbar-links a.active-nav {
@@ -473,7 +480,10 @@ input[type="file"] { display: none; }
 
 <nav class="navbar">
     <div class="navbar-content">
-        <a href="#" class="navbar-logo">Papo Rénov PRO</a>
+        <!-- Logo cliquable vers l'accueil, comme sur les autres pages -->
+        <a href="index.html" class="navbar-logo" aria-label="Papo Rénov - Accueil">
+            <img src="img/logo-papo-renov.png" alt="Papo Rénov">
+        </a>
         <ul class="navbar-links">
             <li><a href="index.html">Accueil</a></li>
             <li><a href="services.html">Services</a></li>
@@ -766,8 +776,8 @@ function addPrestation(event) {
     }
     
     renderDevis();
-    // Basculer automatiquement vers l'outil de devis (ID corrigé)
-    switchTab('devis-rapide-tab');
+    // Suppression de la redirection automatique vers l'onglet "Générateur de Devis"
+    // (le reste de la fonction reste inchangé)
 }
 
 /** Met à jour la quantité pour une ligne de devis. */
