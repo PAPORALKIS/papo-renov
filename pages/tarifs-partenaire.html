@@ -29,17 +29,55 @@ body {
   align-items: center; 
   justify-content: flex-start; 
 }
-
-/* ====== NAVBAR (CONSERVÉE) ====== */
-.nav{position:sticky;top:0;z-index:40;background:rgba(255,255,255,.92);backdrop-filter:saturate(140%) blur(8px);border-bottom:1px solid rgba(15,23,42,.06);box-shadow:var(--shadow);}
-.nav__in{max-width:var(--w);margin:auto;display:flex;align-items:center;gap:16px;padding:12px 20px}
-.logo{display:flex;align-items:center;gap:10px;font-weight:800;letter-spacing:.2px;color:var(--brand)}
-.logo__mark{width:34px;height:34px;border-radius:12px;background:conic-gradient(from 230deg,var(--brand),var(--brand-2));box-shadow:0 4px 10px rgba(12, 18, 30, 0.2);position:relative}
-.logo__mark::after{content:"P";position:absolute;inset:0;display:grid;place-items:center;color:#fff;font-weight:900}
-.nav__links{margin-left:auto;display:flex;gap:6px;flex-wrap:wrap}
-.nav__links a{padding:10px 14px;border-radius:12px;text-decoration:none}
-.nav__links a.active{background:#eef2ff;color:var(--brand);font-weight:700}
-.nav__links a:hover{background:#f2f4ff}
+/* Barre de Navigation Globale — alignée aux autres pages (logo cliquable) */
+.navbar {
+    width: 100%;
+    background-color: var(--primary);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    padding: 15px 0;
+    margin-bottom: 20px; 
+}
+.navbar-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.navbar-logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+}
+.navbar-logo img{
+    height: 48px;
+    width: auto;
+    display: block;
+    filter: brightness(0) invert(1);
+}
+.navbar-links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    gap: 25px;
+}
+.navbar-links a {
+    color: #fff;
+    text-decoration: none;
+    font-weight: 500;
+    padding: 5px 0;
+    transition: color 0.3s, border-bottom 0.3s;
+    border-bottom: 2px solid transparent;
+    white-space: nowrap;
+}
+.navbar-links a:hover,
+.navbar-links a.active-nav {
+    color: var(--secondary);
+    border-bottom-color: var(--secondary);
+}
 
 .card { 
   width: min(1200px, 98vw); 
@@ -564,324 +602,4 @@ input[type="file"] { display: none; }
           <div class="devis-header">
             <img id="partner-logo-preview" src="" alt="Logo Partenaire" style="display:none;">
             <div class="devis-titles">
-               <h3 class="devis-rapide-title">DEVIS ESTIMATIF - <span id="partner-name-display">Votre Client</span></h3>
-               <p style="font-size: 0.9rem; color: var(--muted); margin: 0; text-align: right;">Généré par <span id="partner-company-display" style="font-weight: 600;">[Nom du Partenaire]</span> - Tarifs Papo Rénov PRO</p>
-            </div>
-          </div>
-          
-          <div class="devis-actions">
-            <input type="file" id="logo-upload" accept="image/*">
-            <label for="logo-upload" class="file-upload-label">Importer votre Logo</label>
-            <input type="text" id="client-name" placeholder="Nom du client" style="padding: 8px; border-radius: 4px; border: 1px solid var(--border);">
-            <input type="text" id="partner-name" placeholder="Nom de votre entreprise" style="padding: 8px; border-radius: 4px; border: 1px solid var(--border);">
-            <button id="print-devis">Imprimer le Devis</button>
-            <button id="clear-devis">Vider le Devis</button>
-          </div>
-
-          <table class="devis-table">
-            <thead>
-              <tr>
-                <th style="width: 50%;">Prestation (Description)</th>
-                <th style="width: 10%;">Quantité</th>
-                <th style="width: 15%;">Prix Unitaire HT (€)</th>
-                <th style="width: 10%;">Unité</th>
-                <th style="width: 15%;">Total HT (€)</th>
-              </tr>
-            </thead>
-            <tbody id="devis-lines">
-              </tbody>
-          </table>
-
-          <div class="devis-totals">
-            <div class="totals-box">
-              <p>Sous-Total (HT) : <span id="subtotal">0.00 €</span></p>
-              <p>Taux de TVA (20% par défaut) : <span>20.00 %</span></p>
-              <p>Montant TVA : <span id="tva-amount">0.00 €</span></p>
-              <p class="final">TOTAL TTC : <span id="total-ttc">0.00 €</span></p>
-            </div>
-          </div>
-          <p style="text-align: center; margin-top: 30px; font-size: 0.85rem; color: #a0a0a0;">*Tarifs indicatifs. Le devis final engage le Partenaire auprès de son client.</p>
-        </div>
-      </div>
-      
-      <div class="footer">
-        <a href="tarifs.html">← Retour Tarifs Publics</a>
-        <span>Documentation PRO et Matériaux : Accès ici</span>
-      </div>
-    </div>
-  </div>
-</div>
-
-<script>
-// ---------- CONFIGURATION ----------
-const ACCESS_CODE = "PROPAPO2025!"; 
-
-// ---------- ÉLÉMENTS DU DOM ----------
-const inputCode = document.getElementById('code');
-const btnEnter = document.getElementById('enter');
-const errorDiv = document.getElementById('error');
-const partnerContent = document.getElementById('partner-content');
-const noticeText = document.querySelector('.secure-area > .notice');
-const secureForm = document.querySelector('.form');
-const tabButtons = document.querySelectorAll('.tab-btn');
-const tabPanes = document.querySelectorAll('.tab-pane');
-
-// Éléments du Générateur de Devis
-const devisLines = document.getElementById('devis-lines');
-const subtotalSpan = document.getElementById('subtotal');
-const tvaAmountSpan = document.getElementById('tva-amount');
-const totalTTC = document.getElementById('total-ttc');
-const printButton = document.getElementById('print-devis');
-const clearButton = document.getElementById('clear-devis');
-const logoUpload = document.getElementById('logo-upload');
-const logoPreview = document.getElementById('partner-logo-preview');
-const clientNameInput = document.getElementById('client-name');
-const partnerNameInput = document.getElementById('partner-name');
-const partnerNameDisplay = document.getElementById('partner-name-display');
-const partnerCompanyDisplay = document.getElementById('partner-company-display'); 
-
-// Panier de Devis (Tableau d'objets)
-let devisCart = [];
-const TVA_RATE = 0.20; // 20% de TVA
-
-// ---------- FONCTIONS DE BASE ----------
-
-/** Gère l'accès sécurisé. */
-function openIfValid() {
-    const val = (inputCode.value || '').trim();
-    if (!val) { errorDiv.textContent = "Veuillez saisir le code d’accès professionnel."; return; }
-    if (val === ACCESS_CODE) {
-        errorDiv.textContent = "";
-        partnerContent.style.display = 'block';
-        
-        // Cacher le formulaire de connexion
-        secureForm.style.display = 'none';
-        noticeText.textContent = "ACCÈS PRO CONFIRMÉ — Bienvenue Partenaire !";
-        noticeText.style.color = 'var(--primary)';
-        noticeText.style.fontWeight = '600';
-
-        // Afficher le premier onglet actif (Tarifs Pro)
-        document.getElementById('tarifs-pro-tab').style.display = 'block';
-        
-        // Initialiser les écouteurs d'événements des boutons "Ajouter"
-        initAddButtons(); 
-    } else {
-        errorDiv.textContent = "Code PRO invalide. Veuillez vérifier vos identifiants.";
-    }
-}
-
-/** Gère le changement d'onglet. */
-function switchTab(targetTabId) {
-    tabPanes.forEach(pane => {
-        pane.style.display = 'none';
-        pane.classList.remove('active');
-    });
-
-    tabButtons.forEach(button => {
-        button.classList.remove('active');
-    });
-
-    const activePane = document.getElementById(targetTabId);
-    if (activePane) {
-        activePane.style.display = 'block';
-        activePane.classList.add('active');
-        const btn = document.querySelector(`.tab-btn[data-tab="${targetTabId}"]`);
-        if (btn) btn.classList.add('active');
-    }
-}
-
-// ---------- FONCTIONS DE DEVIS RAPIDE ----------
-
-/** Initialise les écouteurs d'événements pour tous les boutons "Ajouter". */
-function initAddButtons() {
-    const buttons = document.querySelectorAll('.add-btn');
-    buttons.forEach(button => {
-        button.removeEventListener('click', addPrestation); 
-        button.addEventListener('click', addPrestation);
-    });
-}
-
-/** Ajoute une prestation à la liste du devis. */
-function addPrestation(event) {
-    const btn = event.target;
-    const listItem = btn.closest('li');
-    const prestationName = listItem.dataset.presta;
-    let priceMin = parseFloat(btn.dataset.priceMin);
-
-    if (isNaN(priceMin)) {
-        alert("Prestation sur Devis Spécial. Veuillez contacter le support Papo Rénov.");
-        return;
-    }
-    
-    // Prix unitaire par défaut = prix mini
-    const unitPrice = priceMin;
-    
-    // Déterminer l'unité en lisant le libellé de prix (fiable)
-    const priceLabel = (listItem.querySelector('strong')?.textContent || '').toLowerCase();
-    let unit = 'forfait';
-    if (priceLabel.includes('€/m²')) unit = 'm²';
-    else if (priceLabel.includes('€/u')) unit = 'u';
-    else if (priceLabel.includes('€/jr')) unit = 'jr';
-
-    const newItem = {
-        name: prestationName.replace(/\s\(M\.O\.\s\/\s\S+\)|\s\(M\.O\.\)|\s\(F\+M\.O\.\)/g, '').trim(), 
-        quantity: 1,
-        unitPrice: parseFloat(unitPrice.toFixed(2)),
-        unit: unit
-    };
-
-    const existingItem = devisCart.find(item => item.name === newItem.name && item.unit === newItem.unit);
-    if (existingItem) {
-        existingItem.quantity++;
-    } else {
-        devisCart.push(newItem);
-    }
-    
-    renderDevis();
-    // Suppression de la redirection automatique vers l'onglet "Générateur de Devis"
-    // (le reste de la fonction reste inchangé)
-}
-
-/** Met à jour la quantité pour une ligne de devis. */
-function updateQuantity(inputElement, index) {
-    let newQuantity = parseInt(inputElement.value);
-
-    if (isNaN(newQuantity) || newQuantity < 0) {
-        newQuantity = 0;
-        inputElement.value = 0;
-    }
-
-    if (newQuantity === 0) {
-        removePrestation(index);
-    } else {
-        devisCart[index].quantity = newQuantity;
-        renderDevis();
-    }
-}
-
-/** Met à jour le prix unitaire pour une ligne de devis. */
-function updateUnitPrice(inputElement, index) {
-    let newPrice = parseFloat(inputElement.value);
-    
-    if (isNaN(newPrice) || newPrice < 0) {
-        newPrice = devisCart[index].unitPrice; 
-        inputElement.value = newPrice.toFixed(2);
-    }
-    
-    devisCart[index].unitPrice = parseFloat(newPrice.toFixed(2));
-    renderDevis();
-}
-
-/** Supprime une ligne de devis. */
-function removePrestation(index) {
-    devisCart.splice(index, 1);
-    renderDevis();
-}
-
-/** Recalcule et affiche le devis complet. */
-function renderDevis() {
-    devisLines.innerHTML = ''; 
-    let subtotal = 0;
-
-    if (devisCart.length === 0) {
-        devisLines.innerHTML = '<tr><td colspan="5" style="text-align: center; color: var(--muted);">Aucune prestation ajoutée. Ajoutez des articles depuis la Grille Tarifaire.</td></tr>';
-    }
-
-    devisCart.forEach((item, index) => {
-        const totalHT = item.quantity * item.unitPrice;
-        subtotal += totalHT;
-
-        const row = devisLines.insertRow();
-        
-        row.innerHTML = `
-            <td>${item.name}</td>
-            <td><input type="number" min="0" value="${item.quantity}" onchange="updateQuantity(this, ${index})"></td>
-            <td class="unit-price"><input type="number" min="0" step="0.01" value="${item.unitPrice.toFixed(2)}" onchange="updateUnitPrice(this, ${index})"></td>
-            <td>${item.unit}</td>
-            <td class="total-row">${totalHT.toFixed(2)} € <button title="Supprimer la ligne" style="float: right; color: #dc3545; border: none; background: none; cursor: pointer;" onclick="removePrestation(${index})">×</button></td>
-        `;
-    });
-
-    // Totaux
-    const tvaAmount = subtotal * TVA_RATE;
-    const totalTTCValue = subtotal + tvaAmount;
-
-    subtotalSpan.textContent = subtotal.toFixed(2) + ' €';
-    tvaAmountSpan.textContent = tvaAmount.toFixed(2) + ' €';
-    totalTTC.textContent = totalTTCValue.toFixed(2) + ' €';
-}
-
-/** Vide la liste de devis. */
-function clearDevis() {
-    if (confirm("Êtes-vous sûr de vouloir vider le devis ? Cette action est irréversible.")) {
-        devisCart = [];
-        renderDevis();
-        logoPreview.src = '';
-        logoPreview.style.display = 'none';
-        clientNameInput.value = '';
-        partnerNameInput.value = '';
-        partnerNameDisplay.textContent = 'Votre Client';
-        partnerCompanyDisplay.textContent = '[Nom du Partenaire]';
-        document.getElementById('logo-upload').value = ''; 
-        alert("Le devis a été vidé.");
-    }
-}
-
-/** Gère l'importation de logo. */
-function handleLogoUpload(event) {
-    const file = event.target.files[0];
-    if (file) {
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            logoPreview.src = e.target.result;
-            logoPreview.style.display = 'block';
-        }
-        reader.readAsDataURL(file);
-    }
-}
-
-/** Met à jour les noms (client / entreprise) */
-function updateNames() {
-    const client = clientNameInput.value.trim() || 'Votre Client';
-    const partner = partnerNameInput.value.trim() || '[Nom du Partenaire]';
-    partnerNameDisplay.textContent = client;
-    partnerCompanyDisplay.textContent = partner;
-    document.querySelector('.devis-rapide-title').textContent = `DEVIS ESTIMATIF - ${client}`;
-}
-
-// ---------- GESTIONNAIRES D'ÉVÉNEMENTS ----------
-
-// Connexion
-btnEnter.addEventListener('click', openIfValid);
-inputCode.addEventListener('keydown', (e) => { if (e.key === 'Enter') openIfValid(); });
-
-// Navigation par onglets
-tabButtons.forEach(button => {
-    button.addEventListener('click', (e) => {
-        switchTab(e.currentTarget.dataset.tab);
-    });
-});
-
-// Actions Devis
-printButton.addEventListener('click', () => {
-    updateNames();
-    window.print();
-});
-clearButton.addEventListener('click', clearDevis);
-logoUpload.addEventListener('change', handleLogoUpload);
-
-// Mise à jour des noms en direct
-clientNameInput.addEventListener('input', updateNames);
-partnerNameInput.addEventListener('input', updateNames);
-
-// Rendre le devis initialement vide
-document.addEventListener('DOMContentLoaded', renderDevis);
-
-// Exposer quelques fonctions globales (pour onchange/onclick inline)
-window.updateQuantity = updateQuantity;
-window.updateUnitPrice = updateUnitPrice;
-window.removePrestation = removePrestation;
-window.clearDevis = clearDevis;
-</script>
-</body>
-</html>
+               <h3 class="devis-rapide-title">DEVIS ESTIMATIF - <span id="partner
