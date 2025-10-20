@@ -158,11 +158,34 @@ nav ul li a.active{color:#007bff; font-weight:700; text-decoration:underline}
 
 /* =============== Devis rapide =============== */
 #devis-rapide-tab{padding:16px 8px 20px}
+
 .devis-header{
   display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;
   border-bottom:2px solid var(--primary); padding-bottom:10px; margin-bottom:14px;
 }
+
 #partner-logo-preview{max-height:46px; max-width:160px; display:none}
+
+<!-- Saisie coordonnées client (affichée à l’écran, masquée à l’impression) -->
+<div class="client-fields" style="display:block; margin:12px 0;">
+  <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:10px;">
+    <input id="client-nom" type="text" placeholder="Nom / Société du client">
+    <input id="client-email" type="email" placeholder="Email du client">
+    <input id="client-tel" type="text" placeholder="Téléphone du client">
+    <input id="client-adresse" type="text" placeholder="Adresse du client">
+  </div>
+</div>
+
+<!-- Bloc d’affichage pour l’impression (masqué à l’écran) -->
+<div id="partner-info-print" style="display:none;">
+  <div style="margin-top:6px;">
+    <div><strong>Client :</strong> <span id="print-client-nom">—</span></div>
+    <div><strong>Email :</strong> <span id="print-client-email">—</span></div>
+    <div><strong>Téléphone :</strong> <span id="print-client-tel">—</span></div>
+    <div><strong>Adresse :</strong> <span id="print-client-adresse">—</span></div>
+  </div>
+</div>
+
 .devis-actions{display:flex; flex-wrap:wrap; gap:10px; margin-bottom:14px}
 .devis-actions button, .devis-actions input[type="file"] + label{
   padding:10px 14px; border-radius:8px; font-weight:600; cursor:pointer; border:1px solid var(--primary)
@@ -229,7 +252,7 @@ input[type="file"]{display:none}
   header,.header,.tab-nav,.footer,.devis-actions,.list li .add-btn,.secure-area>.notice,.secure-area>.form,.secure-area>.error,
   .devis-table input,.devis-table button{display:none !important}
   .card{width:100%; box-shadow:none; margin:0; border-radius:0}
-  #devis-rapide-tab{padding:0}
+  .client-fields{display:none !important;}  #devis-rapide-tab{padding:0}
   #partner-content{display:block !important; padding-top:0}
   .devis-table th,.devis-table td{border-color:#ccc !important}
 
@@ -606,5 +629,46 @@ window.updateUnitPrice=updateUnitPrice;
 window.removePrestation=removePrestation;
 window.clearDevis=clearDevis;
 </script>
+
+<script>
+  // Hooks champs client
+  const clientNomEl = document.getElementById('client-nom');
+  const clientEmailEl = document.getElementById('client-email');
+  const clientTelEl = document.getElementById('client-tel');
+  const clientAdresseEl = document.getElementById('client-adresse');
+
+  // Hooks affichage impression + titre
+  const printNom = document.getElementById('print-client-nom');
+  const printEmail = document.getElementById('print-client-email');
+  const printTel = document.getElementById('print-client-tel');
+  const printAdr = document.getElementById('print-client-adresse');
+  const partnerNameDisplay = document.getElementById('partner-name-display');
+
+  function syncClientFields(){
+    const nom = (clientNomEl?.value || '').trim();
+    const email = (clientEmailEl?.value || '').trim();
+    const tel = (clientTelEl?.value || '').trim();
+    const adr = (clientAdresseEl?.value || '').trim();
+
+    if (printNom)   printNom.textContent   = nom || '—';
+    if (printEmail) printEmail.textContent = email || '—';
+    if (printTel)   printTel.textContent   = tel || '—';
+    if (printAdr)   printAdr.textContent   = adr || '—';
+
+    // Met à jour le titre "DEVIS ESTIMATIF - Votre Client"
+    if (partnerNameDisplay) {
+      partnerNameDisplay.textContent = nom || 'Votre Client';
+    }
+  }
+
+  // Écouteurs
+  [clientNomEl, clientEmailEl, clientTelEl, clientAdresseEl].forEach(el=>{
+    el && el.addEventListener('input', syncClientFields);
+  });
+
+  // Premier sync au chargement
+  document.addEventListener('DOMContentLoaded', syncClientFields);
+</script>
+
 </body>
 </html>
