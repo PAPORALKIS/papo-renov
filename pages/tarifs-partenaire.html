@@ -232,6 +232,14 @@ input[type="file"]{display:none}
   #devis-rapide-tab{padding:0}
   #partner-content{display:block !important; padding-top:0}
   .devis-table th,.devis-table td{border-color:#ccc !important}
+
+
+  #partner-logo-preview {
+    max-height: 100px !important;   /* hauteur du logo dans le PDF */
+    max-width: 300px !important;    /* largeur du logo dans le PDF */
+    display: block !important;      /* s’assure qu’il apparaisse à l’impression */
+  }
+
 }
 </style>
 </head>
@@ -351,7 +359,7 @@ input[type="file"]{display:none}
 
         <!-- ===== Onglet Devis ===== -->
         <div id="devis-rapide-tab" class="tab-pane" style="display:none;">
-          <h2 style="text-align:center; color:var(--primary); margin-bottom:14px;">Outil : Générateur de Devis Rapide</h2>
+          
 
           <div class="devis-header">
             <img id="partner-logo-preview" src="" alt="Logo Partenaire" />
