@@ -166,25 +166,7 @@ nav ul li a.active{color:#007bff; font-weight:700; text-decoration:underline}
 
 #partner-logo-preview{max-height:46px; max-width:160px; display:none}
 
-<!-- Saisie coordonnées client (affichée à l’écran, masquée à l’impression) -->
-<div class="client-fields" style="display:block; margin:12px 0;">
-  <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:10px;">
-    <input id="client-nom" type="text" placeholder="Nom / Société du client">
-    <input id="client-email" type="email" placeholder="Email du client">
-    <input id="client-tel" type="text" placeholder="Téléphone du client">
-    <input id="client-adresse" type="text" placeholder="Adresse du client">
-  </div>
-</div>
 
-<!-- Bloc d’affichage pour l’impression (masqué à l’écran) -->
-<div id="partner-info-print" style="display:none;">
-  <div style="margin-top:6px;">
-    <div><strong>Client :</strong> <span id="print-client-nom">—</span></div>
-    <div><strong>Email :</strong> <span id="print-client-email">—</span></div>
-    <div><strong>Téléphone :</strong> <span id="print-client-tel">—</span></div>
-    <div><strong>Adresse :</strong> <span id="print-client-adresse">—</span></div>
-  </div>
-</div>
 
 .devis-actions{display:flex; flex-wrap:wrap; gap:10px; margin-bottom:14px}
 .devis-actions button, .devis-actions input[type="file"] + label{
@@ -419,6 +401,26 @@ input[type="file"]{display:none}
                <h3 class="devis-rapide-title">DEVIS ESTIMATIF - <span id="partner-name-display">Votre Client</span></h3>
             </div>
           </div>
+
+<!-- Saisie coordonnées client (affichée à l’écran, masquée à l’impression) -->
+<div class="client-fields" style="display:block; margin:12px 0;">
+  <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:10px;">
+    <input id="client-nom" type="text" placeholder="Nom / Société du client">
+    <input id="client-email" type="email" placeholder="Email du client">
+    <input id="client-tel" type="text" placeholder="Téléphone du client">
+    <input id="client-adresse" type="text" placeholder="Adresse du client">
+  </div>
+</div>
+
+<!-- Bloc d’affichage pour l’impression (masqué à l’écran) -->
+<div id="partner-info-print" style="display:none;">
+  <div style="margin-top:6px;">
+    <div><strong>Client :</strong> <span id="print-client-nom">—</span></div>
+    <div><strong>Email :</strong> <span id="print-client-email">—</span></div>
+    <div><strong>Téléphone :</strong> <span id="print-client-tel">—</span></div>
+    <div><strong>Adresse :</strong> <span id="print-client-adresse">—</span></div>
+  </div>
+</div>
 
           <div class="devis-actions">
             <button id="print-devis">🖨️ Imprimer / Enregistrer en PDF</button>
