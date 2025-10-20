@@ -234,7 +234,47 @@ input[type="file"]{display:none}
   header,.header,.tab-nav,.footer,.devis-actions,.list li .add-btn,.secure-area>.notice,.secure-area>.form,.secure-area>.error,
   .devis-table input,.devis-table button{display:none !important}
   .card{width:100%; box-shadow:none; margin:0; border-radius:0}
-  .client-fields{display:none !important;}  #devis-rapide-tab{padding:0}
+  .client-fields{display:none !important;}
+    /* Le conteneur doit laisser le tableau s’étaler sans scroll */
+  .table-responsive{
+    overflow: visible !important;
+    border: 1px solid #ccc !important;
+  }
+
+  /* Le tableau doit s’adapter à la largeur de la page imprimée */
+  .devis-table{
+    width: 100% !important;
+    min-width: 0 !important;          /* annule le min-width:720px de l’écran */
+    table-layout: auto !important;
+    border-collapse: collapse !important;
+  }
+
+  /* Empêche les coupures moches et répète l’en-tête à chaque page */
+  .devis-table thead{ 
+    display: table-header-group !important; 
+  }
+  .devis-table tfoot{ 
+    display: table-footer-group !important; 
+  }
+  .devis-table tr{
+    break-inside: avoid !important;
+    page-break-inside: avoid !important;
+  }
+
+  /* Meilleure gestion des textes longs */
+  .devis-table th, 
+  .devis-table td{
+    white-space: normal !important;
+    word-break: break-word !important;
+  }
+
+  /* Masque la colonne "Actions" (le dernier th/td) UNIQUEMENT à l’impression */
+  .devis-table thead th:last-child,
+  .devis-table tbody td:last-child,
+  .devis-table tfoot td:last-child{
+    display: none !important;
+  }
+  #devis-rapide-tab{padding:0}
   #partner-content{display:block !important; padding-top:0}
   .devis-table th,.devis-table td{border-color:#ccc !important}
 
