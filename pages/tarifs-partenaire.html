@@ -233,16 +233,43 @@ input[type="file"]{display:none}
   #partner-content{display:block !important; padding-top:0}
   .devis-table th,.devis-table td{border-color:#ccc !important}
 
-
+  /* ====== LOGO PARTENAIRE ====== */
   #partner-logo-preview {
     max-height: 100px !important;   /* hauteur du logo dans le PDF */
     max-width: 300px !important;    /* largeur du logo dans le PDF */
     display: block !important;      /* s’assure qu’il apparaisse à l’impression */
-    margin: 0 auto 10px auto !important ; /* centre le logo horizontalement */ 
+    margin: 0 auto 10px auto !important; /* centre le logo horizontalement + espace dessous */
     text-align: center;
   }
 
-}
+  /* ====== TITRE DU DEVIS SOUS LE LOGO ====== */
+  .devis-header {
+    display: block !important;      /* force une disposition verticale */
+    text-align: center !important;  /* centre tout le contenu */
+  }
+
+  .devis-header .devis-titles {
+    display: block !important;
+    margin-top: 6px !important;     /* petit espace entre le logo et le titre */
+  }
+
+  .devis-header h3.devis-rapide-title {
+    font-size: 1.2rem !important;   /* taille adaptée au PDF */
+    margin: 0 !important;
+    color: #000 !important;
+    text-transform: uppercase;
+  }
+
+  /* ====== COORDONNÉES DU PARTENAIRE SOUS LE TITRE ====== */
+  #partner-info-print {
+    display: block !important;
+    text-align: center !important;
+    margin-top: 8px !important;
+    font-size: 0.95rem !important;
+    line-height: 1.4;
+    color: #333 !important;
+  }
+  }
 </style>
 </head>
 <body>
