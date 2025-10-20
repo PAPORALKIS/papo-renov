@@ -115,11 +115,13 @@
 
 <section class="form-section">
   <!-- Remplacer VOTRE_URL_WEBAPP par l'URL de déploiement Apps Script -->
-  <form action="https://script.google.com/macros/s/AKfycbxbsGlPqr448oX_2heE4Xq19ah46RPS8qdDjKzYWXsUAmp0oTaOcCB8GaonwEQpw-kcGA/exec" method="POST" enctype="multipart/form-data">
-    <h2>Demander un devis</h2>
-
-    <input type="hidden" name="_subject" value="Demande de devis via le site Papo Rénov">
-    <input type="hidden" name="_next" value="merci.html">
+  
+<form 
+  action="https://script.google.com/macros/s/AKfycbyY9QTebInuAsjEJfarmHyynbfglApRZcEdLp-T3eUHb3dc6mjILc08oQxuCElWUJpWdA/exec"
+  method="POST"
+  enctype="multipart/form-data"
+>
+  <input type="hidden" name="_next" value="https://paporalkis.github.io/papo-renov/pages/merci.html">
 
     <label for="nom">Nom :</label>
     <input type="text" name="nom" id="nom" required>
