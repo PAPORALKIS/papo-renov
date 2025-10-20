@@ -1,107 +1,77 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Demande de devis - Papo Rénov</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../style.css">
   <style>
-    /* ======================
-       BASE GÉNÉRALE
-    ======================= */
     body {
       font-family: 'Poppins', sans-serif;
       margin: 0;
       padding: 0;
       background-color: #f9f9f9;
-      color: #333;
-      overflow-x: hidden;
     }
 
     nav ul li a.active {
       color: #00bfff;
     }
 
-    /* ======================
-       SECTION MERCI
-    ======================= */
-    .merci-section {
+    .form-section {
       background: url('../img/logo.png') no-repeat center center;
-      background-size: 25%;
+      background-size: 30%;
+      background-repeat: no-repeat;
       background-attachment: fixed;
+      padding: 60px 20px;
       min-height: 90vh;
       display: flex;
       flex-direction: column;
-      justify-content: center;
       align-items: center;
-      text-align: center;
-      padding: 40px 20px;
-      overflow: hidden;
+      justify-content: center;
     }
 
-    .merci-box {
-      background-color: rgba(255,255,255,0.95);
-      border-radius: 12px;
-      box-shadow: 0 0 15px rgba(0,0,0,0.1);
-      padding: 40px 30px;
-      max-width: 600px;
+    form {
+      background-color: rgba(255, 255, 255, 0.95);
+      padding: 30px;
+      border-radius: 10px;
+      max-width: 500px;
       width: 100%;
-      opacity: 0;
-      transform: translateY(30px);
-      animation: fadeInUp 1.2s ease forwards;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
     }
 
-    /* Animation douce */
-    @keyframes fadeInUp {
-      0% {
-        opacity: 0;
-        transform: translateY(30px);
-      }
-      100% {
-        opacity: 1;
-        transform: translateY(0);
-      }
+    form h2 {
+      margin-top: 0;
+      text-align: center;
     }
 
-    /* ======================
-       TEXTE + BOUTON
-    ======================= */
-    h1 {
-      color: #00bfff;
+    form input,
+    form textarea {
+      width: 100%;
+      padding: 10px;
+      margin-top: 10px;
       margin-bottom: 20px;
-      font-size: 2rem;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 1rem;
     }
 
-    p {
-      font-size: 1.1rem;
-      line-height: 1.6;
-      animation: fadeInUp 1.4s ease forwards;
-      animation-delay: 0.3s;
-    }
-
-    a.button {
-      display: inline-block;
-      margin-top: 25px;
-      padding: 12px 25px;
+    form button {
       background-color: #00bfff;
       color: white;
-      text-decoration: none;
-      border-radius: 6px;
-      font-weight: 600;
-      transition: background-color 0.3s ease, transform 0.2s ease;
-      animation: fadeInUp 1.6s ease forwards;
-      animation-delay: 0.5s;
+      border: none;
+      padding: 12px 20px;
+      font-weight: bold;
+      border-radius: 5px;
+      cursor: pointer;
+      width: 100%;
+      font-size: 1rem;
     }
 
-    a.button:hover {
+    form button:hover {
       background-color: #0099cc;
-      transform: scale(1.05);
     }
 
-    /* ======================
-       FOOTER
-    ======================= */
     footer {
       text-align: center;
       padding: 20px;
@@ -111,97 +81,64 @@
       box-shadow: 0 -1px 3px rgba(0,0,0,0.1);
     }
 
-    /* ======================
-       RESPONSIVE
-    ======================= */
     @media (max-width: 600px) {
-      .merci-section {
-        background-size: 45%;
-        padding: 30px 10px;
+      .form-section {
+        background-size: 50%;
+        padding: 40px 10px;
       }
 
-      .merci-box {
-        padding: 25px;
-    }
-
-      h1 {
-        font-size: 1.6rem;
+      form {
+        padding: 20px;
       }
     }
   </style>
 </head>
 <body>
-  <header>
+<header>
   <div class="logo">
     <img src="../img/logo.png" alt="Logo Papo Rénov">
-    <div>
-      <strong>Papo Rénov</strong><br>
-      <small>Demande de devis</small>
-    </div>
+  </div>
   <nav>
     <ul>
       <li><a href="../index.html">Accueil</a></li>
-      <li><a href="devis.html">Demande de devis</a></li>
+    <li><a class="active" href="devis.html">Demande de devis</a></li>
       <li><a href="realisations.html">Mes réalisations</a></li>
       <li><a href="tarifs.html">Tarifs</a></li>
       <li><a href="planning.html">Planning</a></li>
       <li><a href="contact.html">Contact</a></li>
       <li><a href="avis.html">Avis clients</a></li>
-      <li><a href="courtage-cuisine.html">Courtage Cuisine</a></li>
+    <li><a href="courtage-cuisine.html">Courtage Cuisine</a></li>
     </ul>
   </nav>
-  </header>
 
-  <main>
-    <section class="card">
-      <h1>Obtenir un devis</h1>
-      <p class="lead">Remplis les champs — je te recontacte rapido pour caler le scope, le budget, et la dispo 🔧</p>
+</header>
 
-      <form 
-        action="https://script.google.com/macros/s/AKfycbyY9QTebInuAsjEJfarmHyynbfglApRZcEdLp-T3eUHb3dc6mjILc08oQxuCElWUJpWdA/exec"
-        method="POST"
-        enctype="multipart/form-data"
-        accept-charset="utf-8"
-      >
-        <!-- Redirection absolue vers la page Merci de ton site -->
-        <input type="hidden" name="_next" value="https://paporalkis.github.io/papo-renov/pages/merci.html">
+<section class="form-section">
+  <!-- Remplacer VOTRE_URL_WEBAPP par l'URL de déploiement Apps Script -->
+  <form action="https://script.google.com/macros/s/AKfycbxbsGlPqr448oX_2heE4Xq19ah46RPS8qdDjKzYWXsUAmp0oTaOcCB8GaonwEQpw-kcGA/exec" method="POST" enctype="multipart/form-data">
+    <h2>Demander un devis</h2>
 
-        <div class="row">
-          <div>
-            <label for="nom">Nom / Société</label>
-            <input type="text" id="nom" name="nom" placeholder="Ex. Mathieu Dupont / DUPONT SARL" required>
-          </div>
-          <div>
-            <label for="telephone">Téléphone</label>
-            <input type="tel" id="telephone" name="telephone" placeholder="+33 6 12 34 56 78">
-          </div>
-        </div>
+    <input type="hidden" name="_subject" value="Demande de devis via le site Papo Rénov">
+    <input type="hidden" name="_next" value="merci.html">
 
-        <div class="row">
-          <div>
-            <label for="email">E-mail</label>
-            <input type="email" id="email" name="email" placeholder="vous@exemple.fr" required>
-          </div>
-          <div>
-            <label for="fichier">Pièce(s) jointe(s) (plans, photos)</label>
-            <div class="files">
-              <input type="file" id="fichier" name="fichier" multiple>
-              <div class="hint">Formats acceptés: images, PDF. Taille max par fichier selon Drive.</div>
-            </div>
-          </div>
-        </div>
+    <label for="nom">Nom :</label>
+    <input type="text" name="nom" id="nom" required>
 
-        <div>
-          <label for="message">Description du projet</label>
-          <textarea id="message" name="message" placeholder="Explique ton besoin : pièce, dimensions, matériaux, délais…"></textarea>
-          <div class="hint">Plus c’est précis, plus mon chiffrage est affûté 💡</div>
-        </div>
+    <label for="email">Email :</label>
+    <input type="email" name="email" id="email" required>
 
-        <div>
-          <button type="submit">Envoyer ma demande</button>
-        </div>
-      </form>
-    </section>
+    <label for="telephone">Téléphone :</label>
+    <input type="tel" name="telephone" id="telephone">
+
+    <label for="message">Description du projet :</label>
+    <textarea name="message" id="message" rows="5" required></textarea>
+
+    <label for="fichier">Joindre un fichier :</label>
+    <input type="file" name="fichier" id="fichier" accept=".jpg,.jpeg,.png,.pdf,.doc,.docx">
+
+    <button type="submit">Envoyer</button>
+  </form>
+</section>
 
 <footer>
   <p>&copy; 2025 Papo Rénov - Tous droits réservés</p>
