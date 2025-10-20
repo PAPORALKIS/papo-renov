@@ -1,166 +1,49 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Merci pour votre demande - Papo Rénov</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Merci — Papo Rénov</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
   <style>
-    /* ======================
-       BASE GÉNÉRALE
-    ======================= */
-    body {
-      font-family: 'Poppins', sans-serif;
-      margin: 0;
-      padding: 0;
-      background-color: #f9f9f9;
-      color: #333;
-      overflow-x: hidden;
+    :root{
+      --primary:#0b5fff;
+      --bg:#f6f7fb;
+      --text:#1f2630;
+      --card:#ffffff;
+      --border:#e6e8ee;
+      --shadow: 0 10px 25px rgba(0,0,0,.06);
     }
-
-    nav ul li a.active {
-      color: #00bfff;
+    *{box-sizing:border-box}
+    body{
+      margin:0; font-family:Poppins,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+      color:var(--text); background:var(--bg);
+      min-height:100dvh; display:grid; place-items:center; padding:24px;
     }
-
-    /* ======================
-       SECTION MERCI
-    ======================= */
-    .merci-section {
-      background: url('../img/logo.png') no-repeat center center;
-      background-size: 25%;
-      background-attachment: fixed;
-      min-height: 90vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-      padding: 40px 20px;
-      overflow: hidden;
+    .wrap{
+      max-width:720px; width:100%;
+      background:var(--card); border:1px solid var(--border); border-radius:18px; box-shadow:var(--shadow);
+      padding:28px; text-align:center;
     }
-
-    .merci-box {
-      background-color: rgba(255,255,255,0.95);
-      border-radius: 12px;
-      box-shadow: 0 0 15px rgba(0,0,0,0.1);
-      padding: 40px 30px;
-      max-width: 600px;
-      width: 100%;
-      opacity: 0;
-      transform: translateY(30px);
-      animation: fadeInUp 1.2s ease forwards;
-    }
-
-    /* Animation douce */
-    @keyframes fadeInUp {
-      0% {
-        opacity: 0;
-        transform: translateY(30px);
-      }
-      100% {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    /* ======================
-       TEXTE + BOUTON
-    ======================= */
-    h1 {
-      color: #00bfff;
-      margin-bottom: 20px;
-      font-size: 2rem;
-    }
-
-    p {
-      font-size: 1.1rem;
-      line-height: 1.6;
-      animation: fadeInUp 1.4s ease forwards;
-      animation-delay: 0.3s;
-    }
-
-    a.button {
-      display: inline-block;
-      margin-top: 25px;
-      padding: 12px 25px;
-      background-color: #00bfff;
-      color: white;
-      text-decoration: none;
-      border-radius: 6px;
-      font-weight: 600;
-      transition: background-color 0.3s ease, transform 0.2s ease;
-      animation: fadeInUp 1.6s ease forwards;
-      animation-delay: 0.5s;
-    }
-
-    a.button:hover {
-      background-color: #0099cc;
-      transform: scale(1.05);
-    }
-
-    /* ======================
-       FOOTER
-    ======================= */
-    footer {
-      text-align: center;
-      padding: 20px;
-      font-size: 0.9rem;
-      color: #555;
-      background-color: #fff;
-      box-shadow: 0 -1px 3px rgba(0,0,0,0.1);
-    }
-
-    /* ======================
-       RESPONSIVE
-    ======================= */
-    @media (max-width: 600px) {
-      .merci-section {
-        background-size: 45%;
-        padding: 30px 10px;
-      }
-
-      .merci-box {
-        padding: 25px;
-      }
-
-      h1 {
-        font-size: 1.6rem;
-      }
+    img{height:56px; margin-bottom:10px}
+    h1{margin:8px 0 8px; font-size:28px}
+    p{margin:0 0 16px; opacity:.9}
+    a.btn{
+      display:inline-block; padding:12px 18px; background:var(--primary); color:#fff; border-radius:12px;
+      font-weight:700; text-decoration:none;
     }
   </style>
 </head>
-
 <body>
-<header>
-  <div class="logo">
-    <img src="../img/logo.png" alt="Logo Papo Rénov">
+  <div class="wrap">
+    <img src="../img/logo.png" alt="Papo Rénov">
+    <h1>Merci pour votre demande 🙌</h1>
+    <p>Votre message vient d’être transmis. Je reviens vers vous très vite pour la suite.</p>
+    <p>Si vous avez des documents complémentaires, répondez directement à l’e-mail d’accusé réception.</p>
+    <p style="margin-top:18px;">
+      <a class="btn" href="https://paporalkis.github.io/papo-renov/">Retour à l’accueil</a>
+    </p>
   </div>
-  <nav>
-    <ul>
-      <li><a href="../index.html">Accueil</a></li>
-      <li><a href="devis.html">Demande de devis</a></li>
-      <li><a href="realisations.html">Mes réalisations</a></li>
-      <li><a href="tarifs.html">Tarifs</a></li>
-      <li><a href="planning.html">Planning</a></li>
-      <li><a href="contact.html">Contact</a></li>
-      <li><a href="avis.html">Avis clients</a></li>
-      <li><a href="courtage-cuisine.html">Courtage Cuisine</a></li>
-    </ul>
-  </nav>
-</header>
-
-<section class="merci-section">
-  <div class="merci-box">
-    <h1>Merci pour votre demande !</h1>
-    <p>Votre demande de devis a bien été envoyée.<br>
-       Un membre de l’équipe <strong>Papo Rénov</strong> vous contactera très prochainement pour finaliser les détails de votre projet.</p>
-    <a href="devis.html" class="button">Retour à la page Devis</a>
-  </div>
-</section>
-
-<footer>
-  <p>&copy; 2025 Papo Rénov - Tous droits réservés</p>
-</footer>
 </body>
 </html>
