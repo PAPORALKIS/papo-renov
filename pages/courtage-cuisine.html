@@ -509,23 +509,53 @@ summary{cursor:pointer;font-weight:700}
 
 <script>
 /* Accessibilité focus visible (simple) */
-(function(){document.addEventListener('keydown',e=>{if(e.key==='Tab'){document.body.classList.add('kbd')}})})();
+(function(){document.addEventListener('keydown',e=>{if(e.key==='Tab')
+{document.body.classList.add('kbd')}})})();
 
 /* Formulaire : validation simple (avant soumission à Apps Script) */
 const form = document.getElementById('briefForm');
 const formMsg = document.getElementById('formMsg');
-form?.addEventListener('submit', (e)=>{
+  
+form?.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  
+ // Validation minimale identique à avant
   const nom = document.getElementById('nom').value.trim();
   const email = document.getElementById('email').value.trim();
   const cond = document.getElementById('cond').checked;
-  if(!nom || !email || !cond){
-    e.preventDefault();
+  if (!nom || !email || !cond) {
     formMsg.textContent = "Merci de compléter les champs requis et d’accepter la condition de gratuité liée à la pose.";
     formMsg.style.color = "#b42318";
-  } else {
-    // Laisser la soumission native POST se faire vers l'URL Apps Script
-    formMsg.textContent = "Traitement en cours, veuillez patienter...";
-    formMsg.style.color = "var(--brand)";
+    return;
+  }
+
+  // UI: feedback + bouton désactivé
+  formMsg.textContent = "Traitement en cours, veuillez patienter...";
+  formMsg.style.color = "var(--brand)";
+  const submitBtn = form.querySelector('button[type="submit"]');
+  const prevTxt = submitBtn?.textContent;
+  if (submitBtn){ submitBtn.disabled = true; submitBtn.textContent = "Envoi…"; }
+
+  // Envoi silencieux vers Apps Script
+  const redirectUrl = "Merci.html"; // même dossier /pages/
+  const fd = new FormData(form);
+
+  try {
+    // Timeout prudent (8 s). L’Apps Script peut répondre sans CORS lisible, c’est normal.
+    const ctrl = new AbortController();
+    const tm = setTimeout(() => ctrl.abort(), 8000);
+
+    await fetch(form.action, { method: "POST", body: fd, signal: ctrl.signal });
+    clearTimeout(tm);
+
+    // Quoi qu’il arrive après l’envoi : redirection locale propre
+    window.location.href = redirectUrl;
+
+  } catch (err) {
+    // Même en cas d’erreur réseau/CORS, on envoie l’utilisateur sur la page de confirmation
+    window.location.href = redirectUrl;
+  } finally {
+    if (submitBtn){ submitBtn.disabled = false; submitBtn.textContent = prevTxt || "Recevoir mon estimation"; }
   }
 });
 
