@@ -512,49 +512,22 @@ summary{cursor:pointer;font-weight:700}
 (function(){document.addEventListener('keydown',e=>{if(e.key==='Tab')
 {document.body.classList.add('kbd')}})})();
 
-/* Formulaire : validation simple (avant soumission à Apps Script) */
+/* Formulaire : feedback simple puis soumission native vers Apps Script */
 const form = document.getElementById('briefForm');
 const formMsg = document.getElementById('formMsg');
-  
-form?.addEventListener('submit', async (e) => {
-  e.preventDefault();
-  
- // Validation minimale identique à avant
-  const nom = document.getElementById('nom').value.trim();
-  const email = document.getElementById('email').value.trim();
-  const cond = document.getElementById('cond').checked;
-  if (!nom || !email || !cond) {
-    formMsg.textContent = "Merci de compléter les champs requis et d’accepter la condition de gratuité liée à la pose.";
-    formMsg.style.color = "#b42318";
-    return;
-  }
 
-  // UI: feedback + bouton désactivé
-  formMsg.textContent = "Traitement en cours, veuillez patienter...";
+form?.addEventListener('submit', () => {
+  // Laisser faire la soumission native pour que l’Apps Script redirige vers estimation.html
+  const nom = document.getElementById('nom')?.value?.trim();
+  const email = document.getElementById('email')?.value?.trim();
+  const cond = document.getElementById('cond')?.checked;
+
+  // (Les champs required HTML5 font déjà la validation côté navigateur)
+  formMsg.textContent = "Redirection vers votre estimation…";
   formMsg.style.color = "var(--brand)";
+
   const submitBtn = form.querySelector('button[type="submit"]');
-  const prevTxt = submitBtn?.textContent;
-  if (submitBtn){ submitBtn.disabled = true; submitBtn.textContent = "Envoi…"; }
-
-  // const redirectUrl = "merci.html"; // désactivé : redirection gérée côté serveur (Apps Script)
-
-// Prépare les données du formulaire et un timeout de sécurité
-const fd = new FormData(form);
-const ctrl = new AbortController();
-const tm = setTimeout(() => ctrl.abort(), 8000);
-
-// Envoi silencieux vers Apps Script (il redirigera vers estimation.html)
-await fetch(form.action, { method: "POST", body: fd, signal: ctrl.signal, mode: "no-cors" });
-clearTimeout(tm);
-
-// Pas de redirection ici — c’est l’Apps Script qui renverra vers estimation.html
-
-  } catch (err) {
-    // Même en cas d’erreur réseau/CORS, on envoie l’utilisateur sur la page de confirmation
-    window.location.href = redirectUrl;
-  } finally {
-    if (submitBtn){ submitBtn.disabled = false; submitBtn.textContent = prevTxt || "Recevoir mon estimation"; }
-  }
+  if (submitBtn){ submitBtn.disabled = true; submitBtn.textContent = "Redirection…"; }
 });
 
 /* Défilement fluide sur les ancres */
