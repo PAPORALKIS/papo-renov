@@ -536,13 +536,19 @@ form?.addEventListener('submit', async (e) => {
   const prevTxt = submitBtn?.textContent;
   if (submitBtn){ submitBtn.disabled = true; submitBtn.textContent = "Envoi…"; }
 
-  // Envoi silencieux vers Apps Script
-  
-// const redirectUrl = "merci.html"; // désactivé : redirection gérée côté serveur (Apps Script)
+  // const redirectUrl = "merci.html"; // désactivé : redirection gérée côté serveur (Apps Script)
+
+// Prépare les données du formulaire et un timeout de sécurité
+const fd = new FormData(form);
+const ctrl = new AbortController();
+const tm = setTimeout(() => ctrl.abort(), 8000);
+
+// Envoi silencieux vers Apps Script (il redirigera vers estimation.html)
 await fetch(form.action, { method: "POST", body: fd, signal: ctrl.signal, mode: "no-cors" });
+clearTimeout(tm);
 
 // Pas de redirection ici — c’est l’Apps Script qui renverra vers estimation.html
-  
+
   } catch (err) {
     // Même en cas d’erreur réseau/CORS, on envoie l’utilisateur sur la page de confirmation
     window.location.href = redirectUrl;
