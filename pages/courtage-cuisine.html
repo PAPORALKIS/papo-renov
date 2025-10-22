@@ -545,9 +545,10 @@ form?.addEventListener('submit', async (e) => {
     const ctrl = new AbortController();
     const tm = setTimeout(() => ctrl.abort(), 8000);
 
-    await fetch(form.action, { method: "POST", body: fd, signal: ctrl.signal });
-    clearTimeout(tm);
-
+    
+await fetch(form.action, { method: "POST", body: fd, signal: ctrl.signal,
+mode: "no-cors" });
+    
     // Quoi qu’il arrive après l’envoi : redirection locale propre
     window.location.href = redirectUrl;
 
