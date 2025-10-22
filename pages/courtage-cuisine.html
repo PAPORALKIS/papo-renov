@@ -537,21 +537,12 @@ form?.addEventListener('submit', async (e) => {
   if (submitBtn){ submitBtn.disabled = true; submitBtn.textContent = "Envoi…"; }
 
   // Envoi silencieux vers Apps Script
-  const redirectUrl = "/papo-renov/pages/merci.html";
-  const fd = new FormData(form);
+  
+// const redirectUrl = "merci.html"; // désactivé : redirection gérée côté serveur (Apps Script)
+await fetch(form.action, { method: "POST", body: fd, signal: ctrl.signal, mode: "no-cors" });
 
-  try {
-    // Timeout prudent (8 s). L’Apps Script peut répondre sans CORS lisible, c’est normal.
-    const ctrl = new AbortController();
-    const tm = setTimeout(() => ctrl.abort(), 8000);
-
-    
-await fetch(form.action, { method: "POST", body: fd, signal: ctrl.signal,
-mode: "no-cors" });
-    
-    // Quoi qu’il arrive après l’envoi : redirection locale propre
-    window.location.href = redirectUrl;
-
+// Pas de redirection ici — c’est l’Apps Script qui renverra vers estimation.html
+  
   } catch (err) {
     // Même en cas d’erreur réseau/CORS, on envoie l’utilisateur sur la page de confirmation
     window.location.href = redirectUrl;
