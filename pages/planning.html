@@ -155,17 +155,20 @@ footer{text-align:center;padding:20px 1rem;background-color:#003366;color:#fff;f
 
 <main class="main-content-wrap">
   <h1>Planning</h1>
+
+   <div class="sos-buttons">
+    <button class="sos-poseur" data-modal="modal-poseur">🚨 SOS POSEUR</button>
+    <button class="sos-sav" data-modal="modal-sav">🛠️ SOS SAV</button>
+    <button class="sos-derniere-minute" data-modal="modal-derniere">⚡ SOS DISPO DERNIÈRE MINUTE</button>
+  </div>
+  
   <p>Consultez mes disponibilités ci-dessous :</p>
 
   <div class="calendar-wrap" onclick="scrollToReservation()">
     <iframe src="https://calendar.google.com/calendar/embed?src=kpaporalkis.pro%40gmail.com&ctz=Europe%2FParis" frameborder="0" scrolling="no"></iframe>
   </div>
 
-  <div class="sos-buttons">
-    <button class="sos-poseur" data-modal="modal-poseur">🚨 SOS POSEUR</button>
-    <button class="sos-sav" data-modal="modal-sav">🛠️ SOS SAV</button>
-    <button class="sos-derniere-minute" data-modal="modal-derniere">⚡ SOS DISPO DERNIÈRE MINUTE</button>
-  </div>
+
 
   <h2 id="reservation-section">Réserver une date</h2>
   <form action="https://formspree.io/f/mpwrpypd" method="POST" class="reservation-form">
