@@ -1,32 +1,142 @@
-
-<!doctype html>
+<!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="utf-8">
-  <title>Votre estimation – Papo-Rénov</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Estimation IA – Papo-Rénov</title>
+
   <style>
-    body{font-family:system-ui,Segoe UI,Roboto,Arial,sans-serif;margin:0;padding:24px;line-height:1.5;}
-    .wrap{max-width:900px;margin:0 auto}
-    .card{background:#fff;border:1px solid #eee;border-radius:14px;box-shadow:0 6px 22px rgba(0,0,0,.06);padding:24px;}
-    .muted{opacity:.7}
+    /* --- STYLE GLOBAL --- */
+    :root {
+      --bleu-papo: #003366;
+      --bleu-clair: #00bfff;
+      --gris-fond: #f6f8fa;
+    }
+
+    body {
+      font-family: "Poppins", "Segoe UI", Roboto, Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: var(--gris-fond);
+      color: #222;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: center;
+    }
+
+    header {
+      background: var(--bleu-papo);
+      color: white;
+      width: 100%;
+      padding: 1rem 0;
+      text-align: center;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+
+    header h1 {
+      font-size: 1.5rem;
+      margin: 0;
+      letter-spacing: 1px;
+    }
+
+    main {
+      width: 100%;
+      max-width: 900px;
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+      padding: 2rem;
+      margin: 2rem auto;
+      box-sizing: border-box;
+    }
+
+    h3 {
+      color: var(--bleu-papo);
+      margin-top: 0;
+    }
+
+    .muted {
+      opacity: 0.7;
+      font-style: italic;
+      text-align: center;
+    }
+
+    footer {
+      margin-top: auto;
+      padding: 1.5rem;
+      text-align: center;
+      font-size: 0.9rem;
+      color: #666;
+    }
+
+    /* --- BOUTON DE RETOUR --- */
+    .btn-retour {
+      display: inline-block;
+      background: var(--bleu-clair);
+      color: white;
+      padding: 0.7rem 1.4rem;
+      border-radius: 50px;
+      text-decoration: none;
+      font-weight: 600;
+      box-shadow: 0 4px 12px rgba(0, 191, 255, 0.3);
+      transition: 0.3s;
+    }
+
+    .btn-retour:hover {
+      background: var(--bleu-papo);
+      transform: scale(1.05);
+    }
+
+    @media (max-width: 768px) {
+      main {
+        padding: 1.2rem;
+        margin: 1rem;
+      }
+      header h1 {
+        font-size: 1.2rem;
+      }
+    }
   </style>
 </head>
+
 <body>
-  <div class="wrap">
-    <div id="out" class="card"><p class="muted">Chargement de votre estimation…</p></div>
-  </div>
+  <header>
+    <h1>Estimation générée par l’IA Gemini – Papo-Rénov</h1>
+  </header>
+
+  <main>
+    <div id="out">
+      <p class="muted">Chargement de votre estimation personnalisée…</p>
+    </div>
+
+    <div style="text-align:center; margin-top:2rem;">
+      <a class="btn-retour" href="courtage-cuisine.html">← Retour au formulaire</a>
+    </div>
+  </main>
+
+  <footer>
+    © 2025 Papo-Rénov – Estimation IA alimentée par Google Gemini
+  </footer>
+
   <script>
-    (function(){
-      const q = new URLSearchParams(location.search);
-      const b64 = q.get('estimation');
+    (function () {
       const el = document.getElementById('out');
-      try{
-        if(!b64) throw new Error('missing');
+      const params = new URLSearchParams(window.location.search);
+      const b64 = params.get('estimation');
+
+      try {
+        if (!b64) throw new Error("Paramètre manquant");
+        // Décodage Base64 + HTML
         const html = atob(decodeURIComponent(b64));
         el.innerHTML = html;
-      }catch(e){
-        el.innerHTML = "<h3>Oups</h3><p class='muted'>Aucune estimation transmise.</p>";
+      } catch (err) {
+        el.innerHTML = `
+          <h3>Oups !</h3>
+          <p class="muted">Aucune estimation n’a été trouvée. 
+          Retournez au formulaire pour générer votre devis personnalisé.</p>
+        `;
       }
     })();
   </script>
