@@ -435,56 +435,95 @@ summary{cursor:pointer;font-weight:700}
       <h2>Brief gratuit — lancez votre comparatif</h2>
       <p class="muted">Décrivez votre projet : je reviens vers vous rapidement avec une première estimation et les prochaines étapes.</p>
 
-      <form
-        id="briefForm"
-        class="form"
-        action="https://script.google.com/macros/s/AKfycbxThKI_Co0fRMakHKcjPA765r5AJEE-IfVXGRyMpNG1LfFC0yqTJ7jJUCPTiirtBHtfwg/exec" method="POST"
-        accept-charset="UTF-8"
-      >
+<!-- === BLOC FORMULAIRE À REMPLACER UNIQUEMENT === -->
+<form
+  id="briefForm"
+  class="form"
+  action="https://script.google.com/macros/s/TON_DEPLOYMENT_ID/exec"
+  method="POST"
+  accept-charset="UTF-8"
+>
+  <div class="input">
+    <label for="nom">Nom</label>
+    <input id="nom" name="nom" type="text" required placeholder="Votre nom" />
+  </div>
 
-        <div class="input">
-          <label for="nom">Nom</label>
-          <input id="nom" name="nom" type="text" required placeholder="Votre nom" />
-        </div>
-        <div class="input">
-          <label for="email">Email</label>
-          <input id="email" name="email" type="email" required placeholder="vous@exemple.fr" />
-        </div>
-        <div class="input">
-          <label for="tel">Téléphone</label>
-          <input id="tel" name="tel" type="tel" placeholder="06 12 34 56 78" />
-        </div>
-        <div class="input">
-          <label for="budget">Budget cuisine (hors pose)</label>
-          <select id="budget" name="budget">
-            <option value="">Sélectionnez…</option>
-            <option>moins de 3 000€</option>
-            <option>3 000 – 6 000€</option>
-            <option>6 000 – 10 000€</option>
-            <option>plus de 10 000€</option>
-          </select>
-        </div>
-        <div class="input full">
-          <label for="dimensions">Dimensions & contraintes</label>
-          <textarea id="dimensions" name="dimensions" rows="3" placeholder="Ex : linéaire 3,20 m + retour 1,20 m, hauteur sous plafond 2,50 m, arrivée d’eau à gauche…"></textarea>
-        </div>
-        <div class="input full">
-          <label for="style">Style & matériaux souhaités</label>
-          <textarea id="style" name="style" rows="3" placeholder="Ex : façades mates, poignées noires, plan de travail stratifié ou compact, crédence carrelage blanc…"></textarea>
-        </div>
-        <div class="input full">
-          <label class="input--check">
-            <input id="cond" name="condition_pose_travaux" type="checkbox" required />
-            <span>Je comprends que le courtage est gratuit si je confie la <b>pose</b> et les <b>travaux</b> à Papo-Rénov.</span>
-          </label>
-          <div class="help">Sans la pose par Papo-Rénov, une étude payante peut être proposée.</div>
-        </div>
-        <div class="full" style="display:flex;gap:10px;flex-wrap:wrap">
-          <button class="btn btn--accent" type="submit">Recevoir mon estimation</button>
-          <a class="btn btn--ghost" href="contact.html">Contacter directement</a>
-        </div>
-        <p id="formMsg" class="note" role="status" style="margin:8px 0 0"></p>
-      </form>
+  <div class="input">
+    <label for="email">Email</label>
+    <input id="email" name="email" type="email" required placeholder="vous@exemple.fr" />
+  </div>
+
+  <div class="input">
+    <label for="tel">Téléphone</label>
+    <input id="tel" name="tel" type="tel" placeholder="06 12 34 56 78" />
+  </div>
+
+  <div class="input">
+    <label for="budget">Budget cuisine (hors pose)</label>
+    <select id="budget" name="budget">
+      <option value="">Sélectionnez…</option>
+      <option>moins de 3 000€</option>
+      <option>3 000 – 6 000€</option>
+      <option>6 000 – 10 000€</option>
+      <option>plus de 10 000€</option>
+    </select>
+  </div>
+
+  <div class="input full">
+    <label for="dimensions">Dimensions & contraintes</label>
+    <textarea id="dimensions" name="dimensions" rows="3" placeholder="Ex : linéaire 3,20 m + retour 1,20 m, HSP 2,50 m, arrivée d’eau à gauche…"></textarea>
+  </div>
+
+  <div class="input full">
+    <label for="style">Style & matériaux souhaités</label>
+    <textarea id="style" name="style" rows="3" placeholder="Ex : façades mates, poignées noires, plan stratifié/compact, crédence carrelage blanc…"></textarea>
+  </div>
+
+  <div class="input full">
+    <label class="input--check">
+      <input id="cond" name="condition_pose_travaux" type="checkbox" required />
+      <span>Je comprends que le courtage est gratuit si je confie la <b>pose</b> et les <b>travaux</b> à Papo-Rénov.</span>
+    </label>
+    <div class="help">Sans la pose par Papo-Rénov, une étude payante peut être proposée.</div>
+  </div>
+
+  <!-- Champs cachés pour aligner avec le script Apps Script (facultatifs, laissés vides si non saisis) -->
+  <input type="hidden" name="contraintes" id="contraintes_hidden" />
+  <input type="hidden" name="adresse_commune" value="" />
+  <input type="hidden" name="type_cuisine" value="" />
+  <input type="hidden" name="surface_m2" value="" />
+  <input type="hidden" name="meubles" value="" />
+  <input type="hidden" name="electromenagers" value="" />
+  <input type="hidden" name="plan_ou_croquis" value="" />
+  <input type="hidden" name="photos" value="" />
+  <input type="hidden" name="delai_souhaite" value="" />
+
+  <div class="full" style="display:flex;gap:10px;flex-wrap:wrap">
+    <button class="btn btn--accent" type="submit">Recevoir mon estimation</button>
+    <a class="btn btn--ghost" href="contact.html">Contacter directement</a>
+  </div>
+
+  <p id="formMsg" class="note" role="status" style="margin:8px 0 0"></p>
+</form>
+<!-- === FIN BLOC FORMULAIRE === -->
+
+<script>
+/* Ne rien toucher d'autre : on recopie simplement "dimensions" vers "contraintes" avant envoi */
+(function(){
+  const f = document.getElementById('briefForm');
+  if (!f) return;
+  f.addEventListener('submit', () => {
+    const dim = document.getElementById('dimensions')?.value || '';
+    const hidden = document.getElementById('contraintes_hidden');
+    if (hidden) hidden.value = dim;
+    const formMsg = document.getElementById('formMsg');
+    if (formMsg){ formMsg.textContent = "Redirection vers votre estimation…"; formMsg.style.color = "var(--brand)"; }
+    const submitBtn = f.querySelector('button[type="submit"]');
+    if (submitBtn){ submitBtn.disabled = true; submitBtn.textContent = "Redirection…"; }
+  });
+})();
+</script>
+      
     </div>
     <div>
       <div class="card">
