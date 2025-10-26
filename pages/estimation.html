@@ -1,142 +1,37 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Estimation IA – Papo-Rénov</title>
-
+  <meta charset="utf-8">
+  <title>Estimation Papo-Rénov</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
-    /* --- STYLE GLOBAL --- */
-    :root {
-      --bleu-papo: #003366;
-      --bleu-clair: #00bfff;
-      --gris-fond: #f6f8fa;
-    }
-
-    body {
-      font-family: "Poppins", "Segoe UI", Roboto, Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      background: var(--gris-fond);
-      color: #222;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-start;
-      align-items: center;
-    }
-
-    header {
-      background: var(--bleu-papo);
-      color: white;
-      width: 100%;
-      padding: 1rem 0;
-      text-align: center;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-    }
-
-    header h1 {
-      font-size: 1.5rem;
-      margin: 0;
-      letter-spacing: 1px;
-    }
-
-    main {
-      width: 100%;
-      max-width: 900px;
-      background: white;
-      border-radius: 16px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.08);
-      padding: 2rem;
-      margin: 2rem auto;
-      box-sizing: border-box;
-    }
-
-    h3 {
-      color: var(--bleu-papo);
-      margin-top: 0;
-    }
-
-    .muted {
-      opacity: 0.7;
-      font-style: italic;
-      text-align: center;
-    }
-
-    footer {
-      margin-top: auto;
-      padding: 1.5rem;
-      text-align: center;
-      font-size: 0.9rem;
-      color: #666;
-    }
-
-    /* --- BOUTON DE RETOUR --- */
-    .btn-retour {
-      display: inline-block;
-      background: var(--bleu-clair);
-      color: white;
-      padding: 0.7rem 1.4rem;
-      border-radius: 50px;
-      text-decoration: none;
-      font-weight: 600;
-      box-shadow: 0 4px 12px rgba(0, 191, 255, 0.3);
-      transition: 0.3s;
-    }
-
-    .btn-retour:hover {
-      background: var(--bleu-papo);
-      transform: scale(1.05);
-    }
-
-    @media (max-width: 768px) {
-      main {
-        padding: 1.2rem;
-        margin: 1rem;
-      }
-      header h1 {
-        font-size: 1.2rem;
-      }
-    }
+    body { max-width: 960px; margin: 40px auto; padding: 16px; font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial; }
+    h2 { margin-bottom: 8px; }
+    #result { margin-top: 16px; }
+    .muted { color: #666; font-size: .95rem; }
   </style>
 </head>
-
 <body>
-  <header>
-    <h1>Estimation générée par l’IA Gemini – Papo-Rénov</h1>
-  </header>
-
-  <main>
-    <div id="out">
-      <p class="muted">Chargement de votre estimation personnalisée…</p>
-    </div>
-
-    <div style="text-align:center; margin-top:2rem;">
-      <a class="btn-retour" href="courtage-cuisine.html">← Retour au formulaire</a>
-    </div>
-  </main>
-
-  <footer>
-    © 2025 Papo-Rénov – Estimation IA alimentée par Google Gemini
-  </footer>
+  <h2>Votre estimation</h2>
+  <div class="muted">Générée automatiquement à partir de vos informations et de nos bases tarifaires.</div>
+  <div id="result" style="margin-top:24px;">Chargement…</div>
 
   <script>
-    (function () {
-      const el = document.getElementById('out');
-      const params = new URLSearchParams(window.location.search);
-      const b64 = params.get('estimation');
-
+    (async () => {
+      const params = new URLSearchParams(location.search);
+      const id = params.get('id');
+      if (!id) {
+        document.getElementById('result').textContent = "Identifiant manquant dans l'URL.";
+        return;
+      }
+      // ⚠️ Remplace TON_DEPLOYMENT_ID par l'ID de déploiement de ta Web App
+      const endpoint = "https://script.google.com/macros/s/TON_DEPLOYMENT_ID/exec?fn=get&id=" + encodeURIComponent(id);
       try {
-        if (!b64) throw new Error("Paramètre manquant");
-        // Décodage Base64 + HTML
-        const html = atob(decodeURIComponent(b64));
-        el.innerHTML = html;
-      } catch (err) {
-        el.innerHTML = `
-          <h3>Oups !</h3>
-          <p class="muted">Aucune estimation n’a été trouvée. 
-          Retournez au formulaire pour générer votre devis personnalisé.</p>
-        `;
+        const r = await fetch(endpoint, { method: 'GET' });
+        const j = await r.json();
+        document.getElementById('result').innerHTML = j.html || "<p>(Aucun contenu trouvé)</p>";
+      } catch(e) {
+        document.getElementById('result').textContent = "Erreur de récupération: " + e;
       }
     })();
   </script>
