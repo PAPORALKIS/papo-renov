@@ -434,148 +434,383 @@ summary{cursor:pointer;font-weight:700}
 <h2>Brief gratuit — lancez votre comparatif</h2>
  <p class="muted">Décrivez votre projet : je reviens vers vous rapidement avec une première estimation et les prochaines étapes.</p>
 
-<!-- === BLOC FORMULAIRE À REMPLACER UNIQUEMENT === -->
-<form
-	id="briefForm"
-	class="form"
-	action="https://script.google.com/macros/s/AKfycbxdxS_yX6QRZJEh1aUz5MQ-VMUPv5w1qFBGwwYNZi7vTnRQhO63LrNrrsSGYgo1uRj0Kw/exec"
-	method="POST"
-	accept-charset="UTF-8"
->
-	<div class="input">
-		<label for="nom">Nom</label>
-		<input id="nom" name="nom" type="text" required placeholder="Votre nom" />
-	</div>
+		<!-- === BLOC FORMULAIRE À REMPLACER EN ENTIER (onglets catégories) === -->
+<div class="panel">
+  <h2>Brief gratuit — lancez votre comparatif</h2>
+  <p class="muted">Décrivez votre projet : je reviens vers vous rapidement avec une première estimation et les prochaines étapes.</p>
 
-	<div class="input">
-		<label for="email">Email</label>
-		<input id="email" name="email" type="email" required placeholder="vous@exemple.fr" />
-	</div>
+  <!-- Barre d’onglets -->
+  <div class="tabs" role="tablist" aria-label="Catégories de projet" style="display:flex;gap:8px;flex-wrap:wrap;margin:10px 0 14px">
+    <button class="tab is-active" role="tab" aria-selected="true" data-cat="cuisine">Cuisine</button>
+    <button class="tab" role="tab" aria-selected="false" data-cat="sdb">Salle de bain</button>
+    <button class="tab" role="tab" aria-selected="false" data-cat="dressing">Dressing</button>
+    <button class="tab" role="tab" aria-selected="false" data-cat="travaux">Travaux int.</button>
+  </div>
 
-	<div class="input">
-    <label for="tel">Téléphone</label>
-		<input id="tel" name="tel" type="tel" placeholder="06 12 34 56 78" />
-	</div>
+  <style>
+    /* Mini-style onglets (harmonisé avec ta charte) */
+    .tab{
+      appearance:none;border:1px solid var(--ring);background:#fff;color:var(--text);
+      padding:10px 14px;border-radius:12px;cursor:pointer;font-weight:600;box-shadow:0 2px 8px rgba(8,15,40,.04)
+    }
+    .tab.is-active{background:#eef2ff;color:var(--brand);border-color:color-mix(in oklab, var(--brand) 30%, var(--ring));}
+    .panel-cat[hidden]{display:none !important;}
+  </style>
 
-	<div class="input">
-		<label for="commune">Commune des travaux (13)</label>
-		<input id="commune" name="adresse_commune" type="text" required placeholder="Ex: Aix-en-Provence" />
-	</div>
-	
-	<div class="input">
-		<label for="type_projet">Type de projet</label>
-		<select id="type_projet" name="type_projet">
-			<option value="Rénovation complète">Rénovation complète (dépose/reprise)</option>
-			<option value="Neuf / Remplacement simple">Neuf ou Remplacement simple</option>
-			<option value="Modification de l'existant">Modification de l'existant</option>
-		</select>
-		<div class="help">Rénovation = démolition, électricité, plomberie.</div>
-	</div>
-	
-	<div class="input">
-		<label for="configuration">Configuration de la cuisine</label>
-		<select id="configuration" name="configuration_cuisine" required>
-			<option value="">Sélectionnez…</option>
-			<option>Linéaire (sur un seul mur)</option>
-			<option>En L</option>
-			<option>En U ou en G</option>
-			<option>Avec îlot central</option>
-			<option>Autre / Je ne sais pas</option>
-		</select>
-	</div>
+  <form
+    id="briefForm"
+    class="form"
+    action="https://script.google.com/macros/s/AKfycbxdxS_yX6QRZJEh1aUz5MQ-VMUPv5w1qFBGwwYNZi7vTnRQhO63LrNrrsSGYgo1uRj0Kw/exec"
+    method="POST"
+    accept-charset="UTF-8"
+  >
+    <!-- Champs communs (identité) -->
+    <div class="input">
+      <label for="nom">Nom</label>
+      <input id="nom" name="nom" type="text" required placeholder="Votre nom" />
+    </div>
 
-	<div class="input">
-		<label for="budget">Budget estimé (Hors pose/travaux)</label>
-		<select id="budget" name="budget">
-			<option value="">Sélectionnez…</option>
-      <option>moins de 3 000€</option>
-      <option>3 000 – 6 000€</option>
-      <option>6 000 – 10 000€</option>
-      <option>plus de 10 000€</option>
-		</select>
-	</div>
-	
-	<div class="input">
-		<label for="delai">Délai souhaité pour la pose</label>
-		<select id="delai" name="delai_souhaite">
-			<option value="">Sélectionnez…</option>
-			<option>Urgent (dans les 1 à 2 mois)</option>
-			<option>Délai classique (3 à 6 mois)</option>
-			<option>Non défini / Flexible</option>
-		</select>
-		<div class="help">Permet d'orienter vers les fournisseurs disponibles.</div>
-	</div>
+    <div class="input">
+      <label for="email">Email</label>
+      <input id="email" name="email" type="email" required placeholder="vous@exemple.fr" />
+    </div>
 
-	<div class="input full">
-		<label for="travaux_pose">Travaux de pose associés (à confier à Papo-Rénov)</label>
-		<select id="travaux_pose" name="travaux_pose_necessaires">
-			<option>Pose simple des meubles uniquement</option>
-			<option>Plomberie (déplacement évier/arrivées)</option>
-			<option>Électricité (création de prises/lignes dédiées)</option>
-			<option>Plomberie + Électricité complètes</option>
-			<option>Petite démolition / Reprise de cloisons (plâtrerie)</option>
-			<option>Tout le second œuvre (du sol au plafond)</option>
-		</select>
-		<div class="help">Sélectionner les travaux à réaliser pour la pose de la cuisine.</div>
-	</div>
-	
-	<div class="input full">
-		<label for="plan_travail_mat">Matériau du Plan de Travail souhaité</label>
-		<select id="plan_travail_mat" name="plan_travail_mat_souhaite">
-			<option value="Stratifié standard">Stratifié (le plus courant)</option>
-			<option value="Stratifié compact/Slim">Stratifié compact (fin et résistant)</option>
-			<option value="Bois Massif ou Bambou">Bois Massif ou Bambou</option>
-			<option value="Quartz, Granit ou Pierre">Quartz, Granit ou Pierre (plus onéreux)</option>
-			<option value="Inox, Résine ou Verre">Inox, Résine ou Verre</option>
-		</select>
-		<div class="help">Élément clé du devis : soyez précis !</div>
-	</div>
-	
-	<div class="input full">
-		<label for="electromenagers">Électroménagers (Éléments principaux)</label>
-		<textarea id="electromenagers" name="electromenagers" rows="3" placeholder="Ex : Four + Micro-ondes encastrés, Plaque à induction, Lave-vaisselle semi-intégré, Hotte tiroir..."></textarea>
-		<div class="help">Précisez si vous les fournissez vous-même ou s'ils doivent être inclus dans le devis fournisseur.</div>
-	</div>
+    <div class="input">
+      <label for="tel">Téléphone</label>
+      <input id="tel" name="tel" type="tel" placeholder="06 12 34 56 78" />
+    </div>
 
+    <div class="input">
+      <label for="commune">Commune des travaux (13)</label>
+      <input id="commune" name="adresse_commune" type="text" required placeholder="Ex: Aix-en-Provence" />
+    </div>
 
-	<div class="input full">
-		<label for="dimensions">Dimensions, contraintes et besoins spécifiques</label>
-		<textarea id="dimensions" name="dimensions_contraintes" rows="4" placeholder="Décrivez les dimensions (ex: mur de 4m), la hauteur sous plafond (HSP), les contraintes (fenêtre, mur porteur, radiateur à déplacer) ou les spécificités de design (grand îlot, meuble toute hauteur, etc.)."></textarea>
-	</div>
-	
-	<div class="input full">
-		<label for="style">Style & Couleurs des façades</label>
-		<textarea id="style" name="style" rows="2" placeholder="Ex : Façades sans poignée (poignée gorge), couleur Vert Sauge Mat, style Industriel ou Scandinave..."></textarea>
-	</div>
+    <!-- Catégorie sélectionnée (hidden) -->
+    <input type="hidden" name="categorie" id="cat_hidden" value="cuisine" />
 
-	<div class="input full">
-		<label class="input--check">
-			<input id="cond" name="condition_pose_travaux" type="checkbox" required />
-      <span>Je comprends que le courtage est gratuit si je confie la <b>pose</b> et les <b>travaux</b> à Papo-Rénov.</span>
-		</label>
-		<div class="help">Sans la pose par Papo-Rénov, une étude payante peut être proposée.</div>
-	</div>
+    <!-- ==================== ONGLET CUISINE ==================== -->
+    <section class="panel-cat" id="cat-cuisine" role="tabpanel" aria-labelledby="tab-cuisine">
+      <div class="input">
+        <label for="type_projet">Type de projet</label>
+        <select id="type_projet" name="type_projet">
+          <option value="Rénovation complète">Rénovation complète (dépose/reprise)</option>
+          <option value="Neuf / Remplacement simple">Neuf ou Remplacement simple</option>
+          <option value="Modification de l'existant">Modification de l'existant</option>
+        </select>
+        <div class="help">Rénovation = démolition, électricité, plomberie.</div>
+      </div>
 
-  <!-- Champs cachés pour aligner avec le script Apps Script (facultatifs, laissés vides si non saisis) -->
-	<input type="hidden" name="contraintes" id="contraintes_hidden" />
-  <input type="hidden" name="adresse_commune" value="" />
-	<input type="hidden" name="type_cuisine" value="" />
-	<input type="hidden" name="surface_m2" value="" />
-	<input type="hidden" name="meubles" value="" />
-  <input type="hidden" name="electromenagers" value="" />
-	<input type="hidden" name="plan_ou_croquis" value="" />
-	<input type="hidden" name="photos" value="" />
-	<input type="hidden" name="delai_souhaite" value="" />
+      <div class="input">
+        <label for="configuration">Configuration de la cuisine</label>
+        <select id="configuration" name="configuration_cuisine" required>
+          <option value="">Sélectionnez…</option>
+          <option>Linéaire (sur un seul mur)</option>
+          <option>En L</option>
+          <option>En U ou en G</option>
+          <option>Avec îlot central</option>
+          <option>Autre / Je ne sais pas</option>
+        </select>
+      </div>
 
-	<div class="full" style="display:flex;gap:10px;flex-wrap:wrap">
-		<button class="btn btn--accent" type="submit">Recevoir mon estimation</button>
-		<a class="btn btn--ghost" href="contact.html">Contacter directement</a>
-	</div>
+      <div class="input">
+        <label for="budget">Budget estimé (Hors pose/travaux)</label>
+        <select id="budget" name="budget">
+          <option value="">Sélectionnez…</option>
+          <option>moins de 3 000€</option>
+          <option>3 000 – 6 000€</option>
+          <option>6 000 – 10 000€</option>
+          <option>plus de 10 000€</option>
+        </select>
+      </div>
 
-	<p id="formMsg" class="note" role="status" style="margin:8px 0 0"></p>
-</form>
-<!-- === FIN BLOC FORMULAIRE === -->
+      <div class="input">
+        <label for="delai">Délai souhaité pour la pose</label>
+        <select id="delai" name="delai_souhaite">
+          <option value="">Sélectionnez…</option>
+          <option>Urgent (dans les 1 à 2 mois)</option>
+          <option>Délai classique (3 à 6 mois)</option>
+          <option>Non défini / Flexible</option>
+        </select>
+        <div class="help">Permet d'orienter vers les fournisseurs disponibles.</div>
+      </div>
 
+      <div class="input full">
+        <label for="travaux_pose">Travaux de pose associés (à confier à Papo-Rénov)</label>
+        <select id="travaux_pose" name="travaux_pose_necessaires">
+          <option>Pose simple des meubles uniquement</option>
+          <option>Plomberie (déplacement évier/arrivées)</option>
+          <option>Électricité (création de prises/lignes dédiées)</option>
+          <option>Plomberie + Électricité complètes</option>
+          <option>Petite démolition / Reprise de cloisons (plâtrerie)</option>
+          <option>Tout le second œuvre (du sol au plafond)</option>
+        </select>
+        <div class="help">Sélectionner les travaux à réaliser pour la pose de la cuisine.</div>
+      </div>
+
+      <div class="input">
+        <label for="plan_travail_mat">Matériau du Plan de Travail souhaité</label>
+        <select id="plan_travail_mat" name="plan_travail_mat_souhaite">
+          <option value="Stratifié standard">Stratifié (le plus courant)</option>
+          <option value="Stratifié compact/Slim">Stratifié compact (fin et résistant)</option>
+          <option value="Bois Massif ou Bambou">Bois Massif ou Bambou</option>
+          <option value="Quartz, Granit ou Pierre">Quartz, Granit ou Pierre (plus onéreux)</option>
+          <option value="Inox, Résine ou Verre">Inox, Résine ou Verre</option>
+        </select>
+        <div class="help">Élément clé du devis : soyez précis !</div>
+      </div>
+
+      <div class="input full">
+        <label for="electromenagers">Électroménagers (Éléments principaux)</label>
+        <textarea id="electromenagers" name="electromenagers" rows="3" placeholder="Ex : Four + MO encastrés, Plaque induction, LV, Hotte…"></textarea>
+        <div class="help">Précisez si vous les fournissez vous-même ou s'ils doivent être inclus.</div>
+      </div>
+
+      <div class="input full">
+        <label for="dimensions">Dimensions, contraintes et besoins spécifiques</label>
+        <textarea id="dimensions" name="dimensions_contraintes" rows="4" placeholder="Mur(s), HSP, fenêtre, mur porteur, radiateur à déplacer, grand îlot, etc."></textarea>
+      </div>
+
+      <div class="input full">
+        <label for="style">Style & Couleurs des façades</label>
+        <textarea id="style" name="style" rows="2" placeholder="Sans poignées, Vert sauge mat, Industriel / Scandinave…"></textarea>
+      </div>
+    </section>
+
+    <!-- ==================== ONGLET SALLE DE BAIN ==================== -->
+    <section class="panel-cat" id="cat-sdb" role="tabpanel" aria-labelledby="tab-sdb" hidden>
+      <div class="input">
+        <label for="sdb_type">Type de projet SDB</label>
+        <select id="sdb_type" name="type_projet">
+          <option>Rénovation complète</option>
+          <option>Remplacement simple</option>
+          <option>Modification de l'existant</option>
+        </select>
+      </div>
+
+      <div class="input full">
+        <label for="sdb_equip">Équipements</label>
+        <textarea id="sdb_equip" name="besoins" rows="3" placeholder="Douche italienne ou receveur, baignoire, WC, meuble vasque, paroi, sèche-serviettes…"></textarea>
+      </div>
+
+      <div class="input">
+        <label for="sdb_revet">Revêtements</label>
+        <select id="sdb_revet" name="revêtements">
+          <option>Carrelage mural + sol</option>
+          <option>Grès grand format</option>
+          <option>PVC ou stratifié (sol)</option>
+          <option>Enduit/peinture hydro</option>
+        </select>
+      </div>
+
+      <div class="input">
+        <label for="sdb_budget">Budget estimé (Hors pose/travaux)</label>
+        <select id="sdb_budget" name="budget">
+          <option value="">Sélectionnez…</option>
+          <option>moins de 3 000€</option>
+          <option>3 000 – 6 000€</option>
+          <option>6 000 – 10 000€</option>
+          <option>plus de 10 000€</option>
+        </select>
+      </div>
+
+      <div class="input">
+        <label for="sdb_delai">Délai souhaité</label>
+        <select id="sdb_delai" name="delai_souhaite">
+          <option value="">Sélectionnez…</option>
+          <option>Urgent (1–2 mois)</option>
+          <option>Classique (3–6 mois)</option>
+          <option>Flexible</option>
+        </select>
+      </div>
+
+      <div class="input full">
+        <label for="sdb_dims">Dimensions & contraintes</label>
+        <textarea id="sdb_dims" name="dimensions_contraintes" rows="3" placeholder="Surface, arrivées/évacuations, VMC, niche, contraintes techniques…"></textarea>
+      </div>
+
+      <div class="input full">
+        <label for="sdb_style">Style & coloris</label>
+        <textarea id="sdb_style" name="style" rows="2" placeholder="Ex : Minimal, bois & blanc, noir mat, laiton, etc."></textarea>
+      </div>
+    </section>
+
+    <!-- ==================== ONGLET DRESSING ==================== -->
+    <section class="panel-cat" id="cat-dressing" role="tabpanel" aria-labelledby="tab-dressing" hidden>
+      <div class="input">
+        <label for="dr_config">Configuration dressing</label>
+        <select id="dr_config" name="configuration_dressing">
+          <option>Linéaire</option>
+          <option>En L</option>
+          <option>En U</option>
+          <option>Walk-in / Pièce dressing</option>
+        </select>
+      </div>
+
+      <div class="input">
+        <label for="dr_budget">Budget estimé (Hors pose)</label>
+        <select id="dr_budget" name="budget">
+          <option value="">Sélectionnez…</option>
+          <option>moins de 1 500€</option>
+          <option>1 500 – 3 000€</option>
+          <option>3 000 – 6 000€</option>
+          <option>plus de 6 000€</option>
+        </select>
+      </div>
+
+      <div class="input">
+        <label for="dr_delai">Délai souhaité</label>
+        <select id="dr_delai" name="delai_souhaite">
+          <option value="">Sélectionnez…</option>
+          <option>Urgent (1–2 mois)</option>
+          <option>Classique (3–6 mois)</option>
+          <option>Flexible</option>
+        </select>
+      </div>
+
+      <div class="input full">
+        <label for="dr_dims">Dimensions & besoins</label>
+        <textarea id="dr_dims" name="dimensions_contraintes" rows="3" placeholder="Largeur/hauteur disponibles, retombées, sous-pente, nombre de colonnes…"></textarea>
+      </div>
+
+      <div class="input full">
+        <label for="dr_style">Façades & finitions</label>
+        <textarea id="dr_style" name="style" rows="2" placeholder="Porte battante/coulissante, miroir, bois/uni, poignées ou gorge…"></textarea>
+      </div>
+
+      <div class="input full">
+        <label for="dr_access">Accessoires</label>
+        <textarea id="dr_access" name="besoins" rows="2" placeholder="Tiroirs, penderies relevables, range-chaussures, éclairage LED…"></textarea>
+      </div>
+    </section>
+
+    <!-- ==================== ONGLET TRAVAUX INT. ==================== -->
+    <section class="panel-cat" id="cat-travaux" role="tabpanel" aria-labelledby="tab-travaux" hidden>
+      <div class="input">
+        <label for="ti_lots">Corps d’état concernés</label>
+        <select id="ti_lots" name="besoins">
+          <option>Plâtrerie / Cloisons / Faux-plafonds</option>
+          <option>Électricité (création / reprise / tableau)</option>
+          <option>Plomberie / Sanitaires</option>
+          <option>Peinture / Finitions</option>
+          <option>Sols (carrelage, stratifié, parquet, PVC)</option>
+          <option>Menuiseries intérieures</option>
+        </select>
+      </div>
+
+      <div class="input">
+        <label for="ti_surface">Surface concernée</label>
+        <select id="ti_surface" name="surface_m2">
+          <option>&lt; 20 m²</option>
+          <option>20 – 50 m²</option>
+          <option>50 – 100 m²</option>
+          <option>&gt; 100 m²</option>
+        </select>
+      </div>
+
+      <div class="input">
+        <label for="ti_budget">Budget travaux (indicatif)</label>
+        <select id="ti_budget" name="budget">
+          <option value="">Sélectionnez…</option>
+          <option>&lt; 5 000€</option>
+          <option>5 000 – 15 000€</option>
+          <option>15 000 – 30 000€</option>
+          <option>&gt; 30 000€</option>
+        </select>
+      </div>
+
+      <div class="input">
+        <label for="ti_delai">Délai souhaité</label>
+        <select id="ti_delai" name="delai_souhaite">
+          <option value="">Sélectionnez…</option>
+          <option>Urgent (1–2 mois)</option>
+          <option>Classique (3–6 mois)</option>
+          <option>Flexible</option>
+        </select>
+      </div>
+
+      <div class="input full">
+        <label for="ti_details">Détails & contraintes</label>
+        <textarea id="ti_details" name="dimensions_contraintes" rows="3" placeholder="Hauteur sous plafond, murs porteurs, accès chantier, contraintes horaires…"></textarea>
+      </div>
+
+      <div class="input full">
+        <label for="ti_style">Style / Références</label>
+        <textarea id="ti_style" name="style" rows="2" placeholder="Ambiance, teintes, références Pinterest…"></textarea>
+      </div>
+    </section>
+
+    <!-- Conditions -->
+    <div class="input full">
+      <label class="input--check">
+        <input id="cond" name="condition_pose_travaux" type="checkbox" required />
+        <span>Je comprends que le courtage est gratuit si je confie la <b>pose</b> et les <b>travaux</b> à Papo-Rénov.</span>
+      </label>
+      <div class="help">Sans la pose par Papo-Rénov, une étude payante peut être proposée.</div>
+    </div>
+
+    <!-- Champs cachés (compat) -->
+    <input type="hidden" name="contraintes" id="contraintes_hidden" />
+    <input type="hidden" name="type_cuisine" value="" />
+    <input type="hidden" name="meubles" value="" />
+    <input type="hidden" name="plan_ou_croquis" value="" />
+    <input type="hidden" name="photos" value="" />
+
+    <!-- CTA -->
+    <div class="full" style="display:flex;gap:10px;flex-wrap:wrap">
+      <button class="btn btn--accent" type="submit">Recevoir mon estimation</button>
+      <a class="btn btn--ghost" href="contact.html">Contacter directement</a>
+    </div>
+
+    <p id="formMsg" class="note" role="status" style="margin:8px 0 0"></p>
+  </form>
+
+  <script>
+    (function(){
+      // Gestion des onglets
+      const tabs = document.querySelectorAll('.tabs .tab');
+      const panels = {
+        cuisine: document.getElementById('cat-cuisine'),
+        sdb: document.getElementById('cat-sdb'),
+        dressing: document.getElementById('cat-dressing'),
+        travaux: document.getElementById('cat-travaux')
+      };
+      const hiddenCat = document.getElementById('cat_hidden');
+
+      tabs.forEach(btn=>{
+        btn.addEventListener('click', ()=>{
+          const cat = btn.dataset.cat;
+          // Visuel onglets
+          tabs.forEach(t=>t.classList.toggle('is-active', t===btn));
+          // Panels
+          Object.entries(panels).forEach(([k,el])=>{
+            el.hidden = (k !== cat);
+          });
+          // Valeur postée
+          hiddenCat.value = cat;
+        });
+      });
+
+      // Compat : recopie le champ "dimensions" (onglet cuisine) dans contraintes_hidden avant submit
+      const f = document.getElementById('briefForm');
+      const formMsg = document.getElementById('formMsg');
+      f.addEventListener('submit', () => {
+        const dimCuisine = document.getElementById('dimensions')?.value || '';
+        const sdbDims = document.getElementById('sdb_dims')?.value || '';
+        const drDims  = document.getElementById('dr_dims')?.value || '';
+        const tiDet   = document.getElementById('ti_details')?.value || '';
+        // On prend le champ actif selon la catégorie
+        const cat = hiddenCat.value;
+        const map = { cuisine: dimCuisine, sdb: sdbDims, dressing: drDims, travaux: tiDet };
+        document.getElementById('contraintes_hidden').value = map[cat] || '';
+
+        if (formMsg){ formMsg.textContent = "Redirection vers votre estimation…"; formMsg.style.color = "var(--brand)"; }
+        const submitBtn = f.querySelector('button[type="submit"]');
+        if (submitBtn){ submitBtn.disabled = true; submitBtn.textContent = "Redirection…"; }
+      });
+    })();
+  </script>
+</div>
+<!-- === FIN BLOC FORMULAIRE À REMPLACER === -->
 <script>
 /* Ne rien toucher d'autre : on recopie simplement "dimensions" vers "contraintes" avant envoi */
 (function(){
