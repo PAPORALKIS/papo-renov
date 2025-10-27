@@ -128,116 +128,123 @@
     <div class="card error" role="alert">Activez JavaScript pour afficher l’estimation.</div>
   </noscript>
 
-  <script>
-    // 1) Renseignez ici l’URL /exec de votre Web App Apps Script (ou passez-la via ?api=... dans l’URL)
-    const DEFAULT_SCRIPT_BASE = 'https://script.google.com/macros/s/AKfycbxdxS_yX6QRZJEh1aUz5MQ-VMUPv5w1qFBGwwYNZi7vTnRQhO63LrNrrsSGYgo1uRj0Kw/exec';
-    // 2) Utilitaires URL
-    const usp = new URLSearchParams(location.search);
-    const ID = usp.get('id') || '';            // Jeton stocké côté Apps Script (Cache)
-    const SCRIPT_BASE = usp.get('api') || DEFAULT_SCRIPT_BASE; // Option: passer ?api=https://script.google.com/macros/s/AKfycbzIEB7_atox_Qnx8GfNc2V4fIT3OxASsZmmkMWLnHrxpHlstqSnhe5GrfeF7UVJ_qKHwQ/exec
-    const AUTO_PRINT = usp.get('print') === '1';
+<script>
+  // 1) URL /exec de la Web App (mise à jour)
+  const DEFAULT_SCRIPT_BASE = 'https://script.google.com/macros/s/AKfycbzYhaNEHxY2MOowz4lEKEEU9WW-3e73SA9u1BR3oMuxWCSaS5Womvxy52kGPmi5EqmYbA/exec';
 
-    // 3) Sélecteurs
-    const $status = document.getElementById('status');
-    const $placeholder = document.getElementById('placeholder');
-    const $result = document.getElementById('result');
-    const $error = document.getElementById('error');
-    const $btnPrint = document.getElementById('btnPrint');
-    const $btnPrint2 = document.getElementById('btnPrint2');
-    const $btnDownload = document.getElementById('btnDownload');
-    const $btnCopy = document.getElementById('btnCopy');
+  // 2) Query params
+  const usp = new URLSearchParams(location.search);
+  const DIRECT_HTML = usp.get('html');        // ✅ nouveau : rendu HTML direct
+  const ID = usp.get('id') || '';             // fallback : id stocké côté Apps Script
+  const SCRIPT_BASE = usp.get('api') || DEFAULT_SCRIPT_BASE;
+  const AUTO_PRINT = usp.get('print') === '1';
 
-    function setStatus(text, state) {
-      if (!text) { $status.hidden = true; return; }
-      $status.hidden = false;
-      $status.querySelector('span:last-child').textContent = text;
-      const dot = $status.querySelector('.dot');
-      if (state === 'ok') { dot.style.background = 'var(--ok)'; }
-      else if (state === 'err') { dot.style.background = 'var(--err)'; }
-      else { dot.style.background = 'var(--warn)'; }
-    }
+  // 3) Sélecteurs
+  const $status = document.getElementById('status');
+  const $placeholder = document.getElementById('placeholder');
+  const $result = document.getElementById('result');
+  const $error = document.getElementById('error');
+  const $btnPrint = document.getElementById('btnPrint');
+  const $btnPrint2 = document.getElementById('btnPrint2');
+  const $btnDownload = document.getElementById('btnDownload');
+  const $btnCopy = document.getElementById('btnCopy');
 
-    function showError(msg) {
-      $placeholder.hidden = true;
-      $result.hidden = true;
-      $btnPrint2.hidden = true;
-      $error.hidden = false;
-      $error.textContent = msg;
-      setStatus('Erreur lors du chargement.', 'err');
-    }
+  function setStatus(text, state) {
+    if (!text) { $status.hidden = true; return; }
+    $status.hidden = false;
+    $status.querySelector('span:last-child').textContent = text;
+    const dot = $status.querySelector('.dot');
+    if (state === 'ok') { dot.style.background = 'var(--ok)'; }
+    else if (state === 'err') { dot.style.background = 'var(--err)'; }
+    else { dot.style.background = 'var(--warn)'; }
+  }
 
-    function asFileName(prefix = 'estimation') {
-      const now = new Date();
-      const pad = n => String(n).padStart(2, '0');
-      return `${prefix}-${now.getFullYear()}${pad(now.getMonth()+1)}${pad(now.getDate())}-${pad(now.getHours())}${pad(now.getMinutes())}.html`;
-    }
+  function showError(msg) {
+    $placeholder.hidden = true;
+    $result.hidden = true;
+    $btnPrint2.hidden = true;
+    $error.hidden = false;
+    $error.textContent = msg;
+    setStatus('Erreur lors du chargement.', 'err');
+  }
 
-    async function loadEstimation() {
-      try {
-        if (!ID) {
-          showError("Identifiant manquant dans l’URL (?id=...). Vérifiez la redirection du formulaire.");
-          return;
-        }
-        if (!/^https?:\/\/.+\/exec$/.test(SCRIPT_BASE)) {
-          setStatus('Configuration API absente, tentative quand même…', 'warn');
-        }
-        const url = `${SCRIPT_BASE}?fn=get&id=${encodeURIComponent(ID)}`;
-        const res = await fetch(url, { method: 'GET', mode: 'cors' });
-        if (!res.ok) {
-          const txt = await res.text().catch(() => '');
-          throw new Error(`HTTP ${res.status} — ${txt.slice(0, 240)}`);
-        }
-        const data = await res.json();
-        const html = (data && data.html) ? String(data.html) : '';
-        if (!html) throw new Error('Réponse vide (html manquant).');
+  function asFileName(prefix = 'estimation') {
+    const now = new Date();
+    const pad = n => String(n).padStart(2, '0');
+    return `${prefix}-${now.getFullYear()}${pad(now.getMonth()+1)}${pad(now.getDate())}-${pad(now.getHours())}${pad(now.getMinutes())}.html`;
+  }
 
-        // Afficher le rendu IA (HTML déjà formaté côté serveur)
-        $result.innerHTML = html;
-        $placeholder.hidden = true;
-        $error.hidden = true;
-        $result.hidden = false;
-        $btnPrint2.hidden = false;
-        setStatus('Estimation chargée ✅', 'ok');
+  // 4) Affichage direct si ?html= est fourni
+  function showDirectHtml(html) {
+    $result.innerHTML = html;
+    $placeholder.hidden = true;
+    $error.hidden = true;
+    $result.hidden = false;
+    $btnPrint2.hidden = false;
+    setStatus('Estimation chargée ✅', 'ok');
+    if (AUTO_PRINT) setTimeout(() => window.print(), 200);
+  }
 
-        if (AUTO_PRINT) {
-          // Laisse le temps au DOM de peindre l’estimation
-          setTimeout(() => window.print(), 200);
-        }
-      } catch (err) {
-        showError(String(err));
+  // 5) Chargement via ID (fallback legacy)
+  async function loadById() {
+    try {
+      if (!ID) {
+        showError("Identifiant manquant dans l’URL (?id=...).");
+        return;
       }
-    }
-
-    // 4) Actions
-    $btnPrint.addEventListener('click', () => window.print());
-    $btnPrint2.addEventListener('click', () => window.print());
-
-    $btnDownload.addEventListener('click', () => {
-      const content = `<!doctype html><meta charset="utf-8"><title>Estimation Papo-Rénov</title>${$result.innerHTML}`;
-      const blob = new Blob([content], { type: 'text/html;charset=utf-8' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = asFileName('papo-renov-estimation');
-      a.click();
-      URL.revokeObjectURL(url);
-    });
-
-    $btnCopy.addEventListener('click', async () => {
-      try {
-        // Conserve id + api si présent
-        const u = new URL(location.href);
-        await navigator.clipboard.writeText(u.toString());
-        setStatus('Lien copié dans le presse-papiers ✅', 'ok');
-        setTimeout(() => setStatus('', 'ok'), 1800);
-      } catch {
-        setStatus('Impossible de copier automatiquement, copiez l’URL manuellement.', 'warn');
+      if (!/^https?:\/\/.+\/exec$/.test(SCRIPT_BASE)) {
+        setStatus('Configuration API absente, tentative quand même…', 'warn');
       }
-    });
+      const url = `${SCRIPT_BASE}?fn=get&id=${encodeURIComponent(ID)}`;
+      const res = await fetch(url, { method: 'GET', mode: 'cors' });
+      if (!res.ok) {
+        const txt = await res.text().catch(() => '');
+        throw new Error(`HTTP ${res.status} — ${txt.slice(0, 240)}`);
+      }
+      const data = await res.json();
+      const html = (data && data.html) ? String(data.html) : '';
+      if (!html) throw new Error('Réponse vide (html manquant).');
+      showDirectHtml(html);
+    } catch (err) {
+      showError(String(err));
+    }
+  }
 
-    // 5) Init
-    setStatus('Chargement de votre estimation…', 'warn');
-    loadEstimation();
-  </script>
+  // 6) Actions
+  $btnPrint.addEventListener('click', () => window.print());
+  $btnPrint2.addEventListener('click', () => window.print());
+
+  $btnDownload.addEventListener('click', () => {
+    const content = `<!doctype html><meta charset="utf-8"><title>Estimation Papo-Rénov</title>${$result.innerHTML}`;
+    const blob = new Blob([content], { type: 'text/html;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = asFileName('papo-renov-estimation');
+    a.click();
+    URL.revokeObjectURL(url);
+  });
+
+  $btnCopy.addEventListener('click', async () => {
+    try {
+      await navigator.clipboard.writeText(location.href);
+      setStatus('Lien copié dans le presse-papiers ✅', 'ok');
+      setTimeout(() => setStatus('', 'ok'), 1800);
+    } catch {
+      setStatus('Impossible de copier automatiquement, copiez l’URL manuellement.', 'warn');
+    }
+  });
+
+  // 7) Init
+  setStatus('Chargement de votre estimation…', 'warn');
+  if (DIRECT_HTML) {
+    // ✅ Chemin moderne (Apps Script → redirect ?html=...)
+    showDirectHtml(DIRECT_HTML);
+  } else {
+    // ♻️ Chemin historique via ID
+    loadById();
+  }
+</script>
+
 </body>
 </html>
