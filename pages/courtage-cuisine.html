@@ -10,28 +10,28 @@
 <style>
 /* ====== THEME ====== */
 :root{
-  --brand:#0b2a4a;       /* Bleu marine Papo-Rénov */
-  --brand-2:#1c4b78;
-  --accent:#f2b705;
-  --bg:#f6f8fc;
-  --text:#0f172a;
-  --muted:#667085;
-  --card:#ffffff;
-  --ring:rgba(12,18,30,.12);
-  --ok:#0c6c3e;
-  --danger:#b42318;
-  --shadow:0 10px 26px rgba(8,15,40,.06), 0 2px 8px rgba(8,15,40,.05);
-  --radius:18px;
-  --w:1200px;
+  --brand:#0b2a4a;       /* Bleu marine Papo-Rénov */
+  --brand-2:#1c4b78;
+  --accent:#f2b705;
+  --bg:#f6f8fc;
+  --text:#0f172a;
+  --muted:#667085;
+  --card:#ffffff;
+  --ring:rgba(12,18,30,.12);
+  --ok:#0c6c3e;
+  --danger:#b42318;
+  --shadow:0 10px 26px rgba(8,15,40,.06), 0 2px 8px rgba(8,15,40,.05);
+  --radius:18px;
+  --w:1200px;
 }
 *{box-sizing:border-box}
 html,body{
-  margin:0;
-  background:var(--bg);
-  color:var(--text);
-  font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial;
-  position:relative;
-  overflow-x:hidden;
+  margin:0;
+  background:var(--bg);
+  color:var(--text);
+  font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial;
+  position:relative;
+  overflow-x:hidden;
 }
 
 img{max-width:100%;display:block}
@@ -39,13 +39,13 @@ a{color:inherit}
 
 /* ====== FILIGRANE LOGO Papo-Rénov (fixe & centré) ====== */
 body::before{
-  content:"";
-  position:fixed;
-  inset:0; /* couvre tout le viewport */
-  background:url("../img/logo.png") center center / 45vmin no-repeat;
-  opacity:0.008;               /* transparence discrète */
-  z-index:-1;                 /* derrière tout le contenu */
-  pointer-events:none;        /* ne bloque aucun clic */
+  content:"";
+  position:fixed;
+  inset:0; /* couvre tout le viewport */
+  background:url("../img/logo.png") center center / 45vmin no-repeat;
+  opacity:0.008;               /* transparence discrète */
+  z-index:-1;                 /* derrière tout le contenu */
+  pointer-events:none;        /* ne bloque aucun clic */
 }
 
 /* ====== NAVBAR (CONSERVÉE) ====== */
@@ -61,30 +61,30 @@ body::before{
 
 /* ====== TYPOGRAPHIE & HIÉRARCHIE ====== */
 h1, h2, h3, .logo, .btn {
-  font-family: 'Poppins', sans-serif;
-  letter-spacing: -0.2px;
+  font-family: 'Poppins', sans-serif;
+  letter-spacing: -0.2px;
 }
 h1{
-  margin: 12px 0 16px;
-  font-size:clamp(26px,3.2vw,44px);
-  line-height:1.1;
+  margin: 12px 0 16px;
+  font-size:clamp(26px,3.2vw,44px);
+  line-height:1.1;
 }
 h2 {
-  margin: 0 0 24px;
-  font-size: clamp(24px, 2.5vw, 36px);
-  text-align: center;
-  position: relative;
-  padding-bottom: 8px;
-  padding-top: 10px;
+  margin: 0 0 24px;
+  font-size: clamp(24px, 2.5vw, 36px);
+  text-align: center;
+  position: relative;
+  padding-bottom: 8px;
+  padding-top: 10px;
 }
 /* (ancienne barre décorative sous H2 supprimée ailleurs si besoin) */
 
 h3 {
-  margin: 0 0 10px;
-  font-size: 18px;
+  margin: 0 0 10px;
+  font-size: 18px;
 }
 .muted, .note, p {
-  line-height: 1.65;
+  line-height: 1.65;
 }
 
 /* >>> Pas de soulignement forcé <<< */
@@ -92,50 +92,50 @@ u{ text-decoration: none !important; }
 
 /* ====== HERO ====== */
 .hero{
-  position:relative;
-  overflow:hidden;
-  /* Rendre le fond du hero transparent pour que le ::before soit visible */
-  background-color: #ffffff;
-  padding-bottom: 42px; /* Assurer un padding bas équivalent au haut */
+  position:relative;
+  overflow:hidden;
+  /* Rendre le fond du hero transparent pour que le ::before soit visible */
+  background-color: #ffffff;
+  padding-bottom: 42px; /* Assurer un padding bas équivalent au haut */
 }
 /* Image de fond floutée et filtrée (Proposition A) */
 .hero::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  /* ⚠️ Remplacer 'chemin/vers/votre/cuisine-flou.jpg' par le chemin de votre image ⚠️ */
-  background: url('../img/cuisine-flou.jpg') center top no-repeat;
-  background-size: cover;
-  /* Filtres pour un rendu clair, flou et professionnel */
-  filter: grayscale(100%) blur(4px) brightness(1.4);
-  opacity: 0.8; /* Légère opacité */
-  z-index: 1; /* Derrière le contenu */
+  content: '';
+  position: absolute;
+  inset: 0;
+  /* ⚠️ Remplacer 'chemin/vers/votre/cuisine-flou.jpg' par le chemin de votre image ⚠️ */
+  background: url('../img/cuisine-flou.jpg') center top no-repeat;
+  background-size: cover;
+  /* Filtres pour un rendu clair, flou et professionnel */
+  filter: grayscale(100%) blur(4px) brightness(1.4);
+  opacity: 0.8; /* Légère opacité */
+  z-index: 1; /* Derrière le contenu */
 }
 
 /* Contenu centré sur une seule colonne (car l'illustration est supprimée) */
 .hero__in{
-  max-width:var(--w);
-  margin:auto;
-  padding:42px 20px;
-  display:grid;
-  grid-template-columns:1fr; /* Centrage du contenu */
-  gap:28px;
-  align-items:center;
-  position: relative; /* Au-dessus de l'image de fond */
-  z-index: 2;
+  max-width:var(--w);
+  margin:auto;
+  padding:42px 20px;
+  display:grid;
+  grid-template-columns:1fr; /* Centrage du contenu */
+  gap:28px;
+  align-items:center;
+  position: relative; /* Au-dessus de l'image de fond */
+  z-index: 2;
 }
 
 .badge{display:inline-flex;align-items:center;gap:8px;padding:6px 10px;border-radius:999px;background:#fff;border:1px solid var(--ring)}
 .badge b{color:var(--brand)}
 .lead{color:var(--muted);font-size:clamp(16px,1.6vw,18px)}
 .hero__card{
-  background:var(--card);
-  border: none;
-  border-radius:var(--radius);
-  box-shadow:var(--shadow);
-  padding:20px;
-  position: relative; /* Au-dessus de l'image de fond */
-  z-index: 3;
+  background:var(--card);
+  border: none;
+  border-radius:var(--radius);
+  box-shadow:var(--shadow);
+  padding:20px;
+  position: relative; /* Au-dessus de l'image de fond */
+  z-index: 3;
 }
 /* La classe .kv n'est plus utilisée, on la désactive au cas où */
 .kv{display:none !important;}
@@ -145,105 +145,105 @@ u{ text-decoration: none !important; }
 .btn:hover{filter:brightness(1.06)}
 .btn--ghost{background:#fff;color:var(--brand);border:1px solid var(--ring)}
 .btn--accent{
-  background:var(--accent);
-  color:var(--brand);
-  box-shadow:0 6px 16px rgba(242,183,5,.4);
+  background:var(--accent);
+  color:var(--brand);
+  box-shadow:0 6px 16px rgba(242,183,5,.4);
 }
 .btn--accent:hover{
-  transform: translateY(-2px);
-  box-shadow:0 8px 20px rgba(242,183,5,.5);
-  filter: none;
+  transform: translateY(-2px);
+  box-shadow:0 8px 20px rgba(242,183,5,.5);
+  filter: none;
 }
 
 /* ====== SECTIONS ====== */
 .section{max-width:var(--w);margin:34px auto;padding:0 20px}
 .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
 .card{
-  background:var(--card);
-  border: 1px solid rgba(15,23,42,.08);
-  border-radius:16px;
-  box-shadow:0 4px 18px rgba(8,15,40,.04);
-  padding:18px;
-  transition: transform 0.3s ease-out;
+  background:var(--card);
+  border: 1px solid rgba(15,23,42,.08);
+  border-radius:16px;
+  box-shadow:0 4px 18px rgba(8,15,40,.04);
+  padding:18px;
+  transition: transform 0.3s ease-out;
 }
 .card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 8px 22px rgba(8,15,40,.08);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 22px rgba(8,15,40,.08);
 }
 .muted{color:var(--muted)}
 
 /* ====== STEPS ====== */
 .steps{display:grid;grid-template-columns:repeat(5,1fr);gap:14px}
 .step{
-  background:#fff;
-  border:1px solid var(--ring);
-  border-radius:14px;
-  padding:16px;
-  box-shadow: none;
-  text-align: center;
+  background:#fff;
+  border:1px solid var(--ring);
+  border-radius:14px;
+  padding:16px;
+  box-shadow: none;
+  text-align: center;
 }
 .step .num{
-  width:30px;
-  height:30px;
-  border-radius:999px;
-  background:var(--brand);
-  color:#fff;
-  display:grid;
-  place-items:center;
-  font-weight:800;
-  margin: 0 auto 10px;
-  box-shadow: 0 3px 8px rgba(12, 18, 30, 0.2);
+  width:30px;
+  height:30px;
+  border-radius:999px;
+  background:var(--brand);
+  color:#fff;
+  display:grid;
+  place-items:center;
+  font-weight:800;
+  margin: 0 auto 10px;
+  box-shadow: 0 3px 8px rgba(12, 18, 30, 0.2);
 }
 
 /* ====== COMPARATIF ====== */
 .table{
-  width:100%;
-  border-collapse:separate;
-  border-spacing:0;
-  overflow:hidden;
-  border-radius:10px;
-  border:1px solid var(--ring);
-  background:#fff;
-  box-shadow:0 8px 20px rgba(8,15,40,.06);
+  width:100%;
+  border-collapse:separate;
+  border-spacing:0;
+  overflow:hidden;
+  border-radius:10px;
+  border:1px solid var(--ring);
+  background:#fff;
+  box-shadow:0 8px 20px rgba(8,15,40,.06);
 }
 .table th,.table td{padding:14px;border-bottom:1px solid rgba(12,18,30,.08);text-align:left;font-size:15px}
 .table thead th{
-  background:var(--brand-2);
-  color: #fff;
-  font-weight: 600;
-  border-bottom: none;
+  background:var(--brand-2);
+  color: #fff;
+  font-weight: 600;
+  border-bottom: none;
 }
 .badge-ok{
-  display:inline-block;
-  background:var(--ok);
-  color:#fff;
-  padding:4px 8px;
-  border-radius:999px;
-  font-weight:700;
-  font-size:12px
+  display:inline-block;
+  background:var(--ok);
+  color:#fff;
+  padding:4px 8px;
+  border-radius:999px;
+  font-weight:700;
+  font-size:12px
 }
 .badge-no{
-  display:inline-block;
-  background:var(--danger);
-  color:#fff;
-  padding:4px 8px;
-  border-radius:999px;
-  font-weight:700;
-  font-size:12px
+  display:inline-block;
+  background:var(--danger);
+  color:#fff;
+  padding:4px 8px;
+  border-radius:999px;
+  font-weight:700;
+  font-size:12px
 }
 
 /* ====== FAQ ====== */
 details{
-  background:#fff;
-  border:1px solid rgba(15,23,42,.08);
-  border-radius:14px;
-  padding:14px 16px;
-  box-shadow:0 4px 18px rgba(8,15,40,.04);
-  transition: transform 0.3s ease-out;
+  background:#fff;
+  border:1px solid rgba(15,23,42,.08);
+  border-radius:14px;
+  padding:14px 16px;
+  box-shadow:0 4px 18px rgba(8,15,40,.04);
+  transition: transform 0.3s ease-out;
 }
 details:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 18px rgba(8,15,40,.06);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(8,15,40,.06);
 }
 summary{cursor:pointer;font-weight:700}
 
@@ -252,13 +252,13 @@ summary{cursor:pointer;font-weight:700}
 .form .full{grid-column:1/-1}
 .input{display:grid;gap:6px}
 .input input,.input textarea,.input select{
-  width:100%;padding:12px 13px;border-radius:12px;border:1px solid var(--ring);background:#fff;font:inherit;
-  transition: border-color 0.2s, box-shadow 0.2s;
+  width:100%;padding:12px 13px;border-radius:12px;border:1px solid var(--ring);background:#fff;font:inherit;
+  transition: border-color 0.2s, box-shadow 0.2s;
 }
 .input input:focus, .input textarea:focus, .input select:focus {
-  border-color: var(--brand);
-  outline: none;
-  box-shadow: 0 0 0 3px rgba(11, 42, 74, 0.1);
+  border-color: var(--brand);
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(11, 42, 74, 0.1);
 }
 .help{font-size:12px;color:var(--muted)}
 .note{font-size:14px;color:var(--muted)}
@@ -272,345 +272,278 @@ summary{cursor:pointer;font-weight:700}
 
 /* ====== RESPONSIVE ====== */
 @media (max-width: 980px){
-  .hero__in{grid-template-columns:1fr;gap:18px}
-  .grid-3{grid-template-columns:1fr 1fr}
-  .steps{grid-template-columns:1fr 1fr;gap:12px}
-  .cta{grid-template-columns:1fr}
-  .form{grid-template-columns:1fr}
+  .hero__in{grid-template-columns:1fr;gap:18px}
+  .grid-3{grid-template-columns:1fr 1fr}
+  .steps{grid-template-columns:1fr 1fr;gap:12px}
+  .cta{grid-template-columns:1fr}
+  .form{grid-template-columns:1fr}
 }
 @media (max-width: 640px){
-  .grid-3{grid-template-columns:1fr}
+  .grid-3{grid-template-columns:1fr}
 }
 </style>
 </head>
 <body>
 <header>
-  <div class="logo">
-    <img src="../img/logo.png" alt="Logo Papo Rénov">
-  </div>
-  <nav>
-    <ul>
-      <li><a href="../index.html">Accueil</a></li>
-      <li><a href="devis.html">Demande de devis</a></li>
-      <li><a href="realisations.html">Mes réalisations</a></li>
-      <li><a href="tarifs.html">Tarifs</a></li>
-      <li><a href="planning.html">Planning</a></li>
-      <li><a href="contact.html">Contact</a></li>
-      <li><a href="avis.html">Avis clients</a></li>
-      <li><a class="active" href="courtage-cuisine.html">Courtage Cuisine</a></li>
-    </ul>
-  </nav>
+  <div class="logo">
+    <img src="../img/logo.png" alt="Logo Papo Rénov">
+  </div>
+  <nav>
+    <ul>
+      <li><a href="../index.html">Accueil</a></li>
+      <li><a href="devis.html">Demande de devis</a></li>
+      <li><a href="realisations.html">Mes réalisations</a></li>
+      <li><a href="tarifs.html">Tarifs</a></li>
+      <li><a href="planning.html">Planning</a></li>
+      <li><a href="contact.html">Contact</a></li>
+      <li><a href="avis.html">Avis clients</a></li>
+      <li><a class="active" href="courtage-cuisine.html">Courtage Cuisine</a></li>
+    </ul>
+  </nav>
 </header>
 
 <header class="hero">
-  <div class="hero__in">
-    <div>
-      <span class="badge">✅ <b>Offre 100% gratuite</b> (voir conditions)</span>
-      <h1>Je négocie pour vous le meilleur prix de votre cuisine</h1>
-      <p class="lead">
-        Grâce à mes connaissances,partenaires et fournisseurs, je compare et négocie vos devis cuisine.
-        <br>*Condition: vous me confiez la pose et les travaux. Aucuns frais de courtage pour vous.
-      </p>
-      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:12px">
-        <a href="#brief" class="btn btn--accent">Obtenir mon comparatif gratuit</a>
-        <a href="#faq" class="btn btn--ghost">Comment ça marche ?</a>
-      </div>
-      <div class="hero__card" style="margin-top:14px">
-        <div style="display:flex;gap:10px;flex-wrap:wrap">
-          <div style="display:flex;gap:8px;align-items:flex-start">
-            <span aria-hidden="true">💶</span>
-            <div>
-              <b>Négociation prix & remises</b>
-              <div class="muted">Showrooms & fournisseurs partenaires, sans favoritisme.</div>
-            </div>
-          </div>
-          <div style="display:flex;gap:8px;align-items:flex-start">
-            <span aria-hidden="true">📐</span>
-            <div>
-              <b>Plan & validation technique</b>
-              <div class="muted">Vérif. faisabilité avant commande.</div>
-            </div>
-          </div>
-          <div style="display:flex;gap:8px;align-items:flex-start">
-            <span aria-hidden="true">🧰</span>
-            <div>
-              <b>Pose sous contrôle</b>
-              <div class="muted">Travaux par mes soins, garantie pro.</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+  <div class="hero__in">
+    <div>
+      <span class="badge">✅ <b>Offre 100% gratuite</b> (voir conditions)</span>
+      <h1>Je négocie pour vous le meilleur prix de votre cuisine</h1>
+      <p class="lead">
+        Grâce à mes connaissances,partenaires et fournisseurs, je compare et négocie vos devis cuisine.
+        <br>*Condition: vous me confiez la pose et les travaux. Aucuns frais de courtage pour vous.
+      </p>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:12px">
+        <a href="#brief" class="btn btn--accent">Obtenir mon comparatif gratuit</a>
+        <a href="#faq" class="btn btn--ghost">Comment ça marche ?</a>
+      </div>
+      <div class="hero__card" style="margin-top:14px">
+        <div style="display:flex;gap:10px;flex-wrap:wrap">
+          <div style="display:flex;gap:8px;align-items:flex-start">
+            <span aria-hidden="true">💶</span>
+            <div>
+              <b>Négociation prix & remises</b>
+              <div class="muted">Showrooms & fournisseurs partenaires, sans favoritisme.</div>
+            </div>
+          </div>
+          <div style="display:flex;gap:8px;align-items:flex-start">
+            <span aria-hidden="true">📐</span>
+            <div>
+              <b>Plan & validation technique</b>
+              <div class="muted">Vérif. faisabilité avant commande.</div>
+            </div>
+          </div>
+          <div style="display:flex;gap:8px;align-items:flex-start">
+            <span aria-hidden="true">🧰</span>
+            <div>
+              <b>Pose sous contrôle</b>
+              <div class="muted">Travaux par mes soins, garantie pro.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </header>
 
 <section class="section">
-  <div class="grid-3">
-    <article class="card">
-      <h3>Gratuit pour vous</h3>
-      <p class="muted">Mon service de courtage est à 0€. Ma rémunération provient des travaux de pose que vous me confiez (transparence totale).</p>
-    </article>
-    <article class="card">
-      <h3>Indépendant & transparent</h3>
-      <p class="muted">Je consulte plusieurs enseignes/fournisseurs pour un comparatif honnête, selon vos critères (style, délais, budget).</p>
-    </article>
-    <article class="card">
-      <h3>Gain de temps & d’argent</h3>
-      <p class="muted">Vous évitez les allers-retours en magasin ; je négocie pour vous pour obtenir le meilleur rapport qualité/prix.</p>
-    </article>
-  </div>
+  <div class="grid-3">
+    <article class="card">
+      <h3>Gratuit pour vous</h3>
+      <p class="muted">Mon service de courtage est à 0€. Ma rémunération provient des travaux de pose que vous me confiez (transparence totale).</p>
+    </article>
+    <article class="card">
+      <h3>Indépendant & transparent</h3>
+      <p class="muted">Je consulte plusieurs enseignes/fournisseurs pour un comparatif honnête, selon vos critères (style, délais, budget).</p>
+    </article>
+    <article class="card">
+      <h3>Gain de temps & d’argent</h3>
+      <p class="muted">Vous évitez les allers-retours en magasin ; je négocie pour vous pour obtenir le meilleur rapport qualité/prix.</p>
+    </article>
+  </div>
 </section>
 
 <section class="section">
-  <h2>Comment ça marche ?</h2>
-  <div class="steps" aria-label="Étapes du service">
-    <div class="step"><div class="num">1</div><b>Brief express</b><div class="muted">Dimensions, envies, budget — 10 min suffisent.</div></div>
-    <div class="step"><div class="num">2</div><b>Comparatif</b><div class="muted">Je sollicite mes partenaires & récupère des offres.</div></div>
-    <div class="step"><div class="num">3</div><b>Négo & conseils</b><div class="muted">Je défends vos intérêts & sécurise le plan.</div></div>
-    <div class="step"><div class="num">4</div><b>Choix final</b><div class="muted">Vous validez l’offre qui vous convient.</div></div>
-    <div class="step"><div class="num">5</div><b>Pose par mes soins</b><div class="muted">Travaux réalisés avec garantie pro.</div></div>
-  </div>
+  <h2>Comment ça marche ?</h2>
+  <div class="steps" aria-label="Étapes du service">
+    <div class="step"><div class="num">1</div><b>Brief express</b><div class="muted">Dimensions, envies, budget — 10 min suffisent.</div></div>
+    <div class="step"><div class="num">2</div><b>Comparatif</b><div class="muted">Je sollicite mes partenaires & récupère des offres.</div></div>
+    <div class="step"><div class="num">3</div><b>Négo & conseils</b><div class="muted">Je défends vos intérêts & sécurise le plan.</div></div>
+    <div class="step"><div class="num">4</div><b>Choix final</b><div class="muted">Vous validez l’offre qui vous convient.</div></div>
+    <div class="step"><div class="num">5</div><b>Pose par mes soins</b><div class="muted">Travaux réalisés avec garantie pro.</div></div>
+  </div>
 </section>
 
 <section class="section">
-  <h2>Comparatif type (exemple)</h2>
-  <div style="overflow:auto">
-    <table class="table" role="table">
-      <thead>
-        <tr><th>Critère</th><th>Enseigne A</th><th>Enseigne B</th><th>Fournisseur C</th><th>Objectif</th></tr>
-      </thead>
-      <tbody>
-        <tr><td>Prix meubles</td><td>€€</td><td>€</td><td>€€€</td><td>€ le plus bas à qualité égale</td></tr>
-        <tr><td>Plan de travail</td><td>Stratifié</td><td>Quartz</td><td>Compact HPL</td><td>Matériau adapté usage/budget</td></tr>
-        <tr><td>Délais</td><td>2–3 sem</td><td>1–2 sem</td><td>4–5 sem</td><td>Synchronisé avec planning travaux</td></tr>
-        <tr><td>Négociation</td><td><span class="badge-ok">-10% obtenu</span></td><td><span class="badge-ok">Livraison offerte</span></td><td><span class="badge-no">Non pertinent</span></td><td>Maximiser les avantages</td></tr>
-      </tbody>
-    </table>
-  </div>
-  <p class="note">Exemple indicatif. Le comparatif réel dépend de votre brief, marque choisie, matériaux et délais souhaités.</p>
+  <h2>Comparatif type (exemple)</h2>
+  <div style="overflow:auto">
+    <table class="table" role="table">
+      <thead>
+        <tr><th>Critère</th><th>Enseigne A</th><th>Enseigne B</th><th>Fournisseur C</th><th>Objectif</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Prix meubles</td><td>€€</td><td>€</td><td>€€€</td><td>€ le plus bas à qualité égale</td></tr>
+        <tr><td>Plan de travail</td><td>Stratifié</td><td>Quartz</td><td>Compact HPL</td><td>Matériau adapté usage/budget</td></tr>
+        <tr><td>Délais</td><td>2–3 sem</td><td>1–2 sem</td><td>4–5 sem</td><td>Synchronisé avec planning travaux</td></tr>
+        <tr><td>Négociation</td><td><span class="badge-ok">-10% obtenu</span></td><td><span class="badge-ok">Livraison offerte</span></td><td><span class="badge-no">Non pertinent</span></td><td>Maximiser les avantages</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="note">Exemple indicatif. Le comparatif réel dépend de votre brief, marque choisie, matériaux et délais souhaités.</p>
 </section>
 
 <section class="section">
-  <div class="grid-3">
-    <div class="card">
-      <h3>Pas de frais cachés</h3>
-      <p class="muted">Le courtage est gratuit. Vous ne payez que la cuisine choisie + la pose, avec devis détaillés.</p>
-    </div>
-    <div class="card">
-      <h3>Assurance & garanties</h3>
-      <p class="muted">Travaux couverts par mes garanties pro (RC, décennale selon nature des travaux).</p>
-    </div>
-    <div class="card">
-      <h3>Un seul interlocuteur</h3>
-      <p class="muted">Je pilote vos devis, le planning et la pose jusqu’à la réception.</p>
-    </div>
-  </div>
+  <div class="grid-3">
+    <div class="card">
+      <h3>Pas de frais cachés</h3>
+      <p class="muted">Le courtage est gratuit. Vous ne payez que la cuisine choisie + la pose, avec devis détaillés.</p>
+    </div>
+    <div class="card">
+      <h3>Assurance & garanties</h3>
+      <p class="muted">Travaux couverts par mes garanties pro (RC, décennale selon nature des travaux).</p>
+    </div>
+    <div class="card">
+      <h3>Un seul interlocuteur</h3>
+      <p class="muted">Je pilote vos devis, le planning et la pose jusqu’à la réception.</p>
+    </div>
+  </div>
 </section>
 
 <section id="faq" class="section">
-  <h2>Questions fréquentes</h2>
-  <div class="card" style="display:grid;gap:10px">
-    <details>
-      <summary>Pourquoi c’est gratuit pour moi ?</summary>
-      <p class="muted">Parce que je suis rémunéré sur la **prestation de pose/travaux** que vous me confiez. Aucuns frais de courtage ne vous sont facturés.</p>
-    </details>
-    <details>
-      <summary>Êtes-vous lié à une enseigne ?</summary>
-      <p class="muted">Non. Je consulte plusieurs marques/fournisseurs selon vos critères. Mon rôle : obtenir la meilleure proposition pour vous.</p>
-    </details>
-    <details>
-      <summary>Que se passe-t-il si je ne vous confie pas la pose ?</summary>
-      <p class="muted">Le service de courtage <b>gratuit</b> est conditionné à la réalisation des travaux par mes soins. Sans cette condition, le temps d’étude et de négociation fait l’objet d’un forfait.</p>
-    </details>
-    <details>
-      <summary>En combien de temps puis-je avoir un comparatif ?</summary>
-      <p class="muted">Généralement <b>48 à 72 h ouvrées</b> après le brief complet, selon la complexité et la réactivité des fournisseurs.</p>
-    </details>
-  </div>
+  <h2>Questions fréquentes</h2>
+  <div class="card" style="display:grid;gap:10px">
+    <details>
+      <summary>Pourquoi c’est gratuit pour moi ?</summary>
+      <p class="muted">Parce que je suis rémunéré sur la **prestation de pose/travaux** que vous me confiez. Aucuns frais de courtage ne vous sont facturés.</p>
+    </details>
+    <details>
+      <summary>Êtes-vous lié à une enseigne ?</summary>
+      <p class="muted">Non. Je consulte plusieurs marques/fournisseurs selon vos critères. Mon rôle : obtenir la meilleure proposition pour vous.</p>
+    </details>
+    <details>
+      <summary>Que se passe-t-il si je ne vous confie pas la pose ?</summary>
+      <p class="muted">Le service de courtage <b>gratuit</b> est conditionné à la réalisation des travaux par mes soins. Sans cette condition, le temps d’étude et de négociation fait l’objet d’un forfait.</p>
+    </details>
+    <details>
+      <summary>En combien de temps puis-je avoir un comparatif ?</summary>
+      <p class="muted">Généralement <b>48 à 72 h ouvrées</b> après le brief complet, selon la complexité et la réactivité des fournisseurs.</p>
+    </details>
+  </div>
 </section>
 
 <section id="brief" class="section">
-  <div class="cta">
-    <div class="panel">
-      <h2>Brief gratuit — lancez votre comparatif</h2>
-      <p class="muted">Décrivez votre projet : je reviens vers vous rapidement avec une première estimation et les prochaines étapes.</p>
+  <div class="cta">
+    <div class="panel">
+      <h2>Brief gratuit — lancez votre comparatif</h2>
+      <p class="muted">Décrivez votre projet : je reviens vers vous rapidement avec une première estimation et les prochaines étapes.</p>
 
+<!-- === BLOC FORMULAIRE À REMPLACER UNIQUEMENT === -->
 <form
-	id="briefForm"
-	class="form"
-	action="https://script.google.com/macros/s/AKfycbxdxS_yX6QRZJEh1aUz5MQ-VMUPv5w1qFBGwwYNZi7vTnRQhO63LrNrrsSGYgo1uRj0Kw/exec"
-	method="POST"
-	accept-charset="UTF-8"
+  id="briefForm"
+  class="form"
+  action="https://script.google.com/macros/s/AKfycbxdxS_yX6QRZJEh1aUz5MQ-VMUPv5w1qFBGwwYNZi7vTnRQhO63LrNrrsSGYgo1uRj0Kw/exec"
+  method="POST"
+  accept-charset="UTF-8"
 >
-	<div class="input">
-		<label for="nom">Nom</label>
-		<input id="nom" name="nom" type="text" required placeholder="Votre nom" />
-	</div>
+  <div class="input">
+    <label for="nom">Nom</label>
+    <input id="nom" name="nom" type="text" required placeholder="Votre nom" />
+  </div>
 
-	<div class="input">
-		<label for="email">Email</label>
-		<input id="email" name="email" type="email" required placeholder="vous@exemple.fr" />
-	</div>
+  <div class="input">
+    <label for="email">Email</label>
+    <input id="email" name="email" type="email" required placeholder="vous@exemple.fr" />
+  </div>
 
-	<div class="input">
-		<label for="tel">Téléphone (optionnel)</label>
-		<input id="tel" name="tel" type="tel" placeholder="06 12 34 56 78" />
-	</div>
+  <div class="input">
+    <label for="tel">Téléphone</label>
+    <input id="tel" name="tel" type="tel" placeholder="06 12 34 56 78" />
+  </div>
 
-	<div class="input">
-		<label for="commune">Commune des travaux (13)</label>
-		<input id="commune" name="adresse_commune" type="text" required placeholder="Ex: Aix-en-Provence" />
-	</div>
-	
-	<div class="input">
-		<label for="type_projet">Type de projet</label>
-		<select id="type_projet" name="type_projet">
-			<option value="Rénovation complète">Rénovation complète (dépose/reprise)</option>
-			<option value="Neuf / Remplacement simple">Neuf ou Remplacement simple</option>
-			<option value="Modification de l'existant">Modification de l'existant</option>
-		</select>
-		<div class="help">Rénovation = démolition, électricité, plomberie.</div>
-	</div>
-	
-	<div class="input">
-		<label for="configuration">Configuration de la cuisine</label>
-		<select id="configuration" name="configuration_cuisine" required>
-			<option value="">Sélectionnez…</option>
-			<option>Linéaire (sur un seul mur)</option>
-			<option>En L</option>
-			<option>En U ou en G</option>
-			<option>Avec îlot central</option>
-			<option>Autre / Je ne sais pas</option>
-		</select>
-	</div>
+  <div class="input">
+    <label for="budget">Budget cuisine (hors pose)</label>
+    <select id="budget" name="budget">
+      <option value="">Sélectionnez…</option>
+      <option>moins de 3 000€</option>
+      <option>3 000 – 6 000€</option>
+      <option>6 000 – 10 000€</option>
+      <option>plus de 10 000€</option>
+    </select>
+  </div>
 
-	<div class="input">
-		<label for="budget">Budget estimé (Hors pose/travaux)</label>
-		<select id="budget" name="budget">
-			<option value="">Sélectionnez…</option>
-			<option>Moins de 3 000 € (Mini-cuisine, entrée de gamme)</option>
-			<option>3 000 – 6 000 € (Standard, bon rapport Q/P)</option>
-			<option>6 000 – 10 000 € (Gamme supérieure, plan de travail qualitatif)</option>
-			<option>Plus de 10 000 € (Haut de gamme, sur-mesure)</option>
-		</select>
-	</div>
-	
-	<div class="input">
-		<label for="delai">Délai souhaité pour la pose</label>
-		<select id="delai" name="delai_souhaite">
-			<option value="">Sélectionnez…</option>
-			<option>Urgent (dans les 1 à 2 mois)</option>
-			<option>Délai classique (3 à 6 mois)</option>
-			<option>Non défini / Flexible</option>
-		</select>
-		<div class="help">Permet d'orienter vers les fournisseurs disponibles.</div>
-	</div>
+  <div class="input full">
+    <label for="dimensions">Dimensions & contraintes</label>
+    <textarea id="dimensions" name="dimensions" rows="3" placeholder="Ex : linéaire 3,20 m + retour 1,20 m, HSP 2,50 m, arrivée d’eau à gauche…"></textarea>
+  </div>
 
-	<div class="input full">
-		<label for="travaux_pose">Travaux de pose associés (à confier à Papo-Rénov)</label>
-		<select id="travaux_pose" name="travaux_pose_necessaires">
-			<option>Pose simple des meubles uniquement</option>
-			<option>Plomberie (déplacement évier/arrivées)</option>
-			<option>Électricité (création de prises/lignes dédiées)</option>
-			<option>Plomberie + Électricité complètes</option>
-			<option>Petite démolition / Reprise de cloisons (plâtrerie)</option>
-			<option>Tout le second œuvre (du sol au plafond)</option>
-		</select>
-		<div class="help">Sélectionner les travaux à réaliser pour la pose de la cuisine.</div>
-	</div>
-	
-	<div class="input full">
-		<label for="plan_travail_mat">Matériau du Plan de Travail souhaité</label>
-		<select id="plan_travail_mat" name="plan_travail_mat_souhaite">
-			<option value="Stratifié standard">Stratifié (le plus courant)</option>
-			<option value="Stratifié compact/Slim">Stratifié compact (fin et résistant)</option>
-			<option value="Bois Massif ou Bambou">Bois Massif ou Bambou</option>
-			<option value="Quartz, Granit ou Pierre">Quartz, Granit ou Pierre (plus onéreux)</option>
-			<option value="Inox, Résine ou Verre">Inox, Résine ou Verre</option>
-		</select>
-		<div class="help">Élément clé du devis : soyez précis !</div>
-	</div>
-	
-	<div class="input full">
-		<label for="electromenagers">Électroménagers (Éléments principaux)</label>
-		<textarea id="electromenagers" name="electromenagers" rows="3" placeholder="Ex : Four + Micro-ondes encastrés, Plaque à induction, Lave-vaisselle semi-intégré, Hotte tiroir..."></textarea>
-		<div class="help">Précisez si vous les fournissez vous-même ou s'ils doivent être inclus dans le devis fournisseur.</div>
-	</div>
+  <div class="input full">
+    <label for="style">Style & matériaux souhaités</label>
+    <textarea id="style" name="style" rows="3" placeholder="Ex : façades mates, poignées noires, plan stratifié/compact, crédence carrelage blanc…"></textarea>
+  </div>
 
+  <div class="input full">
+    <label class="input--check">
+      <input id="cond" name="condition_pose_travaux" type="checkbox" required />
+      <span>Je comprends que le courtage est gratuit si je confie la <b>pose</b> et les <b>travaux</b> à Papo-Rénov.</span>
+    </label>
+    <div class="help">Sans la pose par Papo-Rénov, une étude payante peut être proposée.</div>
+  </div>
 
-	<div class="input full">
-		<label for="dimensions">Dimensions, contraintes et besoins spécifiques</label>
-		<textarea id="dimensions" name="dimensions_contraintes" rows="4" placeholder="Décrivez les dimensions (ex: mur de 4m), la hauteur sous plafond (HSP), les contraintes (fenêtre, mur porteur, radiateur à déplacer) ou les spécificités de design (grand îlot, meuble toute hauteur, etc.)."></textarea>
-	</div>
-	
-	<div class="input full">
-		<label for="style">Style & Couleurs des façades</label>
-		<textarea id="style" name="style" rows="2" placeholder="Ex : Façades sans poignée (poignée gorge), couleur Vert Sauge Mat, style Industriel ou Scandinave..."></textarea>
-	</div>
+  <!-- Champs cachés pour aligner avec le script Apps Script (facultatifs, laissés vides si non saisis) -->
+  <input type="hidden" name="contraintes" id="contraintes_hidden" />
+  <input type="hidden" name="adresse_commune" value="" />
+  <input type="hidden" name="type_cuisine" value="" />
+  <input type="hidden" name="surface_m2" value="" />
+  <input type="hidden" name="meubles" value="" />
+  <input type="hidden" name="electromenagers" value="" />
+  <input type="hidden" name="plan_ou_croquis" value="" />
+  <input type="hidden" name="photos" value="" />
+  <input type="hidden" name="delai_souhaite" value="" />
 
-	<div class="input full">
-		<label class="input--check">
-			<input id="cond" name="condition_pose_travaux" type="checkbox" required />
-			<span>Je comprends que le courtage est gratuit si je confie la **pose** et les **travaux** à Papo-Rénov.</span>
-		</label>
-		<div class="help">Sans la pose par Papo-Rénov, une étude payante peut être proposée.</div>
-	</div>
+  <div class="full" style="display:flex;gap:10px;flex-wrap:wrap">
+    <button class="btn btn--accent" type="submit">Recevoir mon estimation</button>
+    <a class="btn btn--ghost" href="contact.html">Contacter directement</a>
+  </div>
 
-	<input type="hidden" name="contraintes" id="contraintes_hidden" />
-	<input type="hidden" name="type_cuisine" value="" />
-	<input type="hidden" name="surface_m2" value="" />
-	<input type="hidden" name="meubles" value="" />
-	<input type="hidden" name="plan_ou_croquis" value="" />
-	<input type="hidden" name="photos" value="" />
-	<input type="hidden" name="delai_souhaite" value="" />
-
-	<div class="full" style="display:flex;gap:10px;flex-wrap:wrap">
-		<button class="btn btn--accent" type="submit">Recevoir mon estimation</button>
-		<a class="btn btn--ghost" href="contact.html">Contacter directement</a>
-	</div>
-
-	<p id="formMsg" class="note" role="status" style="margin:8px 0 0"></p>
+  <p id="formMsg" class="note" role="status" style="margin:8px 0 0"></p>
 </form>
+<!-- === FIN BLOC FORMULAIRE === -->
+
 <script>
 /* Ne rien toucher d'autre : on recopie simplement "dimensions" vers "contraintes" avant envoi */
 (function(){
-	const f = document.getElementById('briefForm');
-	if (!f) return;
-	f.addEventListener('submit', () => {
-		// Récupère la valeur du nouveau textarea 'dimensions'
-		const dim = document.getElementById('dimensions')?.value || ''; 
-		// Assigne cette valeur à l'ancien champ caché 'contraintes' pour compatibilité
-		const hidden = document.getElementById('contraintes_hidden');
-		if (hidden) hidden.value = dim; 
-		
-		const formMsg = document.getElementById('formMsg');
-		if (formMsg){ formMsg.textContent = "Redirection vers votre estimation…"; formMsg.style.color = "var(--brand)"; }
-		const submitBtn = f.querySelector('button[type="submit"]');
-		if (submitBtn){ submitBtn.disabled = true; submitBtn.textContent = "Redirection…"; }
-	});
+  const f = document.getElementById('briefForm');
+  if (!f) return;
+  f.addEventListener('submit', () => {
+    const dim = document.getElementById('dimensions')?.value || '';
+    const hidden = document.getElementById('contraintes_hidden');
+    if (hidden) hidden.value = dim;
+    const formMsg = document.getElementById('formMsg');
+    if (formMsg){ formMsg.textContent = "Redirection vers votre estimation…"; formMsg.style.color = "var(--brand)"; }
+    const submitBtn = f.querySelector('button[type="submit"]');
+    if (submitBtn){ submitBtn.disabled = true; submitBtn.textContent = "Redirection…"; }
+  });
 })();
 </script>
-      
-    </div>
-    <div>
-      <div class="card">
-        <h3>Infos pratiques</h3>
-        <ul class="muted" style="margin:8px 0 0 18px">
-          <li>Zone : Bouches-du-Rhône (et proximité)</li>
-          <li>Disponibilités : sur RDV</li>
-          <li>Devis détaillé & calendrier des travaux</li>
-        </ul>
-      </div>
-      <div class="card" style="margin-top:12px">
-        <h3>Mentions & transparence</h3>
-        <p class="muted">Le service de courtage est offert sous condition de confier la pose/travaux à Papo-Rénov. Les devis fournisseurs sont communiqués clairement — pas de marge cachée sur vos meubles. La rémunération provient de la prestation de pose et des travaux associés.</p>
-      </div>
-    </div>
-  </div>
+      
+    </div>
+    <div>
+      <div class="card">
+        <h3>Infos pratiques</h3>
+        <ul class="muted" style="margin:8px 0 0 18px">
+          <li>Zone : Bouches-du-Rhône (et proximité)</li>
+          <li>Disponibilités : sur RDV</li>
+          <li>Devis détaillé & calendrier des travaux</li>
+        </ul>
+      </div>
+      <div class="card" style="margin-top:12px">
+        <h3>Mentions & transparence</h3>
+        <p class="muted">Le service de courtage est offert sous condition de confier la pose/travaux à Papo-Rénov. Les devis fournisseurs sont communiqués clairement — pas de marge cachée sur vos meubles. La rémunération provient de la prestation de pose et des travaux associés.</p>
+      </div>
+    </div>
+  </div>
 </section>
 
 <footer class="footer">
-  <p>© Papo-Rénov — Courtage Cuisine & Pose. Tous droits réservés.</p>
+  <p>© Papo-Rénov — Courtage Cuisine & Pose. Tous droits réservés.</p>
 </footer>
 
 <script>
@@ -623,28 +556,28 @@ const form = document.getElementById('briefForm');
 const formMsg = document.getElementById('formMsg');
 
 form?.addEventListener('submit', () => {
-  // Laisser faire la soumission native pour que l’Apps Script redirige vers estimation.html
-  const nom = document.getElementById('nom')?.value?.trim();
-  const email = document.getElementById('email')?.value?.trim();
-  const cond = document.getElementById('cond')?.checked;
+  // Laisser faire la soumission native pour que l’Apps Script redirige vers estimation.html
+  const nom = document.getElementById('nom')?.value?.trim();
+  const email = document.getElementById('email')?.value?.trim();
+  const cond = document.getElementById('cond')?.checked;
 
-  // (Les champs required HTML5 font déjà la validation côté navigateur)
-  formMsg.textContent = "Redirection vers votre estimation…";
-  formMsg.style.color = "var(--brand)";
+  // (Les champs required HTML5 font déjà la validation côté navigateur)
+  formMsg.textContent = "Redirection vers votre estimation…";
+  formMsg.style.color = "var(--brand)";
 
-  const submitBtn = form.querySelector('button[type="submit"]');
-  if (submitBtn){ submitBtn.disabled = true; submitBtn.textContent = "Redirection…"; }
+  const submitBtn = form.querySelector('button[type="submit"]');
+  if (submitBtn){ submitBtn.disabled = true; submitBtn.textContent = "Redirection…"; }
 });
 
 /* Défilement fluide sur les ancres */
 document.querySelectorAll('a[href^="#"]').forEach(a=>{
-  a.addEventListener('click',e=>{
-    const id=a.getAttribute('href');
-    if(id.length>1){
-      e.preventDefault();
-      document.querySelector(id)?.scrollIntoView({behavior:'smooth',block:'start'});
-    }
-  });
+  a.addEventListener('click',e=>{
+    const id=a.getAttribute('href');
+    if(id.length>1){
+      e.preventDefault();
+      document.querySelector(id)?.scrollIntoView({behavior:'smooth',block:'start'});
+    }
+  });
 });
 </script>
 </body>
