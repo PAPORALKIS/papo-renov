@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Tarifs - Papo Rénov</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../style.css"><link rel="preconnect" href="https://cdnjs.cloudflare.com">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+<style>
+:root{
+  --primary-color:#007bff;
+  --secondary-color:#212529;
+  --background-light:#f4f7f9;
+  --card-background:#ffffff;
+  --price-accent:#28a745;
+  --accent-orange:#ffc107;
+  --border-light:#e9ecef;
+  --shadow-color:rgba(0,0,0,.16);
+  --dark-blue-logo:#0a1f44;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  font-family:'Poppins',sans-serif;
+  background:var(--background-light);
+  color:var(--secondary-color);
+  line-height:1.6;
+  min-width:320px;
+}
+
+/* --- NAV --- */
+nav ul li a.active{color:var(--primary-color);font-weight:700}
+nav ul{-ms-overflow-style:none;scrollbar-width:none;overflow-x:auto}
+nav ul::-webkit-scrollbar{display:none}
+
+/* --- LOGO OVERLAY SECRET --- */
+header .logo{position:relative;display:inline-block}
+#logo-overlay-partner{
+  position:absolute;inset:0;
+  background:transparent;
+  cursor:pointer;
+  /* accessibilité silencieuse */
+}
+#logo-overlay-partner span{
+  position:absolute;inset:0;opacity:0; /* invisible */
+}
+
+/* --- HERO --- */
+.content-section{padding:20px 20px 40px;display:flex;flex-direction:column;align-items:center;text-align:center;position:relative}
+h1{color:var(--secondary-color);margin:0 0 14px;font-weight:800;font-size:1.2rem}
+h1::after{content:'';display:block;width:80px;height:4px;background:var(--primary-color);margin:18px auto 0;border-radius:2px}
+.subtitle{margin:10px 0 36px;color:#6c757d}
+
+/* --- TABLET MOCKUP --- */
+.tablet{position:relative;width:min(100%,980px);aspect-ratio:16/9;border-radius:28px;background:#111;box-shadow:0 40px 80px rgba(0,0,0,.25);overflow:hidden;z-index:1}
+.tablet::before{content:'';position:absolute;inset:0;border-radius:28px;box-shadow:inset 0 0 0 10px #0d0d0d, inset 0 0 0 12px #222;pointer-events:none}
+.tablet-camera{position:absolute;right:22px;top:50%;transform:translateY(-50%);width:34px;height:34px;border-radius:50%;background:#1f1f1f;box-shadow:inset 0 2px 6px rgba(255,255,255,.06)}
+.tablet-screen{position:absolute;inset:20px 24px;border-radius:18px;overflow:hidden;background:#000}
+
+.slider{position:absolute;inset:0}
+.slider img{position:absolute;inset:0;margin:auto;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .8s ease}
+.slider img.active{opacity:1}
+
+/* --- FICHES TARIFS 3D --- */
+.sheets{position:relative;width:100%;max-width:1450px;margin:-100px auto 20px;display:flex;flex-wrap:nowrap;justify-content:center;gap:0;perspective:1500px;padding:0 8px;z-index:2}
+.sheet{width:120px;height:290px;flex-shrink:0;background:var(--card-background);border-radius:14px;box-shadow:0 20px 50px rgba(0,0,0,.35),0 0 0 1px rgba(0,0,0,.1);padding:10px;text-align:left;cursor:pointer;transform:rotateZ(var(--rot,0deg)) translateY(var(--ty,0px)) translateX(var(--tx,0px)) rotateY(var(--ry,0deg));transition:transform .35s ease,box-shadow .35s ease;border:1px solid var(--border-light);z-index:var(--z-idx);margin-right:-40px;overflow:hidden}
+.sheets article:nth-child(1){--rot:-4deg;--ty:10px;--tx:0px;--ry:-4deg;--z-idx:4}
+.sheets article:nth-child(2){--rot:3deg;--ty:-10px;--tx:0px;--ry:0deg;--z-idx:3}
+.sheets article:nth-child(3){--rot:-2deg;--ty:5px;--tx:0px;--ry:4deg;--z-idx:2}
+.sheets article:nth-child(4){--rot:5deg;--ty:-5px;--tx:0px;--ry:-3deg;--z-idx:1;margin-right:0}
+.sheet:hover{transform:translateY(calc(var(--ty,0px) - 10px)) rotateZ(var(--rot,0deg)) scale(1.06) rotateY(var(--ry,0deg));box-shadow:0 50px 120px rgba(0,0,0,.45);z-index:5}
+
+.sheet .head{display:flex;align-items:center;gap:6px;margin-bottom:8px;flex-direction:column;text-align:center}
+.sheet .badge{background:var(--dark-blue-logo);color:#fff;font-weight:700;font-size:.8rem;padding:4px 6px;border-radius:6px}
+.sheet .icon{font-size:20px;color:var(--primary-color)}
+.sheet h3{margin:4px 0 6px;font-size:.9rem;line-height:1.1}
+.sheet p{margin:0 0 8px;color:#6c757d;font-size:.75rem;line-height:1.2}
+.sheet .from{color:var(--price-accent);font-weight:700;margin-top:4px;font-size:.7rem}
+.sheet .actions{display:flex;flex-direction:column;gap:5px;margin-top:8px}
+.sheet .btn{display:inline-flex;align-items:center;justify-content:center;gap:4px;padding:4px 6px;border-radius:6px;border:1px solid var(--border-light);background:#fff;cursor:pointer;font-weight:600;font-size:.75rem;text-align:center;width:100%}
+.sheet .btn.primary{background:var(--primary-color);border-color:var(--primary-color);color:#fff}
+.sheet .btn:active{transform:translateY(1px)}
+
+/* --- MODALES DÉTAILS --- */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:1000;justify-content:center;align-items:center;padding:20px}
+.detail-modal-content{background:var(--card-background);padding:34px;border-radius:14px;text-align:left;width:min(920px,94vw);max-height:88vh;overflow:auto;position:relative;box-shadow:0 30px 80px rgba(0,0,0,.35)}
+.detail-modal-content h3{color:var(--primary-color);font-size:1.6rem;border-bottom:3px solid var(--accent-orange);padding-bottom:8px;margin:0 0 20px;text-align:center}
+.detail-modal-content ul{list-style:none;padding:0;margin:0}
+.detail-modal-content li{display:flex;justify-content:space-between;gap:16px;padding:12px 0;border-bottom:1px dashed var(--border-light);font-size:1rem}
+.detail-modal-content li strong{color:var(--price-accent)}
+.close-btn{position:absolute;top:12px;right:12px;width:34px;height:34px;border-radius:50%;border:none;background:var(--secondary-color);color:#fff;cursor:pointer}
+.close-btn:hover{background:#dc3545}
+
+/* PARTENAIRE VIEW (masquée ici) */
+.partner-prices{display:none}
+
+@media (max-width:768px){
+  .content-section{padding-top:20px}
+  .sheets{margin-top:-80px}
+  .tablet{aspect-ratio:4/3}
+}
+@supports not (aspect-ratio:1){
+  .tablet{height:0;padding-top:56.25%}
+  .tablet-screen{position:absolute;top:20px;left:24px;right:24px;bottom:20px}
+}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo">
+    <img src="../img/logo.png" alt="Logo Papo Rénov">
+    <!-- OVERLAY SECRET PARTENAIRES (clic sur le logo) -->
+    <div id="logo-overlay-partner" aria-label="Accès partenaires (secret)"><span></span></div>
+  </div>
+  <nav>
+    <ul>
+      <li><a href="../index.html">Accueil</a></li>
+      <li><a href="devis.html">Demande de devis</a></li>
+      <li><a href="realisations.html">Mes réalisations</a></li>
+      <li><a class="active" href="tarifs.html">Tarifs</a></li>
+      <li><a href="planning.html">Planning</a></li>
+      <li><a href="contact.html">Contact</a></li>
+      <li><a href="avis.html">Avis clients</a></li>
+      <li><a href="courtage-cuisine.html">Courtage Cuisine</a></li>
+    </ul>
+  </nav>
+</header>
+
+<section class="content-section">
+  <h1>Tarifs rénovation & agencement</h1>
+
+  <!-- Écran tablette -->
+  <div class="tablet" aria-label="Galerie de réalisations">
+    <div class="tablet-camera" aria-hidden="true"></div>
+    <div class="tablet-screen">
+      <div class="slider" id="slider">
+        <!-- (tes images inchangées) -->
+        <img src="../img/CHBR1.jpg" alt="Chambre rénovée" class="active">
+        <img src="../img/CUIEXT2.jpg" alt="Cuisine extérieure 2">
+        <img src="../img/CUIEXT4.jpg" alt="Cuisine extérieure 4">
+        <img src="../img/CUIEXT5.jpg" alt="Cuisine extérieure 5">
+        <img src="../img/CUIEXT6.jpg" alt="Cuisine extérieure 6">
+        <img src="../img/CUIMARS1.jpg" alt="Cuisine Mars 1">
+        <img src="../img/CUIMARS2.jpg" alt="Cuisine Mars 2">
+        <img src="../img/CUIMARS3.jpg" alt="Cuisine Mars 3">
+        <img src="../img/CUIMARS4.jpg" alt="Cuisine Mars 4">
+        <img src="../img/Chambre SPACEO.png" alt="Chambre Spaceo">
+        <img src="../img/DRESSMARS1.jpg" alt="Dressing Mars 1">
+        <img src="../img/DRESSMARS2.jpg" alt="Dressing Mars 2">
+        <img src="../img/DRESSMARS3.jpg" alt="Dressing Mars 3">
+        <img src="../img/DRESSMARS4.jpg" alt="Dressing Mars 4">
+        <img src="../img/Iso2.jpg" alt="Isolation 2">
+        <img src="../img/Iso3.jpg" alt="Isolation 3">
+        <img src="../img/Iso4.jpg" alt="Isolation 4">
+        <img src="../img/Iso5.jpg" alt="Isolation 5">
+        <img src="../img/Iso6.jpg" alt="Isolation 6">
+        <img src="../img/SDB1.jpg" alt="Salle de bain 1">
+        <img src="../img/SDB2.jpg" alt="Salle de bain 2">
+        <img src="../img/SDB3.jpg" alt="Salle de bain 3">
+        <img src="../img/SDB4.jpg" alt="Salle de bain 4">
+        <img src="../img/SDB5.jpg" alt="Salle de bain 5">
+        <img src="../img/WC1.jpg" alt="WC 1">
+        <img src="../img/WC2.jpg" alt="WC 2">
+        <img src="../img/aumetz-avant-1.jpeg" alt="Aumetz avant">
+        <img src="../img/aumetz10.jpeg" alt="Aumetz 10">
+        <img src="../img/aumetz11.jpeg" alt="Aumetz 11">
+        <img src="../img/aumetz12.jpeg" alt="Aumetz 12">
+        <img src="../img/aumetz14.jpeg" alt="Aumetz 14">
+        <img src="../img/aumetz15.jpeg" alt="Aumetz 15">
+        <img src="../img/aumetz16.jpeg" alt="Aumetz 16">
+        <img src="../img/aumetz17.jpeg" alt="Aumetz 17">
+        <img src="../img/aumetz18.jpeg" alt="Aumetz 18">
+        <img src="../img/aumetz5.jpeg" alt="Aumetz 5">
+        <img src="../img/aumetz6.jpeg" alt="Aumetz 6">
+        <img src="../img/aumetz7.jpeg" alt="Aumetz 7">
+        <img src="../img/aumetz8.jpeg" alt="Aumetz 8">
+        <img src="../img/aumetz9.jpeg" alt="Aumetz 9">
+        <img src="../img/escalier SPACEO.png" alt="Escalier Spaceo">
+        <img src="../img/ext1.jpg" alt="Extérieur 1">
+        <img src="../img/ext2.jpg" alt="Extérieur 2">
+        <img src="../img/iso1.jpg" alt="Isolation 1">
+        <img src="../img/martegauxB.jpg" alt="Martegaux B">
+        <img src="../img/martegauxC.jpg" alt="Martegaux C">
+        <img src="../img/martegauxD.jpg" alt="Martegaux D">
+        <img src="../img/martegauxE.jpg" alt="Martegaux E">
+        <img src="../img/martegauxavant1.jpg" alt="Martegaux avant 1">
+        <img src="../img/martegauxavant2.jpg" alt="Martegaux avant 2">
+        <img src="../img/martegauxavant3.jpg" alt="Martegaux avant 3">
+        <img src="../img/meuble-laura-1.jpg" alt="Meuble Laura 1">
+        <img src="../img/meuble-laura-2.jpg" alt="Meuble Laura 2">
+        <img src="../img/meuble-laura-3.jpg" alt="Meuble Laura 3">
+        <img src="../img/renoperier1.jpg" alt="Réno Périer 1">
+        <img src="../img/renoperier2.jpg" alt="Réno Périer 2">
+        <img src="../img/renoperier3.jpg" alt="Réno Périer 3">
+        <img src="../img/renoperier4.jpg" alt="Réno Périer 4">
+        <img src="../img/renoperier5.jpg" alt="Réno Périer 5">
+        <img src="../img/renoperier6.jpg" alt="Réno Périer 6">
+        <img src="../img/velaux0.jpg" alt="Velaux 0">
+        <img src="../img/velaux1.jpg" alt="Velaux 1">
+        <img src="../img/velaux2.jpg" alt="Velaux 2">
+        <img src="../img/velaux3.jpg" alt="Velaux 3">
+      </div>
+    </div>
+  </div>
+
+  <!-- Fiches PUBLIC -->
+  <div class="sheets" id="public-prices">
+
+</div>
+      <h3>Revêtements & Peinture</h3>
+      <p>Peinture, carrelage, faïence, parquets : tarifs au m² pour sublimer vos surfaces.</p>
+      <div class="from">À partir de 20 € / m² (M.O. HT)</div>
+      <div class="actions"><button class="btn primary open-details"><i class="fa-solid fa-magnifying-glass"></i>Voir détails</button></div>
+    </article>
+
+    <article class="sheet" data-category="plomberie">
+      <div class="head"><i class="icon fas fa-bath"></i></div>
+      <h3>Plomberie & Sanitaires</h3>
+      <p>Création / rénovation SDB, douches, WC, chauffe-eau. Forfaits interventions courantes.</p>
+      <div class="from">Forfait SDB dès 3 500 € (M.O. HT)</div>
+      <div class="actions"><button class="btn primary open-details"><i class="fa-solid fa-magnifying-glass"></i>Voir détails</button></div>
+    </article>
+
+    <article class="sheet" data-category="electricite">
+      <div class="head"><i class="icon fas fa-bolt"></i></div>
+      <h3>Électricité & Plâtrerie</h3>
+      <p>Cloisons, isolation, tableau, appareillages et luminaires, VMC.</p>
+      <div class="from">Cloison placo dès 45 € / m² (Fourn. + M.O. HT)</div>
+      <div class="actions"><button class="btn primary open-details"><i class="fa-solid fa-magnifying-glass"></i>Voir détails</button></div>
+    </article>
+    
+    <article class="sheet" data-category="vierge">
+      <div class="head"><i class="icon fa-solid fa-list-check"></i></div>
+      <h3>Autres Prestations</h3>
+      <p>Agencement, menuiserie, travaux spécifiques sur devis.</p>
+      <div class="from">Sur devis uniquement (M.O. HT)</div>
+      <div class="actions"><button class="btn primary open-details"><i class="fa-solid fa-magnifying-glass"></i>Voir détails</button></div>
+    </article>
+  </div>
+</section>
+
+<!-- MODALE DÉTAILS -->
+<div class="modal-overlay" id="detail-modal" role="dialog" aria-modal="true" aria-labelledby="detail-title">
+  <div class="detail-modal-content">
+    <button class="close-btn" id="close-detail-modal" aria-label="Fermer">&times;</button>
+    <div id="modal-details-content"></div>
+  </div>
+</div>
+
+<footer>
+  <p style="text-align:center;margin:40px 0;color:#6c757d">&copy; 2025 Papo Rénov — Tous droits réservés</p>
+</footer>
+
+<script>
+/* SLIDER AUTO */
+(function(){
+  const slides = Array.from(document.querySelectorAll('#slider img'));
+  let i = 0;
+  setInterval(()=>{
+    slides[i].classList.remove('active');
+    i = (i+1) % slides.length;
+    slides[i].classList.add('active');
+  }, 3500);
+})();
+
+/* DONNÉES TARIFS PUBLIC */
+const priceDetails = {
+  
+};
+
+/* OUVERTURE DES DÉTAILS */
+const detailModal = document.getElementById('detail-modal');
+const modalDetailsContent = document.getElementById('modal-details-content');
+document.querySelectorAll('.open-details, .sheet').forEach(el=>{
+  el.addEventListener('click', (e)=>{
+    if(e.target.closest('.actions')) return;
+    const card = e.currentTarget.closest('.sheet');
+    if (!card) return;
+    const cat = card.getAttribute('data-category');
+    const data = priceDetails[cat];
+    if(!data) return;
+    let html = `<h3 id="detail-title">${data.title}</h3><ul>`;
+    data.items.forEach(it=>{ html += `<li><span>${it.label}</span><strong>${it.price}</strong></li>`; });
+    html += `</ul><p style="text-align:center;margin-top:22px">Ces prix sont indicatifs. <a href="devis.html" style="font-weight:700;color:var(--primary-color)">Demandez un devis personnalisé</a>.</p>`;
+    modalDetailsContent.innerHTML = html;
+    detailModal.style.display = 'flex';
+  });
+});
+document.getElementById('close-detail-modal').addEventListener('click',()=>detailModal.style.display='none');
+detailModal.addEventListener('click',(e)=>{ if(e.target===detailModal) detailModal.style.display='none'; });
+
+/* OVERLAY PARTENAIRES -> REDIRECTION page code */
+document.getElementById('logo-overlay-partner').addEventListener('click', ()=>{
+  window.location.href = 'tarifs-partenaire.html';
+});
+</script>
+</body>
+</html>
