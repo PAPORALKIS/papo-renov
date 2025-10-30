@@ -123,6 +123,43 @@ nav ul li a.active{color:#007bff; font-weight:700; text-decoration:underline}
 .tab-nav button.active{color:var(--primary); border-bottom-color:var(--primary)}
 .tab-content{padding:0 10px 10px}
 
+/* ======== Promo & Compteur Partenaire ======== */
+.promo-banner{
+  background:linear-gradient(135deg,var(--secondary),#ffd65a);
+  color:#111; border:2px dashed var(--primary); border-radius:14px;
+  padding:12px 16px; margin:8px 10px 16px; box-shadow:var(--shadow);
+  display:flex; align-items:center; gap:12px; flex-wrap:wrap
+}
+.promo-banner b{color:#0a1f44}
+.promo-banner small{opacity:.9}
+
+.partner-kpis{
+  display:grid; grid-template-columns: repeat(auto-fit,minmax(220px,1fr));
+  gap:12px; padding:0 10px 12px;
+}
+.kpi{
+  background:#fff; border:1px solid var(--border); border-radius:12px; padding:12px;
+  box-shadow:0 8px 20px rgba(0,0,0,.06);
+}
+.kpi h4{margin:0 0 6px; font-size:1rem; color:var(--primary)}
+.kpi .val{font:700 1.6rem/1 'Roboto Mono',monospace; color:#0a1f44}
+.kpi .sub{font-size:.85rem; color:var(--muted)}
+
+.partner-ops{
+  display:flex; flex-wrap:wrap; gap:10px; padding:0 10px 14px
+}
+.partner-ops input[type="text"]{
+  flex:1 1 260px; max-width:340px; padding:10px 12px; border:1px solid var(--border);
+  border-radius:10px; font-size:.98rem
+}
+.partner-ops button{
+  padding:10px 14px; border-radius:10px; font-weight:700; cursor:pointer; border:1px solid var(--primary);
+  background:#fff; color:var(--primary)
+}
+.partner-ops button.primary{background:var(--primary); color:#fff; border:none}
+.partner-ops button.warn{border-color:#dc3545; color:#dc3545}
+.partner-ops .hint{font-size:.9rem; color:var(--muted)}
+  
 /* =============== Grilles de tarifs (cards) =============== */
 .sheets{
   display:grid; grid-template-columns:repeat(auto-fit, minmax(280px,1fr));
@@ -358,6 +395,49 @@ input[type="file"]{display:none}
     <div id="error" class="error"></div>
 
     <div id="partner-content" style="display:none">
+
+<!-- ===== Pancarte Promo Partenaire ===== -->
+<div class="promo-banner" id="promo-banner" style="display:none;">
+  <span style="font-size:1.4rem;">🎯</span>
+  <div>
+    <div><b>OFFRE PARTENAIRE :</b> <b>1 jour de pose OFFERT</b> toutes les <b>5 poses réalisées sans SAV</b>. <b>Cumulable.</b></div>
+    <small>La journée offerte s’applique sur une pose planifiée d’1 jour. Conditions détaillées sur bon d’intervention.</small>
+  </div>
+</div>
+
+<!-- ===== Compteur Par Partenaire ===== -->
+<div class="partner-ops" id="partner-ops" style="display:none;">
+  <input id="partner-id" type="text" placeholder="Identifiant partenaire (ex. nom, email, code)" />
+  <button class="primary" id="btn-load-partner">Charger / Créer</button>
+  <button id="btn-add-assigned">+ 1 pose attribuée</button>
+  <button id="btn-add-done-nosav">+ 1 pose réalisée SANS SAV</button>
+  <button class="warn" id="btn-undo">Annuler la dernière action</button>
+  <span class="hint">Astuce : l’ID sert de clé (statistiques locales par partenaire).</span>
+</div>
+
+<div class="partner-kpis" id="partner-kpis" style="display:none;">
+  <div class="kpi">
+    <h4>Poses attribuées</h4>
+    <div class="val" id="kpi-assigned">0</div>
+    <div class="sub">Cumul depuis l’activation</div>
+  </div>
+  <div class="kpi">
+    <h4>Réalisées SANS SAV</h4>
+    <div class="val" id="kpi-nosav">0</div>
+    <div class="sub">Clôturées sans retour SAV</div>
+  </div>
+  <div class="kpi">
+    <h4>Jours offerts</h4>
+    <div class="val" id="kpi-rewards">0</div>
+    <div class="sub">1 jour offert / 5 poses sans SAV — cumulable</div>
+  </div>
+  <div class="kpi">
+    <h4>Prochain palier</h4>
+    <div class="val"><span id="kpi-next">5</span> restantes</div>
+    <div class="sub">Avant le prochain jour offert</div>
+  </div>
+</div>
+      
       <div class="tab-nav">
         <button class="tab-btn active" data-tab="tarifs-pro-tab">Grille Tarifaire Détaillée</button>
         <button class="tab-btn" data-tab="devis-rapide-tab">Générateur de Devis Rapide</button>
@@ -712,5 +792,144 @@ window.clearDevis=clearDevis;
   document.addEventListener('DOMContentLoaded', syncClientFields);
 </script>
 
+<script>
+/* ======== Compteur Partenaire (localStorage) ======== */
+const PROMO_THRESHOLD = 5; // 1 jour offert toutes les 5 poses SANS SAV
+const partnerBanner = document.getElementById('promo-banner');
+const partnerOps = document.getElementById('partner-ops');
+const partnerKpis = document.getElementById('partner-kpis');
+const partnerIdInput = document.getElementById('partner-id');
+const btnLoadPartner = document.getElementById('btn-load-partner');
+const btnAddAssigned = document.getElementById('btn-add-assigned');
+const btnAddDoneNoSav = document.getElementById('btn-add-done-nosav');
+const btnUndo = document.getElementById('btn-undo');
+
+const kpiAssigned = document.getElementById('kpi-assigned');
+const kpiNoSav = document.getElementById('kpi-nosav');
+const kpiRewards = document.getElementById('kpi-rewards');
+const kpiNext = document.getElementById('kpi-next');
+
+let CURRENT_PARTNER = null;
+let LAST_ACTION_STACK = []; // pour undo (pile simple)
+
+function storageKey(pid){ return `partnerStats::${pid}`; }
+function defaultStats(){
+  return { assigned:0, doneNoSav:0, history:[] }; // history: [{t:'assigned'|'nosav', ts:...}]
+}
+function loadStats(pid){
+  const raw = localStorage.getItem(storageKey(pid));
+  return raw ? JSON.parse(raw) : defaultStats();
+}
+function saveStats(pid, stats){
+  localStorage.setItem(storageKey(pid), JSON.stringify(stats));
+}
+
+function computeRewards(doneNoSav){
+  const rewards = Math.floor(doneNoSav / PROMO_THRESHOLD);
+  const next = PROMO_THRESHOLD - (doneNoSav % PROMO_THRESHOLD || 0);
+  return { rewards, toNext: (doneNoSav % PROMO_THRESHOLD === 0) ? PROMO_THRESHOLD : next };
+}
+
+function refreshUI(){
+  const visible = !!CURRENT_PARTNER;
+  partnerOps.style.display = visible ? 'flex':'none';
+  partnerKpis.style.display = visible ? 'grid':'none';
+  partnerBanner.style.display = visible ? 'flex':'none';
+
+  if(!visible) return;
+  const stats = loadStats(CURRENT_PARTNER);
+  const { rewards, toNext } = computeRewards(stats.doneNoSav);
+
+  kpiAssigned.textContent = stats.assigned;
+  kpiNoSav.textContent = stats.doneNoSav;
+  kpiRewards.textContent = rewards;
+  kpiNext.textContent = toNext;
+
+  // petit feedback dans l'UI
+  if(toNext === PROMO_THRESHOLD) {
+    partnerBanner.style.borderColor = 'var(--ok)';
+  } else {
+    partnerBanner.style.borderColor = 'var(--primary)';
+  }
+}
+
+function ensurePartner(){
+  const pid = (partnerIdInput.value||'').trim();
+  if(!pid){ alert("Renseigne l’identifiant partenaire (nom, email ou code)."); return null; }
+  CURRENT_PARTNER = pid;
+  if(!localStorage.getItem(storageKey(pid))) saveStats(pid, defaultStats());
+  refreshUI();
+  return pid;
+}
+
+function addAssigned(){
+  if(!ensurePartner()) return;
+  const stats = loadStats(CURRENT_PARTNER);
+  stats.assigned += 1;
+  stats.history.push({t:'assigned', ts:Date.now()});
+  saveStats(CURRENT_PARTNER, stats);
+  LAST_ACTION_STACK.push({type:'assigned'});
+  refreshUI();
+}
+
+function addDoneNoSav(){
+  if(!ensurePartner()) return;
+  const stats = loadStats(CURRENT_PARTNER);
+  stats.doneNoSav += 1;
+  stats.history.push({t:'nosav', ts:Date.now()});
+  saveStats(CURRENT_PARTNER, stats);
+  LAST_ACTION_STACK.push({type:'nosav'});
+
+  const { rewards, toNext } = computeRewards(stats.doneNoSav);
+  if(toNext === PROMO_THRESHOLD){ // vient de tomber sur un palier exact
+    setTimeout(()=>alert(`🎉 Bravo ! Nouveau palier atteint : ${rewards} jour(s) de pose offert(s) cumulés.`), 50);
+  }
+  refreshUI();
+}
+
+function undoLast(){
+  if(!CURRENT_PARTNER){ alert("Aucun partenaire n’est chargé."); return; }
+  const last = LAST_ACTION_STACK.pop();
+  if(!last){ alert("Aucune action à annuler."); return; }
+  const stats = loadStats(CURRENT_PARTNER);
+  if(last.type==='assigned' && stats.assigned>0) stats.assigned -= 1;
+  if(last.type==='nosav' && stats.doneNoSav>0) stats.doneNoSav -= 1;
+  saveStats(CURRENT_PARTNER, stats);
+  refreshUI();
+}
+
+// Branchements
+btnLoadPartner?.addEventListener('click', ensurePartner);
+btnAddAssigned?.addEventListener('click', addAssigned);
+btnAddDoneNoSav?.addEventListener('click', addDoneNoSav);
+btnUndo?.addEventListener('click', undoLast);
+
+// Rendre visibles les blocs après validation PRO (hooke la fonction existante)
+const _openIfValid = openIfValid;
+openIfValid = function(){
+  _openIfValid(); // exécute la logique existante d’accès
+  // Si l’accès a été validé, le contenu PRO est visible -> on affiche nos blocs
+  if (document.getElementById('partner-content').style.display === 'block') {
+    partnerBanner.style.display='flex';
+    partnerOps.style.display='flex';
+    // KPIs pas encore visibles tant qu'on n'a pas choisi un partenaire
+  }
+};
+
+// Bonus : charge le dernier partenaire utilisé pour gagner du temps
+document.addEventListener('DOMContentLoaded', ()=>{
+  const lastPid = localStorage.getItem('partnerStats::LAST_PID') || '';
+  if(lastPid){
+    partnerIdInput.value = lastPid;
+    CURRENT_PARTNER = lastPid;
+    refreshUI();
+  }
+});
+partnerIdInput?.addEventListener('change', ()=>{
+  const pid = (partnerIdInput.value||'').trim();
+  if(pid) localStorage.setItem('partnerStats::LAST_PID', pid);
+});
+</script>
+  
 </body>
 </html>
