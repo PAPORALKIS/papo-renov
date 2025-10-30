@@ -930,6 +930,34 @@ partnerIdInput?.addEventListener('change', ()=>{
   if(pid) localStorage.setItem('partnerStats::LAST_PID', pid);
 });
 </script>
+
+<script>
+// --- PATCH AFFICHE PROMO/APRÈS VALIDATION ---
+
+function showPartnerPromoIfOpen(){
+  const pc = document.getElementById('partner-content');
+  if (pc && pc.style.display === 'block') {
+    document.getElementById('promo-banner').style.display = 'flex';
+    document.getElementById('partner-ops').style.display = 'flex';
+  }
+}
+
+// 1) Clique sur le bouton "Accéder"
+document.getElementById('enter')?.addEventListener('click', () => {
+  // Laisse le handler existant faire son job, puis on affiche nos blocs
+  setTimeout(showPartnerPromoIfOpen, 0);
+});
+
+// 2) Touche Entrée dans le champ code
+document.getElementById('code')?.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') setTimeout(showPartnerPromoIfOpen, 0);
+});
+
+// 3) Sécurité : si jamais la page est déjà ouverte en mode PRO (print / retour)
+document.addEventListener('DOMContentLoaded', () => {
+  setTimeout(showPartnerPromoIfOpen, 0);
+});
+</script>
   
 </body>
 </html>
