@@ -181,7 +181,7 @@ nav ul li a.active{color:#007bff; font-weight:700; text-decoration:underline}
 .list li:last-child{border-bottom:none}
 .list li strong{font-family:'Roboto Mono',monospace; font-weight:700; color:var(--primary); white-space:nowrap}
 
-/* === AJOUT : champs quantité + bouton global === */
+/* === Champs quantité + bouton global === */
 .qty-wrap{display:flex; align-items:center; gap:8px}
 .qty-input{
   width:74px; padding:6px 8px; border:1px solid var(--border); border-radius:6px;
@@ -271,6 +271,9 @@ input[type="file"]{display:none}
 @media print{
   header,.header,.tab-nav,.footer,.devis-actions,.list li .qty-wrap,.secure-area>.notice,.secure-area>.form,.secure-area>.error,
   .devis-table input,.devis-table button{display:none !important}
+  /* >>> AJOUT : ne jamais imprimer l'offre partenaire ni le compteur <<< */
+  .promo-banner,.partner-ops,.partner-kpis{display:none !important;}
+
   .card{width:100%; box-shadow:none; margin:0; border-radius:0}
   .client-fields{display:none !important;}
   .table-responsive{overflow: visible !important; border: 1px solid #ccc !important;}
@@ -585,7 +588,7 @@ input[type="file"]{display:none}
             </article>
           </div>
 
-          <!-- === AJOUT : bouton global d’ajout au devis === -->
+          <!-- Bouton global d’ajout au devis -->
           <div class="bulk-add">
             <button id="btn-add-selected">➕ Ajouter au devis</button>
           </div>
@@ -723,10 +726,29 @@ function switchTab(targetId){
   if(pane){ pane.style.display='block'; pane.classList.add('active'); }
   const btn=document.querySelector(`.tab-btn[data-tab="${targetId}"]`);
   if(btn) btn.classList.add('active');
+
+  /* >>> AJOUT : masquer Offre/Compteur sur l’onglet Devis, et restaurer ailleurs <<< */
+  const ids = ['promo-banner','partner-ops','partner-kpis'];
+  if(targetId==='devis-rapide-tab'){
+    ids.forEach(id=>{
+      const el=document.getElementById(id);
+      if(el){
+        el.dataset.prevDisplay = el.dataset.prevDisplay ?? (el.style.display || '');
+        el.style.display='none';
+      }
+    });
+  } else {
+    ids.forEach(id=>{
+      const el=document.getElementById(id);
+      if(el && el.dataset.prevDisplay!==undefined){
+        el.style.display = el.dataset.prevDisplay;
+        delete el.dataset.prevDisplay;
+      }
+    });
+  }
 }
 
 /* ================== NOUVEAU FLUX : Ajout global au devis ================== */
-/** Détecte l'unité à partir du libellé prix (€/m², €/u, €/jr ou forfait) */
 function detectUnitFromText(txt){
   const t = (txt||'').toLowerCase();
   if(t.includes('€/m²')) return 'm²';
@@ -735,7 +757,6 @@ function detectUnitFromText(txt){
   return 'forfait';
 }
 
-/** Ajoute toutes les prestations dont la quantité > 0 */
 function addSelectedPrestations(){
   const inputs = document.querySelectorAll('#tarifs-pro-tab .qty-input');
   let addedCount = 0;
@@ -748,23 +769,19 @@ function addSelectedPrestations(){
     if(!li) return;
 
     const nameRaw = li.dataset.presta || (li.querySelector('span')?.textContent || '').trim();
-    // Nettoyage du nom (retire les suffixes techniques)
     const name = nameRaw.replace(/\s\(M\.O\.\s*\/\s*\S+\)|\s\(M\.O\.\)|\s\(F\+M\.O\.\)/g,'').trim();
 
-    // Prix
     const pmin = parseFloat(inp.dataset.priceMin);
     const pmax = parseFloat(inp.dataset.priceMax);
     let unitPrice;
     if(!isNaN(pmin) && !isNaN(pmax)) unitPrice = (pmin+pmax)/2;
     else if(!isNaN(pmin)) unitPrice = pmin;
     else if(!isNaN(pmax)) unitPrice = pmax;
-    else unitPrice = 0; // cas "Forfait Jours" sans borne (ajustable ensuite dans le devis)
+    else unitPrice = 0;
 
-    // Unité
     const priceLabel = li.querySelector('strong')?.textContent || '';
     const unit = detectUnitFromText(priceLabel);
 
-    // Push/merge dans le devis
     const existing = devisCart.find(i=>i.name===name && i.unit===unit && i.unitPrice===parseFloat(unitPrice.toFixed(2)));
     if(existing){ existing.quantity += qty; }
     else{
@@ -775,8 +792,6 @@ function addSelectedPrestations(){
         unit
       });
     }
-
-    // Reset du champ quantité pour éviter un double ajout involontaire
     inp.value = '';
     addedCount++;
   });
@@ -786,7 +801,6 @@ function addSelectedPrestations(){
     return;
   }
   renderDevis();
-  // Bascule automatique vers l’onglet Devis pour voir le résultat (optionnel)
   switchTab('devis-rapide-tab');
 }
 
