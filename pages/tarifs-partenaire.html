@@ -163,8 +163,15 @@ nav ul li a.active{color:#007bff; font-weight:700; text-decoration:underline}
   gap:18px; margin-bottom:22px;
 }
 .sheet{
-  background:var(--panel); border:1px solid var(--border); border-radius:10px;
-  box-shadow:0 8px 20px rgba(0,0,0,.05); padding:16px; display:flex; flex-direction:column;
+  background:var(--panel); border:1px solid var(--border); border-radius:14px;
+  box-shadow:0 12px 28px rgba(0,0,0,.08);
+  padding:16px; display:flex; flex-direction:column;
+  transform-style:preserve-3d; perspective:800px;
+  transition:transform .35s ease, box-shadow .35s ease;
+}
+.sheet:hover{
+  transform:translateY(-4px) rotateX(2deg);
+  box-shadow:0 18px 36px rgba(0,0,0,.12);
 }
 .sheet .head{display:flex; justify-content:space-between; align-items:center; gap:10px; margin-bottom:10px}
 .sheet h3{font-size:1.1rem; margin:0; color:var(--primary)}
@@ -397,195 +404,7 @@ input[type="file"]{display:none}
           </p>
 
           <div class="sheets" id="partner-sheets">
-            <!-- Revêtements -->
-            <article class="sheet" data-category="Revetement">
-              <div class="head"><h3>Revêtements Sols & Murs</h3></div>
-              <p>Main d'œuvre (M.O.) | Pose de qualité PRO</p>
-              <div class="from">À partir de 18 € / m² (HT) M.O.</div>
-              <ul class="list">
-                <li data-presta="Peinture Murs (2 couches PRO)">
-                  <span>Peinture Murs (2 couches PRO)</span>
-                  <div class="qty-wrap">
-                    <strong>22–36 €/m²</strong>
-                    <input type="number" min="0" placeholder="0" class="qty-input" data-price-min="22" data-price-max="36">
-                  </div>
-                </li>
-                <li data-presta="Peinture Plafonds Mat PRO">
-                  <span>Peinture Plafonds Mat PRO</span>
-                  <div class="qty-wrap">
-                    <strong>27–45 €/m²</strong>
-                    <input type="number" min="0" placeholder="0" class="qty-input" data-price-min="27" data-price-max="45">
-                  </div>
-                </li>
-                <li data-presta="Carrelage Sol Standard (Droit)">
-                  <span>Carrelage Sol Standard (Droit)</span>
-                  <div class="qty-wrap">
-                    <strong>30–55 €/m²</strong>
-                    <input type="number" min="0" placeholder="0" class="qty-input" data-price-min="30" data-price-max="55">
-                  </div>
-                </li>
-                <li data-presta="Faïence Murale (M.O.)">
-                  <span>Faïence Murale (M.O.)</span>
-                  <div class="qty-wrap">
-                    <strong>35–65 €/m²</strong>
-                    <input type="number" min="0" placeholder="0" class="qty-input" data-price-min="35" data-price-max="65">
-                  </div>
-                </li>
-                <li data-presta="Parquet Flottant (M.O.)">
-                  <span>Parquet Flottant Standard</span>
-                  <div class="qty-wrap">
-                    <strong>18–30 €/m²</strong>
-                    <input type="number" min="0" placeholder="0" class="qty-input" data-price-min="18" data-price-max="30">
-                  </div>
-                </li>
-                <li data-presta="Sols PVC / Vinyle (M.O.)">
-                  <span>Sols PVC / Vinyle (M.O.)</span>
-                  <div class="qty-wrap">
-                    <strong>15–25 €/m²</strong>
-                    <input type="number" min="0" placeholder="0" class="qty-input" data-price-min="15" data-price-max="25">
-                  </div>
-                </li>
-              </ul>
-            </article>
-
-            <!-- Plomberie -->
-            <article class="sheet" data-category="Plomberie">
-              <div class="head"><h3>Plomberie & Sanitaires</h3></div>
-              <p>Forfaits M.O. optimisés pour rénovation complète</p>
-              <div class="from">SDB Complète dès 3 150 € (HT) M.O.</div>
-              <ul class="list">
-                <li data-presta="Rénovation SDB Complète (M.O.)">
-                  <span>Rénovation SDB Complète (M.O.)</span>
-                  <div class="qty-wrap">
-                    <strong>3 150–7 200 €</strong>
-                    <input type="number" min="0" placeholder="0" class="qty-input" data-price-min="3150" data-price-max="7200">
-                  </div>
-                </li>
-                <li data-presta="Création Point d’Eau (M.O. / u)">
-                  <span>Création Point d’Eau (M.O. / u)</span>
-                  <div class="qty-wrap">
-                    <strong>225–450 €/u</strong>
-                    <input type="number" min="0" placeholder="0" class="qty-input" data-price-min="225" data-price-max="450">
-                  </div>
-                </li>
-                <li data-presta="Installation WC Suspendu (M.O.)">
-                  <span>Installation WC Suspendu (M.O.)</span>
-                  <div class="qty-wrap">
-                    <strong>400–675 €</strong>
-                    <input type="number" min="0" placeholder="0" class="qty-input" data-price-min="400" data-price-max="675">
-                  </div>
-                </li>
-                <li data-presta="Création Douche à l’Italienne (M.O.)">
-                  <span>Création Douche à l’Italienne (M.O.)</span>
-                  <div class="qty-wrap">
-                    <strong>1 080–2 250 €</strong>
-                    <input type="number" min="0" placeholder="0" class="qty-input" data-price-min="1080" data-price-max="2250">
-                  </div>
-                </li>
-                <li data-presta="Pose Chauffe-Eau (M.O.)">
-                  <span>Pose Chauffe-Eau (M.O.)</span>
-                  <div class="qty-wrap">
-                    <strong>225–400 €</strong>
-                    <input type="number" min="0" placeholder="0" class="qty-input" data-price-min="225" data-price-max="400">
-                  </div>
-                </li>
-                <li data-presta="Installation Cuisine (Réseaux M.O.)">
-                  <span>Installation Cuisine (Réseaux M.O.)</span>
-                  <div class="qty-wrap">
-                    <strong>750–1 500 €</strong>
-                    <input type="number" min="0" placeholder="0" class="qty-input" data-price-min="750" data-price-max="1500">
-                  </div>
-                </li>
-              </ul>
-            </article>
-
-            <!-- Électricité -->
-            <article class="sheet" data-category="Electricite">
-              <div class="head"><h3>Électricité & Plâtrerie</h3></div>
-              <p>Grille dédiée récurrence / volume | F+M.O. inclus si spécifié</p>
-              <div class="from">Cloison dès 40 €/m² (F+M.O.)</div>
-              <ul class="list">
-                <li data-presta="Cloison Placo Simple (F+M.O.)">
-                  <span>Cloison Placo Simple (F+M.O.)</span>
-                  <div class="qty-wrap">
-                    <strong>40–60 €/m²</strong>
-                    <input type="number" min="0" placeholder="0" class="qty-input" data-price-min="40" data-price-max="60">
-                  </div>
-                </li>
-                <li data-presta="Doublage Isolant Mur (F+M.O.)">
-                  <span>Doublage Isolant Mur (F+M.O.)</span>
-                  <div class="qty-wrap">
-                    <strong>50–75 €/m²</strong>
-                    <input type="number" min="0" placeholder="0" class="qty-input" data-price-min="50" data-price-max="75">
-                  </div>
-                </li>
-                <li data-presta="Création Prise / Inter (M.O. / u)">
-                  <span>Création Prise / Inter (M.O. / u)</span>
-                  <div class="qty-wrap">
-                    <strong>70–110 €/u</strong>
-                    <input type="number" min="0" placeholder="0" class="qty-input" data-price-min="70" data-price-max="110">
-                  </div>
-                </li>
-                <li data-presta="Remplacement Tableau Électrique">
-                  <span>Remplacement Tableau Électrique</span>
-                  <div class="qty-wrap">
-                    <strong>810–1 620 €</strong>
-                    <input type="number" min="0" placeholder="0" class="qty-input" data-price-min="810" data-price-max="1620">
-                  </div>
-                </li>
-                <li data-presta="Installation VMC Simple Flux (M.O.)">
-                  <span>Installation VMC Simple Flux (M.O.)</span>
-                  <div class="qty-wrap">
-                    <strong>315–585 €</strong>
-                    <input type="number" min="0" placeholder="0" class="qty-input" data-price-min="315" data-price-max="585">
-                  </div>
-                </li>
-                <li data-presta="Spot LED Encastré (M.O. / u)">
-                  <span>Spot LED Encastré (M.O. / u)</span>
-                  <div class="qty-wrap">
-                    <strong>45–75 €/u</strong>
-                    <input type="number" min="0" placeholder="0" class="qty-input" data-price-min="45" data-price-max="75">
-                  </div>
-                </li>
-              </ul>
-            </article>
-
-            <!-- Divers -->
-            <article class="sheet" data-category="Divers">
-              <div class="head"><h3>Déconstruction & Divers</h3></div>
-              <p>Forfaits Démolition & Évacuation (M.O.)</p>
-              <div class="from">Sur Devis selon volume / accès</div>
-              <ul class="list">
-                <li data-presta="Démolition Cloison Légère (M.O.)">
-                  <span>Démolition Cloison Légère (M.O.)</span>
-                  <div class="qty-wrap">
-                    <strong>15–25 €/m²</strong>
-                    <input type="number" min="0" placeholder="0" class="qty-input" data-price-min="15" data-price-max="25">
-                  </div>
-                </li>
-                <li data-presta="Dépose et Évacuation Salle de Bain">
-                  <span>Dépose / Évacuation SDB (Forfait)</span>
-                  <div class="qty-wrap">
-                    <strong>500–950 €</strong>
-                    <input type="number" min="0" placeholder="0" class="qty-input" data-price-min="500" data-price-max="950">
-                  </div>
-                </li>
-                <li data-presta="Protection & Préparation Chantier">
-                  <span>Protection & Préparation Chantier</span>
-                  <div class="qty-wrap">
-                    <strong>Forfait Jours</strong>
-                    <input type="number" min="0" placeholder="0" class="qty-input" data-price-min="" data-price-max="">
-                  </div>
-                </li>
-                <li data-presta="Nettoyage Fin de Chantier (M.O. / jr)">
-                  <span>Nettoyage Fin de Chantier (M.O. / jr)</span>
-                  <div class="qty-wrap">
-                    <strong>300–450 €/jr</strong>
-                    <input type="number" min="0" placeholder="0" class="qty-input" data-price-min="300" data-price-max="450">
-                  </div>
-                </li>
-              </ul>
-            </article>
+            <!-- Injecté dynamiquement depuis PAPORENOV-Tarifs.json -->
           </div>
 
           <!-- Bouton global d’ajout au devis -->
@@ -727,7 +546,6 @@ function switchTab(targetId){
   const btn=document.querySelector(`.tab-btn[data-tab="${targetId}"]`);
   if(btn) btn.classList.add('active');
 
-  /* >>> AJOUT : masquer Offre/Compteur sur l’onglet Devis, et restaurer ailleurs <<< */
   const ids = ['promo-banner','partner-ops','partner-kpis'];
   if(targetId==='devis-rapide-tab'){
     ids.forEach(id=>{
@@ -748,15 +566,116 @@ function switchTab(targetId){
   }
 }
 
-/* ================== NOUVEAU FLUX : Ajout global au devis ================== */
-function detectUnitFromText(txt){
-  const t = (txt||'').toLowerCase();
-  if(t.includes('€/m²')) return 'm²';
-  if(t.includes('€/u')) return 'u';
-  if(t.includes('€/jr')) return 'jr';
+/* ================== RENDER TARIFS (depuis JSON) ================== */
+function euro(x){
+  if(x===null || x===undefined || isNaN(x)) return '—';
+  return (parseFloat(x).toFixed(2)+' €').replace('.00','');
+}
+function inferUnit(u, label){
+  const t=(u||'').toLowerCase();
+  if(t) return t;
+  const L=(label||'').toLowerCase();
+  if(L.includes('m²')||L.includes('m2')) return 'm²';
+  if(L.includes('/u')||L.includes('unité')||L.includes('unite')||L.includes('u.')) return 'u';
+  if(L.includes('jr')||L.includes('jour')) return 'jr';
   return 'forfait';
 }
+function cleanTask(t){
+  return (t||'').replace(/\s*\((M\.O\.|F\+M\.O\.|M\.O\.\/\s*\S+)\)\s*/gi,'').trim();
+}
 
+async function loadTarifs(){
+  // Essaie le JSON à côté de la page
+  const candidates = [
+    './PAPORENOV-Tarifs.json',
+    'PAPORENOV-Tarifs.json'
+  ];
+  let data=null, lastErr=null;
+  for(const url of candidates){
+    try{
+      const r = await fetch(url, {cache:'no-store'});
+      if(r.ok){ data = await r.json(); break; }
+    }catch(e){ lastErr=e; }
+  }
+  if(!data){
+    document.getElementById('partner-sheets').innerHTML =
+      `<div style="padding:14px; border:1px dashed var(--border); border-radius:10px; background:#fff;">
+        Impossible de charger <code>PAPORENOV-Tarifs.json</code>. Place le fichier JSON à côté de cette page.<br>
+        Nom attendu : <strong>PAPORENOV-Tarifs.json</strong>
+      </div>`;
+    return;
+  }
+  renderSheets(data);
+}
+
+function renderSheets(data){
+  const container = document.getElementById('partner-sheets');
+  container.innerHTML = '';
+
+  Object.keys(data).forEach(sheetName=>{
+    const items = (data[sheetName]||[]).filter(x=>x && x.task);
+    if(!items.length) return;
+
+    // min "from"
+    const mins = items.map(x=> typeof x.price_min==='number' ? x.price_min : null).filter(x=>x!==null);
+    const from = mins.length ? Math.min(...mins) : null;
+
+    const art = document.createElement('article');
+    art.className = 'sheet';
+    art.dataset.category = sheetName;
+
+    const head = document.createElement('div');
+    head.className = 'head';
+    head.innerHTML = `<h3>${sheetName}</h3>`;
+    art.appendChild(head);
+
+    const p = document.createElement('p');
+    p.textContent = 'Main d’œuvre (M.O.) | Référence: prix min par prestation';
+    art.appendChild(p);
+
+    const fromEl = document.createElement('div');
+    fromEl.className = 'from';
+    fromEl.textContent = from !== null ? `À partir de ${euro(from)} HT` : `Tarifs sur devis`;
+    art.appendChild(fromEl);
+
+    const ul = document.createElement('ul');
+    ul.className = 'list';
+
+    items.forEach(it=>{
+      const name = cleanTask(it.task);
+      const pu = (typeof it.price_min==='number') ? it.price_min : null;
+      const unit = inferUnit(it.unit, it.task);
+      const li = document.createElement('li');
+      li.dataset.presta = name;
+
+      const left = document.createElement('span');
+      left.textContent = name + (it.notes ? ` — ${it.notes}` : '');
+      const qtyWrap = document.createElement('div');
+      qtyWrap.className = 'qty-wrap';
+
+      const strong = document.createElement('strong');
+      strong.textContent = pu!==null ? `${euro(pu)}/${unit}` : `P.U. —`;
+
+      const input = document.createElement('input');
+      input.type='number'; input.min='0'; input.placeholder='0';
+      input.className='qty-input';
+      input.dataset.price = (pu!==null ? pu : 0);
+      input.dataset.unit = unit;
+
+      qtyWrap.appendChild(strong);
+      qtyWrap.appendChild(input);
+
+      li.appendChild(left);
+      li.appendChild(qtyWrap);
+      ul.appendChild(li);
+    });
+
+    art.appendChild(ul);
+    container.appendChild(art);
+  });
+}
+
+/* ================== NOUVEAU FLUX : Ajout global au devis (P.U. = prix min) ================== */
 function addSelectedPrestations(){
   const inputs = document.querySelectorAll('#tarifs-pro-tab .qty-input');
   let addedCount = 0;
@@ -771,16 +690,9 @@ function addSelectedPrestations(){
     const nameRaw = li.dataset.presta || (li.querySelector('span')?.textContent || '').trim();
     const name = nameRaw.replace(/\s\(M\.O\.\s*\/\s*\S+\)|\s\(M\.O\.\)|\s\(F\+M\.O\.\)/g,'').trim();
 
-    const pmin = parseFloat(inp.dataset.priceMin);
-    const pmax = parseFloat(inp.dataset.priceMax);
-    let unitPrice;
-    if(!isNaN(pmin) && !isNaN(pmax)) unitPrice = (pmin+pmax)/2;
-    else if(!isNaN(pmin)) unitPrice = pmin;
-    else if(!isNaN(pmax)) unitPrice = pmax;
-    else unitPrice = 0;
-
-    const priceLabel = li.querySelector('strong')?.textContent || '';
-    const unit = detectUnitFromText(priceLabel);
+    // >>> IGNORER MAX : on prend UNIQUEMENT le P.U. min comme référence
+    const unitPrice = parseFloat(inp.dataset.price || '0') || 0;
+    const unit = (inp.dataset.unit || 'forfait');
 
     const existing = devisCart.find(i=>i.name===name && i.unit===unit && i.unitPrice===parseFloat(unitPrice.toFixed(2)));
     if(existing){ existing.quantity += qty; }
@@ -861,8 +773,16 @@ function handleLogoUpload(e){
 }
 
 /* ================== Events ================== */
-btnEnter?.addEventListener('click', openIfValid);
-inputCode.addEventListener('keydown', e=>{ if(e.key==='Enter') openIfValid(); });
+btnEnter?.addEventListener('click', async ()=>{
+  openIfValid();
+  if (partnerContent.style.display==='block') await loadTarifs();
+});
+inputCode.addEventListener('keydown', async e=>{
+  if(e.key==='Enter'){
+    openIfValid();
+    if (partnerContent.style.display==='block') await loadTarifs();
+  }
+});
 
 tabButtons.forEach(b=>b.addEventListener('click', e=>switchTab(e.currentTarget.dataset.tab)));
 
@@ -1030,11 +950,12 @@ btnUndo?.addEventListener('click', undoLast);
 
 // Rendre visibles les blocs après validation PRO (hooke la fonction existante)
 const _openIfValid = openIfValid;
-openIfValid = function(){
+openIfValid = async function(){
   _openIfValid();
   if (document.getElementById('partner-content').style.display === 'block') {
     partnerBanner.style.display='flex';
     partnerOps.style.display='flex';
+    await loadTarifs();
   }
 };
 
@@ -1055,7 +976,6 @@ partnerIdInput?.addEventListener('change', ()=>{
 
 <script>
 // --- PATCH AFFICHE PROMO/APRÈS VALIDATION ---
-// Compat : écoute le bouton d’accès quel que soit son id (btn-enter OU enter)
 function showPartnerPromoIfOpen(){
   const pc = document.getElementById('partner-content');
   if (pc && pc.style.display === 'block') {
