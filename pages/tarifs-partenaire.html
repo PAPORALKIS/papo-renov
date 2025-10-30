@@ -597,7 +597,7 @@ const ACCESS_CODE = "PROPAPO2025!";
 
 /* ================== DOM HOOKS ================== */
 const inputCode = document.getElementById('code');
-const btnEnter = document.getElementById('btn-enter');
+const btnEnter = document.getElementById('btn-enter') || document.getElementById('enter'); /* <— compat deux IDs */
 const errorDiv = document.getElementById('error');
 const partnerContent = document.getElementById('partner-content');
 const noticeText = document.querySelector('.secure-area > .notice');
@@ -734,7 +734,7 @@ function handleLogoUpload(e){
 }
 
 /* ================== Events ================== */
-btnEnter.addEventListener('click', openIfValid);
+btnEnter?.addEventListener('click', openIfValid);
 inputCode.addEventListener('keydown', e=>{ if(e.key==='Enter') openIfValid(); });
 
 tabButtons.forEach(b=>b.addEventListener('click', e=>switchTab(e.currentTarget.dataset.tab)));
@@ -933,7 +933,7 @@ partnerIdInput?.addEventListener('change', ()=>{
 
 <script>
 // --- PATCH AFFICHE PROMO/APRÈS VALIDATION ---
-
+// Compat : écoute le bouton d’accès quel que soit son id (btn-enter OU enter)
 function showPartnerPromoIfOpen(){
   const pc = document.getElementById('partner-content');
   if (pc && pc.style.display === 'block') {
@@ -942,18 +942,17 @@ function showPartnerPromoIfOpen(){
   }
 }
 
-// 1) Clique sur le bouton "Accéder"
-document.getElementById('btn-enter')?.addEventListener('click', () => {
-  // Laisse le handler existant faire son job, puis on affiche nos blocs
-  setTimeout(showPartnerPromoIfOpen, 0);
-});
+(function(){
+  const btn = document.getElementById('btn-enter') || document.getElementById('enter');
+  if (btn) btn.addEventListener('click', () => setTimeout(showPartnerPromoIfOpen, 0));
+})();
 
-// 2) Touche Entrée dans le champ code
+// Touche Entrée dans le champ code
 document.getElementById('code')?.addEventListener('keydown', (e) => {
   if (e.key === 'Enter') setTimeout(showPartnerPromoIfOpen, 0);
 });
 
-// 3) Sécurité : si jamais la page est déjà ouverte en mode PRO (print / retour)
+// Sécurité : si jamais la page est déjà ouverte en mode PRO (print / retour)
 document.addEventListener('DOMContentLoaded', () => {
   setTimeout(showPartnerPromoIfOpen, 0);
 });
