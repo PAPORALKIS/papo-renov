@@ -38,9 +38,22 @@ body{
   min-width:320px;
   overflow-x:hidden; /* évite tout scroll horizontal parasite */
   padding-bottom: var(--footer-h); /* pour ne pas masquer le contenu par le footer fixe */
+  min-height: 100vh; /* Assure que le footer est bien en bas même avec peu de contenu */
 }
 
 /* --- NAV --- */
+header{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  background-color: var(--card-background); /* Rendre le header visible si l'image de fond est foncée */
+}
+@media (max-width: 992px) {
+  header{ flex-direction: column; padding: 10px 0; }
+  header .logo{ margin-bottom: 10px; }
+  header nav{ width: 100%; }
+}
 nav ul li a.active{color:var(--primary-color);font-weight:700}
 nav ul{-ms-overflow-style:none;scrollbar-width:none;overflow-x:auto}
 nav ul::-webkit-scrollbar{display:none}
@@ -58,7 +71,6 @@ header .logo{position:relative;display:inline-block}
 }
 
 /* --- HERO --- */
-
 .content-section{padding:20px 20px 40px;display:flex;flex-direction:column;align-items:center;text-align:center;position:relative}
 h1{
   color:#fff;
@@ -80,7 +92,7 @@ h1::after{content:'';display:block;width:80px;height:4px;background:var(--primar
 .slider img{position:absolute;inset:0;margin:auto;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .8s ease}
 .slider img.active{opacity:1}
 
-/* --- BARRE OUTILS FICHES --- */
+/* --- BARRE OUTILS FICHES (Optimisé pour mobile/tablette) --- */
 .tools{
   width:min(1200px,100%);
   display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;
@@ -98,12 +110,19 @@ h1::after{content:'';display:block;width:80px;height:4px;background:var(--primar
   box-shadow: 0 1px 2px rgba(0,0,0,.02)
 }
 
-/* --- CHIPS --- */
+/* --- CHIPS (scroll horizontal sur petit écran) --- */
 .chips{
   width:min(1200px,100%);
-  display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin:6px auto 6px;padding:0 8px
+  display:flex;gap:8px;flex-wrap:nowrap; /* Important: nowrop pour le scroll */
+  justify-content:flex-start; /* Aligner à gauche pour le scroll */
+  margin:6px auto 6px;padding:0 8px;
+  overflow-x:auto; /* Permettre le défilement */
+  scrollbar-width:none;
+  -webkit-overflow-scrolling: touch;
 }
+.chips::-webkit-scrollbar{display:none}
 .chip{
+  flex-shrink: 0; /* Empêche les chips de se réduire */
   background:var(--chip);color:var(--chip-text);
   padding:8px 12px;border-radius:999px;font-size:.9rem;border:1px solid var(--border-light);
   cursor:pointer;user-select:none;transition:transform .15s ease, background .2s ease
@@ -114,9 +133,8 @@ h1::after{content:'';display:block;width:80px;height:4px;background:var(--primar
 /* --- FICHES (deux modes) --- */
 .sheets{position:relative;width:min(1450px,100%);margin:30px auto 40px;padding:0 8px;z-index:2}
 
-/* MODE 1 : PILE 3D (ta base) */
+/* MODE 1 : PILE 3D (seulement sur grand écran) */
 .sheets.pile{display:flex;flex-wrap:nowrap;justify-content:center;gap:0;perspective:1500px}
-
 .sheet{
   width:160px;
   height:320px;
@@ -140,15 +158,18 @@ h1::after{content:'';display:block;width:80px;height:4px;background:var(--primar
 .sheets.pile article:nth-child(10){--rot:3deg;--ty:-10px;--tx:0px;--ry:0deg;--z-idx:3}
 .sheets.pile article:nth-child(11){--rot:-2deg;--ty:5px;--tx:0px;--ry:4deg;--z-idx:2}
 
-/* MODE 2 : GRILLE XL */
+/* MODE 2 : GRILLE XL (par défaut sur les petits écrans) */
 .sheets.grid{
   display:grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px,1fr));
+  /* Nouveau: minmax flexible pour un meilleur responsive (1, 2 ou 3 colonnes) */
+  grid-template-columns: repeat(auto-fill, minmax(clamp(200px, 45vw, 300px), 1fr));
+  justify-content: center; /* Centrer si le nombre de cartes ne remplit pas la dernière ligne */
   gap:16px
 }
 .sheets.grid .sheet{
   margin-right:0;width:auto;height:auto;min-height:240px;
-  transform:none;display:flex;flex-direction:column;justify-content:space-between;
+  transform:none !important; /* Force l'annulation de la 3D */
+  display:flex;flex-direction:column;justify-content:space-between;
   padding:20px
 }
 
@@ -183,45 +204,72 @@ h1::after{content:'';display:block;width:80px;height:4px;background:var(--primar
 /* PARTENAIRE VIEW (masquée ici) */
 .partner-prices{display:none}
 
-/* --- BREAKPOINTS RESPONSIVE --- */
+/* --- BREAKPOINTS RESPONSIVE (Optimisation) --- */
 
 /* < 992px : réduire légèrement la typo des cartes */
 @media (max-width:992px){
   .sheet h3{font-size:1rem}
   .sheet p{font-size:.85rem}
+  header nav ul{justify-content: center;}
 }
 
-/* <= 1280px : chips scrollables pour éviter la casse de ligne mauvaise */
+/* <= 1280px : Affichez la grille par défaut sur tablette (même en paysage) et annulez la 3D */
 @media (max-width:1280px){
+  /* Chips : assuré d'être scrollable et aligné à gauche */
   .chips{
     overflow-x:auto;white-space:nowrap;justify-content:flex-start;scrollbar-width:none;padding-bottom:4px
   }
   .chips::-webkit-scrollbar{display:none}
-}
-
-/* Tablettes paysage (768–1280px) : pile 3D devient fluide, sans recouvrement */
-@media (min-width:768px) and (max-width:1280px){
+  
+  /* Désactive la pile 3D et passe en grille */
   .sheets.pile{
     flex-wrap: wrap;
     justify-content: center;
-    gap: 14px;
+    gap: 16px;
     perspective: none;
   }
   .sheets.pile .sheet{
+    width: auto;
+    min-width: 200px; /* Assure une taille minimale */
+    height: auto;
     margin-right: 0;
     transform: none !important;
-    min-height: clamp(220px, 36vh, 320px);
   }
-  .content-section{padding-top:60px}
+
+  /* Ajustement de la section de contenu */
+  .content-section{padding-top:40px}
+  h1{font-size:1.8rem;}
+  
+  /* Modale des détails pour tablette */
+  .detail-modal-content{width:min(700px, 94vw); padding: 25px;}
 }
 
-/* Mobiles : basculer visuellement sur grille via JS + petits réglages */
+/* Mobiles (<= 768px) : Mise en page en colonne */
 @media (max-width:768px){
-  .content-section{padding-top:20px}
+  .content-section{padding-top:20px; padding-left: 10px; padding-right: 10px;}
   .tablet{aspect-ratio:4/3}
-  .tools{gap:8px}
-  .search-wrap{flex-basis:100%;justify-content:center}
-  .chips{justify-content:flex-start;overflow-x:auto;padding-bottom:4px}
+  
+  /* Outils en colonne */
+  .tools{gap:8px; flex-direction: column; padding: 0 10px;}
+  .view-switch{width: 100%; justify-content: space-around;}
+  .search-wrap{flex-basis:100%;justify-content:center; width: 100%;}
+  .search-wrap input{width: 100%;}
+  
+  /* Chips */
+  .chips{padding:0 10px; margin-top: 10px;}
+  
+  /* Cartes */
+  .sheets.grid{
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); /* Une colonne plus large sur petit écran */
+    gap: 12px;
+    padding: 0 10px;
+  }
+  
+  /* Modale */
+  .detail-modal-content{padding: 20px;}
+  .detail-modal-content h3{font-size: 1.4rem;}
+  .detail-modal-content li{font-size: .9rem; flex-direction: column; align-items: flex-start;}
+  .detail-modal-content li strong{align-self: flex-end;}
 }
 
 /* Utra-wide : contenir le contenu au centre */
@@ -289,38 +337,6 @@ footer .legal{
   backdrop-filter: blur(4px);
   border-top: 1px solid rgba(255,255,255,.15);
   user-select: none;
-}
-
-/* --- FIX TABLETTE PAYSAGE --- */
-/* 1) Pile 3D => disposition fluide et lisible entre 768px et 1280px */
-@media (min-width:768px) and (max-width:1280px){
-  .sheets.pile{
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 12px;
-    perspective: none;
-  }
-  .sheets.pile .sheet{
-    width: 200px;
-    height: auto;
-    margin-right: 0;
-    transform: none !important;
-  }
-}
-/* 2) Chips scrollables horizontalement pour éviter le débordement */
-@media (max-width:1280px){
-  .chips{
-    overflow-x: auto;
-    white-space: nowrap;
-    justify-content: flex-start;
-    scrollbar-width: none;
-  }
-  .chips::-webkit-scrollbar{display:none}
-}
-/* 3) Aération du titre et lisibilité en paysage tablette */
-@media (orientation: landscape) and (max-width:1280px){
-  .content-section{padding-top:60px;}
-  h1{font-size:1.6rem;}
 }
 </style>
 </head>
@@ -816,6 +832,7 @@ const detailModal = document.getElementById('detail-modal');
 const modalDetailsContent = document.getElementById('modal-details-content');
 document.querySelectorAll('.open-details, .sheet').forEach(el=>{
   el.addEventListener('click', (e)=>{
+    // Empêche l'ouverture si le clic vient directement d'une action à l'intérieur de la carte, sauf sur le bouton "Voir détails"
     if(e.target.closest('.actions') && !e.target.closest('.open-details')) return;
     const card = e.currentTarget.closest('.sheet');
     if (!card) return;
@@ -873,8 +890,20 @@ chips.addEventListener('click', (e)=>{
 });
 search.addEventListener('input', applyFilters);
 
-/* Par défaut : on garde l’effet “pile 3D” mais on affiche la grille XL sur mobile pour lisibilité */
-if (window.matchMedia('(max-width: 768px)').matches){ setView('grid'); }
+/* **AMÉLIORATION JS** : Bascule en grille par défaut sur les écrans plus petits pour meilleure lisibilité. */
+function initialView(){
+  // Bascule en grille pour mobile et tablette (jusqu'à 1280px, car la pile 3D ne fonctionne bien qu'en très large)
+  if (window.matchMedia('(max-width: 1280px)').matches){
+    setView('grid'); 
+    btnPile.classList.remove('active');
+    btnGrid.classList.add('active');
+  } else {
+    // Par défaut la vue pile 3D sur grand écran
+    setView('pile');
+  }
+}
+window.addEventListener('load', initialView);
+window.addEventListener('resize', initialView);
 </script>
 </body>
 </html>
