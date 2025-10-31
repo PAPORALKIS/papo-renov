@@ -1,0 +1,1217 @@
+{
+  "Démolition & Préparation": [
+    {
+      "task": "Dépose revêtements sols souples",
+      "price_min": 8.0,
+      "unit": "m²",
+      "notes": "Vinyle, lino, moquette — sans ragréage"
+    },
+    {
+      "task": "Dépose carrelage sol",
+      "price_min": 15.0,
+      "unit": "m²",
+      "notes": "Selon adhérence du mortier et surface"
+    },
+    {
+      "task": "Dépose parquet flottant / stratifié",
+      "price_min": 10.0,
+      "unit": "m²",
+      "notes": "Dépose + tri des lames réutilisables"
+    },
+    {
+      "task": "Dépose parquet collé",
+      "price_min": 20.0,
+      "unit": "m²",
+      "notes": "Collé PU ou bitume, nécessite ponçage du support"
+    },
+    {
+      "task": "Dépose plinthes",
+      "price_min": 2.0,
+      "unit": "ml",
+      "notes": "Selon type (bois, MDF, carrelage)"
+    },
+    {
+      "task": "Dépose carrelage mural",
+      "price_min": 20.0,
+      "unit": "m²",
+      "notes": "Souvent nécessaire avant nouvelle faïence"
+    },
+    {
+      "task": "Dépose faïence salle de bain",
+      "price_min": 25.0,
+      "unit": "m²",
+      "notes": "Surface verticale, risque de casse support"
+    },
+    {
+      "task": "Dépose crédence cuisine",
+      "price_min": 15.0,
+      "unit": "m²",
+      "notes": "Inox, carrelage ou verre collé"
+    },
+    {
+      "task": "Dépose d’un faux plafond",
+      "price_min": 20.0,
+      "unit": "m²",
+      "notes": "Démontage ossature + évacuation gravats"
+    },
+    {
+      "task": "Dépose cloison légère (placo, carreaux plâtre)",
+      "price_min": 25.0,
+      "unit": "m²",
+      "notes": "Inclut tri et évacuation des déchets"
+    },
+    {
+      "task": "Ouverture cloison non porteuse",
+      "price_min": 80.0,
+      "unit": "ouverture",
+      "notes": "Pose d’un linteau bois ou métal léger"
+    },
+    {
+      "task": "Dépose huisseries / portes intérieures",
+      "price_min": 30.0,
+      "unit": "unité",
+      "notes": "Dépose encadrement complet"
+    },
+    {
+      "task": "Dépose menuiseries extérieures (hors gros œuvre)",
+      "price_min": 60.0,
+      "unit": "unité",
+      "notes": "Fenêtre, baie, hors dépose totale du dormant maçonné"
+    },
+    {
+      "task": "Dépose cuisine complète",
+      "price_min": 150.0,
+      "unit": "unité",
+      "notes": "Démontage meubles, plan de travail, évier"
+    },
+    {
+      "task": "Dépose meuble vasque / sanitaire",
+      "price_min": 50.0,
+      "unit": "unité",
+      "notes": "Inclut démontage de la robinetterie"
+    },
+    {
+      "task": "Dépose cabine de douche / baignoire",
+      "price_min": 80.0,
+      "unit": "unité",
+      "notes": "Prévoir coupure d’eau et silicone à reprendre"
+    },
+    {
+      "task": "Dépose radiateur / sèche-serviettes",
+      "price_min": 40.0,
+      "unit": "unité",
+      "notes": "Hors purge complète du circuit"
+    },
+    {
+      "task": "Dépose appareil électroménager encastré",
+      "price_min": 20.0,
+      "unit": "unité",
+      "notes": "Four, lave-vaisselle, plaque"
+    },
+    {
+      "task": "Dépose dalles plafond (amovibles)",
+      "price_min": 5.0,
+      "unit": "m²",
+      "notes": "Bureaux, locaux pros"
+    },
+    {
+      "task": "Nettoyage et désencombrement chantier",
+      "price_min": 8.0,
+      "unit": "m²",
+      "notes": "Ramassage, balayage, évacuation légère"
+    },
+    {
+      "task": "Protection surfaces existantes",
+      "price_min": 5.0,
+      "unit": "m²",
+      "notes": "Pose film polyane, carton, adhésif de protection"
+    },
+    {
+      "task": "Évacuation gravats et déchets",
+      "price_min": 150.0,
+      "unit": "benne (3–5 m³)",
+      "notes": "Selon volume, accès et tri"
+    },
+    {
+      "task": "Grattage / ponçage préparatoire murs",
+      "price_min": 10.0,
+      "unit": "m²",
+      "notes": "Avant enduit ou peinture"
+    }
+  ],
+  "Cloisons & Plâtrerie": [
+    {
+      "task": "Doublage isolant collé (placo + polystyrène)",
+      "price_min": 50.0,
+      "unit": "€/m²",
+      "notes": "Pose sur mur existant, type Placomur / Hors peinture"
+    },
+    {
+      "task": "Doublage sur ossature métallique  (placo BA13)",
+      "price_min": 65.0,
+      "unit": "€/m²",
+      "notes": "Solution performante pour murs irréguliers / Hors peinture"
+    },
+    {
+      "task": "Faux plafonds simples (placo BA13)",
+      "price_min": 35.0,
+      "unit": "€/m²",
+      "notes": "Pose sur ossature métallique, hauteur ≤ 2,80 m / Hors peinture"
+    },
+    {
+      "task": "Faux plafonds acoustiques",
+      "price_min": 45.0,
+      "unit": "€/m²",
+      "notes": "Idéal bureaux ou pièces à réverbération / Hors peinture"
+    },
+    {
+      "task": "Cloison de séparation standard (BA13)",
+      "price_min": 45.0,
+      "unit": "€/m²",
+      "notes": "Ossature métallique + double peau simple / Hors peinture"
+    },
+    {
+      "task": "Création niche murale (placo)",
+      "price_min": 60.0,
+      "unit": "€/unité",
+      "notes": "Décorative ou pour rangements intégrés / Hors peinture"
+    },
+    {
+      "task": "Réalisation coffrage technique (placo)",
+      "price_min": 50.0,
+      "unit": "€/ml",
+      "notes": "Encastrer tuyauterie, gaines, etc.  / Hors peinture"
+    },
+    {
+      "task": "Cloison verrière (préparation + support placo)",
+      "price_min": 70.0,
+      "unit": "€/m²",
+      "notes": "Hors fourniture de la verrière"
+    },
+    {
+      "task": "Coffrage plafond décoratif",
+      "notes": "Pose sur ossature métallique, hauteur <30cm / Hors peinture"
+    },
+    {
+      "task": "🧱 ISOLATION – DÉTAIL COMPLET"
+    },
+    {
+      "task": "Catégorie",
+      "unit": "Unité de mesure",
+      "notes": "Notes / Précisions"
+    },
+    {
+      "task": "Isolation des murs intérieurs"
+    },
+    {
+      "task": "Pose de laine de verre 45 mm +",
+      "price_min": 40.0,
+      "unit": "m²"
+    },
+    {
+      "task": "Pose de laine de roche 75 mm",
+      "price_min": 50.0,
+      "unit": "m²"
+    },
+    {
+      "task": "Isolation des plafonds"
+    },
+    {
+      "task": "Pose de laine de verre 45 mm",
+      "price_min": 50.0,
+      "unit": "m²"
+    },
+    {
+      "task": "Pose de laine de roche 75 mm",
+      "price_min": 60.0,
+      "unit": "m²"
+    }
+  ],
+  "Électricité": [
+    {
+      "task": "Tableau électrique",
+      "price_min": 250.0,
+      "unit": "unité",
+      "notes": "Remplacement complet d’un tableau (différentiel + disjoncteurs), selon nombre de circuits."
+    },
+    {
+      "task": "Création d’une ligne dédiée (prises, éclairage, LV, LL, four, etc.)",
+      "price_min": 70.0,
+      "unit": "circuit",
+      "notes": "Fourniture et pose câble, disjoncteur, raccordement au tableau."
+    },
+    {
+      "task": "Tirage de câbles encastrés",
+      "price_min": 25.0,
+      "unit": "mètre linéaire",
+      "notes": "En goulotte, cloison ou faux plafond — variable selon accessibilité."
+    },
+    {
+      "task": "Pose de prises de courant standard",
+      "price_min": 25.0,
+      "unit": "unité",
+      "notes": "Avec appareillage complet, finitions comprises."
+    },
+    {
+      "task": "Pose d’interrupteurs simples / doubles",
+      "price_min": 25.0,
+      "unit": "unité",
+      "notes": "Pose encastrée ou en saillie selon configuration."
+    },
+    {
+      "task": "Pose de va-et-vient / télérupteur",
+      "price_min": 40.0,
+      "unit": "circuit",
+      "notes": "Inclus le câblage de commande et appareillage."
+    },
+    {
+      "task": "Prise RJ45 (réseau / internet)",
+      "price_min": 45.0,
+      "unit": "unité",
+      "notes": "Câble grade 2 ou 3 selon débit."
+    },
+    {
+      "task": "Prise TV coaxiale",
+      "price_min": 35.0,
+      "unit": "unité",
+      "notes": "Câblage et raccordement antenne / répartiteur."
+    },
+    {
+      "task": "Eclairage encastré (spot LED)",
+      "price_min": 40.0,
+      "unit": "unité",
+      "notes": "Fourniture + pose spot LED encastrable, transfo inclus."
+    },
+    {
+      "task": "Plafonnier / suspension",
+      "price_min": 40.0,
+      "unit": "unité",
+      "notes": "Fixation, raccordement et test fonctionnel."
+    },
+    {
+      "task": "Applique murale",
+      "price_min": 35.0,
+      "unit": "unité",
+      "notes": "Pose sur mur BA13, béton ou pierre."
+    },
+    {
+      "task": "Bandeau LED / ruban lumineux",
+      "price_min": 20.0,
+      "unit": "mètre linéaire",
+      "notes": "Pose sous meuble, corniche ou plinthe."
+    },
+    {
+      "task": "Création de point lumineux complet",
+      "price_min": 100.0,
+      "unit": "point",
+      "notes": "Inclut tirage, gaine, commande, appareillage et luminaire basique."
+    },
+    {
+      "task": "Pose de VMC simple flux",
+      "price_min": 250.0,
+      "unit": "unité",
+      "notes": "Extracteurs, conduits et bouches inclus."
+    },
+    {
+      "task": "Pose de VMC double flux",
+      "price_min": 900.0,
+      "unit": "unité",
+      "notes": "Installation complète avec gaines et bouches."
+    },
+    {
+      "task": "Mise à la terre / vérification",
+      "price_min": 100.0,
+      "unit": "installation",
+      "notes": "Test de continuité, piquet de terre, liaison équipotentielle."
+    },
+    {
+      "task": "Détecteur de fumée",
+      "price_min": 40.0,
+      "unit": "unité",
+      "notes": "Installation conforme à la norme NF EN14604."
+    },
+    {
+      "task": "Interphone audio / vidéo",
+      "price_min": 250.0,
+      "unit": "installation",
+      "notes": "Câblage, pose platine de rue et combiné intérieur."
+    },
+    {
+      "task": "Motorisation portail / porte garage",
+      "price_min": 400.0,
+      "unit": "installation",
+      "notes": "Pose moteur, câblage, programmation, sécurité photo-cellule."
+    },
+    {
+      "task": "Électricité extérieure (éclairage jardin / terrasse)",
+      "price_min": 50.0,
+      "unit": "point lumineux",
+      "notes": "Étanche IP65 minimum, câblage enterré ou goulotte."
+    }
+  ],
+  "Plomberie & Sanitaire": [
+    {
+      "task": "Alimentation eau froide / chaude",
+      "price_min": 45.0,
+      "unit": "ml (mètre linéaire)",
+      "notes": "Pose de tube multicouche ou PER, encastré ou apparent, raccords inclus"
+    },
+    {
+      "task": "Création arrivée d’eau (évier, lave-vaisselle, lave-linge, WC, lavabo, etc.)",
+      "price_min": 90.0,
+      "unit": "unité",
+      "notes": "Branchement complet sur réseau existant avec robinet d’arrêt"
+    },
+    {
+      "task": "Modification réseau existant (déplacement évier, douche, etc.)",
+      "price_min": 120.0,
+      "unit": "point d’eau",
+      "notes": "Dépose, rallonge et adaptation des tuyaux cuivre ou PER"
+    },
+    {
+      "task": "Évacuation eaux usées",
+      "price_min": 50.0,
+      "unit": "ml",
+      "notes": "PVC Ø40/50/100, pose sous chape, murale ou encastrée"
+    },
+    {
+      "task": "Création évacuation lave-linge / lave-vaisselle",
+      "price_min": 90.0,
+      "unit": "unité",
+      "notes": "Pose siphon mural, sortie PVC, raccordement au réseau principal"
+    },
+    {
+      "task": "Déplacement évacuation (WC, douche, évier)",
+      "price_min": 120.0,
+      "unit": "point",
+      "notes": "Découpe, rallonge, pente et test d’écoulement compris"
+    },
+    {
+      "task": "Pose siphon sol ou receveur",
+      "price_min": 60.0,
+      "unit": "unité",
+      "notes": "Installation siphon de sol, étanchéité et test d’écoulement"
+    },
+    {
+      "task": "Installation appareils sanitaires"
+    },
+    {
+      "task": "Pose lavabo / vasque sur meuble",
+      "price_min": 120.0,
+      "unit": "unité",
+      "notes": "Raccordement eau chaude/froide + évacuation + silicone"
+    },
+    {
+      "task": "Pose WC au sol",
+      "price_min": 130.0,
+      "unit": "unité",
+      "notes": "Fixation, joint, robinet, raccords fournis"
+    },
+    {
+      "task": "Pose WC suspendu complet",
+      "price_min": 350.0,
+      "unit": "unité",
+      "notes": "Châssis autoportant, réservoir, habillage et plaque de commande"
+    },
+    {
+      "task": "Pose baignoire",
+      "price_min": 350.0,
+      "unit": "unité",
+      "notes": "Installation, habillage, robinetterie et évacuation"
+    },
+    {
+      "task": "Pose receveur de douche",
+      "price_min": 220.0,
+      "unit": "unité",
+      "notes": "Pose sur pied, encastrée ou maçonnée, étanchéité comprise"
+    },
+    {
+      "task": "Pose cabine de douche complète",
+      "price_min": 400.0,
+      "unit": "unité",
+      "notes": "Raccordements, joints silicone, étanchéité, finitions"
+    },
+    {
+      "task": "Pose paroi / porte de douche",
+      "price_min": 100.0,
+      "unit": "unité",
+      "notes": "Ajustage, perçage, pose et étanchéité"
+    },
+    {
+      "task": "Pose robinetterie (lavabo, douche, évier, baignoire)",
+      "price_min": 70.0,
+      "unit": "unité",
+      "notes": "Raccords, joints, robinetterie fournie ou non"
+    },
+    {
+      "task": "Remplacement robinet / mitigeur",
+      "price_min": 50.0,
+      "unit": "unité",
+      "notes": "Main-d’œuvre seule, hors fourniture"
+    },
+    {
+      "task": "Pose colonne de douche thermostatique",
+      "price_min": 160.0,
+      "unit": "unité",
+      "notes": "Pose, raccordement et test étanchéité"
+    },
+    {
+      "task": "Pose ensemble WC broyeur",
+      "price_min": 250.0,
+      "unit": "unité",
+      "notes": "Branchement électrique + évacuation spécifique Ø32/40"
+    },
+    {
+      "task": "Raccordement lave-linge / lave-vaisselle",
+      "price_min": 40.0,
+      "unit": "unité",
+      "notes": "Branchement eau + évacuation, test d’étanchéité"
+    },
+    {
+      "task": "Pose chauffe-eau thermodynamique",
+      "price_min": 800.0,
+      "unit": "unité",
+      "notes": "Mise en service comprise (hors création alimentation électrique)"
+    },
+    {
+      "task": "Remplacement ballon ECS",
+      "price_min": 180.0,
+      "unit": "unité",
+      "notes": "Dépose, pose et raccordement du nouveau ballon"
+    },
+    {
+      "task": "Pose ballon plat mural",
+      "price_min": 300.0,
+      "unit": "unité",
+      "notes": "Gain de place, pose murale avec fixation renforcée"
+    },
+    {
+      "task": "Accessoires & finitions"
+    },
+    {
+      "task": "Pose sèche-serviettes hydraulique",
+      "price_min": 180.0,
+      "unit": "unité",
+      "notes": "Raccordement au réseau chauffage et purge"
+    },
+    {
+      "task": "Pose sèche-serviettes électrique",
+      "price_min": 120.0,
+      "unit": "unité",
+      "notes": "Branchement sur prise ou ligne dédiée"
+    }
+  ],
+  "Sols & Revêtements": [
+    {
+      "task": "Préparation des supports"
+    },
+    {
+      "task": "Ragréage autolissant standard",
+      "price_min": 15.0,
+      "unit": "m²",
+      "notes": "Jusqu’à 5 mm d’épaisseur. Finition plane avant pose de sol souple ou stratifié."
+    },
+    {
+      "task": "Ragréage fibré (épais ou rénovation)",
+      "price_min": 20.0,
+      "unit": "m²",
+      "notes": "Pour supports irréguliers, compatible plancher chauffant."
+    },
+    {
+      "task": "Dépose ancien revêtement (carrelage, parquet, moquette...)",
+      "price_min": 15.0,
+      "unit": "m²",
+      "notes": "Variable selon colle, épaisseur et difficulté."
+    },
+    {
+      "task": "Pose sous-couche acoustique / thermique",
+      "price_min": 5.0,
+      "unit": "m²",
+      "notes": "Polyuréthane, liège ou mousse selon support."
+    },
+    {
+      "task": "Revêtements carrelés"
+    },
+    {
+      "task": "Pose carrelage standard 30×30 / 60×60",
+      "price_min": 35.0,
+      "unit": "m²",
+      "notes": "Pose collée, joints inclus. Hors découpe complexe."
+    },
+    {
+      "task": "Pose carrelage grand format (>80×80)",
+      "price_min": 50.0,
+      "unit": "m²",
+      "notes": "Nécessite double encollage et planéité parfaite."
+    },
+    {
+      "task": "Pose faïence murale (SDB, cuisine)",
+      "price_min": 35.0,
+      "unit": "m²",
+      "notes": "Pose droite ou décalée. Inclut joints et finitions."
+    },
+    {
+      "task": "Pose plinthes carrelées",
+      "price_min": 8.0,
+      "unit": "ml",
+      "notes": "Pose collée assortie au sol."
+    },
+    {
+      "task": "Revêtements stratifiés & parquets"
+    },
+    {
+      "task": "Pose parquet flottant (clip ou collage)",
+      "price_min": 25.0,
+      "unit": "m²",
+      "notes": "Hors plinthes, avec sous-couche."
+    },
+    {
+      "task": "Pose plinthes bois ou MDF",
+      "price_min": 5.0,
+      "unit": "ml",
+      "notes": "Collées ou clouées selon finition."
+    },
+    {
+      "task": "Revêtements souples"
+    },
+    {
+      "task": "Pose dalles PVC clipsables",
+      "price_min": 20.0,
+      "unit": "m²",
+      "notes": "Pose flottante, joints invisibles."
+    },
+    {
+      "task": "Pose moquette",
+      "price_min": 15.0,
+      "unit": "m²",
+      "notes": "Collée ou tendue sur thibaude."
+    },
+    {
+      "task": "Pose sol vinyle en rouleau",
+      "price_min": 15.0,
+      "unit": "m²",
+      "notes": "Finition bord à bord, idéal rénovation rapide."
+    },
+    {
+      "task": "Revêtements exterieur"
+    },
+    {
+      "task": "Pose carrelage extérieur antidérapant",
+      "price_min": 45.0,
+      "unit": "m²",
+      "notes": "Sur dalle béton, colle adaptée gel/dégel."
+    },
+    {
+      "task": "Pose dalles sur plots (terrasse)",
+      "price_min": 50.0,
+      "unit": "m²",
+      "notes": "Réglable, sans colle, parfait pour rénovation."
+    },
+    {
+      "task": "Finitions et accessoires"
+    },
+    {
+      "task": "Pose barres de seuil (portes)",
+      "price_min": 10.0,
+      "unit": "unité",
+      "notes": "Finition entre pièces ou revêtements différents."
+    },
+    {
+      "task": "Remplacement plinthes existantes",
+      "price_min": 5.0,
+      "unit": "ml",
+      "notes": "Dépose + repose finie."
+    }
+  ],
+  "Peinture": [
+    {
+      "task": "Dépose ancienne tapisserie avant peinture",
+      "price_min": 5.0,
+      "unit": "m²",
+      "notes": "Décollage, nettoyage, préparation du support."
+    },
+    {
+      "task": "Préparation des supports – murs",
+      "price_min": 8.0,
+      "unit": "m²",
+      "notes": "Grattage, rebouchage, ponçage, nettoyage. Indispensable avant peinture neuve."
+    },
+    {
+      "task": "Préparation des supports – plafonds",
+      "price_min": 10.0,
+      "unit": "m²",
+      "notes": "Ponçage + lessivage anti-nicotine ou anti-graisse si besoin."
+    },
+    {
+      "task": "Application sous-couche murs",
+      "price_min": 5.0,
+      "unit": "m²",
+      "notes": "Primaire d’accroche acrylique ou glycéro selon le support."
+    },
+    {
+      "task": "Application sous-couche plafonds",
+      "price_min": 6.0,
+      "unit": "m²",
+      "notes": "Nécessaire pour uniformiser l’absorption avant finition."
+    },
+    {
+      "task": "Peinture acrylique mate murs",
+      "price_min": 10.0,
+      "unit": "m²",
+      "notes": "2 couches – finition standard gamme pro."
+    },
+    {
+      "task": "Peinture satinée murs",
+      "price_min": 12.0,
+      "unit": "m²",
+      "notes": "Idéale pièces de vie – meilleure lessivabilité."
+    },
+    {
+      "task": "Peinture brillante murs",
+      "price_min": 14.0,
+      "unit": "m²",
+      "notes": "Aspect tendu, idéal pour cuisines/salles d’eau."
+    },
+    {
+      "task": "Peinture plafond blanc mat",
+      "price_min": 9.0,
+      "unit": "m²",
+      "notes": "Peinture blanche mate spéciale plafond (2 couches)."
+    },
+    {
+      "task": "Peinture sur boiseries (portes, plinthes, moulures)",
+      "price_min": 15.0,
+      "unit": "m²",
+      "notes": "Ponçage, sous-couche bois, 2 couches finition."
+    },
+    {
+      "task": "Peinture radiateurs / métaux",
+      "price_min": 20.0,
+      "unit": "unité",
+      "notes": "Utilisation d’une peinture spéciale métal (glycéro ou époxy)."
+    },
+    {
+      "task": "Vernis sur bois (parquet, escalier, mobilier)",
+      "price_min": 18.0,
+      "unit": "m²",
+      "notes": "Vitrificateur ou vernis à l’eau 2 à 3 couches."
+    },
+    {
+      "task": "Lasure sur boiseries intérieures",
+      "price_min": 12.0,
+      "unit": "m²",
+      "notes": "Protection et mise en teinte des boiseries."
+    }
+  ],
+  "Menuiserie Intérieure": [
+    {
+      "task": "Portes intérieures"
+    },
+    {
+      "task": "Fourniture + pose porte postformée",
+      "price_min": 180.0,
+      "unit": "unité",
+      "notes": "Porte standard, bâti et poignée inclus"
+    },
+    {
+      "task": "Fourniture + pose porte à âme pleine",
+      "price_min": 250.0,
+      "unit": "unité",
+      "notes": "Isolation phonique, finitions haut de gamme"
+    },
+    {
+      "task": "Pose seule porte intérieure",
+      "price_min": 80.0,
+      "unit": "unité",
+      "notes": "Hors dépose, hors ajustement"
+    },
+    {
+      "task": "Ajustement porte existante",
+      "price_min": 35.0,
+      "unit": "unité",
+      "notes": "Rabotage, réglage charnières"
+    },
+    {
+      "task": "Dépose + repose porte",
+      "price_min": 50.0,
+      "unit": "unité",
+      "notes": "Retrait ancien bâti inclus"
+    },
+    {
+      "task": "Pose bloc-porte coulissante (type galandage)",
+      "price_min": 400.0,
+      "unit": "unité",
+      "notes": "Avec kit complet et finitions"
+    },
+    {
+      "task": "Réglage de porte (serrure, charnières)",
+      "price_min": 30.0,
+      "unit": "unité",
+      "notes": "Main-d'œuvre uniquement"
+    }
+  ],
+  "Cuisine (Pose)": [
+    {
+      "task": "Démontage ancienne cuisine",
+      "price_min": 200.0,
+      "unit": "forfait jour",
+      "notes": "prix valable uniquement aprés visite / Inclut dépose meubles hauts/bas, plan de travail, évier, plinthes (hors évacuation gravats).",
+      "price_max": 250.0
+    },
+    {
+      "task": "Préparation murale et sol avant pose",
+      "price_min": 150.0,
+      "unit": "forfait jour",
+      "notes": "prix valable uniquement aprés visite / Reprise mur, rebouchage, ragréage léger, préparation planéité.",
+      "price_max": 35.0
+    },
+    {
+      "task": "Meubles montées d'usine"
+    },
+    {
+      "task": "Pose de meuble bas (Montée d'usine)",
+      "price_min": 35.0,
+      "unit": "unité",
+      "notes": "Hors découpe spécifique, fixation murale, ajustement.",
+      "price_max": 4.0
+    },
+    {
+      "task": "Pose de meuble haut (standard)",
+      "price_min": 40.0,
+      "unit": "unité",
+      "notes": "Avec mise à niveau, alignement, fixations murales et perçages.",
+      "price_max": 4.0
+    },
+    {
+      "task": "Pose de meuble d’angle",
+      "price_min": 70.0,
+      "unit": "unité",
+      "notes": "Comprend ajustement angle, raccords invisibles, fixation renforcée.",
+      "price_max": 0.0
+    },
+    {
+      "task": "Pose de colonne four / frigo / rangement",
+      "price_min": 60.0,
+      "unit": "unité",
+      "notes": "Hauteur jusqu’à 2,40 m, ajustement au niveau.",
+      "price_max": 2.0
+    },
+    {
+      "task": "Pose plinthes de cuisine",
+      "price_min": 10.0,
+      "unit": "mètre linéaire",
+      "notes": "Ajustement d’angle, clipsage, découpes précises.",
+      "price_max": 2.0
+    },
+    {
+      "task": "Pose de corniches ou fileurs",
+      "price_min": 20.0,
+      "unit": "mètre linéaire",
+      "notes": "Ajustement d’angle et finitions.",
+      "price_max": 4.0
+    },
+    {
+      "task": "supplément Pose îlot central (hors plan de travail)",
+      "price_min": 120.0,
+      "unit": "forfait",
+      "notes": "Assemblage, fixation au sol, alignement et découpe si besoin.",
+      "price_max": 0.0
+    },
+    {
+      "task": "supplément Pose plan snack / retour bar",
+      "price_min": 60.0,
+      "unit": "unité",
+      "notes": "Support mural ou piètement, finitions soignées.",
+      "price_max": 0.0
+    },
+    {
+      "task": "Meubles en KIT"
+    },
+    {
+      "task": "Pose de meuble bas (Montée d'usine)",
+      "price_min": 52.5,
+      "unit": "unité",
+      "notes": "Hors découpe spécifique, fixation murale, ajustement.",
+      "price_max": 35.0
+    },
+    {
+      "task": "Pose de meuble haut (standard)",
+      "price_min": 60.0,
+      "unit": "unité",
+      "notes": "Avec mise à niveau, alignement, fixations murales et perçages.",
+      "price_max": 40.0
+    },
+    {
+      "task": "Pose de meuble d’angle",
+      "price_min": 105.0,
+      "unit": "unité",
+      "notes": "Comprend ajustement angle, raccords invisibles, fixation renforcée.",
+      "price_max": 70.0
+    },
+    {
+      "task": "Pose de colonne four / frigo / rangement",
+      "price_min": 90.0,
+      "unit": "unité",
+      "notes": "Hauteur jusqu’à 2,40 m, ajustement au niveau.",
+      "price_max": 60.0
+    },
+    {
+      "task": "Pose plinthes de cuisine",
+      "price_min": 15.0,
+      "unit": "mètre linéaire",
+      "notes": "Ajustement d’angle, clipsage, découpes précises.",
+      "price_max": 10.0
+    },
+    {
+      "task": "Pose de corniches ou fileurs",
+      "price_min": 30.0,
+      "unit": "mètre linéaire",
+      "notes": "Ajustement d’angle et finitions.",
+      "price_max": 20.0
+    },
+    {
+      "task": "Pose joue/panneau/coté plaqué"
+    },
+    {
+      "task": "supplément Pose îlot central (hors plan de travail)",
+      "price_min": 180.0,
+      "unit": "forfait",
+      "notes": "Assemblage, fixation au sol, alignement et découpe si besoin.",
+      "price_max": 120.0
+    },
+    {
+      "task": "supplément Pose plan snack / retour bar",
+      "price_min": 90.0,
+      "unit": "unité",
+      "notes": "Support mural ou piètement, finitions soignées.",
+      "price_max": 60.0
+    },
+    {
+      "task": "Découpe et pose plan de travail stratifié",
+      "price_min": 45.0,
+      "unit": "mètre linéaire",
+      "notes": "Comprend découpe, ajustement, joint, fixation.",
+      "price_max": 90.0
+    },
+    {
+      "task": "Découpe et pose plan de travail massif / compact",
+      "price_min": 80.0,
+      "unit": "mètre linéaire",
+      "notes": "Nécessite outillage spécifique, joints étanches, finitions huilées possibles.",
+      "price_max": 160.0
+    },
+    {
+      "task": "Pose d’un plan en pierre, granit ou quartz (hors découpe usine)",
+      "price_min": 150.0,
+      "unit": "ml",
+      "notes": "Installation avec vérification de portance, collage et joints silicone.",
+      "price_max": 400.0
+    },
+    {
+      "task": "Découpe d’évier + pose",
+      "price_min": 50.0,
+      "unit": "unité",
+      "notes": "Étanchéité, fixation, raccords fournis par le client.",
+      "price_max": 120.0
+    },
+    {
+      "task": "Découpe plaque de cuisson + pose",
+      "price_min": 50.0,
+      "unit": "unité",
+      "notes": "Raccordement non électrique. Vérification du dégagement thermique.",
+      "price_max": 100.0
+    },
+    {
+      "task": "Pose crédence stratifiée ou alu",
+      "price_min": 35.0,
+      "unit": "mètre linéaire",
+      "notes": "Collée ou vissée, joints silicone inclus.",
+      "price_max": 80.0
+    },
+    {
+      "task": "Pose crédence verre / composite / carrelage",
+      "price_min": 80.0,
+      "unit": "mètre linéaire",
+      "notes": "Découpes précises, finitions haut de gamme.",
+      "price_max": 160.0
+    },
+    {
+      "task": "Raccordement plomberie évier (eau + évacuation)",
+      "price_min": 50.0,
+      "unit": "unité",
+      "notes": "Flexible, siphon, étanchéité, sans déplacement compteur.",
+      "price_max": 120.0
+    },
+    {
+      "task": "Raccordement électrique plaque/four/lumières",
+      "price_min": 60.0,
+      "unit": "point",
+      "notes": "Selon puissance, disjoncteur adapté, vérification sécurité.",
+      "price_max": 150.0
+    },
+    {
+      "task": "Installation hotte (évacuation existante)",
+      "price_min": 50.0,
+      "unit": "unité",
+      "notes": "Pose murale ou sous meuble, sans création de conduit.",
+      "price_max": 100.0
+    },
+    {
+      "task": "Pose d’électroménager encastré (four, lave-vaisselle, etc.)",
+      "price_min": 40.0,
+      "unit": "unité",
+      "notes": "Raccordement simple inclus (hors modification plomberie/élec).",
+      "price_max": 100.0
+    },
+    {
+      "task": "Reprise d’un chantier inachevé",
+      "price_min": 50.0,
+      "unit": "heure",
+      "notes": "Diagnostic, ajustement, finition, réajustement du plan.",
+      "price_max": 90.0
+    }
+  ],
+  "Salle de Bains": [
+    {
+      "task": "Dépose et préparation"
+    },
+    {
+      "task": "Dépose complète salle de bain existante",
+      "price_min": 300.0,
+      "unit": "Forfait",
+      "notes": "Dépose des anciens équipements, carrelages, cloisons légères, évacuation déchets compris"
+    },
+    {
+      "task": "Dépose meuble vasque / miroir / colonne",
+      "price_min": 30.0,
+      "unit": "Unité",
+      "notes": "Inclut démontage soigné et évacuation"
+    },
+    {
+      "task": "Dépose baignoire",
+      "price_min": 80.0,
+      "unit": "Unité",
+      "notes": "Préparation des arrivées/évacuations en attente"
+    },
+    {
+      "task": "Dépose douche / receveur",
+      "price_min": 60.0,
+      "unit": "Unité",
+      "notes": "Avec coupure d’eau et rebouchage localisé"
+    },
+    {
+      "task": "Protection et préparation du chantier",
+      "price_min": 50.0,
+      "unit": "Forfait",
+      "notes": "Film de protection, ruban, bâches, etc."
+    }
+  ],
+  "Finitions & Divers": [
+    {
+      "task": "Pose de plinthes MDF / bois",
+      "price_min": 6.0,
+      "unit": "ml",
+      "notes": "Pose collée ou clouée, ajustement angles, finitions joints silicone."
+    },
+    {
+      "task": "Pose de moulures / corniches déco",
+      "price_min": 8.0,
+      "unit": "ml",
+      "notes": "Moulure polyuréthane ou plâtre, découpe d’angle à 45°, collage et joint."
+    },
+    {
+      "task": "Pose de baguettes de finition (carrelage, sol, etc.)",
+      "price_min": 5.0,
+      "unit": "ml",
+      "notes": "Inox, alu ou PVC selon type de sol/mur, ajustement précis."
+    },
+    {
+      "task": "Pose de quarts de rond / seuils de portes",
+      "price_min": 4.0,
+      "unit": "ml",
+      "notes": "Ajustement sur revêtement fini, fixation discrète."
+    },
+    {
+      "task": "Joint silicone sanitaire / périphérique",
+      "price_min": 5.0,
+      "unit": "ml",
+      "notes": "Application propre (cuisine, salle de bain, menuiserie)."
+    },
+    {
+      "task": "Pose de crédence adhésive ou stratifiée",
+      "price_min": 25.0,
+      "unit": "m²",
+      "notes": "Découpe sur mesure, ajustement derrière équipements."
+    },
+    {
+      "task": "Pose de tapisserie / toile de verre",
+      "price_min": 20.0,
+      "unit": "m²",
+      "notes": "Préparation du support, encollage, ajustement raccords."
+    },
+    {
+      "task": "Pose de papier peint panoramique",
+      "price_min": 45.0,
+      "unit": "m²",
+      "notes": "Pose sur mur préparé, centrage précis du motif, marouflage pro."
+    },
+    {
+      "task": "Pose de stickers muraux / déco adhésive",
+      "price_min": 10.0,
+      "unit": "m²",
+      "notes": "Nettoyage support, centrage, pose sans bulles."
+    },
+    {
+      "task": "Pose de tringle à rideaux / stores",
+      "price_min": 20.0,
+      "unit": "unité",
+      "notes": "Percement, chevillage, pose droite, réglages."
+    },
+    {
+      "task": "Pose de miroirs décoratifs",
+      "price_min": 25.0,
+      "unit": "unité",
+      "notes": "Pose collée ou vissée, alignement précis, sécurité renforcée."
+    },
+    {
+      "task": "Montage et fixation d’étagères murales",
+      "price_min": 25.0,
+      "unit": "unité",
+      "notes": "Niveau, entraxe, charge adaptée, scellement."
+    },
+    {
+      "task": "Installation d'accessoires muraux (patères, cadres, supports TV...)",
+      "price_min": 15.0,
+      "unit": "unité",
+      "notes": "Fixation sur BA13, béton ou brique selon support."
+    },
+    {
+      "task": "Pose de barres de seuil alu / laiton",
+      "price_min": 8.0,
+      "unit": "unité",
+      "notes": "Ajustement entre revêtements différents."
+    },
+    {
+      "task": "Pose de joint acrylique / finition peinture",
+      "price_min": 3.0,
+      "unit": "ml",
+      "notes": "Étanchéité, rendu net des angles et raccords murs/plafonds."
+    },
+    {
+      "task": "Nettoyage fin de chantier",
+      "price_min": 2.0,
+      "unit": "m²",
+      "notes": "Aspiration, dégraissage, dépoussiérage complet avant réception."
+    },
+    {
+      "task": "Retouches peinture et finitions",
+      "price_min": 10.0,
+      "unit": "m²",
+      "notes": "Corrections sur zones abîmées, reprise localisée de teinte."
+    },
+    {
+      "task": "Lustrage des surfaces (bois, inox, pierre...)",
+      "price_min": 8.0,
+      "unit": "m²",
+      "notes": "Finition brillante ou satinée selon matériau."
+    },
+    {
+      "task": "Pose d’habillage mural décoratif (panneaux bois, PVC, stratifié)",
+      "price_min": 40.0,
+      "unit": "m²",
+      "notes": "Fixation invisible, traitement des joints et angles."
+    },
+    {
+      "task": "Création de niche ou encadrement décoratif",
+      "price_min": 80.0,
+      "unit": "unité",
+      "notes": "Découpe placo, bande, peinture, intégration LED possible."
+    },
+    {
+      "task": "Réglage final des menuiseries (portes, tiroirs, coulissants)",
+      "price_min": 25.0,
+      "unit": "unité",
+      "notes": "Ajustement charnières, coulisses, alignement, graissage."
+    },
+    {
+      "task": "Rebouchage / ponçage localisé",
+      "price_min": 10.0,
+      "unit": "m²",
+      "notes": "Enduit de finition, ponçage et retouche avant peinture."
+    },
+    {
+      "task": "Pose de plaques de protection murale (plexi, verre, métal)",
+      "price_min": 60.0,
+      "unit": "m²",
+      "notes": "Découpe sur mesure, perçage, fixation propre et sécurisée."
+    },
+    {
+      "task": "Pose de joints de finition parquet / carrelage",
+      "price_min": 6.0,
+      "unit": "ml",
+      "notes": "Joint souple ou silicone, pose à la spatule, finitions propres."
+    },
+    {
+      "task": "Pose de caches, plastrons, enjoliveurs divers",
+      "price_min": 5.0,
+      "unit": "unité",
+      "notes": "Détails de fin de chantier pour rendu pro."
+    },
+    {
+      "task": "Retrait et recyclage des déchets de finitions",
+      "price_min": 50.0,
+      "unit": "forfait",
+      "notes": "Tri, transport en déchetterie agréée."
+    }
+  ],
+  "Déplacements & Main d’œuvre": [
+    {
+      "task": "Déplacement zone locale (≤ 25 km)",
+      "price_min": 30.0,
+      "unit": "Forfait",
+      "notes": "Zone Bouches-du-Rhône – Inclut aller/retour et petit matériel."
+    },
+    {
+      "task": "Déplacement hors zone (25 à 60 km)",
+      "price_min": 60.0,
+      "unit": "Forfait",
+      "notes": "Frais kilométriques supplémentaires selon distance et accès chantier."
+    },
+    {
+      "task": "Déplacement longue distance (> 60 km)",
+      "price_min": 120.0,
+      "unit": "Forfait",
+      "notes": "Peut inclure hébergement ou majoration selon temps de trajet."
+    },
+    {
+      "task": "Stationnement / Zone difficile d’accès",
+      "price_min": 10.0,
+      "unit": "Forfait",
+      "notes": "Centre-ville, absence de stationnement, étage élevé sans ascenseur."
+    },
+    {
+      "task": "Main-d’œuvre aide / manutention",
+      "price_min": 60.0,
+      "unit": "Jour",
+      "notes": "Aide à la pose, manutention, préparation chantier."
+    },
+    {
+      "task": "Forfait journée complète (standard)",
+      "price_min": 350.0,
+      "unit": "Jour",
+      "notes": "Inclut 7 à 8h de travail – hors déplacement."
+    },
+    {
+      "task": "Coordination / Suivi de chantier",
+      "price_min": 50.0,
+      "unit": "Forfait",
+      "notes": "Gestion de sous-traitants, réunions de chantier, pilotage des délais."
+    },
+    {
+      "task": "Assistance technique / Conseils avant travaux / métré",
+      "price_min": 50.0,
+      "unit": "Forfait",
+      "notes": "Diagnostic, relevés, croquis, conseil sur matériaux et faisabilité."
+    }
+  ]
+}
