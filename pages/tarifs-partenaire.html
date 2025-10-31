@@ -166,33 +166,57 @@ nav ul li a.active{color:#007bff; font-weight:700; text-decoration:underline}
   background:var(--panel); border:1px solid var(--border); border-radius:14px;
   box-shadow:0 12px 28px rgba(0,0,0,.08);
   padding:16px; display:flex; flex-direction:column;
-  transform-style:preserve-3d; perspective:800px;
-  transition:transform .35s ease, box-shadow .35s ease;
+  /* MODIFICATION: Simplification de l'effet de survol */
+  transform-style:none; perspective:none;
+  transition:transform .3s ease, box-shadow .3s ease;
+  border-top: 4px solid var(--primary); /* Ligne d'accentuation en haut */
 }
 .sheet:hover{
-  transform:translateY(-4px) rotateX(2deg);
-  box-shadow:0 18px 36px rgba(0,0,0,.12);
+  /* MODIFICATION: Effet de survol plus propre (léger soulèvement) */
+  transform:translateY(-5px);
+  box-shadow:0 20px 40px rgba(0,0,0,.15);
+}
+/* NOUVEAU: Style pour mettre une carte en avant */
+.sheet.featured{
+    border-top: 6px solid var(--secondary); /* Accentuation jaune pour la carte en vedette */
+    transform: scale(1.02);
+}
+.sheet.featured:hover{
+    transform: translateY(-6px) scale(1.02);
+    box-shadow: 0 25px 50px rgba(0,0,0,.2);
 }
 .sheet .head{display:flex; justify-content:space-between; align-items:center; gap:10px; margin-bottom:10px}
 .sheet h3{font-size:1.1rem; margin:0; color:var(--primary)}
 .sheet p{color:var(--muted); font-size:.9rem; margin:4px 0 10px}
+/* MODIFICATION: Amélioration de la présentation du prix "À partir de" */
 .sheet .from{
-  font-size:1rem; font-weight:700; color:var(--ok);
-  margin-bottom:10px; padding-bottom:8px; border-bottom:1px dashed var(--border);
+  font-size:1.25rem; font-weight:800; color:var(--primary); /* Augmenté en taille et couleur */
+  margin-bottom:12px; padding-bottom:10px;
+  border-bottom:2px solid var(--border); /* Ligne de séparation plus marquée */
 }
 .list{list-style:none; padding:0; margin:0; flex-grow:1}
 .list li{
-  display:grid; grid-template-columns:1fr auto; align-items:center; gap:10px;
+  /* MODIFICATION: Grille principale 2 colonnes (Nom | Wrapper Prix/Qté) */
+  display:grid; grid-template-columns:1fr auto; 
+  align-items:center; gap:15px; 
   font-size:.95rem; padding:10px 0; border-bottom:1px dashed var(--border);
 }
 .list li:last-child{border-bottom:none}
-.list li strong{font-family:'Roboto Mono',monospace; font-weight:700; color:var(--primary); white-space:nowrap}
+.list li strong{
+    /* Price element styling */
+    font-family:'Roboto Mono',monospace; font-weight:700; color:var(--primary); white-space:nowrap;
+    text-align: right;
+}
 
 /* === Champs quantité + bouton global === */
-.qty-wrap{display:flex; align-items:center; gap:8px}
+.qty-wrap{
+    /* MODIFICATION: Affichage interne du wrapper pour aligner Prix et Input */
+    display:flex; align-items:center; gap:15px; /* Espace entre Prix et Input */
+}
 .qty-input{
-  width:74px; padding:6px 8px; border:1px solid var(--border); border-radius:6px;
+  width:74px; padding:6px 8px; border:1px solid #ccc; border-radius:6px; 
   font-family:'Roboto Mono',monospace; text-align:right;
+  background: var(--bg); 
 }
 .bulk-add{
   display:flex; justify-content:flex-end; padding:6px 2px 0;
@@ -249,20 +273,50 @@ input[type="file"]{display:none}
 .footer a{color:var(--primary); font-weight:600; text-decoration:none}
 .footer a:hover{color:var(--secondary)}
 
-/* =============== Media queries =============== */
+/* =============== Media queries (Responsiveness) =============== */
 @media (max-width:992px){
   .sheets{grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:16px}
   .sheet{padding:14px}
   .header{padding:16px}
 }
+
 @media (max-width:768px){
-  .list li{grid-template-columns:1fr; gap:6px}
-  .list li strong{order:2}
+  nav ul{
+    flex-wrap:nowrap;
+  } 
+  nav ul li a{font-size:.9rem}
+  .card{margin:10px auto 15px}
+  .header{padding:16px 20px}
+  .header h1{font-size:1.3rem}
+  .sheets{grid-template-columns:repeat(auto-fit, minmax(280px,1fr));}
   .header-left h1{white-space:normal}
   .form{gap:8px}
   .form button{width:100%}
   .bulk-add{justify-content:center}
 }
+
+/* NOUVEAU: Réactivité pour les listes de tarifs sur petits écrans */
+@media (max-width:450px){
+    /* Le li devient une seule colonne (Service Name | Qty/Price Wrapper) */
+    .list li{
+        grid-template-columns: 1fr; 
+        gap: 4px;
+        padding: 10px 0 14px; 
+    }
+    /* Le wrapper Prix/Quantité s'étend sur toute la largeur et espace ses enfants */
+    .qty-wrap{
+        justify-content: space-between; /* Pour séparer le Prix et l'Input */
+        width: 100%;
+        gap: 10px; 
+    }
+    .header{flex-direction:column; align-items:flex-start; gap:8px}
+    .badge{align-self:flex-end}
+    .devis-actions button,.file-upload-label{flex:1 1 160px; text-align:center}
+    .totals-box{max-width:100%}
+    .form input{min-width:0; width:100%}
+    .header img{height:36px}
+}
+
 @media (max-width:600px){
   .header{flex-direction:column; align-items:flex-start; gap:8px}
   .badge{align-self:flex-end}
@@ -405,7 +459,7 @@ input[type="file"]{display:none}
 
           <div class="sheets" id="partner-sheets">
             <!-- Injecté dynamiquement depuis PAPORENOV-Tarifs.json -->
-          </div>
+            </div>
 
           <!-- Bouton global d’ajout au devis -->
           <div class="bulk-add">
@@ -802,40 +856,40 @@ window.clearDevis=clearDevis;
 </script>
 
 <script>
-  // Hooks champs client
-  const clientNomEl = document.getElementById('client-nom');
-  const clientEmailEl = document.getElementById('client-email');
-  const clientTelEl = document.getElementById('client-tel');
-  const clientAdresseEl = document.getElementById('client-adresse');
+// Hooks champs client
+const clientNomEl = document.getElementById('client-nom');
+const clientEmailEl = document.getElementById('client-email');
+const clientTelEl = document.getElementById('client-tel');
+const clientAdresseEl = document.getElementById('client-adresse');
 
-  // Hooks affichage impression + titre
-  const printNom = document.getElementById('print-client-nom');
-  const printEmail = document.getElementById('print-client-email');
-  const printTel = document.getElementById('print-client-tel');
-  const printAdr = document.getElementById('print-client-adresse');
-  const partnerNameDisplay = document.getElementById('partner-name-display');
+// Hooks affichage impression + titre
+const printNom = document.getElementById('print-client-nom');
+const printEmail = document.getElementById('print-client-email');
+const printTel = document.getElementById('print-client-tel');
+const printAdr = document.getElementById('print-client-adresse');
+const partnerNameDisplay = document.getElementById('partner-name-display');
 
-  function syncClientFields(){
-    const nom = (clientNomEl?.value || '').trim();
-    const email = (clientEmailEl?.value || '').trim();
-    const tel = (clientTelEl?.value || '').trim();
-    const adr = (clientAdresseEl?.value || '').trim();
+function syncClientFields(){
+  const nom = (clientNomEl?.value || '').trim();
+  const email = (clientEmailEl?.value || '').trim();
+  const tel = (clientTelEl?.value || '').trim();
+  const adr = (clientAdresseEl?.value || '').trim();
 
-    if (printNom)   printNom.textContent   = nom || '—';
-    if (printEmail) printEmail.textContent = email || '—';
-    if (printTel)   printTel.textContent   = tel || '—';
-    if (printAdr)   printAdr.textContent   = adr || '—';
+  if (printNom)   printNom.textContent   = nom || '—';
+  if (printEmail) printEmail.textContent = email || '—';
+  if (printTel)   printTel.textContent   = tel || '—';
+  if (printAdr)   printAdr.textContent   = adr || '—';
 
-    if (partnerNameDisplay) {
-      partnerNameDisplay.textContent = nom || 'Votre Client';
-    }
+  if (partnerNameDisplay) {
+    partnerNameDisplay.textContent = nom || 'Votre Client';
   }
+}
 
-  [clientNomEl, clientEmailEl, clientTelEl, clientAdresseEl].forEach(el=>{
-    el && el.addEventListener('input', syncClientFields);
-  });
+[clientNomEl, clientEmailEl, clientTelEl, clientAdresseEl].forEach(el=>{
+  el && el.addEventListener('input', syncClientFields);
+});
 
-  document.addEventListener('DOMContentLoaded', syncClientFields);
+document.addEventListener('DOMContentLoaded', syncClientFields);
 </script>
 
 <script>
