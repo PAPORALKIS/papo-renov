@@ -159,7 +159,7 @@ nav ul li a.active{color:#007bff; font-weight:700; text-decoration:underline}
 
 /* =============== Grilles de tarifs (cards) =============== */
 .sheets{
-  /* MODIFICATION: Utilisation de CSS Columns pour un effet maçonnerie (pas de blanc). */
+  /* Utilisation de CSS Columns pour un effet maçonnerie (pas de blanc). */
   -webkit-column-width: 320px; /* Safari/Chrome */
   -moz-column-width: 320px;    /* Firefox */
   column-width: 320px; /* Largeur minimale de la carte/colonne (pour avoir de grandes fiches) */
@@ -184,11 +184,11 @@ nav ul li a.active{color:#007bff; font-weight:700; text-decoration:underline}
   border-top: 4px solid var(--primary); /* Ligne d'accentuation en haut */
 }
 .sheet:hover{
-  /* MODIFICATION: Effet de survol plus propre (léger soulèvement) */
+  /* Effet de survol plus propre (léger soulèvement) */
   transform:translateY(-5px);
   box-shadow:0 20px 40px rgba(0,0,0,.15);
 }
-/* NOUVEAU: Style pour mettre une carte en avant */
+/* Style pour mettre une carte en avant */
 .sheet.featured{
     border-top: 6px solid var(--secondary); /* Accentuation jaune pour la carte en vedette */
     transform: scale(1.02);
@@ -200,7 +200,7 @@ nav ul li a.active{color:#007bff; font-weight:700; text-decoration:underline}
 .sheet .head{display:flex; justify-content:space-between; align-items:center; gap:10px; margin-bottom:10px}
 .sheet h3{font-size:1.1rem; margin:0; color:var(--primary)}
 .sheet p{color:var(--muted); font-size:.9rem; margin:4px 0 10px}
-/* MODIFICATION: Amélioration de la présentation du prix "À partir de" */
+/* Amélioration de la présentation du prix "À partir de" */
 .sheet .from{
   font-size:1.25rem; font-weight:800; color:var(--primary); /* Augmenté en taille et couleur */
   margin-bottom:12px; padding-bottom:10px;
@@ -208,7 +208,7 @@ nav ul li a.active{color:#007bff; font-weight:700; text-decoration:underline}
 }
 .list{list-style:none; padding:0; margin:0; flex-grow:1}
 .list li{
-  /* MODIFICATION: Grille principale 2 colonnes (Nom | Wrapper Prix/Qté) */
+  /* Grille principale 2 colonnes (Nom | Wrapper Prix/Qté) */
   display:grid; grid-template-columns:1fr auto; 
   align-items:center; gap:15px; 
   font-size:.95rem; padding:10px 0; border-bottom:1px dashed var(--border);
@@ -222,7 +222,7 @@ nav ul li a.active{color:#007bff; font-weight:700; text-decoration:underline}
 
 /* === Champs quantité + bouton global === */
 .qty-wrap{
-    /* MODIFICATION: Affichage interne du wrapper pour aligner Prix et Input */
+    /* Affichage interne du wrapper pour aligner Prix et Input */
     display:flex; align-items:center; gap:15px; /* Espace entre Prix et Input */
 }
 .qty-input{
@@ -324,12 +324,12 @@ input[type="file"]{display:none}
   /* Ajustement du filtre sur mobile */
   #filter-container{
       flex-direction: column;
-      align-items: center;
+      align-items: flex-start;
       gap: 8px;
   }
-  #category-filter{
+  #category-checkboxes{
       width: 100%;
-      max-width: 300px;
+      padding: 8px;
   }
 }
 
@@ -401,7 +401,6 @@ input[type="file"]{display:none}
 </head>
 <body>
 
-<!-- ===== HEADER identique aux autres pages ===== -->
 <header>
   <div class="logo">
     <img src="../img/logo.png" alt="Logo Papo Rénov">
@@ -495,12 +494,12 @@ input[type="file"]{display:none}
             <strong>Tarifs Partenaires NETS (Hors Taxes)</strong> — Valables sur volume et récurrence. Matériaux non inclus (sauf mention F+M.O.).
           </p>
 
-          <div id="filter-container" style="display:none; justify-content:flex-end; margin-bottom:16px; padding:0 10px;">
-            <label for="category-filter" style="margin-right:10px; align-self:center; font-weight:600;">Filtrer les fiches :</label>
-            <select id="category-filter" style="padding:8px 12px; border:1px solid var(--primary); border-radius:8px; background:var(--panel); font-size:1rem; min-width:200px;">
-              </select>
+          <div id="filter-container" style="display:none; flex-direction:column; margin-bottom:16px; padding:0 10px;">
+            <p style="margin:0 0 8px; font-weight:600;">Filtrer les fiches (Sélection multiple) :</p>
+            <div id="category-checkboxes" style="display:flex; flex-wrap:wrap; gap:12px 18px; padding:10px; border:1px solid var(--border); border-radius:8px; background:#f8f9fa;">
+                </div>
           </div>
-
+          
           <div class="sheets" id="partner-sheets">
             <!-- Injecté dynamiquement depuis PAPORENOV-Tarifs.json -->
             </div>
@@ -615,7 +614,7 @@ const logoUpload = document.getElementById('logo-upload');
 const logoPreview = document.getElementById('partner-logo-preview');
 
 // NOUVEAU: Filtres
-const categoryFilter = document.getElementById('category-filter');
+const categoryCheckboxes = document.getElementById('category-checkboxes');
 const filterContainer = document.getElementById('filter-container');
 
 
@@ -641,8 +640,6 @@ async function handleAccess(){
     
     // Après succès, charge les tarifs et attache l'écouteur du filtre
     await loadTarifs();
-    categoryFilter.removeEventListener('change', applyFilter); // Assurer qu'il n'y a qu'un seul écouteur
-    categoryFilter.addEventListener('change', applyFilter);
     showPartnerPromoIfOpen();
   }else{
     errorDiv.textContent="Code PRO invalide. Veuillez vérifier vos identifiants.";
@@ -796,7 +793,7 @@ function renderSheets(data){
     container.appendChild(art);
   });
   
-  // Applique le filtre initial (tout afficher, si non déjà appliqué)
+  // Applique le filtre initial (tout afficher, car tout est coché par défaut)
   applyFilter();
 }
 
@@ -804,17 +801,43 @@ function renderSheets(data){
 function populateFilter(categories){
     if(categories.length > 0) {
         filterContainer.style.display = 'flex';
-        categoryFilter.innerHTML = '';
-        const allOption = document.createElement('option');
-        allOption.value = 'all';
-        allOption.textContent = '— Toutes les catégories —';
-        categoryFilter.appendChild(allOption);
+        categoryCheckboxes.innerHTML = ''; // Nettoyer l'ancien contenu
 
+        // 1. Bouton "Toutes" (Toggle All)
+        const allToggle = document.createElement('label');
+        allToggle.innerHTML = `<input type="checkbox" id="check-all-categories" checked> <strong>Toutes</strong>`;
+        allToggle.style.marginRight = '20px';
+        categoryCheckboxes.appendChild(allToggle);
+        
+        // 2. Checkboxes pour chaque catégorie
         categories.sort().forEach(cat => {
-            const option = document.createElement('option');
-            option.value = cat;
-            option.textContent = cat;
-            categoryFilter.appendChild(option);
+            const label = document.createElement('label');
+            label.innerHTML = `<input type="checkbox" class="category-filter-checkbox" value="${cat}" checked> ${cat}`;
+            categoryCheckboxes.appendChild(label);
+        });
+
+        // 3. Événements
+        document.getElementById('check-all-categories').addEventListener('change', (e) => {
+            const isChecked = e.target.checked;
+            document.querySelectorAll('.category-filter-checkbox').forEach(cb => {
+                cb.checked = isChecked;
+            });
+            applyFilter();
+        });
+        
+        document.querySelectorAll('.category-filter-checkbox').forEach(cb => {
+            cb.addEventListener('change', () => {
+                // Si on décoche une case, désélectionner "Toutes"
+                if (!cb.checked) {
+                    document.getElementById('check-all-categories').checked = false;
+                }
+                // Si toutes les cases sont cochées, cocher "Toutes"
+                const allChecked = Array.from(document.querySelectorAll('.category-filter-checkbox')).every(c => c.checked);
+                if (allChecked) {
+                    document.getElementById('check-all-categories').checked = true;
+                }
+                applyFilter();
+            });
         });
         
     } else {
@@ -823,16 +846,25 @@ function populateFilter(categories){
 }
 
 function applyFilter(){
-    const selectedCategory = categoryFilter.value;
+    // Récupère toutes les catégories dont la case est cochée
+    const selectedCategories = Array.from(document.querySelectorAll('.category-filter-checkbox:checked')).map(cb => cb.value);
+    
     const sheets = document.querySelectorAll('#partner-sheets .sheet');
     
+    // Si aucune catégorie n'est sélectionnée, tout cacher
+    if (selectedCategories.length === 0) {
+        sheets.forEach(sheet => sheet.style.display = 'none');
+        return;
+    }
+
     sheets.forEach(sheet => {
         const sheetCategory = sheet.dataset.category;
         
-        if (selectedCategory === 'all' || sheetCategory === selectedCategory) {
-            sheet.style.display = 'flex'; // Affiche la feuille (display:flex car elle est flex-direction:column)
+        // Affiche la fiche si sa catégorie est dans la liste des catégories sélectionnées
+        if (selectedCategories.includes(sheetCategory)) {
+            sheet.style.display = 'flex'; 
         } else {
-            sheet.style.display = 'none'; // Masque la feuille
+            sheet.style.display = 'none'; 
         }
     });
 }
