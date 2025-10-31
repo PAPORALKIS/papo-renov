@@ -21,6 +21,12 @@
   --dark-blue-logo:#0a1f44;
   --chip:#eef2f7;
   --chip-text:#344054;
+
+  /* variables responsive cartes */
+  --sheet-w: clamp(150px, 18vw, 260px);
+  --sheet-min-h: clamp(260px, 42vh, 360px);
+  --content-max: min(1600px, 100%);
+  --footer-h: 40px; /* hauteur approx. pour éviter le chevauchement */
 }
 *{box-sizing:border-box}
 html,body{margin:0;padding:0}
@@ -30,6 +36,8 @@ body{
   color:var(--secondary-color);
   line-height:1.6;
   min-width:320px;
+  overflow-x:hidden; /* évite tout scroll horizontal parasite */
+  padding-bottom: var(--footer-h); /* pour ne pas masquer le contenu par le footer fixe */
 }
 
 /* --- NAV --- */
@@ -175,11 +183,39 @@ h1::after{content:'';display:block;width:80px;height:4px;background:var(--primar
 /* PARTENAIRE VIEW (masquée ici) */
 .partner-prices{display:none}
 
+/* --- BREAKPOINTS RESPONSIVE --- */
+
+/* < 992px : réduire légèrement la typo des cartes */
 @media (max-width:992px){
   .sheet h3{font-size:1rem}
   .sheet p{font-size:.85rem}
 }
 
+/* <= 1280px : chips scrollables pour éviter la casse de ligne mauvaise */
+@media (max-width:1280px){
+  .chips{
+    overflow-x:auto;white-space:nowrap;justify-content:flex-start;scrollbar-width:none;padding-bottom:4px
+  }
+  .chips::-webkit-scrollbar{display:none}
+}
+
+/* Tablettes paysage (768–1280px) : pile 3D devient fluide, sans recouvrement */
+@media (min-width:768px) and (max-width:1280px){
+  .sheets.pile{
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 14px;
+    perspective: none;
+  }
+  .sheets.pile .sheet{
+    margin-right: 0;
+    transform: none !important;
+    min-height: clamp(220px, 36vh, 320px);
+  }
+  .content-section{padding-top:60px}
+}
+
+/* Mobiles : basculer visuellement sur grille via JS + petits réglages */
 @media (max-width:768px){
   .content-section{padding-top:20px}
   .tablet{aspect-ratio:4/3}
@@ -188,10 +224,16 @@ h1::after{content:'';display:block;width:80px;height:4px;background:var(--primar
   .chips{justify-content:flex-start;overflow-x:auto;padding-bottom:4px}
 }
 
+/* Utra-wide : contenir le contenu au centre */
+@media (min-width:1920px){
+  .content-section, .tools, .chips, .sheets{max-width:1600px}
+}
+
 @supports not (aspect-ratio:1){
   .tablet{height:0;padding-top:56.25%}
   .tablet-screen{position:absolute;top:20px;left:24px;right:24px;bottom:20px}
 }
+
 /* --- FOND D'ÉCRAN SLIDER --- */
 .background-slider {
   position: fixed;
