@@ -159,8 +159,10 @@ nav ul li a.active{color:#007bff; font-weight:700; text-decoration:underline}
 
 /* =============== Grilles de tarifs (cards) =============== */
 .sheets{
-  display:grid; grid-template-columns:repeat(auto-fit, minmax(280px,1fr));
-  gap:18px; margin-bottom:22px;
+  /* MODIFICATION: Augmentation du minmax pour des fiches plus larges */
+  display:grid; grid-template-columns:repeat(auto-fit, minmax(320px,1fr));
+  gap:22px; /* J'augmente aussi l'espace entre les cartes pour mieux respirer */
+  margin-bottom:22px;
 }
 .sheet{
   background:var(--panel); border:1px solid var(--border); border-radius:14px;
@@ -275,7 +277,8 @@ input[type="file"]{display:none}
 
 /* =============== Media queries (Responsiveness) =============== */
 @media (max-width:992px){
-  .sheets{grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:16px}
+  /* J'ajuste ici aussi pour que les cartes restent belles sur tablette */
+  .sheets{grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:18px}
   .sheet{padding:14px}
   .header{padding:16px}
 }
@@ -288,7 +291,7 @@ input[type="file"]{display:none}
   .card{margin:10px auto 15px}
   .header{padding:16px 20px}
   .header h1{font-size:1.3rem}
-  .sheets{grid-template-columns:repeat(auto-fit, minmax(280px,1fr));}
+  .sheets{grid-template-columns:repeat(auto-fit, minmax(280px,1fr));} /* On repasse à 280px ici pour ne pas avoir une seule colonne trop tôt */
   .header-left h1{white-space:normal}
   .form{gap:8px}
   .form button{width:100%}
