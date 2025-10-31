@@ -211,6 +211,21 @@ header, .content-section, footer {
   z-index: 2;
 }
 
+footer .legal{
+  display: block;
+  text-align: center;
+  margin: 0;
+  padding: 6px 10px;     /* très fin */
+  font-size: clamp(10px, 0.8vw, 12px);
+  line-height: 1.1;
+  opacity: .55;          /* discret */
+  color: #212529;
+  /* Trait subtil pour “finir” la page */
+  border-top: 1px solid rgba(255,255,255,.25);
+  /* léger voile pour lisibilité sur fond photo, reste très discret */
+  background: rgba(255,255,255,.08);
+  backdrop-filter: blur(2px);
+}
 </style>
 </head>
 <body>
@@ -472,7 +487,7 @@ header, .content-section, footer {
 </div>
 
 <footer>
-  <p style="text-align:center;margin:40px 0;color:#6c757d">&copy; 2025 Papo Rénov — Tous droits réservés</p>
+  <small class="legal">&copy; 2025 Papo Rénov — Tous droits réservés</small>
 </footer>
 
 <script>
