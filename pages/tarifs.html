@@ -179,9 +179,109 @@ h1::after{content:'';display:block;width:80px;height:4px;background:var(--primar
   .tablet{height:0;padding-top:56.25%}
   .tablet-screen{position:absolute;top:20px;left:24px;right:24px;bottom:20px}
 }
+/* --- FOND D'ÉCRAN SLIDER --- */
+.background-slider {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+}
+.background-slider::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45); /* voile sombre */
+  backdrop-filter: blur(6px); /* flou doux */
+}
+.background-slider img {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 2s ease;
+}
+.background-slider img.active {
+  opacity: 1;
+}
+
+/* Place le contenu par-dessus le fond */
+header, .content-section, footer {
+  position: relative;
+  z-index: 2;
+}
+
 </style>
 </head>
 <body>
+
+<div class="background-slider" id="background-slider">
+  <img src="../img/CHBR1.jpg" alt="Chambre rénovée" class="active">
+        <img src="../img/CUIEXT2.jpg" alt="Cuisine extérieure 2">
+        <img src="../img/CUIEXT4.jpg" alt="Cuisine extérieure 4">
+        <img src="../img/CUIEXT5.jpg" alt="Cuisine extérieure 5">
+        <img src="../img/CUIEXT6.jpg" alt="Cuisine extérieure 6">
+        <img src="../img/CUIMARS1.jpg" alt="Cuisine Mars 1">
+        <img src="../img/CUIMARS2.jpg" alt="Cuisine Mars 2">
+        <img src="../img/CUIMARS3.jpg" alt="Cuisine Mars 3">
+        <img src="../img/CUIMARS4.jpg" alt="Cuisine Mars 4">
+        <img src="../img/Chambre SPACEO.png" alt="Chambre Spaceo">
+        <img src="../img/DRESSMARS1.jpg" alt="Dressing Mars 1">
+        <img src="../img/DRESSMARS2.jpg" alt="Dressing Mars 2">
+        <img src="../img/DRESSMARS3.jpg" alt="Dressing Mars 3">
+        <img src="../img/DRESSMARS4.jpg" alt="Dressing Mars 4">
+        <img src="../img/Iso2.jpg" alt="Isolation 2">
+        <img src="../img/Iso3.jpg" alt="Isolation 3">
+        <img src="../img/Iso4.jpg" alt="Isolation 4">
+        <img src="../img/Iso5.jpg" alt="Isolation 5">
+        <img src="../img/Iso6.jpg" alt="Isolation 6">
+        <img src="../img/SDB1.jpg" alt="Salle de bain 1">
+        <img src="../img/SDB2.jpg" alt="Salle de bain 2">
+        <img src="../img/SDB3.jpg" alt="Salle de bain 3">
+        <img src="../img/SDB4.jpg" alt="Salle de bain 4">
+        <img src="../img/SDB5.jpg" alt="Salle de bain 5">
+        <img src="../img/WC1.jpg" alt="WC 1">
+        <img src="../img/WC2.jpg" alt="WC 2">
+        <img src="../img/aumetz-avant-1.jpeg" alt="Aumetz avant">
+        <img src="../img/aumetz10.jpeg" alt="Aumetz 10">
+        <img src="../img/aumetz11.jpeg" alt="Aumetz 11">
+        <img src="../img/aumetz12.jpeg" alt="Aumetz 12">
+        <img src="../img/aumetz14.jpeg" alt="Aumetz 14">
+        <img src="../img/aumetz15.jpeg" alt="Aumetz 15">
+        <img src="../img/aumetz16.jpeg" alt="Aumetz 16">
+        <img src="../img/aumetz17.jpeg" alt="Aumetz 17">
+        <img src="../img/aumetz18.jpeg" alt="Aumetz 18">
+        <img src="../img/aumetz5.jpeg" alt="Aumetz 5">
+        <img src="../img/aumetz6.jpeg" alt="Aumetz 6">
+        <img src="../img/aumetz7.jpeg" alt="Aumetz 7">
+        <img src="../img/aumetz8.jpeg" alt="Aumetz 8">
+        <img src="../img/aumetz9.jpeg" alt="Aumetz 9">
+        <img src="../img/escalier SPACEO.png" alt="Escalier Spaceo">
+        <img src="../img/ext1.jpg" alt="Extérieur 1">
+        <img src="../img/ext2.jpg" alt="Extérieur 2">
+        <img src="../img/iso1.jpg" alt="Isolation 1">
+        <img src="../img/martegauxB.jpg" alt="Martegaux B">
+        <img src="../img/martegauxC.jpg" alt="Martegaux C">
+        <img src="../img/martegauxD.jpg" alt="Martegaux D">
+        <img src="../img/martegauxE.jpg" alt="Martegaux E">
+        <img src="../img/martegauxavant1.jpg" alt="Martegaux avant 1">
+        <img src="../img/martegauxavant2.jpg" alt="Martegaux avant 2">
+        <img src="../img/martegauxavant3.jpg" alt="Martegaux avant 3">
+        <img src="../img/meuble-laura-1.jpg" alt="Meuble Laura 1">
+        <img src="../img/meuble-laura-2.jpg" alt="Meuble Laura 2">
+        <img src="../img/meuble-laura-3.jpg" alt="Meuble Laura 3">
+        <img src="../img/renoperier1.jpg" alt="Réno Périer 1">
+        <img src="../img/renoperier2.jpg" alt="Réno Périer 2">
+        <img src="../img/renoperier3.jpg" alt="Réno Périer 3">
+        <img src="../img/renoperier4.jpg" alt="Réno Périer 4">
+        <img src="../img/renoperier5.jpg" alt="Réno Périer 5">
+        <img src="../img/renoperier6.jpg" alt="Réno Périer 6">
+        <img src="../img/velaux0.jpg" alt="Velaux 0">
+        <img src="../img/velaux1.jpg" alt="Velaux 1">
+        <img src="../img/velaux2.jpg" alt="Velaux 2">
+        <img src="../img/velaux3.jpg" alt="Velaux 3">
+</div>
+
 <header>
   <div class="logo">
     <img src="../img/logo.png" alt="Logo Papo Rénov">
@@ -360,80 +460,7 @@ h1::after{content:'';display:block;width:80px;height:4px;background:var(--primar
 
   </div>
 
-   <!-- Écran tablette -->
-  <div class="tablet" aria-label="Galerie de réalisations">
-    <div class="tablet-camera" aria-hidden="true"></div>
-    <div class="tablet-screen">
-      <div class="slider" id="slider">
-        <!-- images (inchangées, issues de ton fichier) -->
-        <img src="../img/CHBR1.jpg" alt="Chambre rénovée" class="active">
-        <img src="../img/CUIEXT2.jpg" alt="Cuisine extérieure 2">
-        <img src="../img/CUIEXT4.jpg" alt="Cuisine extérieure 4">
-        <img src="../img/CUIEXT5.jpg" alt="Cuisine extérieure 5">
-        <img src="../img/CUIEXT6.jpg" alt="Cuisine extérieure 6">
-        <img src="../img/CUIMARS1.jpg" alt="Cuisine Mars 1">
-        <img src="../img/CUIMARS2.jpg" alt="Cuisine Mars 2">
-        <img src="../img/CUIMARS3.jpg" alt="Cuisine Mars 3">
-        <img src="../img/CUIMARS4.jpg" alt="Cuisine Mars 4">
-        <img src="../img/Chambre SPACEO.png" alt="Chambre Spaceo">
-        <img src="../img/DRESSMARS1.jpg" alt="Dressing Mars 1">
-        <img src="../img/DRESSMARS2.jpg" alt="Dressing Mars 2">
-        <img src="../img/DRESSMARS3.jpg" alt="Dressing Mars 3">
-        <img src="../img/DRESSMARS4.jpg" alt="Dressing Mars 4">
-        <img src="../img/Iso2.jpg" alt="Isolation 2">
-        <img src="../img/Iso3.jpg" alt="Isolation 3">
-        <img src="../img/Iso4.jpg" alt="Isolation 4">
-        <img src="../img/Iso5.jpg" alt="Isolation 5">
-        <img src="../img/Iso6.jpg" alt="Isolation 6">
-        <img src="../img/SDB1.jpg" alt="Salle de bain 1">
-        <img src="../img/SDB2.jpg" alt="Salle de bain 2">
-        <img src="../img/SDB3.jpg" alt="Salle de bain 3">
-        <img src="../img/SDB4.jpg" alt="Salle de bain 4">
-        <img src="../img/SDB5.jpg" alt="Salle de bain 5">
-        <img src="../img/WC1.jpg" alt="WC 1">
-        <img src="../img/WC2.jpg" alt="WC 2">
-        <img src="../img/aumetz-avant-1.jpeg" alt="Aumetz avant">
-        <img src="../img/aumetz10.jpeg" alt="Aumetz 10">
-        <img src="../img/aumetz11.jpeg" alt="Aumetz 11">
-        <img src="../img/aumetz12.jpeg" alt="Aumetz 12">
-        <img src="../img/aumetz14.jpeg" alt="Aumetz 14">
-        <img src="../img/aumetz15.jpeg" alt="Aumetz 15">
-        <img src="../img/aumetz16.jpeg" alt="Aumetz 16">
-        <img src="../img/aumetz17.jpeg" alt="Aumetz 17">
-        <img src="../img/aumetz18.jpeg" alt="Aumetz 18">
-        <img src="../img/aumetz5.jpeg" alt="Aumetz 5">
-        <img src="../img/aumetz6.jpeg" alt="Aumetz 6">
-        <img src="../img/aumetz7.jpeg" alt="Aumetz 7">
-        <img src="../img/aumetz8.jpeg" alt="Aumetz 8">
-        <img src="../img/aumetz9.jpeg" alt="Aumetz 9">
-        <img src="../img/escalier SPACEO.png" alt="Escalier Spaceo">
-        <img src="../img/ext1.jpg" alt="Extérieur 1">
-        <img src="../img/ext2.jpg" alt="Extérieur 2">
-        <img src="../img/iso1.jpg" alt="Isolation 1">
-        <img src="../img/martegauxB.jpg" alt="Martegaux B">
-        <img src="../img/martegauxC.jpg" alt="Martegaux C">
-        <img src="../img/martegauxD.jpg" alt="Martegaux D">
-        <img src="../img/martegauxE.jpg" alt="Martegaux E">
-        <img src="../img/martegauxavant1.jpg" alt="Martegaux avant 1">
-        <img src="../img/martegauxavant2.jpg" alt="Martegaux avant 2">
-        <img src="../img/martegauxavant3.jpg" alt="Martegaux avant 3">
-        <img src="../img/meuble-laura-1.jpg" alt="Meuble Laura 1">
-        <img src="../img/meuble-laura-2.jpg" alt="Meuble Laura 2">
-        <img src="../img/meuble-laura-3.jpg" alt="Meuble Laura 3">
-        <img src="../img/renoperier1.jpg" alt="Réno Périer 1">
-        <img src="../img/renoperier2.jpg" alt="Réno Périer 2">
-        <img src="../img/renoperier3.jpg" alt="Réno Périer 3">
-        <img src="../img/renoperier4.jpg" alt="Réno Périer 4">
-        <img src="../img/renoperier5.jpg" alt="Réno Périer 5">
-        <img src="../img/renoperier6.jpg" alt="Réno Périer 6">
-        <img src="../img/velaux0.jpg" alt="Velaux 0">
-        <img src="../img/velaux1.jpg" alt="Velaux 1">
-        <img src="../img/velaux2.jpg" alt="Velaux 2">
-        <img src="../img/velaux3.jpg" alt="Velaux 3">
-      </div>
-    </div>
-  </div>
-
+  
 </section>
 
 <!-- MODALE DÉTAILS -->
@@ -449,15 +476,15 @@ h1::after{content:'';display:block;width:80px;height:4px;background:var(--primar
 </footer>
 
 <script>
-/* SLIDER AUTO */
+/* FOND D'ÉCRAN SLIDER AUTO */
 (function(){
-  const slides = Array.from(document.querySelectorAll('#slider img'));
+  const slides = Array.from(document.querySelectorAll('#background-slider img'));
   let i = 0;
   setInterval(()=>{
     slides[i].classList.remove('active');
-    i = (i+1) % slides.length;
+    i = (i + 1) % slides.length;
     slides[i].classList.add('active');
-  }, 3500);
+  }, 4000);
 })();
 
 /* DONNÉES TARIFS PUBLIC
