@@ -159,15 +159,21 @@ nav ul li a.active{color:#007bff; font-weight:700; text-decoration:underline}
 
 /* =============== Grilles de tarifs (cards) =============== */
 .sheets{
-  /* MODIFICATION: Augmentation du minmax pour des fiches plus larges */
-  display:grid; grid-template-columns:repeat(auto-fit, minmax(320px,1fr));
-  gap:22px; /* J'augmente aussi l'espace entre les cartes pour mieux respirer */
-  margin-bottom:22px;
+  /* MODIFICATION : Utilisation de CSS Columns pour un effet maçonnerie (pas de blanc). Remplace l'ancienne grille. */
+  column-width: 320px; /* Largeur minimale de la carte/colonne */
+  column-gap: 22px; /* Espace entre les colonnes/cartes */
+  margin-bottom: 0; /* Pas de marge sur le conteneur */
+  display: block; /* Ne pas utiliser grid */
+  padding: 0 10px;
 }
 .sheet{
   background:var(--panel); border:1px solid var(--border); border-radius:14px;
   box-shadow:0 12px 28px rgba(0,0,0,.08);
   padding:16px; display:flex; flex-direction:column;
+  /* MODIFICATION MAÇONNERIE: Propriétés pour éviter les blancs */
+  break-inside: avoid; /* Empêche la carte de se couper entre les colonnes */
+  margin-bottom: 22px; /* Ajoute l'espacement vertical (qui était le gap du grid) */
+  width: 100%; /* Nécessaire dans un layout de colonnes */
   /* MODIFICATION: Simplification de l'effet de survol */
   transform-style:none; perspective:none;
   transition:transform .3s ease, box-shadow .3s ease;
@@ -277,9 +283,9 @@ input[type="file"]{display:none}
 
 /* =============== Media queries (Responsiveness) =============== */
 @media (max-width:992px){
-  /* J'ajuste ici aussi pour que les cartes restent belles sur tablette */
-  .sheets{grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:18px}
-  .sheet{padding:14px}
+  /* Ajuste la largeur minimale des colonnes pour les tablettes */
+  .sheets{column-width: 300px; column-gap: 18px; padding: 0 10px;}
+  .sheet{padding:14px; margin-bottom: 18px;}
   .header{padding:16px}
 }
 
@@ -291,7 +297,9 @@ input[type="file"]{display:none}
   .card{margin:10px auto 15px}
   .header{padding:16px 20px}
   .header h1{font-size:1.3rem}
-  .sheets{grid-template-columns:repeat(auto-fit, minmax(280px,1fr));} /* On repasse à 280px ici pour ne pas avoir une seule colonne trop tôt */
+  /* Réduit la largeur minimale des colonnes sur mobile/petit écran */
+  .sheets{column-width: 280px; column-gap: 16px; padding: 0 10px;}
+  .sheet{margin-bottom: 16px;}
   .header-left h1{white-space:normal}
   .form{gap:8px}
   .form button{width:100%}
@@ -638,7 +646,7 @@ function inferUnit(u, label){
   return 'forfait';
 }
 function cleanTask(t){
-  return (t||'').replace(/\s*\((M\.O\.|F\+M\.O\.|M\.O\.\/\s*\S+)\)\s*/gi,'').trim();
+  return (t||'').replace(/\s*\((M\.O\.|F\+M\.O\.|M\.O\.\/\s*\S+)\s*\)/gi,'').trim();
 }
 
 async function loadTarifs(){
