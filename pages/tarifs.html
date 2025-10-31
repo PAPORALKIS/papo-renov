@@ -211,21 +211,31 @@ header, .content-section, footer {
   z-index: 2;
 }
 
+/* --- FOOTER ULTRA FIN FIXE --- */
+footer{
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  z-index: 5;
+}
+
 footer .legal{
   display: block;
   text-align: center;
   margin: 0;
-  padding: 6px 10px;     /* très fin */
+  padding: 6px 10px;      /* très fin */
   font-size: clamp(10px, 0.8vw, 12px);
   line-height: 1.1;
-  opacity: .55;          /* discret */
-  color: #212529;
-  /* Trait subtil pour “finir” la page */
-  border-top: 1px solid rgba(255,255,255,.25);
-  /* léger voile pour lisibilité sur fond photo, reste très discret */
-  background: rgba(255,255,255,.08);
-  backdrop-filter: blur(2px);
+  opacity: .6;
+  color: #fff;            /* blanc lisible sur fond sombre */
+  letter-spacing: 0.3px;
+  background: rgba(0,0,0,.35);  /* léger fond sombre transparent */
+  backdrop-filter: blur(4px);
+  border-top: 1px solid rgba(255,255,255,.15);
+  user-select: none;
 }
+
 </style>
 </head>
 <body>
@@ -489,6 +499,7 @@ footer .legal{
 <footer>
   <small class="legal">&copy; 2025 Papo Rénov — Tous droits réservés</small>
 </footer>
+
 
 <script>
 /* FOND D'ÉCRAN SLIDER AUTO */
