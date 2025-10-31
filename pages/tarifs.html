@@ -249,6 +249,37 @@ footer .legal{
   user-select: none;
 }
 
+/* --- FIX TABLETTE PAYSAGE --- */
+/* 1) Pile 3D => disposition fluide et lisible entre 768px et 1280px */
+@media (min-width:768px) and (max-width:1280px){
+  .sheets.pile{
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
+    perspective: none;
+  }
+  .sheets.pile .sheet{
+    width: 200px;
+    height: auto;
+    margin-right: 0;
+    transform: none !important;
+  }
+}
+/* 2) Chips scrollables horizontalement pour éviter le débordement */
+@media (max-width:1280px){
+  .chips{
+    overflow-x: auto;
+    white-space: nowrap;
+    justify-content: flex-start;
+    scrollbar-width: none;
+  }
+  .chips::-webkit-scrollbar{display:none}
+}
+/* 3) Aération du titre et lisibilité en paysage tablette */
+@media (orientation: landscape) and (max-width:1280px){
+  .content-section{padding-top:60px;}
+  h1{font-size:1.6rem;}
+}
 </style>
 </head>
 <body>
