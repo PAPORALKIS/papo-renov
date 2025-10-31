@@ -159,22 +159,26 @@ nav ul li a.active{color:#007bff; font-weight:700; text-decoration:underline}
 
 /* =============== Grilles de tarifs (cards) =============== */
 .sheets{
-  /* MODIFICATION : Utilisation de CSS Columns pour un effet maçonnerie (pas de blanc). Remplace l'ancienne grille. */
-  column-width: 320px; /* Largeur minimale de la carte/colonne */
+  /* MODIFICATION: Utilisation de CSS Columns pour un effet maçonnerie (pas de blanc). */
+  -webkit-column-width: 320px; /* Safari/Chrome */
+  -moz-column-width: 320px;    /* Firefox */
+  column-width: 320px; /* Largeur minimale de la carte/colonne (pour avoir de grandes fiches) */
   column-gap: 22px; /* Espace entre les colonnes/cartes */
-  margin-bottom: 0; /* Pas de marge sur le conteneur */
-  display: block; /* Ne pas utiliser grid */
+  margin-bottom: 0; 
   padding: 0 10px;
+  width: 100%; 
+  max-width: 100%;
 }
 .sheet{
   background:var(--panel); border:1px solid var(--border); border-radius:14px;
   box-shadow:0 12px 28px rgba(0,0,0,.08);
   padding:16px; display:flex; flex-direction:column;
-  /* MODIFICATION MAÇONNERIE: Propriétés pour éviter les blancs */
-  break-inside: avoid; /* Empêche la carte de se couper entre les colonnes */
+  /* PROPRIÉTÉS CLÉS POUR MAÇONNERIE */
+  break-inside: avoid; 
+  page-break-inside: avoid; /* Double protection pour le flux */
   margin-bottom: 22px; /* Ajoute l'espacement vertical (qui était le gap du grid) */
-  width: 100%; /* Nécessaire dans un layout de colonnes */
-  /* MODIFICATION: Simplification de l'effet de survol */
+  width: 100%; /* La carte occupe toute la largeur de sa colonne */
+  /* --- */
   transform-style:none; perspective:none;
   transition:transform .3s ease, box-shadow .3s ease;
   border-top: 4px solid var(--primary); /* Ligne d'accentuation en haut */
@@ -284,7 +288,13 @@ input[type="file"]{display:none}
 /* =============== Media queries (Responsiveness) =============== */
 @media (max-width:992px){
   /* Ajuste la largeur minimale des colonnes pour les tablettes */
-  .sheets{column-width: 300px; column-gap: 18px; padding: 0 10px;}
+  .sheets{
+    -webkit-column-width: 300px;
+    -moz-column-width: 300px;
+    column-width: 300px; 
+    column-gap: 18px; 
+    padding: 0 10px;
+  }
   .sheet{padding:14px; margin-bottom: 18px;}
   .header{padding:16px}
 }
@@ -298,12 +308,29 @@ input[type="file"]{display:none}
   .header{padding:16px 20px}
   .header h1{font-size:1.3rem}
   /* Réduit la largeur minimale des colonnes sur mobile/petit écran */
-  .sheets{column-width: 280px; column-gap: 16px; padding: 0 10px;}
+  .sheets{
+    -webkit-column-width: 280px;
+    -moz-column-width: 280px;
+    column-width: 280px; 
+    column-gap: 16px; 
+    padding: 0 10px;
+  }
   .sheet{margin-bottom: 16px;}
   .header-left h1{white-space:normal}
   .form{gap:8px}
   .form button{width:100%}
   .bulk-add{justify-content:center}
+  
+  /* Ajustement du filtre sur mobile */
+  #filter-container{
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+  }
+  #category-filter{
+      width: 100%;
+      max-width: 300px;
+  }
 }
 
 /* NOUVEAU: Réactivité pour les listes de tarifs sur petits écrans */
@@ -342,7 +369,7 @@ input[type="file"]{display:none}
 /* =============== Impression =============== */
 @media print{
   header,.header,.tab-nav,.footer,.devis-actions,.list li .qty-wrap,.secure-area>.notice,.secure-area>.form,.secure-area>.error,
-  .devis-table input,.devis-table button{display:none !important}
+  .devis-table input,.devis-table button, #filter-container{display:none !important}
   /* >>> AJOUT : ne jamais imprimer l'offre partenaire ni le compteur <<< */
   .promo-banner,.partner-ops,.partner-kpis{display:none !important;}
 
@@ -468,6 +495,12 @@ input[type="file"]{display:none}
             <strong>Tarifs Partenaires NETS (Hors Taxes)</strong> — Valables sur volume et récurrence. Matériaux non inclus (sauf mention F+M.O.).
           </p>
 
+          <div id="filter-container" style="display:none; justify-content:flex-end; margin-bottom:16px; padding:0 10px;">
+            <label for="category-filter" style="margin-right:10px; align-self:center; font-weight:600;">Filtrer les fiches :</label>
+            <select id="category-filter" style="padding:8px 12px; border:1px solid var(--primary); border-radius:8px; background:var(--panel); font-size:1rem; min-width:200px;">
+              </select>
+          </div>
+
           <div class="sheets" id="partner-sheets">
             <!-- Injecté dynamiquement depuis PAPORENOV-Tarifs.json -->
             </div>
@@ -581,14 +614,22 @@ const clearButton = document.getElementById('clear-devis');
 const logoUpload = document.getElementById('logo-upload');
 const logoPreview = document.getElementById('partner-logo-preview');
 
+// NOUVEAU: Filtres
+const categoryFilter = document.getElementById('category-filter');
+const filterContainer = document.getElementById('filter-container');
+
+
 /* ================== STATE ================== */
 let devisCart = [];
 const TVA_RATE = 0.20;
+let UNIQUE_CATEGORIES = [];
 
-/* ================== ACCESS ================== */
-function openIfValid(){
+
+/* ================== ACCESS & INITIAL LOAD ================== */
+async function handleAccess(){
   const val = (inputCode.value||'').trim();
   if(!val){ errorDiv.textContent="Veuillez saisir le code d’accès professionnel."; return; }
+  
   if(val === ACCESS_CODE){
     errorDiv.textContent="";
     partnerContent.style.display='block';
@@ -597,6 +638,12 @@ function openIfValid(){
     noticeText.style.color='var(--primary)';
     noticeText.style.fontWeight='600';
     document.getElementById('tarifs-pro-tab').style.display='block';
+    
+    // Après succès, charge les tarifs et attache l'écouteur du filtre
+    await loadTarifs();
+    categoryFilter.removeEventListener('change', applyFilter); // Assurer qu'il n'y a qu'un seul écouteur
+    categoryFilter.addEventListener('change', applyFilter);
+    showPartnerPromoIfOpen();
   }else{
     errorDiv.textContent="Code PRO invalide. Veuillez vérifier vos identifiants.";
   }
@@ -620,6 +667,8 @@ function switchTab(targetId){
         el.style.display='none';
       }
     });
+    // Cache le filtre quand on est sur l'onglet devis
+    filterContainer.style.display = 'none';
   } else {
     ids.forEach(id=>{
       const el=document.getElementById(id);
@@ -628,6 +677,8 @@ function switchTab(targetId){
         delete el.dataset.prevDisplay;
       }
     });
+    // Affiche le filtre (si des catégories existent) quand on revient aux tarifs
+    if(UNIQUE_CATEGORIES.length > 0) filterContainer.style.display = 'flex';
   }
 }
 
@@ -668,8 +719,14 @@ async function loadTarifs(){
         Impossible de charger <code>PAPORENOV-Tarifs.json</code>. Place le fichier JSON à côté de cette page.<br>
         Nom attendu : <strong>PAPORENOV-Tarifs.json</strong>
       </div>`;
+    filterContainer.style.display = 'none';
     return;
   }
+  
+  // Extraction et peuplement des catégories
+  UNIQUE_CATEGORIES = Object.keys(data);
+  populateFilter(UNIQUE_CATEGORIES);
+  
   renderSheets(data);
 }
 
@@ -738,7 +795,48 @@ function renderSheets(data){
     art.appendChild(ul);
     container.appendChild(art);
   });
+  
+  // Applique le filtre initial (tout afficher, si non déjà appliqué)
+  applyFilter();
 }
+
+/* ================== FILTERS ================== */
+function populateFilter(categories){
+    if(categories.length > 0) {
+        filterContainer.style.display = 'flex';
+        categoryFilter.innerHTML = '';
+        const allOption = document.createElement('option');
+        allOption.value = 'all';
+        allOption.textContent = '— Toutes les catégories —';
+        categoryFilter.appendChild(allOption);
+
+        categories.sort().forEach(cat => {
+            const option = document.createElement('option');
+            option.value = cat;
+            option.textContent = cat;
+            categoryFilter.appendChild(option);
+        });
+        
+    } else {
+        filterContainer.style.display = 'none';
+    }
+}
+
+function applyFilter(){
+    const selectedCategory = categoryFilter.value;
+    const sheets = document.querySelectorAll('#partner-sheets .sheet');
+    
+    sheets.forEach(sheet => {
+        const sheetCategory = sheet.dataset.category;
+        
+        if (selectedCategory === 'all' || sheetCategory === selectedCategory) {
+            sheet.style.display = 'flex'; // Affiche la feuille (display:flex car elle est flex-direction:column)
+        } else {
+            sheet.style.display = 'none'; // Masque la feuille
+        }
+    });
+}
+
 
 /* ================== NOUVEAU FLUX : Ajout global au devis (P.U. = prix min) ================== */
 function addSelectedPrestations(){
@@ -836,17 +934,18 @@ function handleLogoUpload(e){
   r.onload=ev=>{ logoPreview.src=ev.target.result; logoPreview.style.display='block'; };
   r.readAsDataURL(f);
 }
+function showPartnerPromoIfOpen(){
+  const pc = document.getElementById('partner-content');
+  if (pc && pc.style.display === 'block') {
+    document.getElementById('promo-banner').style.display = 'flex';
+    document.getElementById('partner-ops').style.display = 'flex';
+  }
+}
 
 /* ================== Events ================== */
-btnEnter?.addEventListener('click', async ()=>{
-  openIfValid();
-  if (partnerContent.style.display==='block') await loadTarifs();
-});
-inputCode.addEventListener('keydown', async e=>{
-  if(e.key==='Enter'){
-    openIfValid();
-    if (partnerContent.style.display==='block') await loadTarifs();
-  }
+btnEnter?.addEventListener('click', handleAccess);
+inputCode.addEventListener('keydown', e=>{
+  if(e.key==='Enter') handleAccess();
 });
 
 tabButtons.forEach(b=>b.addEventListener('click', e=>switchTab(e.currentTarget.dataset.tab)));
@@ -968,6 +1067,7 @@ function ensurePartner(){
   if(!pid){ alert("Renseigne l’identifiant partenaire (nom, email ou code)."); return null; }
   CURRENT_PARTNER = pid;
   if(!localStorage.getItem(storageKey(pid))) saveStats(pid, defaultStats());
+  localStorage.setItem('partnerStats::LAST_PID', pid);
   refreshUI();
   return pid;
 }
