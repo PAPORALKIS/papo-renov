@@ -19,6 +19,8 @@
   --border-light:#e9ecef;
   --shadow-color:rgba(0,0,0,.16);
   --dark-blue-logo:#0a1f44;
+  --chip:#eef2f7;
+  --chip-text:#344054;
 }
 *{box-sizing:border-box}
 html,body{margin:0;padding:0}
@@ -58,35 +60,92 @@ h1::after{content:'';display:block;width:80px;height:4px;background:var(--primar
 .tablet::before{content:'';position:absolute;inset:0;border-radius:28px;box-shadow:inset 0 0 0 10px #0d0d0d, inset 0 0 0 12px #222;pointer-events:none}
 .tablet-camera{position:absolute;right:22px;top:50%;transform:translateY(-50%);width:34px;height:34px;border-radius:50%;background:#1f1f1f;box-shadow:inset 0 2px 6px rgba(255,255,255,.06)}
 .tablet-screen{position:absolute;inset:20px 24px;border-radius:18px;overflow:hidden;background:#000}
-
 .slider{position:absolute;inset:0}
 .slider img{position:absolute;inset:0;margin:auto;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .8s ease}
 .slider img.active{opacity:1}
 
-/* --- FICHES TARIFS 3D --- */
-.sheets{position:relative;width:100%;max-width:1450px;margin:-100px auto 20px;display:flex;flex-wrap:nowrap;justify-content:center;gap:0;perspective:1500px;padding:0 8px;z-index:2}
-.sheet{width:120px;height:290px;flex-shrink:0;background:var(--card-background);border-radius:14px;box-shadow:0 20px 50px rgba(0,0,0,.35),0 0 0 1px rgba(0,0,0,.1);padding:10px;text-align:left;cursor:pointer;transform:rotateZ(var(--rot,0deg)) translateY(var(--ty,0px)) translateX(var(--tx,0px)) rotateY(var(--ry,0deg));transition:transform .35s ease,box-shadow .35s ease;border:1px solid var(--border-light);z-index:var(--z-idx);margin-right:-40px;overflow:hidden}
-.sheets article:nth-child(1){--rot:-4deg;--ty:10px;--tx:0px;--ry:-4deg;--z-idx:4}
-.sheets article:nth-child(2){--rot:3deg;--ty:-10px;--tx:0px;--ry:0deg;--z-idx:3}
-.sheets article:nth-child(3){--rot:-2deg;--ty:5px;--tx:0px;--ry:4deg;--z-idx:2}
-.sheets article:nth-child(4){--rot:5deg;--ty:-5px;--tx:0px;--ry:-3deg;--z-idx:1;margin-right:0}
-.sheets article:nth-child(5){--rot:-4deg;--ty:10px;--tx:0px;--ry:-4deg;--z-idx:4}
-.sheets article:nth-child(6){--rot:3deg;--ty:-10px;--tx:0px;--ry:0deg;--z-idx:3}
-.sheets article:nth-child(7){--rot:-2deg;--ty:5px;--tx:0px;--ry:4deg;--z-idx:2}
-.sheets article:nth-child(8){--rot:5deg;--ty:-5px;--tx:0px;--ry:-3deg;--z-idx:1;margin-right:0}
-.sheets article:nth-child(9){--rot:-4deg;--ty:10px;--tx:0px;--ry:-4deg;--z-idx:4}
-.sheets article:nth-child(10){--rot:3deg;--ty:-10px;--tx:0px;--ry:0deg;--z-idx:3}
-.sheets article:nth-child(11){--rot:-2deg;--ty:5px;--tx:0px;--ry:4deg;--z-idx:2}
-.sheet:hover{transform:translateY(calc(var(--ty,0px) - 10px)) rotateZ(var(--rot,0deg)) scale(1.06) rotateY(var(--ry,0deg));box-shadow:0 50px 120px rgba(0,0,0,.45);z-index:5}
+/* --- BARRE OUTILS FICHES --- */
+.tools{
+  width:min(1200px,100%);
+  display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;
+  margin:18px auto 8px;padding:0 8px;z-index:2
+}
+.view-switch{display:flex;gap:8px}
+.view-switch .switch{
+  border:1px solid var(--border-light);background:#fff;border-radius:10px;
+  padding:8px 12px;cursor:pointer;font-weight:600;display:flex;align-items:center;gap:8px;
+}
+.view-switch .switch.active{background:var(--primary-color);color:#fff;border-color:var(--primary-color)}
+.search-wrap{flex:1;display:flex;justify-content:flex-end}
+.search-wrap input{
+  width: min(420px,100%); padding:10px 12px;border:1px solid var(--border-light);border-radius:10px;outline:none;
+  box-shadow: 0 1px 2px rgba(0,0,0,.02)
+}
 
-.sheet .head{display:flex;align-items:center;gap:6px;margin-bottom:8px;flex-direction:column;text-align:center}
-.sheet .badge{background:var(--dark-blue-logo);color:#fff;font-weight:700;font-size:.8rem;padding:4px 6px;border-radius:6px}
+/* --- CHIPS --- */
+.chips{
+  width:min(1200px,100%);
+  display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin:6px auto 6px;padding:0 8px
+}
+.chip{
+  background:var(--chip);color:var(--chip-text);
+  padding:8px 12px;border-radius:999px;font-size:.9rem;border:1px solid var(--border-light);
+  cursor:pointer;user-select:none;transition:transform .15s ease, background .2s ease
+}
+.chip:hover{transform:translateY(-1px)}
+.chip.active{background:var(--primary-color);color:#fff;border-color:var(--primary-color)}
+
+/* --- FICHES (deux modes) --- */
+.sheets{position:relative;width:min(1450px,100%);margin:10px auto 20px;padding:0 8px;z-index:2}
+
+/* MODE 1 : PILE 3D (ta base) */
+.sheets.pile{display:flex;flex-wrap:nowrap;justify-content:center;gap:0;perspective:1500px}
+.sheet{width:120px;height:290px;flex-shrink:0;background:var(--card-background);border-radius:16px;
+  box-shadow:0 20px 50px rgba(0,0,0,.25),0 0 0 1px rgba(0,0,0,.08);
+  padding:12px;text-align:left;cursor:pointer;
+  transform:rotateZ(var(--rot,0deg)) translateY(var(--ty,0px)) translateX(var(--tx,0px)) rotateY(var(--ry,0deg));
+  transition:transform .35s ease,box-shadow .35s ease,border-color .35s ease;
+  border:1px solid var(--border-light);z-index:var(--z-idx);margin-right:-40px;overflow:hidden
+}
+.sheets.pile article:nth-child(1){--rot:-4deg;--ty:10px;--tx:0px;--ry:-4deg;--z-idx:4}
+.sheets.pile article:nth-child(2){--rot:3deg;--ty:-10px;--tx:0px;--ry:0deg;--z-idx:3}
+.sheets.pile article:nth-child(3){--rot:-2deg;--ty:5px;--tx:0px;--ry:4deg;--z-idx:2}
+.sheets.pile article:nth-child(4){--rot:5deg;--ty:-5px;--tx:0px;--ry:-3deg;--z-idx:1;margin-right:0}
+.sheets.pile article:nth-child(5){--rot:-4deg;--ty:10px;--tx:0px;--ry:-4deg;--z-idx:4}
+.sheets.pile article:nth-child(6){--rot:3deg;--ty:-10px;--tx:0px;--ry:0deg;--z-idx:3}
+.sheets.pile article:nth-child(7){--rot:-2deg;--ty:5px;--tx:0px;--ry:4deg;--z-idx:2}
+.sheets.pile article:nth-child(8){--rot:5deg;--ty:-5px;--tx:0px;--ry:-3deg;--z-idx:1;margin-right:0}
+.sheets.pile article:nth-child(9){--rot:-4deg;--ty:10px;--tx:0px;--ry:-4deg;--z-idx:4}
+.sheets.pile article:nth-child(10){--rot:3deg;--ty:-10px;--tx:0px;--ry:0deg;--z-idx:3}
+.sheets.pile article:nth-child(11){--rot:-2deg;--ty:5px;--tx:0px;--ry:4deg;--z-idx:2}
+
+/* MODE 2 : GRILLE XL */
+.sheets.grid{
+  display:grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px,1fr));
+  gap:16px
+}
+.sheets.grid .sheet{
+  margin-right:0;width:auto;height:auto;min-height:240px;
+  transform:none;display:flex;flex-direction:column;justify-content:space-between;
+  padding:16px
+}
+
+/* Carte — contenu */
+.sheet:hover{
+  transform:translateY(calc(var(--ty,0px) - 8px)) rotateZ(var(--rot,0deg)) scale(1.04) rotateY(var(--ry,0deg));
+  box-shadow:0 50px 120px rgba(0,0,0,.35);
+  border-color:rgba(0,123,255,.3)
+}
+.sheets.grid .sheet:hover{transform:translateY(-6px) scale(1.02)}
+.sheet .head{display:flex;align-items:center;gap:8px;margin-bottom:8px;flex-direction:row;text-align:left}
+.sheet .badge{background:var(--dark-blue-logo);color:#fff;font-weight:700;font-size:.78rem;padding:4px 8px;border-radius:999px}
 .sheet .icon{font-size:20px;color:var(--primary-color)}
-.sheet h3{margin:4px 0 6px;font-size:.9rem;line-height:1.1}
-.sheet p{margin:0 0 8px;color:#6c757d;font-size:.75rem;line-height:1.2}
-.sheet .from{color:var(--price-accent);font-weight:700;margin-top:4px;font-size:.7rem}
-.sheet .actions{display:flex;flex-direction:column;gap:5px;margin-top:8px}
-.sheet .btn{display:inline-flex;align-items:center;justify-content:center;gap:4px;padding:4px 6px;border-radius:6px;border:1px solid var(--border-light);background:#fff;cursor:pointer;font-weight:600;font-size:.75rem;text-align:center;width:100%}
+.sheet h3{margin:6px 0 8px;font-size:1.05rem;line-height:1.2}
+.sheet p{margin:0 0 10px;color:#6c757d;font-size:.9rem;line-height:1.35}
+.sheet .from{color:var(--price-accent);font-weight:800;margin-top:6px;font-size:1rem}
+.sheet .actions{display:flex;gap:8px;margin-top:10px}
+.sheet .btn{flex:1;display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:10px 12px;border-radius:10px;border:1px solid var(--border-light);background:#fff;cursor:pointer;font-weight:700;font-size:.9rem;text-align:center}
 .sheet .btn.primary{background:var(--primary-color);border-color:var(--primary-color);color:#fff}
 .sheet .btn:active{transform:translateY(1px)}
 
@@ -103,11 +162,19 @@ h1::after{content:'';display:block;width:80px;height:4px;background:var(--primar
 /* PARTENAIRE VIEW (masquée ici) */
 .partner-prices{display:none}
 
+@media (max-width:992px){
+  .sheet h3{font-size:1rem}
+  .sheet p{font-size:.85rem}
+}
+
 @media (max-width:768px){
   .content-section{padding-top:20px}
-  .sheets{margin-top:-80px}
   .tablet{aspect-ratio:4/3}
+  .tools{gap:8px}
+  .search-wrap{flex-basis:100%;justify-content:center}
+  .chips{justify-content:flex-start;overflow-x:auto;padding-bottom:4px}
 }
+
 @supports not (aspect-ratio:1){
   .tablet{height:0;padding-top:56.25%}
   .tablet-screen{position:absolute;top:20px;left:24px;right:24px;bottom:20px}
@@ -143,7 +210,7 @@ h1::after{content:'';display:block;width:80px;height:4px;background:var(--primar
     <div class="tablet-camera" aria-hidden="true"></div>
     <div class="tablet-screen">
       <div class="slider" id="slider">
-        <!-- (tes images inchangées) -->
+        <!-- images (inchangées, issues de ton fichier) -->
         <img src="../img/CHBR1.jpg" alt="Chambre rénovée" class="active">
         <img src="../img/CUIEXT2.jpg" alt="Cuisine extérieure 2">
         <img src="../img/CUIEXT4.jpg" alt="Cuisine extérieure 4">
@@ -212,96 +279,158 @@ h1::after{content:'';display:block;width:80px;height:4px;background:var(--primar
     </div>
   </div>
 
-  <!-- Fiches PUBLIC -->
-  <div class="sheets" id="public-prices">
-<article class="sheet" data-category="d-molition-pr-paration">
-      <div class="head"><i class="icon fas fa-list-check"></i></div>
+  <!-- OUTILS : switch vue + recherche -->
+  <div class="tools" aria-label="Outils d’affichage et recherche">
+    <div class="view-switch" role="tablist" aria-label="Changer de vue">
+      <button class="switch active" id="btnPile" aria-selected="true"><i class="fa-solid fa-layer-group"></i> Pile 3D</button>
+      <button class="switch" id="btnGrid" aria-selected="false"><i class="fa-solid fa-table-cells-large"></i> Grille XL</button>
+    </div>
+    <div class="search-wrap">
+      <input id="search" type="search" placeholder="Rechercher une catégorie (ex : cuisine, peinture…)" aria-label="Rechercher une catégorie">
+    </div>
+  </div>
+
+  <!-- CHIPS filtres -->
+  <div class="chips" id="chips">
+    <span class="chip active" data-filter="*">Tout</span>
+    <span class="chip" data-filter="d-molition-pr-paration">Démolition</span>
+    <span class="chip" data-filter="cloisons-pl-trerie">Cloisons</span>
+    <span class="chip" data-filter="lectricit">Électricité</span>
+    <span class="chip" data-filter="plomberie-sanitaire">Plomberie</span>
+    <span class="chip" data-filter="sols-rev-tements">Sols</span>
+    <span class="chip" data-filter="peinture">Peinture</span>
+    <span class="chip" data-filter="menuiserie-int-rieure">Menuiserie</span>
+    <span class="chip" data-filter="cuisine-pose">Cuisine</span>
+    <span class="chip" data-filter="salle-de-bains">Salle de bains</span>
+    <span class="chip" data-filter="finitions-divers">Finitions</span>
+    <span class="chip" data-filter="d-placements-main-d-uvre">Déplacements</span>
+  </div>
+
+  <!-- Fiches PUBLIC (désormais bascule entre pile|grid) -->
+  <div class="sheets pile" id="public-prices">
+
+    <article class="sheet" data-category="d-molition-pr-paration">
+      <div class="head">
+        <span class="badge">Démolition</span>
+        <i class="icon fas fa-list-check" aria-hidden="true"></i>
+      </div>
       <h3>Démolition & Préparation</h3>
-      <p>Tarifs indicatifs issus de ma base Papo‑Rénov (colonne prix min).</p>
+      <p>Tarifs indicatifs issus de ma base Papo-Rénov (colonne prix min).</p>
       <div class="from">À partir de 8 € / m²</div>
-      <div class="actions"><button class="btn primary open-details"><i class="fa-solid fa-magnifying-glass"></i>Voir détails</button></div>
+      <div class="actions"><button class="btn primary open-details"><i class="fa-solid fa-magnifying-glass"></i> Voir détails</button></div>
     </article>
 
-<article class="sheet" data-category="cloisons-pl-trerie">
-      <div class="head"><i class="icon fas fa-brush"></i></div>
+    <article class="sheet" data-category="cloisons-pl-trerie">
+      <div class="head">
+        <span class="badge">Cloisons</span>
+        <i class="icon fas fa-brush" aria-hidden="true"></i>
+      </div>
       <h3>Cloisons & Plâtrerie</h3>
-      <p>Tarifs indicatifs issus de ma base Papo‑Rénov (colonne prix min).</p>
-      <div class="from">À partir de 50 € / €/m²</div>
-      <div class="actions"><button class="btn primary open-details"><i class="fa-solid fa-magnifying-glass"></i>Voir détails</button></div>
+      <p>Tarifs indicatifs issus de ma base Papo-Rénov (colonne prix min).</p>
+      <div class="from">À partir de 50 € / m²</div>
+      <div class="actions"><button class="btn primary open-details"><i class="fa-solid fa-magnifying-glass"></i> Voir détails</button></div>
     </article>
 
-<article class="sheet" data-category="lectricit">
-      <div class="head"><i class="icon fas fa-list-check"></i></div>
+    <article class="sheet" data-category="lectricit">
+      <div class="head">
+        <span class="badge">Électricité</span>
+        <i class="icon fas fa-bolt" aria-hidden="true"></i>
+      </div>
       <h3>Électricité</h3>
-      <p>Tarifs indicatifs issus de ma base Papo‑Rénov (colonne prix min).</p>
+      <p>Tarifs indicatifs issus de ma base Papo-Rénov (colonne prix min).</p>
       <div class="from">À partir de 250 € / unité</div>
-      <div class="actions"><button class="btn primary open-details"><i class="fa-solid fa-magnifying-glass"></i>Voir détails</button></div>
+      <div class="actions"><button class="btn primary open-details"><i class="fa-solid fa-magnifying-glass"></i> Voir détails</button></div>
     </article>
 
-<article class="sheet" data-category="plomberie-sanitaire">
-      <div class="head"><i class="icon fas fa-bath"></i></div>
+    <article class="sheet" data-category="plomberie-sanitaire">
+      <div class="head">
+        <span class="badge">Plomberie</span>
+        <i class="icon fas fa-bath" aria-hidden="true"></i>
+      </div>
       <h3>Plomberie & Sanitaire</h3>
-      <p>Tarifs indicatifs issus de ma base Papo‑Rénov (colonne prix min).</p>
-      <div class="from">À partir de 45 € / ml (mètre linéaire)</div>
-      <div class="actions"><button class="btn primary open-details"><i class="fa-solid fa-magnifying-glass"></i>Voir détails</button></div>
+      <p>Tarifs indicatifs issus de ma base Papo-Rénov (colonne prix min).</p>
+      <div class="from">À partir de 45 € / ml</div>
+      <div class="actions"><button class="btn primary open-details"><i class="fa-solid fa-magnifying-glass"></i> Voir détails</button></div>
     </article>
 
-<article class="sheet" data-category="sols-rev-tements">
-      <div class="head"><i class="icon fas fa-paint-roller"></i></div>
+    <article class="sheet" data-category="sols-rev-tements">
+      <div class="head">
+        <span class="badge">Sols</span>
+        <i class="icon fas fa-paint-roller" aria-hidden="true"></i>
+      </div>
       <h3>Sols & Revêtements</h3>
-      <p>Tarifs indicatifs issus de ma base Papo‑Rénov (colonne prix min).</p>
+      <p>Tarifs indicatifs issus de ma base Papo-Rénov (colonne prix min).</p>
       <div class="from">À partir de 15 € / m²</div>
-      <div class="actions"><button class="btn primary open-details"><i class="fa-solid fa-magnifying-glass"></i>Voir détails</button></div>
+      <div class="actions"><button class="btn primary open-details"><i class="fa-solid fa-magnifying-glass"></i> Voir détails</button></div>
     </article>
 
-<article class="sheet" data-category="peinture">
-      <div class="head"><i class="icon fas fa-paint-roller"></i></div>
+    <article class="sheet" data-category="peinture">
+      <div class="head">
+        <span class="badge">Peinture</span>
+        <i class="icon fas fa-fill-drip" aria-hidden="true"></i>
+      </div>
       <h3>Peinture</h3>
-      <p>Tarifs indicatifs issus de ma base Papo‑Rénov (colonne prix min).</p>
+      <p>Tarifs indicatifs issus de ma base Papo-Rénov (colonne prix min).</p>
       <div class="from">À partir de 5 € / m²</div>
-      <div class="actions"><button class="btn primary open-details"><i class="fa-solid fa-magnifying-glass"></i>Voir détails</button></div>
+      <div class="actions"><button class="btn primary open-details"><i class="fa-solid fa-magnifying-glass"></i> Voir détails</button></div>
     </article>
 
-<article class="sheet" data-category="menuiserie-int-rieure">
-      <div class="head"><i class="icon fas fa-list-check"></i></div>
+    <article class="sheet" data-category="menuiserie-int-rieure">
+      <div class="head">
+        <span class="badge">Menuiserie</span>
+        <i class="icon fas fa-door-closed" aria-hidden="true"></i>
+      </div>
       <h3>Menuiserie Intérieure</h3>
-      <p>Tarifs indicatifs issus de ma base Papo‑Rénov (colonne prix min).</p>
+      <p>Tarifs indicatifs issus de ma base Papo-Rénov (colonne prix min).</p>
       <div class="from">À partir de 180 € / unité</div>
-      <div class="actions"><button class="btn primary open-details"><i class="fa-solid fa-magnifying-glass"></i>Voir détails</button></div>
+      <div class="actions"><button class="btn primary open-details"><i class="fa-solid fa-magnifying-glass"></i> Voir détails</button></div>
     </article>
 
-<article class="sheet" data-category="cuisine-pose">
-      <div class="head"><i class="icon fas fa-list-check"></i></div>
+    <article class="sheet" data-category="cuisine-pose">
+      <div class="head">
+        <span class="badge">Cuisine</span>
+        <i class="icon fas fa-kitchen-set" aria-hidden="true"></i>
+      </div>
       <h3>Cuisine (Pose)</h3>
-      <p>Tarifs indicatifs issus de ma base Papo‑Rénov (colonne prix min).</p>
-      <div class="from">À partir de 200 € / forfait jour</div>
-      <div class="actions"><button class="btn primary open-details"><i class="fa-solid fa-magnifying-glass"></i>Voir détails</button></div>
+      <p>Tarifs indicatifs issus de ma base Papo-Rénov (colonne prix min).</p>
+      <div class="from">À partir de 200 € / jour</div>
+      <div class="actions"><button class="btn primary open-details"><i class="fa-solid fa-magnifying-glass"></i> Voir détails</button></div>
     </article>
 
-<article class="sheet" data-category="salle-de-bains">
-      <div class="head"><i class="icon fas fa-list-check"></i></div>
+    <article class="sheet" data-category="salle-de-bains">
+      <div class="head">
+        <span class="badge">SDB</span>
+        <i class="icon fas fa-shower" aria-hidden="true"></i>
+      </div>
       <h3>Salle de Bains</h3>
-      <p>Tarifs indicatifs issus de ma base Papo‑Rénov (colonne prix min).</p>
-      <div class="from">À partir de 300 € / Forfait</div>
-      <div class="actions"><button class="btn primary open-details"><i class="fa-solid fa-magnifying-glass"></i>Voir détails</button></div>
+      <p>Tarifs indicatifs issus de ma base Papo-Rénov (colonne prix min).</p>
+      <div class="from">À partir de 300 € / forfait</div>
+      <div class="actions"><button class="btn primary open-details"><i class="fa-solid fa-magnifying-glass"></i> Voir détails</button></div>
     </article>
 
-<article class="sheet" data-category="finitions-divers">
-      <div class="head"><i class="icon fas fa-list-check"></i></div>
+    <article class="sheet" data-category="finitions-divers">
+      <div class="head">
+        <span class="badge">Finitions</span>
+        <i class="icon fas fa-screwdriver-wrench" aria-hidden="true"></i>
+      </div>
       <h3>Finitions & Divers</h3>
-      <p>Tarifs indicatifs issus de ma base Papo‑Rénov (colonne prix min).</p>
+      <p>Tarifs indicatifs issus de ma base Papo-Rénov (colonne prix min).</p>
       <div class="from">À partir de 6 € / ml</div>
-      <div class="actions"><button class="btn primary open-details"><i class="fa-solid fa-magnifying-glass"></i>Voir détails</button></div>
+      <div class="actions"><button class="btn primary open-details"><i class="fa-solid fa-magnifying-glass"></i> Voir détails</button></div>
     </article>
 
-<article class="sheet" data-category="d-placements-main-d-uvre">
-      <div class="head"><i class="icon fas fa-list-check"></i></div>
+    <article class="sheet" data-category="d-placements-main-d-uvre">
+      <div class="head">
+        <span class="badge">Déplacements</span>
+        <i class="icon fas fa-truck-fast" aria-hidden="true"></i>
+      </div>
       <h3>Déplacements & Main d’œuvre</h3>
-      <p>Tarifs indicatifs issus de ma base Papo‑Rénov (colonne prix min).</p>
-      <div class="from">À partir de 30 € / Forfait</div>
-      <div class="actions"><button class="btn primary open-details"><i class="fa-solid fa-magnifying-glass"></i>Voir détails</button></div>
+      <p>Tarifs indicatifs issus de ma base Papo-Rénov (colonne prix min).</p>
+      <div class="from">À partir de 30 € / forfait</div>
+      <div class="actions"><button class="btn primary open-details"><i class="fa-solid fa-magnifying-glass"></i> Voir détails</button></div>
     </article>
 
+  </div>
 </section>
 
 <!-- MODALE DÉTAILS -->
@@ -328,9 +457,10 @@ h1::after{content:'';display:block;width:80px;height:4px;background:var(--primar
   }, 3500);
 })();
 
-/* DONNÉES TARIFS PUBLIC */
+/* DONNÉES TARIFS PUBLIC
+   -> IMPORTANT : clés entre guillemets pour accepter les tirets */
 const priceDetails = {
-  d-molition-pr-paration:{title:"Démolition & Préparation - Tarifs Publics (HT)",items:[
+  "d-molition-pr-paration":{title:"Démolition & Préparation - Tarifs Publics (HT)",items:[
     {label:"Dépose revêtements sols souples",price:"8 € / m²"},
     {label:"Dépose carrelage sol",price:"15 € / m²"},
     {label:"Dépose parquet flottant / stratifié",price:"10 € / m²"},
@@ -355,24 +485,24 @@ const priceDetails = {
     {label:"Évacuation gravats et déchets",price:"150 € / benne (3–5 m³)"},
     {label:"Grattage / ponçage préparatoire murs",price:"10 € / m²"}
   ]},
-  cloisons-pl-trerie:{title:"Cloisons & Plâtrerie - Tarifs Publics (HT)",items:[
-    {label:"Doublage isolant collé (placo + polystyrène)",price:"50 € / €/m²"},
-    {label:"Doublage sur ossature métallique  (placo BA13)",price:"65 € / €/m²"},
-    {label:"Faux plafonds simples (placo BA13)",price:"35 € / €/m²"},
-    {label:"Faux plafonds acoustiques",price:"45 € / €/m²"},
-    {label:"Cloison de séparation standard (BA13)",price:"45 € / €/m²"},
-    {label:"Création niche murale (placo)",price:"60 € / €/unité"},
-    {label:"Réalisation coffrage technique (placo)",price:"50 € / €/ml"},
-    {label:"Cloison verrière (préparation + support placo)",price:"70 € / €/m²"},
+  "cloisons-pl-trerie":{title:"Cloisons & Plâtrerie - Tarifs Publics (HT)",items:[
+    {label:"Doublage isolant collé (placo + polystyrène)",price:"50 € / m²"},
+    {label:"Doublage sur ossature métallique  (placo BA13)",price:"65 € / m²"},
+    {label:"Faux plafonds simples (placo BA13)",price:"35 € / m²"},
+    {label:"Faux plafonds acoustiques",price:"45 € / m²"},
+    {label:"Cloison de séparation standard (BA13)",price:"45 € / m²"},
+    {label:"Création niche murale (placo)",price:"60 € / unité"},
+    {label:"Réalisation coffrage technique (placo)",price:"50 € / ml"},
+    {label:"Cloison verrière (préparation + support placo)",price:"70 € / m²"},
     {label:"Pose de laine de verre 45 mm +",price:"40 € / m²"},
     {label:"Pose de laine de roche 75 mm",price:"50 € / m²"},
     {label:"Pose de laine de verre 45 mm",price:"50 € / m²"},
     {label:"Pose de laine de roche 75 mm",price:"60 € / m²"}
   ]},
-  lectricit:{title:"Électricité - Tarifs Publics (HT)",items:[
+  "lectricit":{title:"Électricité - Tarifs Publics (HT)",items:[
     {label:"Tableau électrique",price:"250 € / unité"},
     {label:"Création d’une ligne dédiée (prises, éclairage, LV, LL, four, etc.)",price:"70 € / circuit"},
-    {label:"Tirage de câbles encastrés",price:"25 € / mètre linéaire"},
+    {label:"Tirage de câbles encastrés",price:"25 € / ml"},
     {label:"Pose de prises de courant standard",price:"25 € / unité"},
     {label:"Pose d’interrupteurs simples / doubles",price:"25 € / unité"},
     {label:"Pose de va-et-vient / télérupteur",price:"40 € / circuit"},
@@ -381,7 +511,7 @@ const priceDetails = {
     {label:"Eclairage encastré (spot LED)",price:"40 € / unité"},
     {label:"Plafonnier / suspension",price:"40 € / unité"},
     {label:"Applique murale",price:"35 € / unité"},
-    {label:"Bandeau LED / ruban lumineux",price:"20 € / mètre linéaire"},
+    {label:"Bandeau LED / ruban lumineux",price:"20 € / ml"},
     {label:"Création de point lumineux complet",price:"100 € / point"},
     {label:"Pose de VMC simple flux",price:"250 € / unité"},
     {label:"Pose de VMC double flux",price:"900 € / unité"},
@@ -391,8 +521,8 @@ const priceDetails = {
     {label:"Motorisation portail / porte garage",price:"400 € / installation"},
     {label:"Électricité extérieure (éclairage jardin / terrasse)",price:"50 € / point lumineux"}
   ]},
-  plomberie-sanitaire:{title:"Plomberie & Sanitaire - Tarifs Publics (HT)",items:[
-    {label:"Alimentation eau froide / chaude",price:"45 € / ml (mètre linéaire)"},
+  "plomberie-sanitaire":{title:"Plomberie & Sanitaire - Tarifs Publics (HT)",items:[
+    {label:"Alimentation eau froide / chaude",price:"45 € / ml"},
     {label:"Création arrivée d’eau (évier, lave-vaisselle, lave-linge, WC, lavabo, etc.)",price:"90 € / unité"},
     {label:"Modification réseau existant (déplacement évier, douche, etc.)",price:"120 € / point d’eau"},
     {label:"Évacuation eaux usées",price:"50 € / ml"},
@@ -417,7 +547,7 @@ const priceDetails = {
     {label:"Pose sèche-serviettes hydraulique",price:"180 € / unité"},
     {label:"Pose sèche-serviettes électrique",price:"120 € / unité"}
   ]},
-  sols-rev-tements:{title:"Sols & Revêtements - Tarifs Publics (HT)",items:[
+  "sols-rev-tements":{title:"Sols & Revêtements - Tarifs Publics (HT)",items:[
     {label:"Ragréage autolissant standard",price:"15 € / m²"},
     {label:"Ragréage fibré (épais ou rénovation)",price:"20 € / m²"},
     {label:"Dépose ancien revêtement (carrelage, parquet, moquette...)",price:"15 € / m²"},
@@ -436,7 +566,7 @@ const priceDetails = {
     {label:"Pose barres de seuil (portes)",price:"10 € / unité"},
     {label:"Remplacement plinthes existantes",price:"5 € / ml"}
   ]},
-  peinture:{title:"Peinture - Tarifs Publics (HT)",items:[
+  "peinture":{title:"Peinture - Tarifs Publics (HT)",items:[
     {label:"Dépose ancienne tapisserie avant peinture",price:"5 € / m²"},
     {label:"Préparation des supports – murs",price:"8 € / m²"},
     {label:"Préparation des supports – plafonds",price:"10 € / m²"},
@@ -451,7 +581,7 @@ const priceDetails = {
     {label:"Vernis sur bois (parquet, escalier, mobilier)",price:"18 € / m²"},
     {label:"Lasure sur boiseries intérieures",price:"12 € / m²"}
   ]},
-  menuiserie-int-rieure:{title:"Menuiserie Intérieure - Tarifs Publics (HT)",items:[
+  "menuiserie-int-rieure":{title:"Menuiserie Intérieure - Tarifs Publics (HT)",items:[
     {label:"Fourniture + pose porte postformée",price:"180 € / unité"},
     {label:"Fourniture + pose porte à âme pleine",price:"250 € / unité"},
     {label:"Pose seule porte intérieure",price:"80 € / unité"},
@@ -460,46 +590,38 @@ const priceDetails = {
     {label:"Pose bloc-porte coulissante (type galandage)",price:"400 € / unité"},
     {label:"Réglage de porte (serrure, charnières)",price:"30 € / unité"}
   ]},
-  cuisine-pose:{title:"Cuisine (Pose) - Tarifs Publics (HT)",items:[
-    {label:"Démontage ancienne cuisine",price:"200 € / forfait jour"},
-    {label:"Préparation murale et sol avant pose",price:"150 € / forfait jour"},
+  "cuisine-pose":{title:"Cuisine (Pose) - Tarifs Publics (HT)",items:[
+    {label:"Démontage ancienne cuisine",price:"200 € / jour"},
+    {label:"Préparation murale et sol avant pose",price:"150 € / jour"},
     {label:"Pose de meuble bas (Montée d'usine)",price:"35 € / unité"},
     {label:"Pose de meuble haut (standard)",price:"40 € / unité"},
     {label:"Pose de meuble d’angle",price:"70 € / unité"},
     {label:"Pose de colonne four / frigo / rangement",price:"60 € / unité"},
-    {label:"Pose plinthes de cuisine",price:"10 € / mètre linéaire"},
-    {label:"Pose de corniches ou fileurs",price:"20 € / mètre linéaire"},
-    {label:"supplément Pose îlot central (hors plan de travail)",price:"120 € / forfait"},
-    {label:"supplément Pose plan snack / retour bar",price:"60 € / unité"},
-    {label:"Pose de meuble bas (Montée d'usine)",price:"52 € / unité"},
-    {label:"Pose de meuble haut (standard)",price:"60 € / unité"},
-    {label:"Pose de meuble d’angle",price:"105 € / unité"},
-    {label:"Pose de colonne four / frigo / rangement",price:"90 € / unité"},
-    {label:"Pose plinthes de cuisine",price:"15 € / mètre linéaire"},
-    {label:"Pose de corniches ou fileurs",price:"30 € / mètre linéaire"},
-    {label:"supplément Pose îlot central (hors plan de travail)",price:"180 € / forfait"},
-    {label:"supplément Pose plan snack / retour bar",price:"90 € / unité"},
-    {label:"Découpe et pose plan de travail stratifié",price:"45 € / mètre linéaire"},
-    {label:"Découpe et pose plan de travail massif / compact",price:"80 € / mètre linéaire"},
+    {label:"Pose plinthes de cuisine",price:"10 € / ml"},
+    {label:"Pose de corniches ou fileurs",price:"20 € / ml"},
+    {label:"Supplément pose îlot central (hors plan de travail)",price:"120 € / forfait"},
+    {label:"Supplément pose plan snack / retour bar",price:"60 € / unité"},
+    {label:"Découpe et pose plan de travail stratifié",price:"45 € / ml"},
+    {label:"Découpe et pose plan de travail massif / compact",price:"80 € / ml"},
     {label:"Pose d’un plan en pierre, granit ou quartz (hors découpe usine)",price:"150 € / ml"},
     {label:"Découpe d’évier + pose",price:"50 € / unité"},
     {label:"Découpe plaque de cuisson + pose",price:"50 € / unité"},
-    {label:"Pose crédence stratifiée ou alu",price:"35 € / mètre linéaire"},
-    {label:"Pose crédence verre / composite / carrelage",price:"80 € / mètre linéaire"},
+    {label:"Pose crédence stratifiée ou alu",price:"35 € / ml"},
+    {label:"Pose crédence verre / composite / carrelage",price:"80 € / ml"},
     {label:"Raccordement plomberie évier (eau + évacuation)",price:"50 € / unité"},
     {label:"Raccordement électrique plaque/four/lumières",price:"60 € / point"},
     {label:"Installation hotte (évacuation existante)",price:"50 € / unité"},
     {label:"Pose d’électroménager encastré (four, lave-vaisselle, etc.)",price:"40 € / unité"},
     {label:"Reprise d’un chantier inachevé",price:"50 € / heure"}
   ]},
-  salle-de-bains:{title:"Salle de Bains - Tarifs Publics (HT)",items:[
-    {label:"Dépose complète salle de bain existante",price:"300 € / Forfait"},
-    {label:"Dépose meuble vasque / miroir / colonne",price:"30 € / Unité"},
-    {label:"Dépose baignoire",price:"80 € / Unité"},
-    {label:"Dépose douche / receveur",price:"60 € / Unité"},
-    {label:"Protection et préparation du chantier",price:"50 € / Forfait"}
+  "salle-de-bains":{title:"Salle de Bains - Tarifs Publics (HT)",items:[
+    {label:"Dépose complète salle de bain existante",price:"300 € / forfait"},
+    {label:"Dépose meuble vasque / miroir / colonne",price:"30 € / unité"},
+    {label:"Dépose baignoire",price:"80 € / unité"},
+    {label:"Dépose douche / receveur",price:"60 € / unité"},
+    {label:"Protection et préparation du chantier",price:"50 € / forfait"}
   ]},
-  finitions-divers:{title:"Finitions & Divers - Tarifs Publics (HT)",items:[
+  "finitions-divers":{title:"Finitions & Divers - Tarifs Publics (HT)",items:[
     {label:"Pose de plinthes MDF / bois",price:"6 € / ml"},
     {label:"Pose de moulures / corniches déco",price:"8 € / ml"},
     {label:"Pose de baguettes de finition (carrelage, sol, etc.)",price:"5 € / ml"},
@@ -527,31 +649,39 @@ const priceDetails = {
     {label:"Pose de caches, plastrons, enjoliveurs divers",price:"5 € / unité"},
     {label:"Retrait et recyclage des déchets de finitions",price:"50 € / forfait"}
   ]},
-  d-placements-main-d-uvre:{title:"Déplacements & Main d’œuvre - Tarifs Publics (HT)",items:[
-    {label:"Déplacement zone locale (≤ 25 km)",price:"30 € / Forfait"},
-    {label:"Déplacement hors zone (25 à 60 km)",price:"60 € / Forfait"},
-    {label:"Déplacement longue distance (> 60 km)",price:"120 € / Forfait"},
-    {label:"Stationnement / Zone difficile d’accès",price:"10 € / Forfait"},
-    {label:"Main-d’œuvre aide / manutention",price:"60 € / Jour"},
-    {label:"Forfait journée complète (standard)",price:"350 € / Jour"},
-    {label:"Coordination / Suivi de chantier",price:"50 € / Forfait"},
-    {label:"Assistance technique / Conseils avant travaux / métré",price:"50 € / Forfait"}
+  "d-placements-main-d-uvre":{title:"Déplacements & Main d’œuvre - Tarifs Publics (HT)",items:[
+    {label:"Déplacement zone locale (≤ 25 km)",price:"30 € / forfait"},
+    {label:"Déplacement hors zone (25 à 60 km)",price:"60 € / forfait"},
+    {label:"Déplacement longue distance (> 60 km)",price:"120 € / forfait"},
+    {label:"Stationnement / Zone difficile d’accès",price:"10 € / forfait"},
+    {label:"Main-d’œuvre aide / manutention",price:"60 € / jour"},
+    {label:"Forfait journée complète (standard)",price:"350 € / jour"},
+    {label:"Coordination / Suivi de chantier",price:"50 € / forfait"},
+    {label:"Assistance technique / Conseils avant travaux / métré",price:"50 € / forfait"}
   ]}
 };
+
+/* UTIL — formate proprement le texte de prix (évite “€ / €/m²”) */
+function cleanPrice(txt){
+  return String(txt)
+    .replace(/\s*€\s*\/\s*€\s*/g,' € / ')    // double €
+    .replace(/\s{2,}/g,' ')                  // espaces multiples
+    .trim();
+}
 
 /* OUVERTURE DES DÉTAILS */
 const detailModal = document.getElementById('detail-modal');
 const modalDetailsContent = document.getElementById('modal-details-content');
 document.querySelectorAll('.open-details, .sheet').forEach(el=>{
   el.addEventListener('click', (e)=>{
-    if(e.target.closest('.actions')) return;
+    if(e.target.closest('.actions') && !e.target.closest('.open-details')) return;
     const card = e.currentTarget.closest('.sheet');
     if (!card) return;
     const cat = card.getAttribute('data-category');
     const data = priceDetails[cat];
     if(!data) return;
     let html = `<h3 id="detail-title">${data.title}</h3><ul>`;
-    data.items.forEach(it=>{ html += `<li><span>${it.label}</span><strong>${it.price}</strong></li>`; });
+    data.items.forEach(it=>{ html += `<li><span>${it.label}</span><strong>${cleanPrice(it.price)}</strong></li>`; });
     html += `</ul><p style="text-align:center;margin-top:22px">Ces prix sont indicatifs. <a href="devis.html" style="font-weight:700;color:var(--primary-color)">Demandez un devis personnalisé</a>.</p>`;
     modalDetailsContent.innerHTML = html;
     detailModal.style.display = 'flex';
@@ -564,6 +694,45 @@ detailModal.addEventListener('click',(e)=>{ if(e.target===detailModal) detailMod
 document.getElementById('logo-overlay-partner').addEventListener('click', ()=>{
   window.location.href = 'tarifs-partenaire.html';
 });
+
+/* SWITCH VUE + FILTRES + RECHERCHE */
+const sheets = document.getElementById('public-prices');
+const btnPile = document.getElementById('btnPile');
+const btnGrid = document.getElementById('btnGrid');
+const chips = document.getElementById('chips');
+const search = document.getElementById('search');
+
+function setView(mode){
+  btnPile.classList.toggle('active', mode==='pile');
+  btnGrid.classList.toggle('active', mode==='grid');
+  sheets.classList.toggle('pile', mode==='pile');
+  sheets.classList.toggle('grid', mode==='grid');
+}
+btnPile.addEventListener('click', ()=>setView('pile'));
+btnGrid.addEventListener('click', ()=>setView('grid'));
+
+let activeFilter='*';
+function applyFilters(){
+  const q = search.value.toLowerCase().trim();
+  document.querySelectorAll('#public-prices .sheet').forEach(card=>{
+    const cat = card.getAttribute('data-category');
+    const text = card.innerText.toLowerCase();
+    const passFilter = (activeFilter==='*' || activeFilter===cat);
+    const passSearch = (!q || text.includes(q));
+    card.style.display = (passFilter && passSearch) ? '' : 'none';
+  });
+}
+chips.addEventListener('click', (e)=>{
+  const el = e.target.closest('.chip'); if(!el) return;
+  chips.querySelectorAll('.chip').forEach(c=>c.classList.remove('active'));
+  el.classList.add('active');
+  activeFilter = el.dataset.filter;
+  applyFilters();
+});
+search.addEventListener('input', applyFilters);
+
+/* Par défaut : on garde l’effet “pile 3D” mais on affiche la grille XL sur mobile pour lisibilité */
+if (window.matchMedia('(max-width: 768px)').matches){ setView('grid'); }
 </script>
 </body>
 </html>
