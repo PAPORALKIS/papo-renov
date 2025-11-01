@@ -591,6 +591,8 @@ input[type="file"]{display:none}
 <script>
 /* ================== CONFIG ================== */
 const ACCESS_CODE = "PROPAPO2025!";
+/* === URL de l’API Apps Script (à COLLER) === */
+const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbww7_mLiUesnyQQHbQjwto1XsbtePXVW0UHU_sLYFLqCOFd0diTanXBWJVCqpePADzwow/exec'; // ex: https://script.google.com/macros/s/AKfycb.../exec
 
 /* ================== DOM HOOKS ================== */
 const inputCode = document.getElementById('code');
@@ -697,20 +699,62 @@ function cleanTask(t){
   return (t||'').replace(/\s*\((M\.O\.|F\+M\.O\.|M\.O\.\/\s*\S+)\s*\)/gi,'').trim();
 }
 
+/* ======== MODIFIÉ : charge d'abord l'API Apps Script, puis fallback JSON local ======== */
 async function loadTarifs(){
-  // Essaie le JSON à côté de la page
-  const candidates = [
-    './PAPORENOV-Tarifs.json',
-    'PAPORENOV-Tarifs.json'
-  ];
-  let data=null, lastErr=null;
-  for(const url of candidates){
+  let dataObj = null;
+
+  /* 1) Tentative API dynamique (toujours à jour) */
+  if (WEB_APP_URL && WEB_APP_URL.startsWith('http')) {
     try{
-      const r = await fetch(url, {cache:'no-store'});
-      if(r.ok){ data = await r.json(); break; }
-    }catch(e){ lastErr=e; }
+      const params = new URLSearchParams();
+      params.set('sheet', 'Tarifs'); // adapte si besoin d'un autre onglet par défaut
+      const r = await fetch(`${WEB_APP_URL}?${params.toString()}`, { cache:'no-store' });
+      if(r.ok){
+        const j = await r.json();
+        // L'API renvoie { tarifs:[...] } avec champs normalisés.
+        const arr = Array.isArray(j) ? j : (j.tarifs || []);
+        if (arr.length){
+          // Regroupe PAR CATÉGORIE pour respecter la structure actuelle { "Catégorie":[ items ] }
+          const grouped = {};
+          arr.forEach(t=>{
+            const cat = (t.categorie || 'Autres').toString();
+            if(!grouped[cat]) grouped[cat] = [];
+            grouped[cat].push({
+              task: t.tache || '',
+              price_min: (typeof t.prix_min === 'number') ? t.prix_min : (t.prix_min ? parseFloat(String(t.prix_min).replace(',','.')) : null),
+              unit: t.unite || '',
+              notes: t.notes || ''
+            });
+          });
+          dataObj = grouped;
+        }
+      }
+    }catch(e){
+      console.warn('API dynamique indisponible → on tente le JSON local.', e);
+    }
   }
-  if(!data){
+
+  /* 2) Fallback : ancien JSON statique à côté de la page (structure déjà compatible) */
+  if(!dataObj){
+    const candidates = [
+      './PAPORENOV-Tarifs.json',
+      'PAPORENOV-Tarifs.json'
+    ];
+    for(const url of candidates){
+      try{
+        const r = await fetch(url, {cache:'no-store'});
+        if(r.ok){
+          const data = await r.json();
+          // Si c'est un tableau simple, on le range sous "Tarifs" ; sinon on garde tel quel.
+          dataObj = Array.isArray(data) ? { 'Tarifs': data } : data;
+          if (dataObj) break;
+        }
+      }catch(e){}
+    }
+  }
+
+  /* 3) Rien trouvé → message d’erreur identique à l’existant */
+  if(!dataObj){
     document.getElementById('partner-sheets').innerHTML =
       `<div style="padding:14px; border:1px dashed var(--border); border-radius:10px; background:#fff;">
         Impossible de charger <code>PAPORENOV-Tarifs.json</code>. Place le fichier JSON à côté de cette page.<br>
@@ -721,10 +765,10 @@ async function loadTarifs(){
   }
   
   // Extraction et peuplement des catégories
-  UNIQUE_CATEGORIES = Object.keys(data);
+  UNIQUE_CATEGORIES = Object.keys(dataObj);
   populateFilter(UNIQUE_CATEGORIES);
   
-  renderSheets(data);
+  renderSheets(dataObj);
 }
 
 function renderSheets(data){
