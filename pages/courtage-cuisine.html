@@ -133,7 +133,24 @@ summary{cursor:pointer;font-weight:700}
 .note{font-size:14px;color:var(--muted)}
 
 /* ====== CTA ====== */
-.cta{display:grid;grid-template-columns:1.2fr .8fr;gap:18px;align-items:center}
+/* Grille CTA : deux colonnes, alignées en haut */
+.cta{display:grid;grid-template-columns:1.2fr .8fr;gap:18px;align-items:start}
+/* Ordonne explicitement les colonnes et stabilise la droite */
+.cta > .panel{ order:1; }
+.cta > .side{ order:2; display:grid; gap:12px; align-self:start; }
+.cta .side .card{ margin:0; } /* annule le margin-top inline éventuel */
+
+/* Desktop : colonne droite qui reste collée en haut (option confort) */
+@media (min-width:981px){
+  .cta > .side{ position:sticky; top:12px; }
+}
+
+/* Mobile/Tablet : empilage propre (formulaire puis les deux cartes) */
+@media (max-width:980px){
+  .cta{ grid-template-columns:1fr; }
+  .cta > .panel{ order:1; }
+  .cta > .side{ order:2; }
+}
 .cta .panel{background:linear-gradient(180deg,#ffffff 0%,#f9fbff 100%);border:1px solid var(--ring);border-radius:18px;box-shadow:var(--shadow);padding:18px}
 
 /* ====== FOOTER ====== */
@@ -632,22 +649,26 @@ summary{cursor:pointer;font-weight:700}
         <p id="formMsg" class="note" role="status" style="margin:8px 0 0"></p>
         <p class="note" id="mailtoFallback" style="display:none;margin:8px 0 0"></p>
       </form>
+  </div>
+
+  <!-- Colonne droite regroupée pour un positionnement fiable -->
+  <aside class="side">
+    <div class="card">
+      <h3>Infos pratiques</h3>
+      <ul class="muted" style="margin:8px 0 0 18px">
+        <li>Zone : Bouches-du-Rhône (et proximité)</li>
+        <li>Disponibilités : sur RDV</li>
+        <li>Devis détaillé & calendrier des travaux</li>
+      </ul>
     </div>
 
-    <div>
-      <div class="card">
-        <h3>Infos pratiques</h3>
-        <ul class="muted" style="margin:8px 0 0 18px">
-          <li>Zone : Bouches-du-Rhône (et proximité)</li>
-          <li>Disponibilités : sur RDV</li>
-          <li>Devis détaillé & calendrier des travaux</li>
-        </ul>
-      </div>
-      <div class="card" style="margin-top:12px">
-        <h3>Mentions & transparence</h3>
-        <p class="muted">Le service de courtage est offert sous condition de confier la pose/travaux à Papo-Rénov. Les devis fournisseurs sont communiqués clairement — pas de marge cachée sur vos meubles. La rémunération provient de la prestation de pose et des travaux associés.</p>
-      </div>
+    <div class="card">
+      <h3>Mentions & transparence</h3>
+      <p class="muted">
+        Le service de courtage est offert sous condition de confier la pose/travaux à Papo-Rénov. Les devis fournisseurs sont communiqués clairement — pas de marge cachée sur vos meubles. La rémunération provient de la prestation de pose et des travaux associés.
+      </p>
     </div>
+  </aside>
   </div>
 </section>
 
