@@ -782,29 +782,30 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>{
 };
 
     try{
-      const res = await fetch(f.action, {
-        method: "POST",
-        headers: {"Content-Type":"application/json"},
-        body: JSON.stringify(payload)
-      });
-      if(!res.ok){ throw new Error("HTTP "+res.status); }
+  const res = await fetch(f.action, {
+    method: "POST",
+    mode: "no-cors", // ✅ clé pour Android/Chrome
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload)
+  });
 
-      showStatus("Merci ! Votre brief a été envoyé. Je vous recontacte rapidement.");
-      if(submitBtn){ submitBtn.textContent = "Envoyé ✔"; }
-      f.reset();
-    }catch(err){
-      console.error(err);
-      showStatus("Impossible d’envoyer automatiquement. Vous pouvez m’écrire en 1 clic :", false);
-      // Fallback mailto
-      const subject = encodeURIComponent(payload.subject);
-      const body = encodeURIComponent(payload.message);
-      const href = `mailto:kpaporalkis.pro@gmail.com?subject=${subject}&body=${body}`;
-      if(fallback){
-        fallback.style.display = "block";
-        fallback.innerHTML = `<a class="btn btn--ghost" href="${href}">Ouvrir votre messagerie</a>`;
-      }
-      if(submitBtn){ submitBtn.disabled = false; submitBtn.textContent = "Envoyer mon brief"; }
-    }
+  // En mode no-cors, la réponse est opaque (on ne peut pas lire le statut).
+  // Si on arrive ici SANS throw, on considère que l’envoi est parti côté Apps Script.
+  showStatus("Merci ! Votre brief a été envoyé. Je vous recontacte rapidement.");
+  if (submitBtn) { submitBtn.textContent = "Envoyé ✔"; }
+  f.reset();
+} catch (err) {
+  console.error(err);
+  showStatus("Impossible d’envoyer automatiquement. Vous pouvez m’écrire en 1 clic :", false);
+  const subject = encodeURIComponent(payload.subject);
+  const body = encodeURIComponent(payload.message);
+  const href = `mailto:kpaporalkis.pro@gmail.com?subject=${subject}&body=${body}`;
+  if (fallback) {
+    fallback.style.display = "block";
+    fallback.innerHTML = `<a class="btn btn--ghost" href="${href}">Ouvrir votre messagerie</a>`;
+  }
+  if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = "Envoyer mon brief"; }
+}
   });
 })();
 </script>
