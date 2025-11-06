@@ -781,24 +781,36 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>{
   fields: data   // ✅ ajoute tous les champs du formulaire
 };
 
-    try{
-  const res = await fetch(f.action, {
+try {
+  // 1) On construit les données
+  const data = serializeForm(f);
+
+  // 2) FormData compatible no-cors (ne PAS fixer Content-Type)
+  const fd = new FormData();
+  fd.append("to", "kpaporalkis.pro@gmail.com");
+  fd.append("subject", buildEmailSubject(data));
+  fd.append("message", buildEmailBody(data));
+  // on pousse tous les champs du formulaire pour le tableau récap
+  for (const [k, v] of Object.entries(data)) {
+    fd.append(k, v ?? "");
+  }
+
+  // 3) Envoi (no-cors) → Apps Script recevra e.parameter avec tous les champs
+  await fetch(f.action, {
     method: "POST",
-    mode: "no-cors", // ✅ clé pour Android/Chrome
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(payload)
+    mode: "no-cors",     // indispensable sur Android
+    body: fd             // ⚠️ pas de headers ici
   });
 
-  // En mode no-cors, la réponse est opaque (on ne peut pas lire le statut).
-  // Si on arrive ici SANS throw, on considère que l’envoi est parti côté Apps Script.
+  // 4) Succès UX
   showStatus("Merci ! Votre brief a été envoyé. Je vous recontacte rapidement.");
   if (submitBtn) { submitBtn.textContent = "Envoyé ✔"; }
   f.reset();
 } catch (err) {
   console.error(err);
   showStatus("Impossible d’envoyer automatiquement. Vous pouvez m’écrire en 1 clic :", false);
-  const subject = encodeURIComponent(payload.subject);
-  const body = encodeURIComponent(payload.message);
+  const subject = encodeURIComponent(buildEmailSubject(serializeForm(f)));
+  const body = encodeURIComponent(buildEmailBody(serializeForm(f)));
   const href = `mailto:kpaporalkis.pro@gmail.com?subject=${subject}&body=${body}`;
   if (fallback) {
     fallback.style.display = "block";
@@ -806,6 +818,7 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>{
   }
   if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = "Envoyer mon brief"; }
 }
+    
   });
 })();
 </script>
