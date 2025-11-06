@@ -592,8 +592,7 @@ input[type="file"]{display:none}
 /* ================== CONFIG ================== */
 const ACCESS_CODE = "PROPAPO2025!";
 /* === URL de l’API Apps Script (à COLLER) === */
-const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbww7_mLiUesnyQQHbQjwto1XsbtePXVW0UHU_sLYFLqCOFd0diTanXBWJVCqpePADzwow/exec'; // ex: https://script.google.com/macros/s/AKfycb.../exec
-
+const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbxrrmZiXAPmcfFtRymjbB2w9EPI9Uwrc6q5QwmKRQfZaDVHeZlM6noNXMCNV2VkpzOd/exec';
 /* ================== DOM HOOKS ================== */
 const inputCode = document.getElementById('code');
 const btnEnter = document.getElementById('btn-enter') || document.getElementById('enter');
@@ -706,9 +705,7 @@ async function loadTarifs(){
   /* 1) Tentative API dynamique (toujours à jour) */
   if (WEB_APP_URL && WEB_APP_URL.startsWith('http')) {
     try{
-      const params = new URLSearchParams();
-      params.set('sheet', 'Tarifs'); // adapte si besoin d'un autre onglet par défaut
-      const r = await fetch(`${WEB_APP_URL}?${params.toString()}`, { cache:'no-store' });
+      const r = await fetch(`${WEB_APP_URL}?path=tarifs`, { cache:'no-store' });
       if(r.ok){
         const j = await r.json();
         // L'API renvoie { tarifs:[...] } avec champs normalisés.
@@ -1190,15 +1187,17 @@ btnAddDoneNoSav?.addEventListener('click', addDoneNoSav);
 btnUndo?.addEventListener('click', undoLast);
 
 // Rendre visibles les blocs après validation PRO (hooke la fonction existante)
-const _openIfValid = openIfValid;
-openIfValid = async function(){
-  _openIfValid();
-  if (document.getElementById('partner-content').style.display === 'block') {
-    partnerBanner.style.display='flex';
-    partnerOps.style.display='flex';
-    await loadTarifs();
-  }
-};
+if (typeof openIfValid === 'function') {
+  const _openIfValid = openIfValid;
+  openIfValid = async function(){
+    _openIfValid();
+    if (document.getElementById('partner-content').style.display === 'block') {
+      partnerBanner.style.display='flex';
+      partnerOps.style.display='flex';
+      await loadTarifs();
+    }
+  };
+}
 
 // Bonus : charge le dernier partenaire utilisé pour gagner du temps
 document.addEventListener('DOMContentLoaded', ()=>{
