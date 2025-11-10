@@ -141,9 +141,91 @@
     <button type="submit">Envoyer</button>
   </form>
 </section>
+  
+<!-- ============ FOOTER — Papo Rénov' ============ -->
+<footer class="pr-footer" role="contentinfo">
+  <div class="pr-footer__grid">
+    <div class="pr-footer__brand">
+      <img src="/img/logo.png" alt="Papo Rénov’ — logo" loading="lazy">
+      <p class="pr-footer__title">Papo Rénov’</p>
+      <p>Rénovation intérieure — cuisines • salles de bain • agencements</p>
+    </div>
 
-<footer>
-  <p>&copy; 2025 Papo Rénov - Tous droits réservés</p>
+    <div class="pr-footer__legal">
+      <p><strong>Identité</strong><br>
+        Kevin Paporalkis — Entreprise individuelle<br>
+        SIRET : <span>[votre SIRET]</span> — APE : 4332A<br>
+        Siège : 13590 Meyreuil — France<br>
+        Tél : 06 71 70 29 99 — <a href="mailto:kpaporalkis.pro@gmail.com">kpaporalkis.pro@gmail.com</a>
+      </p>
+      <p><strong>Assurances</strong><br>
+        RC Pro & Décennale : <span>[Assureur]</span> — Police n° <span>[numéro]</span>
+      </p>
+      <p><strong>Médiation à la consommation</strong><br>
+        <span>[Nom de l’organisme agréé]</span> — <a href="[URL du médiateur]">[URL du médiateur]</a>
+      </p>
+      <p><strong>Hébergement</strong><br>
+        GitHub Pages — GitHub, Inc., San Francisco (USA)
+      </p>
+    </div>
+
+    <nav class="pr-footer__nav" aria-label="Liens légaux">
+      <a href="/mentions-legales.html">Mentions légales</a>
+      <a href="/politique-confidentialite.html">Politique de confidentialité</a>
+      <a href="/cgv.html">CGV</a>
+      <a href="/contact.html">Contact</a>
+    </nav>
+  </div>
+
+  <div class="pr-footer__copy">
+    <span>© <span id="pr-year"></span> Papo Rénov’ — Tous droits réservés.</span>
+  </div>
 </footer>
+
+<style>
+  /* ===== Footer (autonome) ===== */
+  .pr-footer{--bg:#0B1E3F;--ink:#fff;--ink-sub:#D9E1F2;--muted:#aab4c6;--link:#fff;
+    background:var(--bg);color:var(--ink);padding:2.2rem 1.4rem;margin-top:auto}
+  .pr-footer a{color:var(--link);text-decoration:underline;text-underline-offset:3px}
+  .pr-footer__grid{display:grid;gap:1.2rem;grid-template-columns:1.1fr 1.4fr .9fr;align-items:start;max-width:1100px;margin:0 auto}
+  .pr-footer__brand img{width:58px;height:auto;filter:drop-shadow(0 2px 4px rgba(0,0,0,.2))}
+  .pr-footer__title{font-weight:700;font-size:1.15rem;margin:.35rem 0 .15rem}
+  .pr-footer__brand p{margin:.2rem 0;color:var(--ink-sub);line-height:1.35}
+  .pr-footer__legal p{margin:.28rem 0;color:var(--ink-sub);line-height:1.45}
+  .pr-footer__nav{display:flex;flex-direction:column;gap:.4rem}
+  .pr-footer__nav a{font-weight:600}
+  .pr-footer__copy{border-top:1px solid rgba(255,255,255,.14);margin-top:1rem;padding-top:.7rem;text-align:center;color:var(--muted);font-size:.85rem}
+  @media (max-width:900px){.pr-footer__grid{grid-template-columns:1fr}}
+</style>
+
+<script>
+  // année auto
+  (function(){var y=document.getElementById('pr-year'); if(y) y.textContent=new Date().getFullYear();})();
+</script>
+
+<!-- Données structurées SEO -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "LocalBusiness",
+  "name": "Papo Rénov’",
+  "image": "https://paporalkis.github.io/papo-renov/img/logo.png",
+  "url": "https://paporalkis.github.io/papo-renov",
+  "telephone": "+33 6 71 70 29 99",
+  "email": "kpaporalkis.pro@gmail.com",
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "Meyreuil",
+    "postalCode": "13590",
+    "addressCountry": "FR"
+  },
+  "areaServed": "Bouches-du-Rhône",
+  "priceRange": "€€",
+  "sameAs": [
+    "https://www.github.com/paporalkis"
+  ]
+}
+</script>
+
 </body>
 </html>
