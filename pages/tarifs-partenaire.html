@@ -347,12 +347,12 @@ input[type="file"]{display:none}
         width: 100%;
         gap: 10px; 
     }
-    .header{flex-direction:column; align-items:flex-start; gap:8px}
-    .badge{align-self:flex-end}
-    .devis-actions button,.file-upload-label{flex:1 1 160px; text-align:center}
-    .totals-box{max-width:100%}
-    .form input{min-width:0; width:100%}
-    .header img{height:36px}
+  .header{flex-direction:column; align-items:flex-start; gap:8px}
+  .badge{align-self:flex-end}
+  .devis-actions button,.file-upload-label{flex:1 1 160px; text-align:center}
+  .totals-box{max-width:100%}
+  .form input{min-width:0; width:100%}
+  .header img{height:36px}
 }
 
 @media (max-width:600px){
@@ -428,6 +428,7 @@ input[type="file"]{display:none}
       <h1>Grille Tarifaire Professionnelle</h1>
     </div>
     <span class="badge">Accès Partenaire PRO</span>
+    <span id="data-source-badge" class="badge" style="background:#e9ecef;color:#0a1f44;">Source: —</span>
   </div>
 
   <div class="secure-area">
@@ -501,10 +502,9 @@ input[type="file"]{display:none}
           </div>
           
           <div class="sheets" id="partner-sheets">
-            <!-- Injecté dynamiquement depuis PAPORENOV-Tarifs.json -->
-            </div>
+            <!-- Injecté dynamiquement depuis API Sheets ou JSON local -->
+          </div>
 
-          <!-- Bouton global d’ajout au devis -->
           <div class="bulk-add">
             <button id="btn-add-selected">➕ Ajouter au devis</button>
           </div>
@@ -591,9 +591,9 @@ input[type="file"]{display:none}
 <script>
 /* ================== CONFIG ================== */
 const ACCESS_CODE = "PROPAPO2025!";
-/* === URL de l’API Apps Script (à COLLER) === */
-const WEB_APP_URL = 
-'https://script.google.com/macros/s/AKfycbww7_mLiUesnyQQHbQjwto1XsbtePXVW0UHU_sLYFLqCOFd0diTanXBWJVCqpePADzwow/exec';
+
+/* === URL de l’API Apps Script (ton déploiement WebApp) === */
+const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbww7_mLiUesnyQQHbQjwto1XsbtePXVW0UHU_sLYFLqCOFd0diTanXBWJVCqpePADzwow/exec';
 
 /* ================== DOM HOOKS ================== */
 const inputCode = document.getElementById('code');
@@ -616,22 +616,20 @@ const clearButton = document.getElementById('clear-devis');
 const logoUpload = document.getElementById('logo-upload');
 const logoPreview = document.getElementById('partner-logo-preview');
 
-// NOUVEAU: Filtres
+/* Filtres */
 const categoryCheckboxes = document.getElementById('category-checkboxes');
 const filterContainer = document.getElementById('filter-container');
-
+const dataSourceBadge = document.getElementById('data-source-badge');
 
 /* ================== STATE ================== */
 let devisCart = [];
 const TVA_RATE = 0.20;
 let UNIQUE_CATEGORIES = [];
 
-
 /* ================== ACCESS & INITIAL LOAD ================== */
 async function handleAccess(){
   const val = (inputCode.value||'').trim();
   if(!val){ errorDiv.textContent="Veuillez saisir le code d’accès professionnel."; return; }
-  
   if(val === ACCESS_CODE){
     errorDiv.textContent="";
     partnerContent.style.display='block';
@@ -640,8 +638,6 @@ async function handleAccess(){
     noticeText.style.color='var(--primary)';
     noticeText.style.fontWeight='600';
     document.getElementById('tarifs-pro-tab').style.display='block';
-    
-    // Après succès, charge les tarifs et attache l'écouteur du filtre
     await loadTarifs();
     showPartnerPromoIfOpen();
   }else{
@@ -682,7 +678,7 @@ function switchTab(targetId){
   }
 }
 
-/* ================== RENDER TARIFS (depuis JSON) ================== */
+/* ================== RENDER TARIFS (depuis API / JSON) ================== */
 function euro(x){
   if(x===null || x===undefined || isNaN(x)) return '—';
   return (parseFloat(x).toFixed(2)+' €').replace('.00','');
@@ -700,20 +696,22 @@ function cleanTask(t){
   return (t||'').replace(/\s*\((M\.O\.|F\+M\.O\.|M\.O\.\/\s*\S+)\s*\)/gi,'').trim();
 }
 
-/* ======== MODIFIÉ : charge d'abord l'API Apps Script, puis fallback JSON local ======== */
+function setDataSourceBadge(txt){
+  if(dataSourceBadge) dataSourceBadge.textContent = txt;
+}
+
+/* ======== Charge API puis fallback JSON local ======== */
 async function loadTarifs(){
   let dataObj = null;
 
-  /* 1) Tentative API dynamique (toujours à jour) */
+  /* 1) API dynamique */
   if (WEB_APP_URL && WEB_APP_URL.startsWith('http')) {
     try{
       const r = await fetch(`${WEB_APP_URL}?path=tarifs`, { cache:'no-store' });
       if(r.ok){
         const j = await r.json();
-        // L'API renvoie { tarifs:[...] } avec champs normalisés.
         const arr = Array.isArray(j) ? j : (j.tarifs || []);
         if (arr.length){
-          // Regroupe PAR CATÉGORIE pour respecter la structure actuelle { "Catégorie":[ items ] }
           const grouped = {};
           arr.forEach(t=>{
             const cat = (t.categorie || 'Autres').toString();
@@ -726,6 +724,7 @@ async function loadTarifs(){
             });
           });
           dataObj = grouped;
+          setDataSourceBadge(`Source: API Sheets (${Object.keys(grouped).length} catégories)`);
         }
       }
     }catch(e){
@@ -733,7 +732,7 @@ async function loadTarifs(){
     }
   }
 
-  /* 2) Fallback : ancien JSON statique à côté de la page (structure déjà compatible) */
+  /* 2) Fallback : JSON statique */
   if(!dataObj){
     const candidates = [
       './PAPORENOV-Tarifs.json',
@@ -744,29 +743,31 @@ async function loadTarifs(){
         const r = await fetch(url, {cache:'no-store'});
         if(r.ok){
           const data = await r.json();
-          // Si c'est un tableau simple, on le range sous "Tarifs" ; sinon on garde tel quel.
           dataObj = Array.isArray(data) ? { 'Tarifs': data } : data;
-          if (dataObj) break;
+          if (dataObj){
+            setDataSourceBadge(`Source: JSON local (${Object.keys(dataObj).length} catégories)`);
+            break;
+          }
         }
       }catch(e){}
     }
   }
 
-  /* 3) Rien trouvé → message d’erreur identique à l’existant */
+  /* 3) Rien trouvé */
   if(!dataObj){
     document.getElementById('partner-sheets').innerHTML =
       `<div style="padding:14px; border:1px dashed var(--border); border-radius:10px; background:#fff;">
-        Impossible de charger <code>PAPORENOV-Tarifs.json</code>. Place le fichier JSON à côté de cette page.<br>
-        Nom attendu : <strong>PAPORENOV-Tarifs.json</strong>
+        Impossible de charger <code>PAPORENOV-Tarifs.json</code> / API Sheets.<br>
+        Place le fichier JSON à côté de cette page ou vérifie le déploiement.
       </div>`;
     filterContainer.style.display = 'none';
+    setDataSourceBadge('Source: ❌ Aucune (API/JSON)');
     return;
   }
   
-  // Extraction et peuplement des catégories
+  // Catégories + rendu
   UNIQUE_CATEGORIES = Object.keys(dataObj);
   populateFilter(UNIQUE_CATEGORIES);
-  
   renderSheets(dataObj);
 }
 
@@ -778,7 +779,6 @@ function renderSheets(data){
     const items = (data[sheetName]||[]).filter(x=>x && x.task);
     if(!items.length) return;
 
-    // min "from"
     const mins = items.map(x=> typeof x.price_min==='number' ? x.price_min : null).filter(x=>x!==null);
     const from = mins.length ? Math.min(...mins) : null;
 
@@ -836,7 +836,6 @@ function renderSheets(data){
     container.appendChild(art);
   });
   
-  // Applique le filtre initial (tout afficher, car tout est coché par défaut)
   applyFilter();
 }
 
@@ -844,15 +843,13 @@ function renderSheets(data){
 function populateFilter(categories){
     if(categories.length > 0) {
         filterContainer.style.display = 'flex';
-        categoryCheckboxes.innerHTML = ''; // Nettoyer l'ancien contenu
+        categoryCheckboxes.innerHTML = '';
 
-        // 1. Bouton "Toutes" (Toggle All)
         const allToggle = document.createElement('label');
         allToggle.innerHTML = `<input type="checkbox" id="check-all-categories" checked> <strong>Toutes</strong>`;
         allToggle.style.marginRight = '20px';
         categoryCheckboxes.appendChild(allToggle);
         
-        // 2. Checkboxes pour chaque catégorie
         categories.sort().forEach(cat => {
             const label = document.createElement('label');
             label.innerHTML = `<input type="checkbox" class="category-filter-checkbox" value="${cat}" checked> ${cat}`;
@@ -882,7 +879,6 @@ function populateFilter(categories){
                 applyFilter();
             });
         });
-        
     } else {
         filterContainer.style.display = 'none';
     }
@@ -912,44 +908,26 @@ function applyFilter(){
     });
 }
 
-
-/* ================== NOUVEAU FLUX : Ajout global au devis (P.U. = prix min) ================== */
+/* ================== AJOUT GLOBAL AU DEVIS ================== */
 function addSelectedPrestations(){
   const inputs = document.querySelectorAll('#tarifs-pro-tab .qty-input');
   let addedCount = 0;
-
   inputs.forEach(inp=>{
     const qty = parseFloat(inp.value || '0');
     if(!qty || qty <= 0) return;
-
-    const li = inp.closest('li');
-    if(!li) return;
-
+    const li = inp.closest('li'); if(!li) return;
     const nameRaw = li.dataset.presta || (li.querySelector('span')?.textContent || '').trim();
     const name = nameRaw.replace(/\s\(M\.O\.\s*\/\s*\S+\)|\s\(M\.O\.\)|\s\(F\+M\.O\.\)/g,'').trim();
-
-    // >>> IGNORER MAX : on prend UNIQUEMENT le P.U. min comme référence
     const unitPrice = parseFloat(inp.dataset.price || '0') || 0;
     const unit = (inp.dataset.unit || 'forfait');
-
     const existing = devisCart.find(i=>i.name===name && i.unit===unit && i.unitPrice===parseFloat(unitPrice.toFixed(2)));
     if(existing){ existing.quantity += qty; }
     else{
-      devisCart.push({
-        name,
-        quantity: qty,
-        unitPrice: parseFloat(unitPrice.toFixed(2)),
-        unit
-      });
+      devisCart.push({ name, quantity: qty, unitPrice: parseFloat(unitPrice.toFixed(2)), unit });
     }
-    inp.value = '';
-    addedCount++;
+    inp.value = ''; addedCount++;
   });
-
-  if(addedCount===0){
-    alert("Aucune quantité renseignée. Indique au moins 1 ligne avec une quantité > 0.");
-    return;
-  }
+  if(addedCount===0){ alert("Aucune quantité renseignée. Indique au moins 1 ligne avec une quantité > 0."); return; }
   renderDevis();
   switchTab('devis-rapide-tab');
 }
@@ -1019,18 +997,12 @@ function showPartnerPromoIfOpen(){
 
 /* ================== Events ================== */
 btnEnter?.addEventListener('click', handleAccess);
-inputCode.addEventListener('keydown', e=>{
-  if(e.key==='Enter') handleAccess();
-});
-
+inputCode.addEventListener('keydown', e=>{ if(e.key==='Enter') handleAccess(); });
 tabButtons.forEach(b=>b.addEventListener('click', e=>switchTab(e.currentTarget.dataset.tab)));
-
 document.getElementById('btn-add-selected')?.addEventListener('click', addSelectedPrestations);
-
 printButton?.addEventListener('click', ()=>window.print());
 clearButton?.addEventListener('click', clearDevis);
 logoUpload?.addEventListener('change', handleLogoUpload);
-
 document.addEventListener('DOMContentLoaded', renderDevis);
 
 /* Expose pour inline events */
@@ -1041,7 +1013,7 @@ window.clearDevis=clearDevis;
 </script>
 
 <script>
-// Hooks champs client
+// Champs client → impression + titre
 const clientNomEl = document.getElementById('client-nom');
 const clientEmailEl = document.getElementById('client-email');
 const clientTelEl = document.getElementById('client-tel');
@@ -1065,15 +1037,12 @@ function syncClientFields(){
   if (printTel)   printTel.textContent   = tel || '—';
   if (printAdr)   printAdr.textContent   = adr || '—';
 
-  if (partnerNameDisplay) {
-    partnerNameDisplay.textContent = nom || 'Votre Client';
-  }
+  if (partnerNameDisplay) partnerNameDisplay.textContent = nom || 'Votre Client';
 }
 
 [clientNomEl, clientEmailEl, clientTelEl, clientAdresseEl].forEach(el=>{
   el && el.addEventListener('input', syncClientFields);
 });
-
 document.addEventListener('DOMContentLoaded', syncClientFields);
 </script>
 
@@ -1098,16 +1067,9 @@ let CURRENT_PARTNER = null;
 let LAST_ACTION_STACK = []; // pour undo (pile simple)
 
 function storageKey(pid){ return `partnerStats::${pid}`; }
-function defaultStats(){
-  return { assigned:0, doneNoSav:0, history:[] };
-}
-function loadStats(pid){
-  const raw = localStorage.getItem(storageKey(pid));
-  return raw ? JSON.parse(raw) : defaultStats();
-}
-function saveStats(pid, stats){
-  localStorage.setItem(storageKey(pid), JSON.stringify(stats));
-}
+function defaultStats(){ return { assigned:0, doneNoSav:0, history:[] }; }
+function loadStats(pid){ const raw = localStorage.getItem(storageKey(pid)); return raw ? JSON.parse(raw) : defaultStats(); }
+function saveStats(pid, stats){ localStorage.setItem(storageKey(pid), JSON.stringify(stats)); }
 
 function computeRewards(doneNoSav){
   const rewards = Math.floor(doneNoSav / PROMO_THRESHOLD);
@@ -1120,8 +1082,8 @@ function refreshUI(){
   partnerOps.style.display = visible ? 'flex':'none';
   partnerKpis.style.display = visible ? 'grid':'none';
   partnerBanner.style.display = visible ? 'flex':'none';
-
   if(!visible) return;
+
   const stats = loadStats(CURRENT_PARTNER);
   const { rewards, toNext } = computeRewards(stats.doneNoSav);
 
@@ -1235,6 +1197,12 @@ document.getElementById('code')?.addEventListener('keydown', (e) => {
 document.addEventListener('DOMContentLoaded', () => {
   setTimeout(showPartnerPromoIfOpen, 0);
 });
+
+// Bouton global “Ajouter au devis”
+document.getElementById('btn-add-selected')?.addEventListener('click', addSelectedPrestations);
+
+// Tab switching
+document.querySelectorAll('.tab-btn').forEach(b=>b.addEventListener('click', e=>switchTab(e.currentTarget.dataset.tab)));
 </script>
 
 </body>
