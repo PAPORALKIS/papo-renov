@@ -614,6 +614,7 @@ footer .legal{
     slides[i].classList.add('active');
   }, 4000);
 })();
+</script>
 
 <!-- DONNÉES TARIFS PUBLIC — DYNAMIQUE DEPUIS SHEETS -->
 <script>
@@ -710,8 +711,10 @@ document.querySelectorAll('.open-details, .sheet').forEach(el=>{
     if(e.target.closest('.actions') && !e.target.closest('.open-details')) return;
     const card = e.currentTarget.closest('.sheet');
     if (!card) return;
-    const cat = card.getAttribute('data-category');
-    const data = priceDetails[cat];
+const titleTxt = card.querySelector('h3')?.textContent || '';
+const key = slugifyCategory(titleTxt);
+const data = (window.priceDetails || {})[key];
+
     if(!data) return;
     let html = `<h3 id="detail-title">${data.title}</h3><ul>`;
     data.items.forEach(it=>{ html += `<li><span>${it.label}</span><strong>${cleanPrice(it.price)}</strong></li>`; });
