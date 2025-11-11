@@ -654,8 +654,9 @@ async function getPriceDetails(){
     if(isHiddenCategory(cat)) continue;
     if(!grouped[cat]) grouped[cat]=[];
 
-     // 🔸 Récupère la 5e colonne (Prix particulier) et ignore Prix min
-  const prixPart = t['prix particulier'] ?? t.prix_particulier ?? t.prix_perso ?? t.tarif_particulier ?? null;
+ // 🔸 Récupère la 5e colonne (Prix particulier) et ignore Prix min
+const prixPart = t['prix particulier'] ?? t['Prix particulier'] ?? t.prix_particulier ?? t.prix_perso ?? t.tarif_particulier ?? null;
+
   const prix = prixPart!=null
     ? `${euro(parseFloat(String(prixPart).toString().replace(',','.')))}`
     : '—';
