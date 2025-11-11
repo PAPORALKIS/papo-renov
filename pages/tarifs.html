@@ -653,20 +653,14 @@ async function getPriceDetails(){
     const cat = (t.categorie || 'Autres').trim();
     if(isHiddenCategory(cat)) continue;
     if(!grouped[cat]) grouped[cat]=[];
-
- // 🔸 Récupère la 5e colonne (Prix particulier) et ignore Prix min
-const prixPart = t['prix particulier'] ?? t['Prix particulier'] ?? t.prix_particulier ?? t.prix_perso ?? t.tarif_particulier ?? null;
-
-  const prix = prixPart!=null
-    ? `${euro(parseFloat(String(prixPart).toString().replace(',','.')))}`
-    : '—';
-
-  grouped[cat].push({
-    label: (t.tache || '').trim(),                                       // libellé = "Tâche"
-    price: prix + (t.unite ? ` / ${t.unite}` : '')                       // "12 € / m²"
-    // si tu veux ajouter les notes en petit : + (t.notes? ` — ${t.notes}` : '')
-  });
-}
+    grouped[cat].push({
+      label: (t.tache || '').trim(),                                       // libellé = "Tâche"
+      price: (t.prix_min!=null
+              ? `${euro(parseFloat(String(t.prix_min).toString().replace(',','.')))}`
+              : '—') + (t.unite ? ` / ${t.unite}` : '')                    // "12 € / m²"
+      // si tu veux ajouter les notes en petit : + (t.notes? ` — ${t.notes}` : '')
+    });
+  }
 
   // Transformation → même forme que l'ancien bloc priceDetails
   const out = {};
