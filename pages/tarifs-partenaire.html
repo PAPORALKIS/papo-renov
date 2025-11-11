@@ -397,6 +397,25 @@ input[type="file"]{display:none}
   .devis-header h3.devis-rapide-title {font-size: 1.2rem !important; margin: 0 !important; color: #000 !important; text-transform: uppercase;}
   #partner-info-print {display: block !important; text-align: center !important; margin-top: 8px !important; font-size: 0.95rem !important; line-height: 1.4; color: #333 !important;}
 }
+
+/* --- Détails de prestation (notes) --- */
+/* (AJOUT 1/3) */
+.list li.has-notes { cursor: pointer; }
+.list li.has-notes .task-line { display:flex; align-items:flex-start; gap:8px; }
+.list li .note {
+  display:none;
+  grid-column: 1 / -1;
+  margin-top:8px;
+  padding:10px 12px;
+  border-left:3px solid var(--primary);
+  background:#f8f9fb;
+  color:#333;
+  border-radius:6px;
+  font-size:.92rem;
+}
+.list li.open .note { display:block; }
+.list li.has-notes .task-label::after{ content:" ▾"; font-weight:700; color:var(--primary); }
+.list li.open .task-label::after{ content:" ▴"; }
 </style>
 </head>
 <body>
@@ -803,15 +822,23 @@ function renderSheets(data){
     const ul = document.createElement('ul');
     ul.className = 'list';
 
+    /* ---- Rendu de chaque ligne avec notes repliées (AJOUT 2/3) ---- */
     items.forEach(it=>{
       const name = cleanTask(it.task);
       const pu = (typeof it.price_min==='number') ? it.price_min : null;
       const unit = inferUnit(it.unit, it.task);
+      const notes = (it.notes || '').trim();
+
       const li = document.createElement('li');
       li.dataset.presta = name;
 
+      const headLine = document.createElement('div');
+      headLine.className = 'task-line';
+
       const left = document.createElement('span');
-      left.textContent = name + (it.notes ? ` — ${it.notes}` : '');
+      left.className = 'task-label';
+      left.textContent = name;
+
       const qtyWrap = document.createElement('div');
       qtyWrap.className = 'qty-wrap';
 
@@ -827,10 +854,21 @@ function renderSheets(data){
       qtyWrap.appendChild(strong);
       qtyWrap.appendChild(input);
 
-      li.appendChild(left);
-      li.appendChild(qtyWrap);
+      headLine.appendChild(left);
+      headLine.appendChild(qtyWrap);
+      li.appendChild(headLine);
+
+      if (notes){
+        li.classList.add('has-notes');
+        const note = document.createElement('div');
+        note.className = 'note';
+        note.textContent = notes;
+        li.appendChild(note);
+      }
+
       ul.appendChild(li);
     });
+    /* ---- Fin AJOUT 2/3 ---- */
 
     art.appendChild(ul);
     container.appendChild(art);
@@ -1203,6 +1241,17 @@ document.getElementById('btn-add-selected')?.addEventListener('click', addSelect
 
 // Tab switching
 document.querySelectorAll('.tab-btn').forEach(b=>b.addEventListener('click', e=>switchTab(e.currentTarget.dataset.tab)));
+</script>
+
+<script>
+/* ---- Toggle des notes au clic (AJOUT 3/3) ---- */
+document.getElementById('partner-sheets')?.addEventListener('click', (e)=>{
+  const label = e.target.closest('.task-label');
+  const li = label ? label.closest('li') : e.target.closest('li.has-notes');
+  if (!li || !li.classList.contains('has-notes')) return;
+  if (e.target.classList.contains('qty-input')) return;
+  li.classList.toggle('open');
+});
 </script>
 
 </body>
