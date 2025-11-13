@@ -1137,50 +1137,86 @@ function refreshUI(){
   }
 }
 
-function ensurePartner(){
+async function ensurePartner(){
   const pid = (partnerIdInput.value||'').trim();
-  if(!pid){ alert("Renseigne l’identifiant partenaire (nom, email ou code)."); return null; }
+  if(!pid){ alert("Renseigne l’identifiant partenaire (nom, email ou code)."); return; }
+
+  const base = WEB_APP_URL; // déjà défini chez toi
+  // crée si absent (idempotent), sinon ne fait rien
+  await fetch(`${base}?path=partner_create&pid=${encodeURIComponent(pid)}`, { cache:'no-store' });
+
+  // charge les stats
+  const r = await fetch(`${base}?path=partner_get&pid=${encodeURIComponent(pid)}`, { cache:'no-store' });
+  const j = await r.json();
+  if(!j.ok){ alert("Impossible de charger le profil partenaire."); return; }
+
   CURRENT_PARTNER = pid;
-  if(!localStorage.getItem(storageKey(pid))) saveStats(pid, defaultStats());
-  localStorage.setItem('partnerStats::LAST_PID', pid);
-  refreshUI();
-  return pid;
+  const s = j.stats||{assigned:0,doneNoSav:0};
+  kpiAssigned.textContent = s.assigned;
+  kpiNoSav.textContent    = s.doneNoSav;
+
+  const rewards = Math.floor(s.doneNoSav / PROMO_THRESHOLD);
+  const toNext  = PROMO_THRESHOLD - (s.doneNoSav % PROMO_THRESHOLD || 0);
+  kpiRewards.textContent = rewards;
+  kpiNext.textContent    = (s.doneNoSav % PROMO_THRESHOLD === 0) ? PROMO_THRESHOLD : toNext;
+
+  document.getElementById('partner-kpis').style.display='grid';
 }
 
-function addAssigned(){
-  if(!ensurePartner()) return;
-  const stats = loadStats(CURRENT_PARTNER);
-  stats.assigned += 1;
-  stats.history.push({t:'assigned', ts:Date.now()});
-  saveStats(CURRENT_PARTNER, stats);
-  LAST_ACTION_STACK.push({type:'assigned'});
-  refreshUI();
+
+async function addAssigned(){
+  const pid = CURRENT_PARTNER || (partnerIdInput.value||'').trim();
+  if(!pid){ alert("Charge d’abord un partenaire."); return; }
+  const admin = prompt("Code admin (obligatoire) :","");
+  if(!admin){ alert("Action réservée à l’admin."); return; }
+
+  const params = new URLSearchParams({ path:'partner_add', pid, type:'assigned', admin });
+  const r = await fetch(WEB_APP_URL, { method:'POST', body: params });
+  const j = await r.json();
+  if(!j.ok){ alert(j.error||'Échec écriture'); return; }
+  kpiAssigned.textContent = j.stats.assigned;
 }
 
-function addDoneNoSav(){
-  if(!ensurePartner()) return;
-  const stats = loadStats(CURRENT_PARTNER);
-  stats.doneNoSav += 1;
-  stats.history.push({t:'nosav', ts:Date.now()});
-  saveStats(CURRENT_PARTNER, stats);
-  LAST_ACTION_STACK.push({type:'nosav'});
 
-  const { rewards, toNext } = computeRewards(stats.doneNoSav);
-  if(toNext === PROMO_THRESHOLD){
-    setTimeout(()=>alert(`🎉 Bravo ! Nouveau palier atteint : ${rewards} jour(s) de pose offert(s) cumulés.`), 50);
-  }
-  refreshUI();
+async function addDoneNoSav(){
+  const pid = CURRENT_PARTNER || (partnerIdInput.value||'').trim();
+  if(!pid){ alert("Charge d’abord un partenaire."); return; }
+  const admin = prompt("Code admin (obligatoire) :","");
+  if(!admin){ alert("Action réservée à l’admin."); return; }
+
+  const params = new URLSearchParams({ path:'partner_add', pid, type:'nosav', admin });
+  const r = await fetch(WEB_APP_URL, { method:'POST', body: params });
+  const j = await r.json();
+  if(!j.ok){ alert(j.error||'Échec écriture'); return; }
+
+  const s = j.stats;
+  kpiNoSav.textContent = s.doneNoSav;
+  const rewards = Math.floor(s.doneNoSav / PROMO_THRESHOLD);
+  const toNext  = PROMO_THRESHOLD - (s.doneNoSav % PROMO_THRESHOLD || 0);
+  kpiRewards.textContent = rewards;
+  kpiNext.textContent    = (s.doneNoSav % PROMO_THRESHOLD === 0) ? PROMO_THRESHOLD : toNext;
 }
 
-function undoLast(){
-  if(!CURRENT_PARTNER){ alert("Aucun partenaire n’est chargé."); return; }
-  const last = LAST_ACTION_STACK.pop();
-  if(!last){ alert("Aucune action à annuler."); return; }
-  const stats = loadStats(CURRENT_PARTNER);
-  if(last.type==='assigned' && stats.assigned>0) stats.assigned -= 1;
-  if(last.type==='nosav' && stats.doneNoSav>0) stats.doneNoSav -= 1;
-  saveStats(CURRENT_PARTNER, stats);
-  refreshUI();
+async function undoLast(){
+  const pid = CURRENT_PARTNER || (partnerIdInput.value||'').trim();
+  if(!pid){ alert("Charge d’abord un partenaire."); return; }
+  const type = prompt("Annuler quoi ? (assigned | nosav)","assigned");
+  if(!type) return;
+  const admin = prompt("Code admin (obligatoire) :","");
+  if(!admin){ alert("Action réservée à l’admin."); return; }
+
+  const params = new URLSearchParams({ path:'partner_undo', pid, type, admin });
+  const r = await fetch(WEB_APP_URL, { method:'POST', body: params });
+  const j = await r.json();
+  if(!j.ok){ alert(j.error||'Échec undo'); return; }
+
+  const s = j.stats;
+  kpiAssigned.textContent = s.assigned;
+  kpiNoSav.textContent    = s.doneNoSav;
+  const rewards = Math.floor(s.doneNoSav / PROMO_THRESHOLD);
+  const toNext  = PROMO_THRESHOLD - (s.doneNoSav % PROMO_THRESHOLD || 0);
+  kpiRewards.textContent = rewards;
+  kpiNext.textContent    = (s.doneNoSav % PROMO_THRESHOLD === 0) ? PROMO_THRESHOLD : toNext;
 }
 
 btnLoadPartner?.addEventListener('click', ensurePartner);
