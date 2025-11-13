@@ -1167,6 +1167,10 @@ async function ensurePartner(){
   kpiNext.textContent    = (s.doneNoSav % PROMO_THRESHOLD === 0) ? PROMO_THRESHOLD : toNext;
 
   document.getElementById('partner-kpis').style.display='grid';
+   // ✅ AJOUT ICI : confirmation visuelle personnalisée
+  if (noticeText) {
+    noticeText.textContent = `ACCÈS PRO CONFIRMÉ — Bienvenue ${CURRENT_PARTNER} !`;
+  }
 }
 
 
