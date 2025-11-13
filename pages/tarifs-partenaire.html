@@ -1115,27 +1115,33 @@ function computeRewards(doneNoSav){
   return { rewards, toNext: (doneNoSav % PROMO_THRESHOLD === 0) ? PROMO_THRESHOLD : next };
 }
 
-function refreshUI(){
+async function refreshUI(){
   const visible = !!CURRENT_PARTNER;
-  partnerOps.style.display = visible ? 'flex':'none';
-  partnerKpis.style.display = visible ? 'grid':'none';
-  partnerBanner.style.display = visible ? 'flex':'none';
+  partnerOps.style.display   = visible ? 'flex' : 'none';
+  partnerKpis.style.display  = visible ? 'grid' : 'none';
+  partnerBanner.style.display= visible ? 'flex' : 'none';
   if(!visible) return;
 
-  const stats = loadStats(CURRENT_PARTNER);
-  const { rewards, toNext } = computeRewards(stats.doneNoSav);
+  try{
+    const r = await fetch(`${WEB_APP_URL}?path=partner_get&pid=${encodeURIComponent(CURRENT_PARTNER)}`, { cache:'no-store' });
+    const j = await r.json();
+    const s = j.ok ? (j.stats || {assigned:0,doneNoSav:0}) : {assigned:0,doneNoSav:0};
 
-  kpiAssigned.textContent = stats.assigned;
-  kpiNoSav.textContent = stats.doneNoSav;
-  kpiRewards.textContent = rewards;
-  kpiNext.textContent = toNext;
+    // mêmes calculs qu’avant, mais sur les données serveur
+    const rewards = Math.floor(s.doneNoSav / PROMO_THRESHOLD);
+    const toNext  = PROMO_THRESHOLD - (s.doneNoSav % PROMO_THRESHOLD || 0);
 
-  if(toNext === PROMO_THRESHOLD) {
-    partnerBanner.style.borderColor = 'var(--ok)';
-  } else {
-    partnerBanner.style.borderColor = 'var(--primary)';
+    kpiAssigned.textContent = s.assigned;
+    kpiNoSav.textContent    = s.doneNoSav;
+    kpiRewards.textContent  = rewards;
+    kpiNext.textContent     = (s.doneNoSav % PROMO_THRESHOLD === 0) ? PROMO_THRESHOLD : toNext;
+
+    partnerBanner.style.borderColor = (toNext === PROMO_THRESHOLD) ? 'var(--ok)' : 'var(--primary)';
+  }catch(e){
+    // silencieux si l'API tombe — on ne casse rien en UI
   }
 }
+
 
 async function ensurePartner(){
   const pid = (partnerIdInput.value||'').trim();
@@ -1254,13 +1260,7 @@ partnerIdInput?.addEventListener('change', ()=>{
 
 <script>
 // --- PATCH AFFICHE PROMO/APRÈS VALIDATION ---
-function showPartnerPromoIfOpen(){
-  const pc = document.getElementById('partner-content');
-  if (pc && pc.style.display === 'block') {
-    document.getElementById('promo-banner').style.display = 'flex';
-    document.getElementById('partner-ops').style.display = 'flex';
-  }
-}
+
 (function(){
   const btn = document.getElementById('btn-enter') || document.getElementById('enter');
   if (btn) btn.addEventListener('click', () => setTimeout(showPartnerPromoIfOpen, 0));
