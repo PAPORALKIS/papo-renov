@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Accès administrateur – Papo Rénov’</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg:#020617;
+      --bg-alt:#020617;
+      --card:#020617;
+      --card2:#020617;
+      --accent:#38bdf8;
+      --accent2:#0ea5e9;
+      --text:#e5e7eb;
+      --text-soft:#9ca3af;
+      --danger:#ef4444;
+      --border:#1f2937;
+      --shadow:0 30px 80px rgba(15,23,42,0.9);
+      --radius-lg:22px;
+    }
+
+    *{margin:0;padding:0;box-sizing:border-box;}
+    html,body{height:100%;}
+    body{
+      font-family:'Poppins',sans-serif;
+      background:
+        radial-gradient(circle at 10% 0,rgba(56,189,248,0.25),transparent 60%),
+        radial-gradient(circle at 90% 100%,rgba(129,140,248,0.3),transparent 55%),
+        #020617;
+      color:var(--text);
+      -webkit-font-smoothing:antialiased;
+    }
+
+    header{
+      position:fixed;
+      top:0;
+      left:0;
+      right:0;
+      padding:10px 18px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      z-index:10;
+      backdrop-filter:blur(18px);
+      background:linear-gradient(to right,rgba(15,23,42,0.95),rgba(15,23,42,0.85));
+      border-bottom:1px solid rgba(148,163,184,0.35);
+    }
+    header .brand{
+      display:flex;
+      align-items:center;
+      gap:10px;
+    }
+    header .brand img{
+      height:30px;
+      width:auto;
+      filter:drop-shadow(0 0 12px rgba(56,189,248,0.8));
+    }
+    header .brand span{
+      font-size:.85rem;
+      letter-spacing:.12em;
+      text-transform:uppercase;
+      color:#e5e7eb;
+    }
+    header a{
+      font-size:.8rem;
+      color:var(--text-soft);
+      text-decoration:none;
+      padding:6px 10px;
+      border-radius:999px;
+      border:1px solid transparent;
+    }
+    header a:hover{
+      border-color:rgba(148,163,184,0.6);
+      color:#f9fafb;
+      background:rgba(15,23,42,0.95);
+    }
+
+    .wrapper{
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:80px 16px 32px;
+    }
+
+    .card{
+      position:relative;
+      max-width:420px;
+      width:100%;
+      background:
+        radial-gradient(circle at top left,rgba(56,189,248,0.18),transparent 55%),
+        radial-gradient(circle at bottom right,rgba(129,140,248,0.22),transparent 60%),
+        rgba(15,23,42,0.98);
+      border-radius:var(--radius-lg);
+      border:1px solid rgba(148,163,184,0.35);
+      box-shadow:var(--shadow);
+      padding:22px 20px 18px;
+      overflow:hidden;
+    }
+    .card::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:radial-gradient(circle at 10% 0,rgba(15,23,42,0.0),rgba(15,23,42,0.82) 52%);
+      pointer-events:none;
+    }
+    .card-inner{
+      position:relative;
+      z-index:1;
+    }
+
+    .pre-title{
+      font-size:.7rem;
+      text-transform:uppercase;
+      letter-spacing:.18em;
+      color:#9ca3af;
+      margin-bottom:6px;
+      display:flex;
+      align-items:center;
+      gap:6px;
+    }
+    .pre-title span.dot{
+      width:8px;
+      height:8px;
+      border-radius:999px;
+      background:#22c55e;
+      box-shadow:0 0 10px rgba(34,197,94,0.9);
+    }
+    h1{
+      font-size:1.25rem;
+      margin-bottom:4px;
+    }
+    .subtitle{
+      font-size:.82rem;
+      color:var(--text-soft);
+      margin-bottom:16px;
+    }
+
+    .security-tag{
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      font-size:.7rem;
+      text-transform:uppercase;
+      letter-spacing:.14em;
+      padding:4px 10px;
+      border-radius:999px;
+      border:1px solid rgba(148,163,184,0.45);
+      background:rgba(15,23,42,0.9);
+      color:#e5e7eb;
+      margin-bottom:10px;
+    }
+
+    .field{
+      display:flex;
+      gap:8px;
+      margin-bottom:8px;
+    }
+    .field input{
+      flex:1;
+      padding:10px 12px;
+      border-radius:999px;
+      border:1px solid rgba(148,163,184,0.6);
+      background:rgba(15,23,42,0.96);
+      color:var(--text);
+      font-size:.9rem;
+      outline:none;
+    }
+    .field input:focus{
+      border-color:var(--accent);
+      box-shadow:0 0 0 1px rgba(56,189,248,0.5);
+    }
+    .field button{
+      padding:10px 16px;
+      border-radius:999px;
+      border:none;
+      background:linear-gradient(135deg,var(--accent),var(--accent2));
+      color:#0b1120;
+      font-weight:600;
+      font-size:.85rem;
+      cursor:pointer;
+      white-space:nowrap;
+      box-shadow:0 14px 35px rgba(56,189,248,0.55);
+    }
+    .field button:active{
+      transform:translateY(1px);
+      box-shadow:0 6px 20px rgba(15,23,42,1);
+    }
+
+    #admin-error{
+      min-height:18px;
+      font-size:.78rem;
+      color:var(--danger);
+      margin-top:2px;
+    }
+
+    .hint{
+      margin-top:8px;
+      font-size:.75rem;
+      color:var(--text-soft);
+    }
+    .hint strong{
+      color:#e5e7eb;
+    }
+
+    @media(max-width:640px){
+      header{
+        padding:8px 12px;
+      }
+      header .brand span{
+        font-size:.78rem;
+      }
+      .card{
+        padding:18px 16px 16px;
+      }
+      h1{
+        font-size:1.1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="brand">
+    <img src="../img/logo.png" alt="Papo Rénov’">
+    <span>Papo Rénov’ — Accès administrateur</span>
+  </div>
+  <a href="../index.html">← Retour au site</a>
+</header>
+
+<div class="wrapper">
+  <div class="card">
+    <div class="card-inner">
+      <div class="pre-title">
+        <span class="dot"></span>
+        Espace réservé
+      </div>
+      <h1>Accès au cockpit Papo Rénov’</h1>
+      <p class="subtitle">
+        Veuillez saisir votre code d’accès administrateur pour ouvrir votre espace privé
+        (tableau de bord, clients, devis, chantiers, partenaires, etc.).
+      </p>
+
+      <div class="security-tag">
+        🔒 Niveau : Administrateur – Code personnel uniquement
+      </div>
+
+      <div class="field">
+        <input type="password" id="admin-code" placeholder="Code administrateur">
+        <button id="admin-enter">Entrer</button>
+      </div>
+      <div id="admin-error"></div>
+
+      <p class="hint">
+        <strong>Note :</strong> ce code est différent de l’accès PRO partenaire.<br>
+        Vous pouvez le modifier dans le code de cette page (<code>ADMIN_CODE</code>).
+      </p>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Code d'accès administrateur (différent du code PRO partenaires)
+  const ADMIN_CODE = "fang"; // change-le si tu veux
+
+  const inputAdmin   = document.getElementById('admin-code');
+  const btnAdmin     = document.getElementById('admin-enter');
+  const adminError   = document.getElementById('admin-error');
+
+  function tryAdminLogin(){
+    const value = (inputAdmin.value || "").trim();
+    if(!value){
+      adminError.textContent = "Merci de saisir votre code administrateur.";
+      return;
+    }
+
+    if(value === ADMIN_CODE){
+      adminError.textContent = "";
+      // on stocke un flag local pour indiquer que l'admin est authentifié
+      localStorage.setItem("admin_auth", "true");
+      // redirection vers le dashboard privé
+      window.location.href = "private-dashboard.html";
+    }else{
+      adminError.textContent = "Code incorrect.";
+    }
+  }
+
+  btnAdmin.addEventListener('click', tryAdminLogin);
+  inputAdmin.addEventListener('keydown', (e)=>{
+    if(e.key === 'Enter'){ tryAdminLogin(); }
+  });
+</script>
+
+</body>
+</html>
