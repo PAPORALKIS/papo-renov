@@ -1050,7 +1050,19 @@ const WEB_APP_URL =
   const inputPrivate    = document.getElementById('private-code');
   const btnPrivateEnter = document.getElementById('private-enter');
   const privateError    = document.getElementById('private-error');
+// Si l'admin est déjà authentifié via acces-admin.html,
+// on bypass le mot de passe interne et on ouvre directement le dashboard.
+const isAdminAuth = (localStorage.getItem("admin_auth") === "true");
+if(isAdminAuth){
+  loginSection.style.display = 'none';
+  dashboard.style.display = 'block';
+  const mini = document.getElementById('mini-view-label');
+  if(mini) mini.textContent = "Vue globale";
 
+  // si les fonctions de chargement existent, on les appelle
+  if(typeof loadDashboardKpis === "function") loadDashboardKpis();
+  if(typeof loadClientsList === "function")   loadClientsList();
+}
   function unlockIfValid(){
     const value = (inputPrivate.value || '').trim();
     if(!value){
@@ -1059,6 +1071,7 @@ const WEB_APP_URL =
     }
     if(value === PRIVATE_CODE){
       privateError.textContent = "";
+      localStorage.setItem("admin_auth","true");
       loginSection.style.display = 'none';
       dashboard.style.display = 'block';
       // petit effet de focus sur la vue principale
