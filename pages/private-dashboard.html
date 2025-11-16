@@ -812,6 +812,94 @@
               </p>
             </div>
           </div>
+                  <!-- Modal nouveau client -->
+        <div id="modal-new-client" class="modal-new-client">
+          <div class="modal-backdrop"></div>
+          <div class="modal-panel">
+            <h3>Nouveau client</h3>
+            <p class="sub">
+              Ajoute un nouveau contact dans l’onglet <code>clients</code> du backoffice.
+            </p>
+
+            <form id="form-new-client" autocomplete="off">
+              <div class="modal-grid">
+                <div>
+                  <label for="nc-prenom">Prénom</label>
+                  <input id="nc-prenom" name="prenom" type="text">
+                </div>
+                <div>
+                  <label for="nc-nom">Nom</label>
+                  <input id="nc-nom" name="nom" type="text">
+                </div>
+                <div>
+                  <label for="nc-telephone">Téléphone</label>
+                  <input id="nc-telephone" name="telephone" type="tel">
+                </div>
+                <div>
+                  <label for="nc-email">Email</label>
+                  <input id="nc-email" name="email" type="email">
+                </div>
+                <div>
+                  <label for="nc-adresse">Adresse</label>
+                  <input id="nc-adresse" name="adresse" type="text">
+                </div>
+                <div>
+                  <label for="nc-ville">Ville</label>
+                  <input id="nc-ville" name="ville" type="text">
+                </div>
+                <div>
+                  <label for="nc-cp">Code postal</label>
+                  <input id="nc-cp" name="code_postal" type="text">
+                </div>
+                <div>
+                  <label for="nc-type">Type de projet</label>
+                  <select id="nc-type" name="type_projet">
+                    <option value="">—</option>
+                    <option value="cuisine">Cuisine</option>
+                    <option value="salle_de_bain">Salle de bain</option>
+                    <option value="dressing">Dressing / rangement</option>
+                    <option value="global">Rénovation globale</option>
+                    <option value="exterieur">Extérieur</option>
+                    <option value="autre">Autre</option>
+                  </select>
+                </div>
+                <div>
+                  <label for="nc-source">Source</label>
+                  <select id="nc-source" name="source">
+                    <option value="">Non précisé</option>
+                    <option value="site_web">Site web</option>
+                    <option value="contact_direct">Contact direct</option>
+                    <option value="partenaire">Partenaire</option>
+                    <option value="recommandation">Recommandation</option>
+                  </select>
+                </div>
+                <div>
+                  <label for="nc-statut">Statut</label>
+                  <select id="nc-statut" name="statut">
+                    <option value="prospect">Prospect</option>
+                    <option value="en_cours">En cours</option>
+                    <option value="termine">Terminé</option>
+                    <option value="perdu">Perdu</option>
+                  </select>
+                </div>
+              </div>
+
+              <div>
+                <label for="nc-notes">Notes internes</label>
+                <textarea id="nc-notes" name="notes_internes"
+                  placeholder="Contexte, besoins, infos importantes…"></textarea>
+              </div>
+
+              <div id="new-client-error"></div>
+
+              <div class="modal-actions">
+                <button type="button" class="btn-secondary" id="btn-cancel-new-client">Annuler</button>
+                <button type="submit" class="btn-primary" id="btn-save-new-client">Enregistrer</button>
+              </div>
+            </form>
+          </div>
+        </div>
+
         </section>
 
         <!-- PANEL DEVIS -->
@@ -1385,6 +1473,79 @@ function formatDateHuman(v){
   if(filterClientSelect){
     filterClientSelect.addEventListener('change', applyClientFiltersAndRender);
   }
+    // ===== Modal "Nouveau client" =====
+  const btnNewClient       = document.getElementById('btn-new-client');
+  const modalNewClient     = document.getElementById('modal-new-client');
+  const formNewClient      = document.getElementById('form-new-client');
+  const btnCancelNewClient = document.getElementById('btn-cancel-new-client');
+  const newClientError     = document.getElementById('new-client-error');
+
+  function openNewClientModal(){
+    if(!modalNewClient) return;
+    newClientError.textContent = "";
+    formNewClient?.reset();
+    modalNewClient.classList.add('show');
+  }
+  function closeNewClientModal(){
+    if(!modalNewClient) return;
+    modalNewClient.classList.remove('show');
+  }
+
+  if(btnNewClient){
+    btnNewClient.addEventListener('click', openNewClientModal);
+  }
+  if(btnCancelNewClient){
+    btnCancelNewClient.addEventListener('click', closeNewClientModal);
+  }
+  if(modalNewClient){
+    // clic sur le fond sombre = fermer
+    modalNewClient.addEventListener('click', (e)=>{
+      if(e.target === modalNewClient) closeNewClientModal();
+    });
+  }
+
+  if(formNewClient){
+    formNewClient.addEventListener('submit', async (e)=>{
+      e.preventDefault();
+      newClientError.textContent = "";
+
+      const fd     = new FormData(formNewClient);
+      const nom    = (fd.get('nom') || '').toString().trim();
+      const prenom = (fd.get('prenom') || '').toString().trim();
+
+      if(!nom && !prenom){
+        newClientError.textContent = "Merci de renseigner au moins un nom ou un prénom.";
+        return;
+      }
+
+      try{
+        const params = new URLSearchParams();
+        params.append('path','bo');
+        params.append('action','create_client');
+        for(const [k,v] of fd.entries()){
+          params.append(k, v.toString());
+        }
+
+        const resp = await fetch(WEB_APP_URL, {
+          method:'POST',
+          body: params
+        });
+        const json = await resp.json();
+        if(!json.ok){
+          console.log('create_client error', json);
+          newClientError.textContent = "Erreur lors de l’enregistrement.";
+          return;
+        }
+
+        closeNewClientModal();
+        await loadClientsList();
+      }catch(err){
+        console.log('create_client exception', err);
+        newClientError.textContent = "Erreur réseau, impossible d’enregistrer.";
+      }
+    });
+  }
+
 </script>
 
 
