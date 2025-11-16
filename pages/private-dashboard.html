@@ -2033,7 +2033,10 @@ function showChantierDetails(ch){
       }catch(err){
         console.log('create_client exception', err);
         newClientError.textContent = "Erreur réseau, impossible d’enregistrer.";
-      }
+       }
+    });
+  }
+      
         // ===== Modal "Nouveau devis" =====
   const btnNewDevis       = document.getElementById('btn-new-devis');
   const modalNewDevis     = document.getElementById('modal-new-devis');
