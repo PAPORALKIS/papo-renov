@@ -427,7 +427,57 @@
       background:rgba(15,23,42,0.96);
     }
 
+    /* ===== Sélection dans la liste des clients ===== */
+    #clients-table tbody tr.selected{
+      background:rgba(15,23,42,1);
+    }
+
+    /* ===== Mise en forme de la fiche client ===== */
+    #client-details .client-main{
+      margin-bottom:8px;
+    }
+    #client-details .client-name{
+      font-weight:600;
+      font-size:.9rem;
+      margin-bottom:4px;
+    }
+    #client-details .client-meta{
+      display:flex;
+      flex-wrap:wrap;
+      gap:6px;
+      align-items:center;
+      font-size:.75rem;
+    }
+    #client-details .tag-project{
+      padding:2px 8px;
+      border-radius:999px;
+      border:1px solid rgba(148,163,184,0.6);
+      color:#e5e7eb;
+    }
+    #client-details .client-cols{
+      display:grid;
+      grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+      gap:10px;
+      margin-top:8px;
+      font-size:.78rem;
+    }
+    #client-details h4{
+      font-size:.78rem;
+      margin-bottom:4px;
+      color:var(--text-soft);
+      text-transform:uppercase;
+      letter-spacing:.08em;
+    }
+    #client-details .client-notes{
+      margin-top:10px;
+      font-size:.78rem;
+    }
+    #client-details .client-notes p{
+      white-space:pre-wrap;
+    }
+
     .toolbar{
+
       display:flex;
       flex-wrap:wrap;
       gap:8px;
@@ -1050,7 +1100,14 @@ const WEB_APP_URL =
   const inputPrivate    = document.getElementById('private-code');
   const btnPrivateEnter = document.getElementById('private-enter');
   const privateError    = document.getElementById('private-error');
-// Si l'admin est déjà authentifié via acces-admin.html,
+  // Cache en mémoire de la liste des clients
+  let CLIENTS_CACHE = [];
+
+  // Panneau fiche client
+  const clientDetails = document.getElementById('client-details');
+
+  
+  // Si l'admin est déjà authentifié via acces-admin.html,
 // on bypass le mot de passe interne et on ouvre directement le dashboard.
 const isAdminAuth = (localStorage.getItem("admin_auth") === "true");
 if(isAdminAuth){
@@ -1133,64 +1190,201 @@ async function loadDashboardKpis(){
 }
 
 // Remplit la liste de clients (lecture seule depuis l’onglet "clients")
+// Charge les clients depuis l'API et remplit le cache
 async function loadClientsList(){
   try{
     const r = await fetch(`${WEB_APP_URL}?path=bo&resource=clients`, {cache:'no-store'});
     const j = await r.json();
     if(!j.ok) return;
 
-    const tbody = document.querySelector('#clients-table tbody');
-    if(!tbody) return;
-    tbody.innerHTML = '';
-
-    const rows = j.rows || [];
-
-    if(rows.length === 0){
-      const tr = document.createElement('tr');
-      const td = document.createElement('td');
-      td.colSpan = 3;
-      td.textContent = "Aucun client trouvé dans l’onglet 'clients'.";
-      tr.appendChild(td);
-      tbody.appendChild(tr);
-      return;
-    }
-
-    rows.forEach(c=>{
-      const tr   = document.createElement('tr');
-      const nom  = [c.prenom, c.nom].filter(Boolean).join(' ') || '—';
-      const proj = c.type_projet || '—';
-      const st   = (c.statut || '').toString().trim() || '—';
-
-      const tdNom = document.createElement('td');
-      tdNom.textContent = nom;
-
-      const tdProj = document.createElement('td');
-      tdProj.textContent = proj;
-
-      const tdStat = document.createElement('td');
-      const span = document.createElement('span');
-      span.className = 'badge-status ' + (
-        st === 'en_cours' ? 'en-cours' :
-        st === 'termine'  ? 'termine'  : 'attente'
-      );
-      span.textContent = st.replace('_',' ');
-      tdStat.appendChild(span);
-
-      tr.appendChild(tdNom);
-      tr.appendChild(tdProj);
-      tr.appendChild(tdStat);
-
-      tbody.appendChild(tr);
-    });
+    CLIENTS_CACHE = j.rows || [];
+    applyClientFiltersAndRender();
   }catch(e){
     console.log('Erreur clients', e);
   }
 }
+// Applique recherche + filtre statut puis rend le tableau
+function applyClientFiltersAndRender(){
+  const searchInput  = document.getElementById('search-client');
+  const statusSelect = document.getElementById('filter-clients-statut');
 
-  // Pour l’instant, toutes les données affichées sont statiques.
-  // Phase suivante : brancher chaque panel à ton fichier Sheets PAPORENOV_BACKOFFICE
-  // via Apps Script (exactement comme pour tes pages de tarifs / partenaires).
+  const search = (searchInput?.value || '').trim().toLowerCase();
+  const statut = (statusSelect?.value || '').trim();
+
+  let rows = CLIENTS_CACHE.slice();
+
+  if(search){
+    rows = rows.filter(c=>{
+      const bloc = [
+        c.nom, c.prenom, c.email,
+        c.telephone, c.ville, c.type_projet
+      ].map(x => (x || '').toString().toLowerCase()).join(' ');
+      return bloc.includes(search);
+    });
+  }
+
+  if(statut){
+    rows = rows.filter(c => String(c.statut || '').trim() === statut);
+  }
+
+  renderClientsTable(rows);
+}
+
+// Construit visuellement le <tbody> de la liste
+function renderClientsTable(rows){
+  const tbody = document.querySelector('#clients-table tbody');
+  if(!tbody) return;
+  tbody.innerHTML = '';
+
+  if(!rows || rows.length === 0){
+    const tr = document.createElement('tr');
+    const td = document.createElement('td');
+    td.colSpan = 3;
+    td.textContent = "Aucun client trouvé dans l’onglet 'clients'.";
+    tr.appendChild(td);
+    tbody.appendChild(tr);
+
+    // on remet la fiche en mode “vide”
+    if(clientDetails){
+      clientDetails.innerHTML = `
+        <h3>Fiche client</h3>
+        <p class="sub">Sélectionnez un client dans la liste pour afficher les détails.</p>
+        <p style="font-size:.8rem;color:var(--text-soft);">
+          Cette zone affichera : coordonnées, historique devis, chantiers liés, notes internes.
+        </p>
+      `;
+    }
+    return;
+  }
+
+  rows.forEach(c=>{
+    const tr   = document.createElement('tr');
+    const nom  = [c.prenom, c.nom].filter(Boolean).join(' ') || '—';
+    const proj = c.type_projet || '—';
+    const st   = (c.statut || '').toString().trim() || '—';
+
+    // on garde l'id_client pour aller chercher les détails
+    tr.dataset.clientId = String(c.id_client || '');
+
+    const tdNom = document.createElement('td');
+    tdNom.textContent = nom;
+
+    const tdProj = document.createElement('td');
+    tdProj.textContent = proj;
+
+    const tdStat = document.createElement('td');
+    const span = document.createElement('span');
+    span.className = 'badge-status ' + (
+      st === 'en_cours' ? 'en-cours' :
+      st === 'termine'  ? 'termine'  : 'attente'
+    );
+    span.textContent = st ? st.replace('_',' ') : '—';
+    tdStat.appendChild(span);
+
+    tr.appendChild(tdNom);
+    tr.appendChild(tdProj);
+    tr.appendChild(tdStat);
+
+    // Clic sur la ligne → affiche la fiche client
+    tr.addEventListener('click', ()=>{
+      tbody.querySelectorAll('tr').forEach(r=>r.classList.remove('selected'));
+      tr.classList.add('selected');
+
+      const id = tr.dataset.clientId;
+      const cli = CLIENTS_CACHE.find(x => String(x.id_client || '') === id);
+      if(cli) showClientDetails(cli);
+    });
+
+    tbody.appendChild(tr);
+  });
+}
+
+// Affiche la fiche détaillée à droite
+function showClientDetails(c){
+  if(!clientDetails) return;
+
+  const nomComplet = [c.prenom, c.nom].filter(Boolean).join(' ') || 'Client sans nom';
+  const statutRaw  = (c.statut || '').toString().trim();
+  const statut     = statutRaw || '—';
+  const statutCls  = (
+    statutRaw === 'en_cours' ? 'en-cours' :
+    statutRaw === 'termine'  ? 'termine'  : 'attente'
+  );
+  const projet = c.type_projet || '—';
+  const ville  = c.ville || '';
+  const cp     = c.code_postal || '';
+  const tel    = c.telephone || '';
+  const mail   = c.email || '';
+  const src    = c.source || '—';
+  const notes  = c.notes_internes || '';
+  const dateC  = formatDateHuman(c.date_creation);
+
+  const ligneVille = [cp, ville].filter(Boolean).join(' ');
+
+  clientDetails.innerHTML = `
+    <h3>Fiche client</h3>
+    <p class="sub">Vue synthétique du client et de son projet.</p>
+
+    <div class="client-main">
+      <div class="client-name">${nomComplet}</div>
+      <div class="client-meta">
+        <span class="badge-status ${statutCls}">${statut.replace('_',' ')}</span>
+        <span class="tag-project">${projet}</span>
+      </div>
+    </div>
+
+    <div class="client-cols">
+      <div>
+        <h4>Coordonnées</h4>
+        <p>
+          ${tel ? `📞 ${tel}<br>` : ''}
+          ${mail ? `✉️ ${mail}<br>` : ''}
+          ${c.adresse ? `${c.adresse}<br>` : ''}
+          ${ligneVille}
+        </p>
+      </div>
+      <div>
+        <h4>Projet</h4>
+        <p>Type : ${projet}</p>
+        <p>Source : ${src}</p>
+        <p>Créé le : ${dateC}</p>
+      </div>
+    </div>
+
+    ${notes ? `
+      <div class="client-notes">
+        <h4>Notes internes</h4>
+        <p>${notes}</p>
+      </div>
+    ` : ''}
+  `;
+}
+
+// Formatage simple d'une date en JJ/MM/AAAA
+function formatDateHuman(v){
+  if(!v) return '—';
+  try{
+    const d = (v instanceof Date) ? v : new Date(v);
+    if(isNaN(d)) return String(v);
+    return d.toLocaleDateString('fr-FR');
+  }catch(e){
+    return String(v);
+  }
+}
+
+
+  // Recherche + filtre statut sur les clients
+  const searchClientInput  = document.getElementById('search-client');
+  const filterClientSelect = document.getElementById('filter-clients-statut');
+
+  if(searchClientInput){
+    searchClientInput.addEventListener('input', applyClientFiltersAndRender);
+  }
+  if(filterClientSelect){
+    filterClientSelect.addEventListener('change', applyClientFiltersAndRender);
+  }
 </script>
+
 
 </body>
 </html>
