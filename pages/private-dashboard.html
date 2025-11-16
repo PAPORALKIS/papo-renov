@@ -1287,6 +1287,12 @@ const WEB_APP_URL =
 
   // Panneau fiche client
   const clientDetails = document.getElementById('client-details');
+  // Cache Devis / Chantiers
+  let DEVIS_CACHE = [];
+  let CHANTIERS_CACHE = [];
+
+  // Panneau détail chantier
+  const chantierDetails = document.getElementById('chantier-details');
 
   
   // Si l'admin est déjà authentifié via acces-admin.html,
@@ -1301,6 +1307,8 @@ if(isAdminAuth){
   // si les fonctions de chargement existent, on les appelle
   if(typeof loadDashboardKpis === "function") loadDashboardKpis();
   if(typeof loadClientsList === "function")   loadClientsList();
+    if(typeof loadDevisList === "function")     loadDevisList();
+  if(typeof loadChantiersList === "function") loadChantiersList();
 }
   function unlockIfValid(){
     const value = (inputPrivate.value || '').trim();
@@ -1316,11 +1324,15 @@ if(isAdminAuth){
       // petit effet de focus sur la vue principale
       document.getElementById('mini-view-label').textContent = "Vue globale";
       window.scrollTo({top:0,behavior:'smooth'});
-       if(typeof loadDashboardKpis === "function") loadDashboardKpis();
-  if(typeof loadClientsList === "function")   loadClientsList();
+
+      if(typeof loadDashboardKpis === "function") loadDashboardKpis();
+      if(typeof loadClientsList === "function")   loadClientsList();
+      if(typeof loadDevisList === "function")     loadDevisList();
+      if(typeof loadChantiersList === "function") loadChantiersList();
     }else{
       privateError.textContent = "Mot de passe incorrect.";
     }
+
   }
 
   btnPrivateEnter.addEventListener('click', unlockIfValid);
@@ -1555,6 +1567,261 @@ function formatDateHuman(v){
     return String(v);
   }
 }
+// ===== DEVIS =====
+
+// Charge la liste de devis
+async function loadDevisList(){
+  try{
+    const r = await fetch(`${WEB_APP_URL}?path=bo&resource=devis`, {cache:'no-store'});
+    const j = await r.json();
+    if(!j.ok) return;
+    DEVIS_CACHE = j.rows || [];
+    applyDevisFiltersAndRender();
+  }catch(e){
+    console.log('Erreur devis', e);
+  }
+}
+
+function applyDevisFiltersAndRender(){
+  const statusSelect = document.getElementById('filter-devis-status');
+  const statut = (statusSelect?.value || '').trim();
+
+  let rows = DEVIS_CACHE.slice();
+  if(statut){
+    rows = rows.filter(d => String(d.statut || '').trim() === statut);
+  }
+  renderDevisTable(rows);
+}
+
+function renderDevisTable(rows){
+  const tbody = document.querySelector('#devis-table tbody');
+  if(!tbody) return;
+  tbody.innerHTML = '';
+
+  if(!rows || rows.length === 0){
+    const tr = document.createElement('tr');
+    const td = document.createElement('td');
+    td.colSpan = 5;
+    td.textContent = "Aucun devis trouvé dans l’onglet 'devis'.";
+    tr.appendChild(td);
+    tbody.appendChild(tr);
+    return;
+  }
+
+  rows.forEach(d => {
+    const tr = document.createElement('tr');
+
+    const num = d.id_devis || d.numero_devis || d.numero || d.ref || '—';
+    const client =
+      d.client ||
+      [d.prenom_client, d.nom_client].filter(Boolean).join(' ') ||
+      d.client_nom || '—';
+
+    const brutMontant = d.montant_ht || d.montant || d.total_ht || '';
+    let montantAff = '—';
+    if(brutMontant !== '' && brutMontant != null){
+      const n = Number(brutMontant);
+      montantAff = isNaN(n)
+        ? String(brutMontant)
+        : n.toLocaleString('fr-FR',{maximumFractionDigits:0})+' €';
+    }
+
+    const statutRaw = (d.statut || '').toString().trim();
+    const statutTxt = statutRaw || '—';
+    const statutCls =
+      statutRaw === 'brouillon' ? 'attente' :
+      statutRaw === 'envoye'   ? 'en-cours' :
+      statutRaw === 'accepte'  ? 'success'  :
+      statutRaw === 'signe'    ? 'success'  :
+      statutRaw === 'refuse'   ? 'danger'   : 'attente';
+
+    const date = d.date_devis || d.date || d.date_creation || '';
+
+    const tdNum = document.createElement('td');
+    tdNum.textContent = num;
+
+    const tdClient = document.createElement('td');
+    tdClient.textContent = client;
+
+    const tdMontant = document.createElement('td');
+    tdMontant.textContent = montantAff;
+
+    const tdStatut = document.createElement('td');
+    const span = document.createElement('span');
+    span.className = 'badge-status ' + statutCls;
+    span.textContent = statutTxt.replace('_',' ');
+    tdStatut.appendChild(span);
+
+    const tdDate = document.createElement('td');
+    tdDate.textContent = formatDateHuman(date);
+
+    tr.appendChild(tdNum);
+    tr.appendChild(tdClient);
+    tr.appendChild(tdMontant);
+    tr.appendChild(tdStatut);
+    tr.appendChild(tdDate);
+
+    tbody.appendChild(tr);
+  });
+}
+
+// ===== CHANTIERS =====
+
+async function loadChantiersList(){
+  try{
+    const r = await fetch(`${WEB_APP_URL}?path=bo&resource=chantiers`, {cache:'no-store'});
+    const j = await r.json();
+    if(!j.ok) return;
+    CHANTIERS_CACHE = j.rows || [];
+    applyChantiersFiltersAndRender();
+  }catch(e){
+    console.log('Erreur chantiers', e);
+  }
+}
+
+function applyChantiersFiltersAndRender(){
+  const statusSelect = document.getElementById('filter-chantiers-status');
+  const statut = (statusSelect?.value || '').trim();
+
+  let rows = CHANTIERS_CACHE.slice();
+  if(statut){
+    rows = rows.filter(ch => String(ch.statut || '').trim() === statut);
+  }
+  renderChantiersTable(rows);
+}
+
+function renderChantiersTable(rows){
+  const tbody = document.querySelector('#chantiers-table tbody');
+  if(!tbody) return;
+  tbody.innerHTML = '';
+
+  if(!rows || rows.length === 0){
+    const tr = document.createElement('tr');
+    const td = document.createElement('td');
+    td.colSpan = 4;
+    td.textContent = "Aucun chantier trouvé dans l’onglet 'chantiers'.";
+    tr.appendChild(td);
+    tbody.appendChild(tr);
+
+    if(chantierDetails){
+      chantierDetails.innerHTML = `
+        <h3>Détail chantier</h3>
+        <p class="sub">Sélectionnez un chantier pour afficher les informations détaillées.</p>
+        <p style="font-size:.8rem;color:var(--text-soft);">
+          Informations prévues : type de projet, adresse, planning, responsable, notes, etc.
+        </p>
+      `;
+    }
+    return;
+  }
+
+  rows.forEach(ch => {
+    const tr = document.createElement('tr');
+
+    const id = ch.id_chantier || ch.code_chantier || ch.reference || '—';
+    const client =
+      ch.client ||
+      [ch.prenom_client, ch.nom_client].filter(Boolean).join(' ') ||
+      ch.client_nom || '—';
+
+    const statutRaw = (ch.statut || '').toString().trim();
+    const statutTxt = statutRaw || '—';
+    const statutCls =
+      statutRaw === 'en_cours'   ? 'en-cours' :
+      statutRaw === 'termine'    ? 'termine'  :
+      statutRaw === 'sav'        ? 'danger'   :
+      statutRaw === 'en_pause'   ? 'attente'  :
+      statutRaw === 'preparation'? 'attente'  : 'attente';
+
+    const finPrevue = ch.date_fin_prevue || ch.date_fin || ch.fin_prevue || '';
+
+    tr.dataset.chantierId = String(id);
+
+    const tdId = document.createElement('td');
+    tdId.textContent = id;
+
+    const tdClient = document.createElement('td');
+    tdClient.textContent = client;
+
+    const tdStatut = document.createElement('td');
+    const span = document.createElement('span');
+    span.className = 'badge-status ' + statutCls;
+    span.textContent = statutTxt.replace('_',' ');
+    tdStatut.appendChild(span);
+
+    const tdFin = document.createElement('td');
+    tdFin.textContent = formatDateHuman(finPrevue);
+
+    tr.appendChild(tdId);
+    tr.appendChild(tdClient);
+    tr.appendChild(tdStatut);
+    tr.appendChild(tdFin);
+
+    tr.addEventListener('click', ()=>{
+      tbody.querySelectorAll('tr').forEach(r=>r.classList.remove('selected'));
+      tr.classList.add('selected');
+      showChantierDetails(ch);
+    });
+
+    tbody.appendChild(tr);
+  });
+}
+
+function showChantierDetails(ch){
+  if(!chantierDetails) return;
+
+  const id = ch.id_chantier || ch.code_chantier || ch.reference || '—';
+  const client =
+    ch.client ||
+    [ch.prenom_client, ch.nom_client].filter(Boolean).join(' ') ||
+    ch.client_nom || '—';
+
+  const projet   = ch.type_projet || ch.type || '—';
+  const adresse  = ch.adresse || '';
+  const ville    = ch.ville || '';
+  const cp       = ch.code_postal || '';
+  const dateDeb  = ch.date_debut || ch.date_debut_prevue || '';
+  const dateFin  = ch.date_fin || ch.date_fin_prevue || '';
+  const statut   = (ch.statut || '').toString().trim() || '—';
+  const notes    = ch.notes || ch.notes_internes || '';
+
+  const ligneVille = [cp, ville].filter(Boolean).join(' ');
+
+  chantierDetails.innerHTML = `
+    <h3>Détail chantier</h3>
+    <p class="sub">Vue synthétique du chantier et de son avancement.</p>
+
+    <div class="client-main">
+      <div class="client-name">${id} — ${client}</div>
+      <div class="client-meta">
+        <span class="tag-project">${projet}</span>
+      </div>
+    </div>
+
+    <div class="client-cols">
+      <div>
+        <h4>Localisation</h4>
+        <p>
+          ${adresse ? `${adresse}<br>` : ''}
+          ${ligneVille}
+        </p>
+      </div>
+      <div>
+        <h4>Planning</h4>
+        <p>Début : ${formatDateHuman(dateDeb)}</p>
+        <p>Fin prévue : ${formatDateHuman(dateFin)}</p>
+        <p>Statut : ${statut.replace('_',' ')}</p>
+      </div>
+    </div>
+
+    ${notes ? `
+      <div class="client-notes">
+        <h4>Notes chantier</h4>
+        <p>${notes}</p>
+      </div>
+    ` : ''}
+  `;
+}
 
 
   // Recherche + filtre statut sur les clients
@@ -1567,6 +1834,17 @@ function formatDateHuman(v){
   if(filterClientSelect){
     filterClientSelect.addEventListener('change', applyClientFiltersAndRender);
   }
+    // Filtres Devis / Chantiers
+  const filterDevisSelect      = document.getElementById('filter-devis-status');
+  const filterChantiersSelect  = document.getElementById('filter-chantiers-status');
+
+  if(filterDevisSelect){
+    filterDevisSelect.addEventListener('change', applyDevisFiltersAndRender);
+  }
+  if(filterChantiersSelect){
+    filterChantiersSelect.addEventListener('change', applyChantiersFiltersAndRender);
+  }
+
     // ===== Modal "Nouveau client" =====
   const btnNewClient       = document.getElementById('btn-new-client');
   const modalNewClient     = document.getElementById('modal-new-client');
