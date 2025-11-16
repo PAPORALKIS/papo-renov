@@ -1967,7 +1967,7 @@ function showChantierDetails(ch){
     // ===== Modal "Nouveau client" =====
   const btnNewClient       = document.getElementById('btn-new-client');
   const modalNewClient     = document.getElementById('modal-new-client');
-  const Client      = document.getElementById('form-new-client');
+  const formNewClient      = document.getElementById('form-new-client');
   const btnCancelNewClient = document.getElementById('btn-cancel-new-client');
   const newClientError     = document.getElementById('new-client-error');
 
@@ -2033,9 +2033,7 @@ function showChantierDetails(ch){
       }catch(err){
         console.log('create_client exception', err);
         newClientError.textContent = "Erreur réseau, impossible d’enregistrer.";
-           }
-    });
-  }
+      }
         // ===== Modal "Nouveau devis" =====
   const btnNewDevis       = document.getElementById('btn-new-devis');
   const modalNewDevis     = document.getElementById('modal-new-devis');
