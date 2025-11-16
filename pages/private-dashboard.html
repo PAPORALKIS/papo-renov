@@ -1105,6 +1105,87 @@ if(isAdminAuth){
       });
     });
   });
+// =========================
+// CHARGEMENT DONNÉES BACKOFFICE
+// =========================
+
+// Remplit les KPI du dashboard
+async function loadDashboardKpis(){
+  try{
+    const r = await fetch(`${WEB_APP_URL}?path=bo&resource=dashboard`, {cache:'no-store'});
+    const j = await r.json();
+    if(!j.ok) return;
+
+    const k = (j.data && j.data.kpi) ? j.data.kpi : {};
+
+    const elChantiers = document.getElementById('kpi-chantiers-en-cours');
+    const elDevis     = document.getElementById('kpi-devis-attente');
+    const elClients   = document.getElementById('kpi-clients-actifs');
+    const elDemandes  = document.getElementById('kpi-demandes-site');
+
+    if(elChantiers) elChantiers.textContent = k.chantiersEnCours ?? 0;
+    if(elDevis)     elDevis.textContent     = k.devisAttente ?? 0;
+    if(elClients)   elClients.textContent   = k.clientsActifs ?? 0;
+    if(elDemandes)  elDemandes.textContent  = k.demandesSite ?? 0;
+  }catch(e){
+    console.log('Erreur dashboard', e);
+  }
+}
+
+// Remplit la liste de clients (lecture seule depuis l’onglet "clients")
+async function loadClientsList(){
+  try{
+    const r = await fetch(`${WEB_APP_URL}?path=bo&resource=clients`, {cache:'no-store'});
+    const j = await r.json();
+    if(!j.ok) return;
+
+    const tbody = document.querySelector('#clients-table tbody');
+    if(!tbody) return;
+    tbody.innerHTML = '';
+
+    const rows = j.rows || [];
+
+    if(rows.length === 0){
+      const tr = document.createElement('tr');
+      const td = document.createElement('td');
+      td.colSpan = 3;
+      td.textContent = "Aucun client trouvé dans l’onglet 'clients'.";
+      tr.appendChild(td);
+      tbody.appendChild(tr);
+      return;
+    }
+
+    rows.forEach(c=>{
+      const tr   = document.createElement('tr');
+      const nom  = [c.prenom, c.nom].filter(Boolean).join(' ') || '—';
+      const proj = c.type_projet || '—';
+      const st   = (c.statut || '').toString().trim() || '—';
+
+      const tdNom = document.createElement('td');
+      tdNom.textContent = nom;
+
+      const tdProj = document.createElement('td');
+      tdProj.textContent = proj;
+
+      const tdStat = document.createElement('td');
+      const span = document.createElement('span');
+      span.className = 'badge-status ' + (
+        st === 'en_cours' ? 'en-cours' :
+        st === 'termine'  ? 'termine'  : 'attente'
+      );
+      span.textContent = st.replace('_',' ');
+      tdStat.appendChild(span);
+
+      tr.appendChild(tdNom);
+      tr.appendChild(tdProj);
+      tr.appendChild(tdStat);
+
+      tbody.appendChild(tr);
+    });
+  }catch(e){
+    console.log('Erreur clients', e);
+  }
+}
 
   // Pour l’instant, toutes les données affichées sont statiques.
   // Phase suivante : brancher chaque panel à ton fichier Sheets PAPORENOV_BACKOFFICE
