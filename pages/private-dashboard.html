@@ -174,6 +174,42 @@
       color:var(--text-soft);
       margin-top:10px;
     }
+    /* ===== MODAL NOUVEAU CLIENT ===== */
+.modal-new-client{
+  position:fixed;
+  inset:0;
+  display:none;
+  justify-content:center;
+  align-items:flex-start;
+  padding-top:60px;
+  background:rgba(0,0,0,0.6);
+  z-index:200;
+}
+.modal-new-client.show{
+  display:flex;
+}
+.modal-panel{
+  width:95%;
+  max-width:520px;
+  background:var(--card);
+  border-radius:var(--radius-lg);
+  padding:20px;
+  border:1px solid var(--border);
+  box-shadow:0 10px 40px rgba(0,0,0,0.4);
+}
+.modal-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+  margin-bottom:12px;
+}
+.modal-actions{
+  display:flex;
+  justify-content:flex-end;
+  gap:10px;
+  margin-top:14px;
+}
+
 
     /* ===== DASHBOARD LAYOUT ===== */
     #private-dashboard{
