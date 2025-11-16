@@ -993,6 +993,56 @@
             </form>
           </div>
         </div>
+          <!-- Modal nouveau devis -->
+          <div id="modal-new-devis" class="modal-new-client">
+            <div class="modal-backdrop"></div>
+            <div class="modal-panel">
+              <h3>Nouveau devis</h3>
+              <p class="sub">
+                Crée un devis dans l’onglet <code>devis</code> du backoffice (numérotation auto DEV-000X).
+              </p>
+
+              <form id="form-new-devis" autocomplete="off">
+                <div class="modal-grid">
+                  <div>
+                    <label for="nd-client">Client</label>
+                    <input id="nd-client" name="client" type="text" placeholder="Nom / Prénom ou raison sociale">
+                  </div>
+                  <div>
+                    <label for="nd-type">Type de projet</label>
+                    <input id="nd-type" name="type_projet" type="text" placeholder="Cuisine, SDB, global…">
+                  </div>
+                  <div>
+                    <label for="nd-montant">Montant HT estimé</label>
+                    <input id="nd-montant" name="montant_ht" type="number" step="0.01" placeholder="Ex : 8500">
+                  </div>
+                  <div>
+                    <label for="nd-statut">Statut</label>
+                    <select id="nd-statut" name="statut">
+                      <option value="brouillon">Brouillon</option>
+                      <option value="envoye">Envoyé</option>
+                      <option value="accepte">Accepté</option>
+                      <option value="signe">Signé</option>
+                      <option value="refuse">Refusé</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div>
+                  <label for="nd-commentaire">Commentaire interne</label>
+                  <textarea id="nd-commentaire" name="commentaire"
+                    placeholder="Contexte du devis, infos cliente, particularités…"></textarea>
+                </div>
+
+                <div id="new-devis-error"></div>
+
+                <div class="modal-actions">
+                  <button type="button" class="btn-secondary" id="btn-cancel-new-devis">Annuler</button>
+                  <button type="submit" class="btn-primary" id="btn-save-new-devis">Enregistrer</button>
+                </div>
+              </form>
+            </div>
+          </div>
 
         </section>
 
@@ -1047,7 +1097,7 @@
             Vue globale des chantiers planifiés, en cours et terminés. Source : onglet <code>chantiers</code>.
           </p>
 
-          <div class="toolbar">
+              <div class="toolbar">
             <select id="filter-chantiers-status">
               <option value="">Tous les statuts</option>
               <option value="preparation">Préparation</option>
@@ -1056,7 +1106,9 @@
               <option value="termine">Terminé</option>
               <option value="sav">SAV</option>
             </select>
+            <button id="btn-new-chantier" type="button">+ Nouveau chantier</button>
           </div>
+
 
           <div class="two-columns">
             <div class="card-block">
@@ -1088,6 +1140,73 @@
                 Informations prévues : type de projet, adresse, planning, responsable, notes, liens photos.
               </p>
             </div>
+                      <!-- Modal nouveau chantier -->
+          <div id="modal-new-chantier" class="modal-new-client">
+            <div class="modal-backdrop"></div>
+            <div class="modal-panel">
+              <h3>Nouveau chantier</h3>
+              <p class="sub">
+                Crée un chantier dans l’onglet <code>chantiers</code> du backoffice (numérotation auto CH-000X).
+              </p>
+
+              <form id="form-new-chantier" autocomplete="off">
+                <div class="modal-grid">
+                  <div>
+                    <label for="nc2-client">Client</label>
+                    <input id="nc2-client" name="client" type="text" placeholder="Nom / Prénom ou raison sociale">
+                  </div>
+                  <div>
+                    <label for="nc2-type">Type de projet</label>
+                    <input id="nc2-type" name="type_projet" type="text" placeholder="Cuisine, SDB, global…">
+                  </div>
+                  <div>
+                    <label for="nc2-adresse">Adresse</label>
+                    <input id="nc2-adresse" name="adresse" type="text">
+                  </div>
+                  <div>
+                    <label for="nc2-ville">Ville</label>
+                    <input id="nc2-ville" name="ville" type="text">
+                  </div>
+                  <div>
+                    <label for="nc2-cp">Code postal</label>
+                    <input id="nc2-cp" name="code_postal" type="text">
+                  </div>
+                  <div>
+                    <label for="nc2-statut">Statut</label>
+                    <select id="nc2-statut" name="statut">
+                      <option value="preparation">Préparation</option>
+                      <option value="en_cours">En cours</option>
+                      <option value="en_pause">En pause</option>
+                      <option value="termine">Terminé</option>
+                      <option value="sav">SAV</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label for="nc2-debut">Date de début</label>
+                    <input id="nc2-debut" name="date_debut" type="date">
+                  </div>
+                  <div>
+                    <label for="nc2-fin">Fin prévue</label>
+                    <input id="nc2-fin" name="date_fin_prevue" type="date">
+                  </div>
+                </div>
+
+                <div>
+                  <label for="nc2-notes">Notes chantier</label>
+                  <textarea id="nc2-notes" name="notes_internes"
+                    placeholder="Infos techniques, délais, dépendances, matériel…"></textarea>
+                </div>
+
+                <div id="new-chantier-error"></div>
+
+                <div class="modal-actions">
+                  <button type="button" class="btn-secondary" id="btn-cancel-new-chantier">Annuler</button>
+                  <button type="submit" class="btn-primary" id="btn-save-new-chantier">Enregistrer</button>
+                </div>
+              </form>
+            </div>
+          </div>
+
           </div>
         </section>
 
@@ -1915,8 +2034,146 @@ function showChantierDetails(ch){
         console.log('create_client exception', err);
         newClientError.textContent = "Erreur réseau, impossible d’enregistrer.";
       }
+        // ===== Modal "Nouveau devis" =====
+  const btnNewDevis       = document.getElementById('btn-new-devis');
+  const modalNewDevis     = document.getElementById('modal-new-devis');
+  const formNewDevis      = document.getElementById('form-new-devis');
+  const btnCancelNewDevis = document.getElementById('btn-cancel-new-devis');
+  const newDevisError     = document.getElementById('new-devis-error');
+
+  function openNewDevisModal(){
+    if(!modalNewDevis) return;
+    newDevisError.textContent = "";
+    formNewDevis?.reset();
+    modalNewDevis.classList.add('show');
+  }
+  function closeNewDevisModal(){
+    if(!modalNewDevis) return;
+    modalNewDevis.classList.remove('show');
+  }
+
+  if(btnNewDevis){
+    btnNewDevis.addEventListener('click', openNewDevisModal);
+  }
+  if(btnCancelNewDevis){
+    btnCancelNewDevis.addEventListener('click', closeNewDevisModal);
+  }
+  if(modalNewDevis){
+    modalNewDevis.addEventListener('click', (e)=>{
+      if(e.target === modalNewDevis) closeNewDevisModal();
     });
   }
+
+  if(formNewDevis){
+    formNewDevis.addEventListener('submit', async (e)=>{
+      e.preventDefault();
+      newDevisError.textContent = "";
+
+      const fd     = new FormData(formNewDevis);
+      const client = (fd.get('client') || '').toString().trim();
+      if(!client){
+        newDevisError.textContent = "Merci de renseigner au minimum le nom du client.";
+        return;
+      }
+
+      try{
+        const params = new URLSearchParams();
+        params.append('path','bo');
+        params.append('action','create_devis');
+        for(const [k,v] of fd.entries()){
+          params.append(k, v.toString());
+        }
+
+        const resp = await fetch(WEB_APP_URL, {
+          method:'POST',
+          body: params
+        });
+        const json = await resp.json();
+        if(!json.ok){
+          console.log('create_devis error', json);
+          newDevisError.textContent = "Erreur lors de l’enregistrement du devis.";
+          return;
+        }
+
+        closeNewDevisModal();
+        await loadDevisList();
+      }catch(err){
+        console.log('create_devis exception', err);
+        newDevisError.textContent = "Erreur réseau, impossible d’enregistrer le devis.";
+      }
+    });
+  }
+
+  // ===== Modal "Nouveau chantier" =====
+  const btnNewChantier       = document.getElementById('btn-new-chantier');
+  const modalNewChantier     = document.getElementById('modal-new-chantier');
+  const formNewChantier      = document.getElementById('form-new-chantier');
+  const btnCancelNewChantier = document.getElementById('btn-cancel-new-chantier');
+  const newChantierError     = document.getElementById('new-chantier-error');
+
+  function openNewChantierModal(){
+    if(!modalNewChantier) return;
+    newChantierError.textContent = "";
+    formNewChantier?.reset();
+    modalNewChantier.classList.add('show');
+  }
+  function closeNewChantierModal(){
+    if(!modalNewChantier) return;
+    modalNewChantier.classList.remove('show');
+  }
+
+  if(btnNewChantier){
+    btnNewChantier.addEventListener('click', openNewChantierModal);
+  }
+  if(btnCancelNewChantier){
+    btnCancelNewChantier.addEventListener('click', closeNewChantierModal);
+  }
+  if(modalNewChantier){
+    modalNewChantier.addEventListener('click', (e)=>{
+      if(e.target === modalNewChantier) closeNewChantierModal();
+    });
+  }
+
+  if(formNewChantier){
+    formNewChantier.addEventListener('submit', async (e)=>{
+      e.preventDefault();
+      newChantierError.textContent = "";
+
+      const fd     = new FormData(formNewChantier);
+      const client = (fd.get('client') || '').toString().trim();
+      if(!client){
+        newChantierError.textContent = "Merci de renseigner au minimum le nom du client.";
+        return;
+      }
+
+      try{
+        const params = new URLSearchParams();
+        params.append('path','bo');
+        params.append('action','create_chantier');
+        for(const [k,v] of fd.entries()){
+          params.append(k, v.toString());
+        }
+
+        const resp = await fetch(WEB_APP_URL, {
+          method:'POST',
+          body: params
+        });
+        const json = await resp.json();
+        if(!json.ok){
+          console.log('create_chantier error', json);
+          newChantierError.textContent = "Erreur lors de l’enregistrement du chantier.";
+          return;
+        }
+
+        closeNewChantierModal();
+        await loadChantiersList();
+      }catch(err){
+        console.log('create_chantier exception', err);
+        newChantierError.textContent = "Erreur réseau, impossible d’enregistrer le chantier.";
+      }
+    });
+  }
+
 
 </script>
 
