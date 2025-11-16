@@ -1134,6 +1134,8 @@ if(isAdminAuth){
       // petit effet de focus sur la vue principale
       document.getElementById('mini-view-label').textContent = "Vue globale";
       window.scrollTo({top:0,behavior:'smooth'});
+       if(typeof loadDashboardKpis === "function") loadDashboardKpis();
+  if(typeof loadClientsList === "function")   loadClientsList();
     }else{
       privateError.textContent = "Mot de passe incorrect.";
     }
