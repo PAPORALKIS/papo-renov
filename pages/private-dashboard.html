@@ -174,7 +174,7 @@
       color:var(--text-soft);
       margin-top:10px;
     }
-    /* ===== MODAL NOUVEAU CLIENT ===== */
+    /* =====  NOUVEAU CLIENT ===== */
 .modal-new-client{
   position:fixed;
   inset:0;
@@ -209,6 +209,64 @@
   gap:10px;
   margin-top:14px;
 }
+    .modal-new-client label{
+      font-size:.75rem;
+      color:var(--text-soft);
+      display:block;
+      margin-bottom:2px;
+    }
+    .modal-new-client input,
+    .modal-new-client select,
+    .modal-new-client textarea{
+      width:100%;
+      padding:7px 9px;
+      border-radius:10px;
+      border:1px solid rgba(148,163,184,0.6);
+      background:rgba(15,23,42,0.96);
+      color:var(--text);
+      font-size:.8rem;
+      outline:none;
+    }
+    .modal-new-client textarea{
+      min-height:70px;
+      resize:vertical;
+    }
+    .modal-new-client input:focus,
+    .modal-new-client select:focus,
+    .modal-new-client textarea:focus{
+      border-color:var(--accent);
+      box-shadow:0 0 0 1px rgba(56,189,248,0.4);
+    }
+    .modal-new-client .btn-secondary{
+      border-radius:999px;
+      border:1px solid rgba(148,163,184,0.6);
+      background:rgba(15,23,42,0.96);
+      color:var(--text-soft);
+      font-size:.8rem;
+      padding:7px 12px;
+      cursor:pointer;
+    }
+    .modal-new-client .btn-primary{
+      border-radius:999px;
+      border:none;
+      background:linear-gradient(135deg,var(--accent),var(--accent2));
+      color:#0b1120;
+      font-weight:600;
+      font-size:.8rem;
+      padding:7px 14px;
+      cursor:pointer;
+      box-shadow:0 10px 30px rgba(56,189,248,0.55);
+    }
+    .modal-new-client .btn-primary:active{
+      transform:translateY(1px);
+      box-shadow:0 4px 16px rgba(15,23,42,1);
+    }
+    #new-client-error{
+      min-height:16px;
+      font-size:.78rem;
+      color:var(--danger);
+      margin-top:2px;
+    }
 
 
     /* ===== DASHBOARD LAYOUT ===== */
