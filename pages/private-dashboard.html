@@ -1378,7 +1378,8 @@
               On pourra ici tester rapidement si l’API Apps Script répond (ping, tarifs, partenaires…). Pour l’instant,
               c’est une zone réservée à la phase de branchement.
             </p>
-            <button type="button" style="font-size:.78rem;">Tester l’API (à brancher plus tard)</button>
+            <button id="btn-test-api" type="button" style="font-size:.78rem;">Tester l’API</button>
+
           </div>
         </section>
 
@@ -2369,6 +2370,130 @@ function renderPartenairesTable(rows){
       }catch(err){
         console.log('create_devis exception', err);
         newDevisError.textContent = "Erreur réseau, impossible d’enregistrer le devis.";
+      }
+    });
+  }
+  // ===== Ajout document (panel Documents) =====
+  const btnNewDoc = document.getElementById('btn-new-doc');
+
+  if (btnNewDoc) {
+    btnNewDoc.addEventListener('click', async () => {
+      const categorie = prompt(
+        "Catégorie (contrat / modele / facture_fournisseur / modele_devis / autre) :",
+        "autre"
+      );
+      if (categorie === null) return;
+
+      const libelle = prompt("Libellé du document :", "");
+      if (!libelle) return;
+
+      const lien = prompt("Lien (Drive, URL, etc.) :", "");
+      const commentaire = prompt("Commentaire (optionnel) :", "");
+
+      try {
+        const params = new URLSearchParams();
+        params.append('path', 'bo');
+        params.append('action', 'create_document');
+        params.append('categorie', categorie);
+        params.append('libelle', libelle);
+        params.append('lien', lien || '');
+        params.append('commentaire', commentaire || '');
+
+        const resp = await fetch(WEB_APP_URL, {
+          method: 'POST',
+          body: params
+        });
+        const json = await resp.json();
+        if (!json.ok) {
+          alert("Erreur lors de l’ajout du document.");
+          console.log('create_document error', json);
+          return;
+        }
+
+        // Recharge la liste
+        await loadDocumentsList();
+      } catch (err) {
+        console.log('create_document exception', err);
+        alert("Erreur réseau, document non enregistré.");
+      }
+    });
+  }
+  // ===== Nouvelle note (panel Notes) =====
+  const btnSaveNote      = document.getElementById('btn-save-note');
+  const inputNoteTitle   = document.getElementById('note-title');
+  const inputNoteContent = document.getElementById('note-content');
+  const inputNoteTag     = document.getElementById('note-tag');
+
+  if (btnSaveNote) {
+    btnSaveNote.addEventListener('click', async () => {
+      const titre   = (inputNoteTitle?.value || '').trim();
+      const contenu = (inputNoteContent?.value || '').trim();
+      const tag     = (inputNoteTag?.value || '').trim();
+
+      if (!titre && !contenu) {
+        alert("Merci de saisir au moins un titre ou un contenu.");
+        return;
+      }
+
+      try {
+        const params = new URLSearchParams();
+        params.append('path', 'bo');
+        params.append('action', 'create_note');
+        params.append('titre', titre);
+        params.append('contenu', contenu);
+        params.append('tag', tag);
+
+        const resp = await fetch(WEB_APP_URL, {
+          method: 'POST',
+          body: params
+        });
+        const json = await resp.json();
+        if (!json.ok) {
+          console.log('create_note error', json);
+          alert("Erreur lors de l’enregistrement de la note.");
+          return;
+        }
+
+        // Reset du mini-formulaire
+        if (inputNoteTitle)   inputNoteTitle.value = '';
+        if (inputNoteContent) inputNoteContent.value = '';
+        if (inputNoteTag)     inputNoteTag.value = '';
+
+        // Recharge la liste
+        await loadNotesList();
+      } catch (err) {
+        console.log('create_note exception', err);
+        alert("Erreur réseau, note non enregistrée.");
+      }
+    });
+  }
+  // ===== Test rapide API (panel Admin) =====
+  const btnTestApi = document.getElementById('btn-test-api');
+
+  if (btnTestApi) {
+    btnTestApi.addEventListener('click', async () => {
+      const oldText = btnTestApi.textContent;
+      btnTestApi.disabled = true;
+      btnTestApi.textContent = "Test en cours…";
+
+      try {
+        const r = await fetch(`${WEB_APP_URL}?path=ping`, { cache: 'no-store' });
+        const j = await r.json();
+        if (j.ok) {
+          alert(
+            "API OK ✅\n" +
+            (j.message || '') +
+            (j.time ? "\nHeure : " + j.time : "")
+          );
+        } else {
+          alert("API joignable mais renvoie une erreur : " + (j.error || "inconnue"));
+        }
+      } catch (err) {
+        console.log('ping error', err);
+        alert("Impossible de joindre l’API (erreur réseau).");
+      } finally {
+        btnTestApi.disabled = false;
+        btnTestApi.textContent = oldText;
       }
     });
   }
