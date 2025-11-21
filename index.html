@@ -11,7 +11,7 @@
 <body>
  <header>
   <div class="logo">
-    <img src="img/logo.png" alt="Logo Papo Rénov">
+    <img src="img/logo.png" id="secretAccess"  alt="Logo Papo Rénov">
   </div>
   <nav>
     <ul>
@@ -39,5 +39,46 @@
   <footer>
     <p>&copy; 2025 Paporalkis - Tous droits réservés</p>
   </footer>
+  <div id="authModal" style="
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,0.6);
+    backdrop-filter:blur(4px);
+    align-items:center;
+    justify-content:center;
+    z-index:9999;">
+    
+    <div style="
+        background:#fff;
+        padding:20px;
+        border-radius:10px;
+        text-align:center;
+        width:280px;">
+        
+        <h3>Accès Admin</h3>
+        <input type="password" id="adminCode" placeholder="Code secret"
+               style="width:100%; padding:10px; margin-top:10px;">
+        <button onclick="checkCode()" 
+                style="margin-top:15px; padding:10px 20px;">
+            Valider
+        </button>
+    </div>
+</div>
+<script>
+document.getElementById("secretAccess").addEventListener("click", () => {
+    document.getElementById("authModal").style.display = "flex";
+});
+
+function checkCode() {
+    const code = document.getElementById("adminCode").value.trim();
+    if (code === "fang") {
+        window.location.href = "pages/private-dashboard.html";
+    } else {
+        alert("Code incorrect");
+    }
+}
+</script>
+
 </body>
 </html>
