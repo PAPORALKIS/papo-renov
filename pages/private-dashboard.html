@@ -1426,14 +1426,13 @@ if(isAdminAuth){
   // si les fonctions de chargement existent, on les appelle
   if(typeof loadDashboardKpis === "function") loadDashboardKpis();
   if(typeof loadClientsList === "function")   loadClientsList();
-    if(typeof loadDevisList === "function")     loadDevisList();
+  if(typeof loadDevisList === "function")     loadDevisList();
   if(typeof loadChantiersList === "function") loadChantiersList();
-}
-    if(typeof loadStatsSite === "function")       loadStatsSite();
+  if(typeof loadStatsSite === "function")       loadStatsSite();
   if(typeof loadDocumentsList === "function")   loadDocumentsList();
   if(typeof loadNotesList === "function")       loadNotesList();
   if(typeof loadPartenairesList === "function") loadPartenairesList();
-
+}
   function unlockIfValid(){
     const value = (inputPrivate.value || '').trim();
     if(!value){
