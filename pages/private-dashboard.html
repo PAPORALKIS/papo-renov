@@ -1429,6 +1429,11 @@ if(isAdminAuth){
     if(typeof loadDevisList === "function")     loadDevisList();
   if(typeof loadChantiersList === "function") loadChantiersList();
 }
+    if(typeof loadStatsSite === "function")       loadStatsSite();
+  if(typeof loadDocumentsList === "function")   loadDocumentsList();
+  if(typeof loadNotesList === "function")       loadNotesList();
+  if(typeof loadPartenairesList === "function") loadPartenairesList();
+
   function unlockIfValid(){
     const value = (inputPrivate.value || '').trim();
     if(!value){
@@ -1448,6 +1453,11 @@ if(isAdminAuth){
       if(typeof loadClientsList === "function")   loadClientsList();
       if(typeof loadDevisList === "function")     loadDevisList();
       if(typeof loadChantiersList === "function") loadChantiersList();
+            if(typeof loadStatsSite === "function")       loadStatsSite();
+      if(typeof loadDocumentsList === "function")   loadDocumentsList();
+      if(typeof loadNotesList === "function")       loadNotesList();
+      if(typeof loadPartenairesList === "function") loadPartenairesList();
+
     }else{
       privateError.textContent = "Mot de passe incorrect.";
     }
@@ -1942,6 +1952,260 @@ function showChantierDetails(ch){
   `;
 }
 
+// =========================
+// STATS DU SITE (stats_site)
+// =========================
+async function loadStatsSite(){
+  try{
+    const r = await fetch(`${WEB_APP_URL}?path=bo&resource=stats_site`, {cache:'no-store'});
+    const j = await r.json();
+    if(!j.ok) return;
+
+    const rows = j.rows || [];
+
+    let totalVisites   = 0;
+    let totalDemandes  = 0;
+    let totalClics     = 0;
+
+    rows.forEach(row=>{
+      const visites  = Number(row.visites_total || 0) || 0;
+      const demandes = Number(
+        row.demandes_devis ||
+        row.demandes_site ||
+        row.demandes || 0
+      ) || 0;
+      const clics    = Number(row.clics_contact || 0) || 0;
+
+      totalVisites  += visites;
+      totalDemandes += demandes;
+      totalClics    += clics;
+    });
+
+    const elVisites  = document.getElementById('kpi-visites');
+    const elDemandes = document.getElementById('kpi-demande-devis');
+    const elClics    = document.getElementById('kpi-clics-contact');
+
+    if(elVisites)  elVisites.textContent  = totalVisites;
+    if(elDemandes) elDemandes.textContent = totalDemandes;
+    if(elClics)    elClics.textContent    = totalClics;
+
+  }catch(e){
+    console.log('Erreur stats_site', e);
+  }
+}
+
+// =========================
+// DOCUMENTS (onglet "documents")
+// =========================
+async function loadDocumentsList(){
+  try{
+    const r = await fetch(`${WEB_APP_URL}?path=bo&resource=documents`, {cache:'no-store'});
+    const j = await r.json();
+    if(!j.ok) return;
+
+    const rows = j.rows || [];
+    renderDocumentsTable(rows);
+  }catch(e){
+    console.log('Erreur documents', e);
+  }
+}
+
+function renderDocumentsTable(rows){
+  const tbody = document.querySelector('#documents-table tbody');
+  if(!tbody) return;
+  tbody.innerHTML = '';
+
+  if(!rows || rows.length === 0){
+    const tr = document.createElement('tr');
+    const td = document.createElement('td');
+    td.colSpan = 4;
+    td.textContent = "Aucun document trouvé dans l’onglet 'documents'.";
+    tr.appendChild(td);
+    tbody.appendChild(tr);
+    return;
+  }
+
+  rows.forEach(doc=>{
+    const tr = document.createElement('tr');
+
+    const cat   = doc.categorie || '—';
+    const lib   = doc.libelle   || '—';
+    const lien  = doc.lien      || '';
+    const com   = doc.commentaire || '';
+
+    const tdCat = document.createElement('td');
+    tdCat.textContent = cat;
+
+    const tdLib = document.createElement('td');
+    tdLib.textContent = lib;
+
+    const tdLien = document.createElement('td');
+    if(lien){
+      const a = document.createElement('a');
+      a.href = lien;
+      a.target = "_blank";
+      a.rel = "noopener noreferrer";
+      a.textContent = "Ouvrir";
+      tdLien.appendChild(a);
+    }else{
+      tdLien.textContent = '—';
+    }
+
+    const tdCom = document.createElement('td');
+    tdCom.textContent = com || '—';
+
+    tr.appendChild(tdCat);
+    tr.appendChild(tdLib);
+    tr.appendChild(tdLien);
+    tr.appendChild(tdCom);
+
+    tbody.appendChild(tr);
+  });
+}
+
+// =========================
+// NOTES (onglet "notes")
+// =========================
+async function loadNotesList(){
+  try{
+    const r = await fetch(`${WEB_APP_URL}?path=bo&resource=notes`, {cache:'no-store'});
+    const j = await r.json();
+    if(!j.ok) return;
+
+    const rows = j.rows || [];
+    renderNotesList(rows);
+  }catch(e){
+    console.log('Erreur notes', e);
+  }
+}
+
+function renderNotesList(rows){
+  const ul = document.getElementById('notes-list');
+  const ulDash = document.getElementById('dash-notes-list'); // bloc sur le tableau de bord
+  if(ul)      ul.innerHTML = '';
+  if(ulDash)  ulDash.innerHTML = '';
+
+  if(!rows || rows.length === 0){
+    if(ul){
+      const li = document.createElement('li');
+      li.innerHTML = `
+        <div class="title">Aucune note</div>
+        <div class="meta">Ajoutez vos premiers pense-bêtes dans l’onglet "notes".</div>
+      `;
+      ul.appendChild(li);
+    }
+    if(ulDash){
+      const li = document.createElement('li');
+      li.innerHTML = `
+        <div class="title">Aucune note récente</div>
+        <div class="meta">Les dernières notes apparaîtront ici.</div>
+      `;
+      ulDash.appendChild(li);
+    }
+    return;
+  }
+
+  // Liste complète (panel Notes)
+  if(ul){
+    rows.forEach(n=>{
+      const li = document.createElement('li');
+      const titre = n.titre || 'Note sans titre';
+      const tag   = n.tag   || '—';
+      const date  = formatDateHuman(n.date);
+      const contenu = n.contenu || '';
+
+      li.innerHTML = `
+        <div class="title">${titre}</div>
+        <div class="meta">${date} – Tag : ${tag}</div>
+        <div class="meta">${contenu}</div>
+      `;
+      ul.appendChild(li);
+    });
+  }
+
+  // Dernières notes sur le dashboard (on en prend 3 max)
+  if(ulDash){
+    const subset = rows.slice(0,3);
+    subset.forEach(n=>{
+      const li = document.createElement('li');
+      const titre = n.titre || 'Note';
+      const tag   = n.tag   || '—';
+      const date  = formatDateHuman(n.date);
+      li.innerHTML = `
+        <div class="title">${titre}</div>
+        <div class="meta">${date} – Tag : ${tag}</div>
+      `;
+      ulDash.appendChild(li);
+    });
+  }
+}
+
+// =========================
+// PARTENAIRES (onglet "partenaires")
+// =========================
+async function loadPartenairesList(){
+  try{
+    const r = await fetch(`${WEB_APP_URL}?path=bo&resource=partenaires`, {cache:'no-store'});
+    const j = await r.json();
+    if(!j.ok) return;
+
+    const rows = j.rows || [];
+    renderPartenairesTable(rows);
+  }catch(e){
+    console.log('Erreur partenaires', e);
+  }
+}
+
+function renderPartenairesTable(rows){
+  const tbody = document.querySelector('#partenaires-table tbody');
+  if(!tbody) return;
+  tbody.innerHTML = '';
+
+  if(!rows || rows.length === 0){
+    const tr = document.createElement('tr');
+    const td = document.createElement('td');
+    td.colSpan = 6;
+    td.textContent = "Aucun partenaire trouvé dans l’onglet 'partenaires'.";
+    tr.appendChild(td);
+    tbody.appendChild(tr);
+    return;
+  }
+
+  rows.forEach(p=>{
+    const tr = document.createElement('tr');
+
+    const nom    = p.raison_sociale || p.nom || '—';
+    const contact= p.contact || '—';
+    const type   = p.type || '—';
+
+    const poses   = Number(p.poses_attribuees || 0) || 0;
+    const sansSav = Number(p.poses_sans_sav   || 0) || 0;
+    const jours   = Number(p.jours_offerts    || 0) || 0;
+
+    const tdNom     = document.createElement('td');
+    const tdContact = document.createElement('td');
+    const tdType    = document.createElement('td');
+    const tdPoses   = document.createElement('td');
+    const tdSansSav = document.createElement('td');
+    const tdJours   = document.createElement('td');
+
+    tdNom.textContent     = nom;
+    tdContact.textContent = contact;
+    tdType.textContent    = type;
+    tdPoses.textContent   = poses;
+    tdSansSav.textContent = sansSav;
+    tdJours.textContent   = jours;
+
+    tr.appendChild(tdNom);
+    tr.appendChild(tdContact);
+    tr.appendChild(tdType);
+    tr.appendChild(tdPoses);
+    tr.appendChild(tdSansSav);
+    tr.appendChild(tdJours);
+
+    tbody.appendChild(tr);
+  });
+}
 
   // Recherche + filtre statut sur les clients
   const searchClientInput  = document.getElementById('search-client');
