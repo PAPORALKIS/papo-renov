@@ -993,57 +993,7 @@
             </form>
           </div>
         </div>
-          <!-- Modal nouveau devis -->
-          <div id="modal-new-devis" class="modal-new-client">
-            <div class="modal-backdrop"></div>
-            <div class="modal-panel">
-              <h3>Nouveau devis</h3>
-              <p class="sub">
-                Crée un devis dans l’onglet <code>devis</code> du backoffice (numérotation auto DEV-000X).
-              </p>
-
-              <form id="form-new-devis" autocomplete="off">
-                <div class="modal-grid">
-                  <div>
-                    <label for="nd-client">Client</label>
-                    <input id="nd-client" name="client" type="text" placeholder="Nom / Prénom ou raison sociale">
-                  </div>
-                  <div>
-                    <label for="nd-type">Type de projet</label>
-                    <input id="nd-type" name="type_projet" type="text" placeholder="Cuisine, SDB, global…">
-                  </div>
-                  <div>
-                    <label for="nd-montant">Montant HT estimé</label>
-                    <input id="nd-montant" name="montant_ht" type="number" step="0.01" placeholder="Ex : 8500">
-                  </div>
-                  <div>
-                    <label for="nd-statut">Statut</label>
-                    <select id="nd-statut" name="statut">
-                      <option value="brouillon">Brouillon</option>
-                      <option value="envoye">Envoyé</option>
-                      <option value="accepte">Accepté</option>
-                      <option value="signe">Signé</option>
-                      <option value="refuse">Refusé</option>
-                    </select>
-                  </div>
-                </div>
-
-                <div>
-                  <label for="nd-commentaire">Commentaire interne</label>
-                  <textarea id="nd-commentaire" name="commentaire"
-                    placeholder="Contexte du devis, infos cliente, particularités…"></textarea>
-                </div>
-
-                <div id="new-devis-error"></div>
-
-                <div class="modal-actions">
-                  <button type="button" class="btn-secondary" id="btn-cancel-new-devis">Annuler</button>
-                  <button type="submit" class="btn-primary" id="btn-save-new-devis">Enregistrer</button>
-                </div>
-              </form>
-            </div>
-          </div>
-
+        
         </section>
 
         <!-- PANEL DEVIS -->
@@ -1093,6 +1043,57 @@
             </table>
           </div>
         </section>
+        
+  <!-- Modal nouveau devis -->
+          <div id="modal-new-devis" class="modal-new-client">
+            <div class="modal-backdrop"></div>
+            <div class="modal-panel">
+              <h3>Nouveau devis</h3>
+              <p class="sub">
+                Crée un devis dans l’onglet <code>devis</code> du backoffice (numérotation auto DEV-000X).
+              </p>
+
+              <form id="form-new-devis" autocomplete="off">
+                <div class="modal-grid">
+                  <div>
+                    <label for="nd-client">Client</label>
+                    <input id="nd-client" name="client" type="text" placeholder="Nom / Prénom ou raison sociale">
+                  </div>
+                  <div>
+                    <label for="nd-type">Type de projet</label>
+                    <input id="nd-type" name="type_projet" type="text" placeholder="Cuisine, SDB, global…">
+                  </div>
+                  <div>
+                    <label for="nd-montant">Montant HT estimé</label>
+                    <input id="nd-montant" name="montant_ht" type="number" step="0.01" placeholder="Ex : 8500">
+                  </div>
+                  <div>
+                    <label for="nd-statut">Statut</label>
+                    <select id="nd-statut" name="statut">
+                      <option value="brouillon">Brouillon</option>
+                      <option value="envoye">Envoyé</option>
+                      <option value="accepte">Accepté</option>
+                      <option value="signe">Signé</option>
+                      <option value="refuse">Refusé</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div>
+                  <label for="nd-commentaire">Commentaire interne</label>
+                  <textarea id="nd-commentaire" name="commentaire"
+                    placeholder="Contexte du devis, infos cliente, particularités…"></textarea>
+                </div>
+
+                <div id="new-devis-error"></div>
+
+                <div class="modal-actions">
+                  <button type="button" class="btn-secondary" id="btn-cancel-new-devis">Annuler</button>
+                  <button type="submit" class="btn-primary" id="btn-save-new-devis">Enregistrer</button>
+                </div>
+              </form>
+            </div>
+          </div>
 
         <!-- PANEL CHANTIERS -->
         <section id="panel-chantiers" class="panel">
