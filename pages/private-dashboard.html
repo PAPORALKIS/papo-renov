@@ -2326,6 +2326,9 @@ function renderPartenairesTable(rows){
     modalNewDevis.classList.remove('show');
   }
 
+  if (btnNewDevis) {
+    btnNewDevis.addEventListener('click', openNewDevisModal);
+  }
 
   if(btnCancelNewDevis){
     btnCancelNewDevis.addEventListener('click', closeNewDevisModal);
