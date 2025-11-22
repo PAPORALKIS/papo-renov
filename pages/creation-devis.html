@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -50,7 +51,7 @@
   </main>
 
   <script>
-    const WEB_APP_URL = 'https://script.google.com/macros/s/WEBAPP_ID/exec'; // à remplacer
+    const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbwi9GX3vLf1L02F2zK-23fi8nQ8VDjYjEQ4UfXBs4jUHG5IOQdN3Z88k_MxaG7_VzAK/exec'; // Remplace par ton URL déployée
     let tarifsData = [];
 
     async function fetchTarifs() {
@@ -59,12 +60,12 @@
       tarifsData = j.data || [];
     }
 
-    function createLine(tache = '', qte = 1, prix = 0) {
+    function createLine() {
       const tr = document.createElement('tr');
       tr.innerHTML = `
         <td><select class="select-tache"></select></td>
-        <td><input type="number" class="input-qte" value="${qte}" min="1" /></td>
-        <td><input type="number" class="input-prix" value="${prix}" /></td>
+        <td><input type="number" class="input-qte" value="1" min="1" /></td>
+        <td><input type="number" class="input-prix" value="0" /></td>
         <td><span class="line-total">0 €</span></td>
         <td><button class="btn-remove">✕</button></td>
       `;
@@ -77,37 +78,31 @@
         select.appendChild(opt);
       });
 
-      select.value = tache;
-      calcLineTotal(tr);
+      const qteInput = tr.querySelector('.input-qte');
+      const prixInput = tr.querySelector('.input-prix');
+
+      const updateLine = () => {
+        const qte = parseFloat(qteInput.value) || 0;
+        const prix = parseFloat(prixInput.value) || 0;
+        const total = qte * prix;
+        tr.querySelector('.line-total').textContent = total.toFixed(2) + ' €';
+        calcGlobal();
+      };
 
       select.onchange = () => {
         const task = tarifsData.find(t => t.tache === select.value);
-        if (task) tr.querySelector('.input-prix').value = task.prix;
-        calcLineTotal(tr);
-        calcGlobal();
+        if (task) prixInput.value = task.prix;
+        updateLine();
       };
-
-      tr.querySelector('.input-qte').oninput = () => {
-        calcLineTotal(tr);
-        calcGlobal();
-      };
-      tr.querySelector('.input-prix').oninput = () => {
-        calcLineTotal(tr);
-        calcGlobal();
-      };
+      qteInput.oninput = updateLine;
+      prixInput.oninput = updateLine;
       tr.querySelector('.btn-remove').onclick = () => {
         tr.remove();
         calcGlobal();
       };
 
       document.getElementById('devis-lines').appendChild(tr);
-    }
-
-    function calcLineTotal(tr) {
-      const qte = parseFloat(tr.querySelector('.input-qte').value) || 0;
-      const pu = parseFloat(tr.querySelector('.input-prix').value) || 0;
-      const total = qte * pu;
-      tr.querySelector('.line-total').textContent = total.toFixed(2) + ' €';
+      updateLine();
     }
 
     function calcGlobal() {
@@ -124,13 +119,7 @@
       document.getElementById('total-ttc').textContent = (total + tva).toFixed(2) + ' €';
     }
 
-    async function init() {
-      await fetchTarifs();
-      createLine();
-    }
-
-    document.getElementById('add-line').onclick = () => createLine();
-    document.getElementById('save-devis').onclick = async () => {
+    async function saveDevis() {
       const client = document.getElementById('select-client').value;
       const adresse = document.getElementById('adresse-chantier').value;
       const date = document.getElementById('date-devis').value;
@@ -145,8 +134,8 @@
       const montant_ttc = montant_ht * 1.2;
 
       const params = new URLSearchParams();
-      params.append('path','bo');
-      params.append('action','create_devis');
+      params.append('path', 'bo');
+      params.append('action', 'create_devis');
       params.append('client', client);
       params.append('adresse', adresse);
       params.append('date', date);
@@ -156,14 +145,19 @@
 
       const resp = await fetch(WEB_APP_URL, { method: 'POST', body: params });
       const json = await resp.json();
+      const msg = document.getElementById('message');
+      msg.textContent = json.ok ? "✅ Devis enregistré et PDF généré !" : "❌ Erreur lors de l'enregistrement.";
+    }
 
-      if(json.ok){
-        document.getElementById('message').textContent = "✅ Devis enregistré !";
-      } else {
-        document.getElementById('message').textContent = "❌ Erreur lors de l'enregistrement.";
-      }
-    };
+    document.getElementById('add-line').onclick = createLine;
+    document.getElementById('save-devis').onclick = saveDevis;
 
+    async function init() {
+      const dateInput = document.getElementById('date-devis');
+      dateInput.valueAsDate = new Date();
+      await fetchTarifs();
+      createLine();
+    }
     init();
   </script>
 </body>
