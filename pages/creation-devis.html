@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Création d'un nouveau devis</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <h1>Nouveau Devis</h1>
+    <a href="private-dashboard.html">← Retour au dashboard</a>
+  </header>
+
+  <main class="container">
+    <section class="devis-infos">
+      <label>Client :</label>
+      <select id="select-client"></select>
+      <label>Adresse du chantier :</label>
+      <input type="text" id="adresse-chantier" placeholder="Adresse du chantier" />
+      <label>Date :</label>
+      <input type="date" id="date-devis" />
+    </section>
+
+    <section>
+      <h2>Lignes du devis</h2>
+      <table id="table-devis">
+        <thead>
+          <tr>
+            <th>Tâche</th>
+            <th>Quantité</th>
+            <th>Prix unitaire</th>
+            <th>Total</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="devis-lines"></tbody>
+      </table>
+      <button id="add-line">+ Ajouter une ligne</button>
+    </section>
+
+    <section class="totaux">
+      <p>Total HT : <span id="total-ht">0 €</span></p>
+      <p>TVA (20%) : <span id="total-tva">0 €</span></p>
+      <p><strong>Total TTC : <span id="total-ttc">0 €</span></strong></p>
+    </section>
+
+    <button id="save-devis">Enregistrer le devis</button>
+    <div id="message"></div>
+  </main>
+
+  <script>
+    const WEB_APP_URL = 'https://script.google.com/macros/s/WEBAPP_ID/exec'; // à remplacer
+    let tarifsData = [];
+
+    async function fetchTarifs() {
+      const r = await fetch(`${WEB_APP_URL}?path=bo&resource=tarifs`);
+      const j = await r.json();
+      tarifsData = j.data || [];
+    }
+
+    function createLine(tache = '', qte = 1, prix = 0) {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td><select class="select-tache"></select></td>
+        <td><input type="number" class="input-qte" value="${qte}" min="1" /></td>
+        <td><input type="number" class="input-prix" value="${prix}" /></td>
+        <td><span class="line-total">0 €</span></td>
+        <td><button class="btn-remove">✕</button></td>
+      `;
+
+      const select = tr.querySelector('.select-tache');
+      tarifsData.forEach(t => {
+        const opt = document.createElement('option');
+        opt.value = t.tache;
+        opt.textContent = t.tache;
+        select.appendChild(opt);
+      });
+
+      select.value = tache;
+      calcLineTotal(tr);
+
+      select.onchange = () => {
+        const task = tarifsData.find(t => t.tache === select.value);
+        if (task) tr.querySelector('.input-prix').value = task.prix;
+        calcLineTotal(tr);
+        calcGlobal();
+      };
+
+      tr.querySelector('.input-qte').oninput = () => {
+        calcLineTotal(tr);
+        calcGlobal();
+      };
+      tr.querySelector('.input-prix').oninput = () => {
+        calcLineTotal(tr);
+        calcGlobal();
+      };
+      tr.querySelector('.btn-remove').onclick = () => {
+        tr.remove();
+        calcGlobal();
+      };
+
+      document.getElementById('devis-lines').appendChild(tr);
+    }
+
+    function calcLineTotal(tr) {
+      const qte = parseFloat(tr.querySelector('.input-qte').value) || 0;
+      const pu = parseFloat(tr.querySelector('.input-prix').value) || 0;
+      const total = qte * pu;
+      tr.querySelector('.line-total').textContent = total.toFixed(2) + ' €';
+    }
+
+    function calcGlobal() {
+      const lignes = document.querySelectorAll('#devis-lines tr');
+      let total = 0;
+      lignes.forEach(tr => {
+        const qte = parseFloat(tr.querySelector('.input-qte').value) || 0;
+        const pu = parseFloat(tr.querySelector('.input-prix').value) || 0;
+        total += qte * pu;
+      });
+      const tva = total * 0.2;
+      document.getElementById('total-ht').textContent = total.toFixed(2) + ' €';
+      document.getElementById('total-tva').textContent = tva.toFixed(2) + ' €';
+      document.getElementById('total-ttc').textContent = (total + tva).toFixed(2) + ' €';
+    }
+
+    async function init() {
+      await fetchTarifs();
+      createLine();
+    }
+
+    document.getElementById('add-line').onclick = () => createLine();
+    document.getElementById('save-devis').onclick = async () => {
+      const client = document.getElementById('select-client').value;
+      const adresse = document.getElementById('adresse-chantier').value;
+      const date = document.getElementById('date-devis').value;
+
+      const lignes = [...document.querySelectorAll('#devis-lines tr')].map(tr => ({
+        tache: tr.querySelector('.select-tache').value,
+        qte: tr.querySelector('.input-qte').value,
+        prix: tr.querySelector('.input-prix').value
+      }));
+
+      const montant_ht = lignes.reduce((sum, l) => sum + (l.qte * l.prix), 0);
+      const montant_ttc = montant_ht * 1.2;
+
+      const params = new URLSearchParams();
+      params.append('path','bo');
+      params.append('action','create_devis');
+      params.append('client', client);
+      params.append('adresse', adresse);
+      params.append('date', date);
+      params.append('montant_ht', montant_ht);
+      params.append('montant_ttc', montant_ttc);
+      params.append('commentaires', JSON.stringify(lignes));
+
+      const resp = await fetch(WEB_APP_URL, { method: 'POST', body: params });
+      const json = await resp.json();
+
+      if(json.ok){
+        document.getElementById('message').textContent = "✅ Devis enregistré !";
+      } else {
+        document.getElementById('message').textContent = "❌ Erreur lors de l'enregistrement.";
+      }
+    };
+
+    init();
+  </script>
+</body>
+</html>
