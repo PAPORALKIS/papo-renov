@@ -5,6 +5,90 @@
   <title>Création devis – Papo Rénov</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="/papo-renov/style.css">
+
+<style>
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #f5f5f5;
+  margin: 0;
+  padding: 20px;
+}
+header.pr-header {
+  background-color: #222;
+  color: #fff;
+  padding: 20px;
+  margin-bottom: 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+header .brand {
+  display: flex;
+  align-items: center;
+}
+header .brand .logo {
+  height: 40px;
+  margin-right: 10px;
+}
+.modal-new-client {
+  max-width: 800px;
+  margin: 0 auto;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  padding: 30px;
+}
+.modal-grid {
+  display: flex;
+  gap: 20px;
+}
+.modal-grid > div {
+  flex: 1;
+}
+input[type="text"], input[type="date"], input[type="number"], textarea, select {
+  width: 100%;
+  padding: 8px;
+  margin-top: 4px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+}
+textarea {
+  resize: vertical;
+}
+button {
+  cursor: pointer;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+}
+button.btn-primary {
+  background-color: #0d6efd;
+  color: white;
+}
+button.btn-secondary {
+  background-color: #f0f0f0;
+}
+.modal-actions {
+  text-align: right;
+  margin-top: 20px;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+th, td {
+  padding: 8px;
+  border: 1px solid #ccc;
+}
+#devis-message {
+  margin-top: 10px;
+  font-weight: bold;
+}
+</style>
+
 </head>
 <body>
   <header class="pr-header">
