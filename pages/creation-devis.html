@@ -4,91 +4,101 @@
   <meta charset="UTF-8">
   <title>Création devis – Papo Rénov</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="/papo-renov/style.css">
-
-<style>
-body {
-  font-family: 'Segoe UI', sans-serif;
-  background-color: #f5f5f5;
-  margin: 0;
-  padding: 20px;
-}
-header.pr-header {
-  background-color: #222;
-  color: #fff;
-  padding: 20px;
-  margin-bottom: 30px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-header .brand {
-  display: flex;
-  align-items: center;
-}
-header .brand .logo {
-  height: 40px;
-  margin-right: 10px;
-}
-.modal-new-client {
-  max-width: 800px;
-  margin: 0 auto;
-  background: #fff;
-  border-radius: 12px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.1);
-  padding: 30px;
-}
-.modal-grid {
-  display: flex;
-  gap: 20px;
-}
-.modal-grid > div {
-  flex: 1;
-}
-input[type="text"], input[type="date"], input[type="number"], textarea, select {
-  width: 100%;
-  padding: 8px;
-  margin-top: 4px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  font-size: 14px;
-}
-textarea {
-  resize: vertical;
-}
-button {
-  cursor: pointer;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 6px;
-  font-size: 14px;
-}
-button.btn-primary {
-  background-color: #0d6efd;
-  color: white;
-}
-button.btn-secondary {
-  background-color: #f0f0f0;
-}
-.modal-actions {
-  text-align: right;
-  margin-top: 20px;
-}
-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 20px;
-}
-th, td {
-  padding: 8px;
-  border: 1px solid #ccc;
-}
-#devis-message {
-  margin-top: 10px;
-  font-weight: bold;
-}
-</style>
-
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f5f5f5;
+      margin: 0;
+      padding: 20px;
+    }
+    header.pr-header {
+      background-color: #222;
+      color: #fff;
+      padding: 20px;
+      margin-bottom: 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    header .brand {
+      display: flex;
+      align-items: center;
+    }
+    header .brand .logo {
+      height: 40px;
+      margin-right: 10px;
+    }
+    header nav a {
+      color: #fff;
+      text-decoration: none;
+      font-weight: normal;
+    }
+    .modal-new-client {
+      max-width: 800px;
+      margin: 0 auto;
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      padding: 30px;
+    }
+    .modal-grid {
+      display: flex;
+      gap: 20px;
+    }
+    .modal-grid > div {
+      flex: 1;
+    }
+    label {
+      display: block;
+      font-weight: bold;
+      margin-top: 10px;
+    }
+    input[type="text"], input[type="date"], input[type="number"], textarea, select {
+      width: 100%;
+      padding: 8px;
+      margin-top: 4px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 14px;
+      box-sizing: border-box;
+    }
+    textarea {
+      resize: vertical;
+    }
+    button {
+      cursor: pointer;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 6px;
+      font-size: 14px;
+      margin-top: 15px;
+    }
+    button.btn-primary {
+      background-color: #0d6efd;
+      color: white;
+    }
+    button.btn-secondary {
+      background-color: #f0f0f0;
+    }
+    .modal-actions {
+      text-align: right;
+      margin-top: 20px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+    th, td {
+      padding: 8px;
+      border: 1px solid #ccc;
+      text-align: left;
+    }
+    #devis-message {
+      margin-top: 10px;
+      font-weight: bold;
+    }
+  </style>
 </head>
 <body>
   <header class="pr-header">
@@ -100,9 +110,9 @@ th, td {
       <a href="../index.html">← Retour au site</a>
     </nav>
   </header>
+
   <div class="private-root">
-    <div class="modal-new-client show" style="position: static; inset: auto; 
-padding-top: 0; background: none;">
+    <div class="modal-new-client show" style="position: static; inset: auto; padding-top: 0; background: none;">
       <div class="modal-panel">
         <h3>Nouveau devis</h3>
         <form id="form-devis" autocomplete="off">
@@ -120,7 +130,7 @@ padding-top: 0; background: none;">
             <label for="adresse">Adresse / Contexte</label>
             <textarea id="adresse" name="commentaire" placeholder="Adresse du projet, informations complémentaires…"></textarea>
           </div>
-          <br>
+
           <table id="lines-table">
             <thead>
               <tr>
@@ -132,21 +142,24 @@ padding-top: 0; background: none;">
             <tbody id="lines-body"></tbody>
           </table>
           <button type="button" class="btn-secondary" id="btn-add-line">+ Ajouter une ligne</button>
+
           <div style="margin-top: 12px; text-align: right;">
-            <p>Total HT : <span id="total-ht">0.00</span> €</p>
-            <p>TVA (20%) : <span id="total-tva">0.00</span> €</p>
-            <p>Total TTC : <span id="total-ttc">0.00</span> €</p>
+            <p>Total HT : <span id="total-ht">0.00</span> €</p>
+            <p>TVA (20%) : <span id="total-tva">0.00</span> €</p>
+            <p>Total TTC : <span id="total-ttc">0.00</span> €</p>
           </div>
+
           <div id="devis-message"></div>
+
           <div class="modal-actions">
-            
-            <button type="button" class="btn-secondary" id="btn-print">🖨️ Imprimer / Enregistrer en PDF</button>
             <button type="submit" class="btn-primary" id="btn-save-devis">Enregistrer le devis</button>
+            <button type="button" class="btn-secondary" id="btn-print-devis">Imprimer / Enregistrer en PDF</button>
           </div>
         </form>
       </div>
     </div>
   </div>
+
   <script>
     const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwi9GX3vLf1L02F2zK-23fi8nQ8VDjYjEQ4UfXBs4jUHG5IOQdN3Z88k_MxaG7_VzAK/exec";
     let tasksList = [];
@@ -155,11 +168,10 @@ padding-top: 0; background: none;">
       try {
         const response = await fetch(`${WEB_APP_URL}?path=tarifs`);
         const data = await response.json();
-        if (!data.ok) throw new Error("Erreur lors du chargement des tâches");
-        tasksList = data.rows || data;
+        tasksList = data.tarifs || data.rows || data || [];
         addLine();
       } catch (err) {
-        console.error(err);
+        console.error("Erreur chargement tâches :", err);
       }
     }
 
@@ -167,35 +179,46 @@ padding-top: 0; background: none;">
       if (!tasksList.length) return;
       const tbody = document.getElementById('lines-body');
       const tr = document.createElement('tr');
+
       const tdTask = document.createElement('td');
       const select = document.createElement('select');
       select.name = "tache";
       const defaultOption = new Option("-- Choisir une tâche --", "");
       select.appendChild(defaultOption);
+
+      // Détermination des clés pour nom de tâche et prix
       const sample = tasksList[0];
       const keys = Object.keys(sample);
-      let nameKey = keys.find(k => /tâche|tache|libellé|libelle|nom/i.test(k)) || keys[0];
-      let priceKey = keys.find(k => /prix|tarif|price/i.test(k)) || keys[1] || keys[0];
+      const nameKey = keys.find(k => /tâche|tache|libellé|libelle|nom/i.test(k)) || keys[0];
+      const priceKey = keys.find(k => /prix|tarif|price/i.test(k)) || keys[1] || keys[0];
+
       tasksList.forEach(task => {
         const opt = new Option(task[nameKey] || "", task[nameKey] || "");
-        if (task[priceKey] !== undefined) opt.dataset.prix = task[priceKey];
+        if (task[priceKey] !== undefined) {
+          opt.dataset.prix = task[priceKey];
+        }
         select.appendChild(opt);
       });
-      tdTask.appendChild(select); tr.appendChild(tdTask);
+      tdTask.appendChild(select);
+      tr.appendChild(tdTask);
 
       const tdQty = document.createElement('td');
       const inputQty = Object.assign(document.createElement('input'), {
         name: "qte", type: "number", min: "0", value: "1"
       });
-      tdQty.appendChild(inputQty); tr.appendChild(tdQty);
+      tdQty.appendChild(inputQty);
+      tr.appendChild(tdQty);
 
       const tdPrice = document.createElement('td');
       const inputPrice = Object.assign(document.createElement('input'), {
         name: "prix", type: "number", step: "0.01"
       });
-      tdPrice.appendChild(inputPrice); tr.appendChild(tdPrice);
+      tdPrice.appendChild(inputPrice);
+      tr.appendChild(tdPrice);
+
       tbody.appendChild(tr);
 
+      // Événements de recalcul des totaux
       inputQty.addEventListener('input', calculateTotals);
       inputPrice.addEventListener('input', calculateTotals);
       select.addEventListener('change', function () {
@@ -221,6 +244,7 @@ padding-top: 0; background: none;">
     async function saveDevis(event) {
       event.preventDefault();
       document.getElementById('btn-save-devis').disabled = true;
+
       const client = document.getElementById('client').value.trim();
       const date = document.getElementById('date').value;
       const adresse = document.getElementById('adresse').value.trim();
@@ -229,16 +253,18 @@ padding-top: 0; background: none;">
       params.append('action', 'create_devis');
       if (client) params.append('client', client);
       if (date) params.append('date_devis', date);
+      if (adresse) params.append('commentaire', adresse);
       params.append('montant_ht', document.getElementById('total-ht').textContent);
       params.append('montant_ttc', document.getElementById('total-ttc').textContent);
-      if (adresse) params.append('commentaire', adresse);
 
       const lines = [];
       document.querySelectorAll('#lines-body tr').forEach(row => {
         const task = row.querySelector('select[name="tache"]').value;
         const qty = parseFloat(row.querySelector('input[name="qte"]').value) || 0;
         const price = parseFloat(row.querySelector('input[name="prix"]').value) || 0;
-        if (task && qty && price) lines.push({ tache: task, qte: qty, prix: price });
+        if (task && qty && price) {
+          lines.push({ tache: task, qte: qty, prix: price });
+        }
       });
       if (lines.length > 0) {
         params.append('lignes', JSON.stringify(lines));
@@ -258,17 +284,16 @@ padding-top: 0; background: none;">
         }
       } catch (err) {
         document.getElementById('devis-message').style.color = '#ef4444';
-        document.getElementById('devis-message').textContent = 'Erreur : ' + err.message;
+        document.getElementById('devis-message').textContent = '❌ Erreur : ' + err.message;
       } finally {
         document.getElementById('btn-save-devis').disabled = false;
       }
     }
 
-    // Fonction pour sauvegarder et imprimer le devis
-    async function saveAndPrint(event) {
+    async function printDevis(event) {
       event.preventDefault();
-      const btn = document.getElementById('btn-print');
-      btn.disabled = true;
+      document.getElementById('btn-print-devis').disabled = true;
+
       const client = document.getElementById('client').value.trim();
       const date = document.getElementById('date').value;
       const adresse = document.getElementById('adresse').value.trim();
@@ -277,36 +302,41 @@ padding-top: 0; background: none;">
       params.append('action', 'create_devis');
       if (client) params.append('client', client);
       if (date) params.append('date_devis', date);
+      if (adresse) params.append('commentaire', adresse);
       params.append('montant_ht', document.getElementById('total-ht').textContent);
       params.append('montant_ttc', document.getElementById('total-ttc').textContent);
-      if (adresse) params.append('commentaire', adresse);
+
       const lines = [];
       document.querySelectorAll('#lines-body tr').forEach(row => {
         const task = row.querySelector('select[name="tache"]').value;
         const qty = parseFloat(row.querySelector('input[name="qte"]').value) || 0;
         const price = parseFloat(row.querySelector('input[name="prix"]').value) || 0;
-        if (task && qty && price) lines.push({ tache: task, qte: qty, prix: price });
+        if (task && qty && price) {
+          lines.push({ tache: task, qte: qty, prix: price });
+        }
       });
       if (lines.length > 0) {
         params.append('lignes', JSON.stringify(lines));
       }
+
       try {
         const resp = await fetch(WEB_APP_URL, { method: 'POST', body: params });
         const result = await resp.json();
         if (result.ok) {
+          window.print();
           document.getElementById('devis-message').style.color = '#22c55e';
-          document.getElementById('devis-message').textContent = '✅ Devis enregistré, prêt à l\'impression';
-          setTimeout(() => {
-            window.print();
-          }, 500);
+          document.getElementById('devis-message').textContent = '✅ Devis enregistré et imprimé';
+          document.getElementById('form-devis').reset();
+          document.getElementById('lines-body').innerHTML = '';
+          calculateTotals();
         } else {
           throw new Error(result.error || "Erreur lors de l'enregistrement");
         }
       } catch (err) {
         document.getElementById('devis-message').style.color = '#ef4444';
-        document.getElementById('devis-message').textContent = 'Erreur : ' + err.message;
+        document.getElementById('devis-message').textContent = '❌ Erreur : ' + err.message;
       } finally {
-        btn.disabled = false;
+        document.getElementById('btn-print-devis').disabled = false;
       }
     }
 
@@ -315,7 +345,7 @@ padding-top: 0; background: none;">
       fetchTasks();
       document.getElementById('btn-add-line').addEventListener('click', addLine);
       document.getElementById('form-devis').addEventListener('submit', saveDevis);
-      document.getElementById('btn-print').addEventListener('click', saveAndPrint);
+      document.getElementById('btn-print-devis').addEventListener('click', printDevis);
     });
   </script>
 </body>
