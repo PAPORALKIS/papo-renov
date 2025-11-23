@@ -93,7 +93,7 @@ th, td {
 <body>
   <header class="pr-header">
     <div class="brand">
-      <img class="logo" src="/papo-renov/logo.png" alt="Logo Papo Rénov">
+      <img class="logo" src="../img/logo.png" alt="Logo Papo Rénov">
       <h1>Espace privé – Papo Rénov</h1>
     </div>
     <nav>
@@ -266,5 +266,74 @@ th, td {
       document.getElementById('form-devis').addEventListener('submit', saveDevis);
     });
   </script>
+
+<script>
+const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwi9GX3vLf1L02F2zK-23fi8nQ8VDjYjEQ4UfXBs4jUHG5IOQdN3Z88k_MxaG7_VzAK/exec";
+let tasksList = [];
+
+async function fetchTasks() {
+  try {
+    const response = await fetch(`${WEB_APP_URL}?path=tarifs`);
+    const data = await response.json();
+    tasksList = data.tarifs || data;
+    if (!tasksList || !tasksList.length) throw new Error("Aucune tâche chargée");
+    addLine();
+  } catch (err) {
+    console.error("fetchTasks error:", err);
+  }
+}
+
+async function addLine() {
+  if (!tasksList.length) return;
+  const tbody = document.getElementById('lines-body');
+  const tr = document.createElement('tr');
+
+  const tdTask = document.createElement('td');
+  const select = document.createElement('select');
+  select.name = "tache";
+  const defaultOption = new Option("-- Choisir une tâche --", "");
+  select.appendChild(defaultOption);
+  const sample = tasksList[0];
+  const keys = Object.keys(sample);
+  let nameKey = keys.find(k => /tâche|tache|libellé|libelle|nom/i.test(k)) || keys[0];
+  let priceKey = keys.find(k => /prix|tarif|price/i.test(k)) || keys[1] || keys[0];
+  tasksList.forEach(task => {
+    const opt = new Option(task[nameKey] || "", task[nameKey] || "");
+    if (task[priceKey] !== undefined) opt.dataset.prix = task[priceKey];
+    select.appendChild(opt);
+  });
+  tdTask.appendChild(select);
+  tr.appendChild(tdTask);
+
+  const tdQty = document.createElement('td');
+  const inputQty = Object.assign(document.createElement('input'), {
+    name: "qte", type: "number", step: "1"
+  });
+  tdQty.appendChild(inputQty);
+  tr.appendChild(tdQty);
+
+  const tdPrice = document.createElement('td');
+  const inputPrice = Object.assign(document.createElement('input'), {
+    name: "prix", type: "number", step: "0.01"
+  });
+  tdPrice.appendChild(inputPrice);
+  tr.appendChild(tdPrice);
+  tbody.appendChild(tr);
+
+  inputQty.addEventListener('input', calculateTotals);
+  inputPrice.addEventListener('input', calculateTotals);
+  select.addEventListener('change', function () {
+    inputPrice.value = this.selectedOptions[0].dataset.prix || "";
+    calculateTotals();
+  });
+}
+
+window.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('date').value = new Date().toISOString().split('T')[0];
+  fetchTasks();
+  document.getElementById('btn-add-line').addEventListener('click', addLine);
+  document.getElementById('form-devis').addEventListener('submit', saveDevis);
+});
+</script>
 </body>
 </html>
