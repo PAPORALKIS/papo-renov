@@ -1,164 +1,243 @@
-
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Création d'un nouveau devis</title>
-  <link rel="stylesheet" href="../style.css" />
+  <meta charset="UTF-8">
+  <title>Création devis – Papo Rénov</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/papo-renov/style.css">
 </head>
 <body>
-  <header>
-    <h1>Nouveau Devis</h1>
-    <a href="private-dashboard.html">← Retour au dashboard</a>
+  <header class="pr-header">
+    <div class="brand">
+      <img class="logo" src="/papo-renov/logo.png" alt="Logo Papo Rénov">
+      <h1>Espace privé – Papo Rénov</h1>
+    </div>
+    <nav>
+      <a href="../index.html">← Retour au site</a>
+    </nav>
   </header>
-
-  <main class="container">
-    <section class="devis-infos">
-      <label>Client :</label>
-      <select id="select-client"></select>
-      <label>Adresse du chantier :</label>
-      <input type="text" id="adresse-chantier" placeholder="Adresse du chantier" />
-      <label>Date :</label>
-      <input type="date" id="date-devis" />
-    </section>
-
-    <section>
-      <h2>Lignes du devis</h2>
-      <table id="table-devis">
-        <thead>
-          <tr>
-            <th>Tâche</th>
-            <th>Quantité</th>
-            <th>Prix unitaire</th>
-            <th>Total</th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody id="devis-lines"></tbody>
-      </table>
-      <button id="add-line">+ Ajouter une ligne</button>
-    </section>
-
-    <section class="totaux">
-      <p>Total HT : <span id="total-ht">0 €</span></p>
-      <p>TVA (20%) : <span id="total-tva">0 €</span></p>
-      <p><strong>Total TTC : <span id="total-ttc">0 €</span></strong></p>
-    </section>
-
-    <button id="save-devis">Enregistrer le devis</button>
-    <div id="message"></div>
-  </main>
-
+  <div class="private-root">
+    <div class="modal-new-client show" style="position: static; inset: auto; padding-top: 0; background: none;">
+      <div class="modal-panel">
+        <h3>Nouveau devis</h3>
+        <form id="form-devis" autocomplete="off">
+          <div class="modal-grid">
+            <div>
+              <label for="client">Client</label>
+              <input id="client" name="client" type="text" placeholder="Nom du client / Entreprise" required>
+            </div>
+            <div>
+              <label for="date">Date</label>
+              <input id="date" name="date_devis" type="date">
+            </div>
+          </div>
+          <div>
+            <label for="adresse">Adresse / Contexte</label>
+            <textarea id="adresse" name="commentaire" placeholder="Adresse du projet, informations complémentaires…"></textarea>
+          </div>
+          <br>
+          <table id="lines-table">
+            <thead>
+              <tr>
+                <th>Tâche</th>
+                <th>Qté</th>
+                <th>Prix&nbsp;HT</th>
+              </tr>
+            </thead>
+            <tbody id="lines-body">
+              <!-- Lignes du devis insérées ici -->
+            </tbody>
+          </table>
+          <button type="button" class="btn-secondary" id="btn-add-line">+ Ajouter une ligne</button>
+          <div style="margin-top: 12px; text-align: right;">
+            <p>Total HT : <span id="total-ht">0.00</span> €</p>
+            <p>TVA (20%) : <span id="total-tva">0.00</span> €</p>
+            <p>Total TTC : <span id="total-ttc">0.00</span> €</p>
+          </div>
+          <div id="devis-message"></div>
+          <div class="modal-actions">
+            <button type="submit" class="btn-primary" id="btn-save-devis">Enregistrer le devis</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
   <script>
-    const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbwi9GX3vLf1L02F2zK-23fi8nQ8VDjYjEQ4UfXBs4jUHG5IOQdN3Z88k_MxaG7_VzAK/exec'; // Remplace par ton URL déployée
-    let tarifsData = [];
+    const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyemfjgPUxJhhYPkGvf4WGtCogUJgDW1ZfmPdZ3KTvf0b-9QpjQAqUjYzCQKQW6MOsg/exec";
+    let tasksList = [];
 
-    async function fetchTarifs() {
-      const r = await fetch(`${WEB_APP_URL}?path=bo&resource=tarifs`);
-      const j = await r.json();
-      tarifsData = j.data || [];
+    // Fonction pour charger les tâches disponibles via l'API Apps Script
+    async function fetchTasks() {
+      try {
+        const response = await fetch(`${WEB_APP_URL}?path=bo&resource=tarifs`);
+        const data = await response.json();
+        if (!data.ok) {
+          throw new Error("Erreur lors du chargement des tâches");
+        }
+        // Récupère la liste des tâches (tableau d'objets)
+        tasksList = data.rows || data;
+        // Ajoute une première ligne de devis par défaut
+        addLine();
+      } catch (err) {
+        console.error(err);
+      }
     }
 
-    function createLine() {
+    // Ajoute une ligne de devis au tableau (avec menu déroulant des tâches)
+    function addLine() {
+      if (!tasksList || tasksList.length === 0) return;
+      const tbody = document.getElementById('lines-body');
+      // Crée la ligne (tr)
       const tr = document.createElement('tr');
-      tr.innerHTML = `
-        <td><select class="select-tache"></select></td>
-        <td><input type="number" class="input-qte" value="1" min="1" /></td>
-        <td><input type="number" class="input-prix" value="0" /></td>
-        <td><span class="line-total">0 €</span></td>
-        <td><button class="btn-remove">✕</button></td>
-      `;
-
-      const select = tr.querySelector('.select-tache');
-      tarifsData.forEach(t => {
-        const opt = document.createElement('option');
-        opt.value = t.tache;
-        opt.textContent = t.tache;
-        select.appendChild(opt);
+      // Colonne "Tâche" (sélection)
+      const tdTask = document.createElement('td');
+      const select = document.createElement('select');
+      select.name = "tache";
+      // Option par défaut vide
+      const defaultOption = document.createElement('option');
+      defaultOption.value = "";
+      defaultOption.textContent = "-- Choisir une tâche --";
+      select.appendChild(defaultOption);
+      // Remplit le select avec les tâches disponibles
+      if (tasksList.length > 0) {
+        // Détecte les propriétés de nom et de prix dans l'objet tâche
+        const sample = tasksList[0];
+        const keys = Object.keys(sample);
+        let nameKey = keys.find(k => /tâche|tache|libellé|libelle|nom/i.test(k)) || keys[0];
+        let priceKey = keys.find(k => /prix|tarif|price/i.test(k));
+        if (!priceKey) {
+          // Si aucune clé "prix" trouvée, utilise la seconde clé à défaut
+          priceKey = keys[1] || keys[0];
+        }
+        tasksList.forEach(task => {
+          const opt = document.createElement('option');
+          opt.value = task[nameKey] || "";
+          opt.textContent = task[nameKey] || "";
+          if (task[priceKey] !== undefined) {
+            opt.dataset.prix = task[priceKey];
+          }
+          select.appendChild(opt);
+        });
+      }
+      tdTask.appendChild(select);
+      tr.appendChild(tdTask);
+      // Colonne "Qté" (input nombre)
+      const tdQty = document.createElement('td');
+      const inputQty = document.createElement('input');
+      inputQty.name = "qte";
+      inputQty.type = "number";
+      inputQty.min = "0";
+      inputQty.value = "1";
+      tdQty.appendChild(inputQty);
+      tr.appendChild(tdQty);
+      // Colonne "Prix" (input nombre)
+      const tdPrice = document.createElement('td');
+      const inputPrice = document.createElement('input');
+      inputPrice.name = "prix";
+      inputPrice.type = "number";
+      inputPrice.step = "0.01";
+      inputPrice.value = "";
+      tdPrice.appendChild(inputPrice);
+      tr.appendChild(tdPrice);
+      // Ajoute la ligne au tableau
+      tbody.appendChild(tr);
+      // Événements pour recalculer le total quand Qté ou Prix changent
+      inputQty.addEventListener('input', calculateTotals);
+      inputPrice.addEventListener('input', calculateTotals);
+      // Événement pour mettre à jour le prix lors de la sélection d'une tâche
+      select.addEventListener('change', function() {
+        if (this.selectedIndex > 0) {
+          const prix = this.selectedOptions[0].dataset.prix || "";
+          inputPrice.value = prix;
+        } else {
+          inputPrice.value = "";
+        }
+        calculateTotals();
       });
-
-      const qteInput = tr.querySelector('.input-qte');
-      const prixInput = tr.querySelector('.input-prix');
-
-      const updateLine = () => {
-        const qte = parseFloat(qteInput.value) || 0;
-        const prix = parseFloat(prixInput.value) || 0;
-        const total = qte * prix;
-        tr.querySelector('.line-total').textContent = total.toFixed(2) + ' €';
-        calcGlobal();
-      };
-
-      select.onchange = () => {
-        const task = tarifsData.find(t => t.tache === select.value);
-        if (task) prixInput.value = task.prix;
-        updateLine();
-      };
-      qteInput.oninput = updateLine;
-      prixInput.oninput = updateLine;
-      tr.querySelector('.btn-remove').onclick = () => {
-        tr.remove();
-        calcGlobal();
-      };
-
-      document.getElementById('devis-lines').appendChild(tr);
-      updateLine();
     }
 
-    function calcGlobal() {
-      const lignes = document.querySelectorAll('#devis-lines tr');
-      let total = 0;
-      lignes.forEach(tr => {
-        const qte = parseFloat(tr.querySelector('.input-qte').value) || 0;
-        const pu = parseFloat(tr.querySelector('.input-prix').value) || 0;
-        total += qte * pu;
+    // Calcule et met à jour les totaux HT, TVA et TTC
+    function calculateTotals() {
+      let totalHT = 0;
+      document.querySelectorAll('#lines-body tr').forEach(row => {
+        const qty = parseFloat(row.querySelector('input[name="qte"]').value) || 0;
+        const price = parseFloat(row.querySelector('input[name="prix"]').value) || 0;
+        totalHT += qty * price;
       });
-      const tva = total * 0.2;
-      document.getElementById('total-ht').textContent = total.toFixed(2) + ' €';
-      document.getElementById('total-tva').textContent = tva.toFixed(2) + ' €';
-      document.getElementById('total-ttc').textContent = (total + tva).toFixed(2) + ' €';
+      // Arrondi à 2 décimales
+      totalHT = Math.round(totalHT * 100) / 100;
+      const totalTVA = Math.round(totalHT * 0.20 * 100) / 100;
+      const totalTTC = Math.round((totalHT + totalTVA) * 100) / 100;
+      document.getElementById('total-ht').textContent = totalHT.toFixed(2);
+      document.getElementById('total-tva').textContent = totalTVA.toFixed(2);
+      document.getElementById('total-ttc').textContent = totalTTC.toFixed(2);
     }
 
-    async function saveDevis() {
-      const client = document.getElementById('select-client').value;
-      const adresse = document.getElementById('adresse-chantier').value;
-      const date = document.getElementById('date-devis').value;
-
-      const lignes = [...document.querySelectorAll('#devis-lines tr')].map(tr => ({
-        tache: tr.querySelector('.select-tache').value,
-        qte: tr.querySelector('.input-qte').value,
-        prix: tr.querySelector('.input-prix').value
-      }));
-
-      const montant_ht = lignes.reduce((sum, l) => sum + (l.qte * l.prix), 0);
-      const montant_ttc = montant_ht * 1.2;
-
+    // Soumission du formulaire "Enregistrer le devis"
+    async function saveDevis(event) {
+      event.preventDefault();
+      const saveBtn = document.getElementById('btn-save-devis');
+      saveBtn.disabled = true;
+      // Récupère les champs principaux
+      const client = document.getElementById('client').value.trim();
+      const date = document.getElementById('date').value;
+      const adresse = document.getElementById('adresse').value.trim();
+      // Prépare les paramètres de la requête POST
       const params = new URLSearchParams();
       params.append('path', 'bo');
       params.append('action', 'create_devis');
-      params.append('client', client);
-      params.append('adresse', adresse);
-      params.append('date', date);
-      params.append('montant_ht', montant_ht);
-      params.append('montant_ttc', montant_ttc);
-      params.append('commentaires', JSON.stringify(lignes));
-
-      const resp = await fetch(WEB_APP_URL, { method: 'POST', body: params });
-      const json = await resp.json();
-      const msg = document.getElementById('message');
-      msg.textContent = json.ok ? "✅ Devis enregistré et PDF généré !" : "❌ Erreur lors de l'enregistrement.";
+      if (client) params.append('client', client);
+      if (date) params.append('date_devis', date);
+      params.append('montant_ht', document.getElementById('total-ht').textContent.replace(',', '.'));
+      params.append('montant_ttc', document.getElementById('total-ttc').textContent.replace(',', '.'));
+      if (adresse) params.append('commentaire', adresse);
+      // Ajoute les lignes du devis au paramètre (sous forme de JSON)
+      const lines = [];
+      document.querySelectorAll('#lines-body tr').forEach(row => {
+        const task = row.querySelector('select[name="tache"]').value;
+        const qty = parseFloat(row.querySelector('input[name="qte"]').value) || 0;
+        const price = parseFloat(row.querySelector('input[name="prix"]').value) || 0;
+        if (task && qty && price) {
+          lines.push({ tache: task, qte: qty, prix: price });
+        }
+      });
+      if (lines.length > 0) {
+        params.append('lignes', JSON.stringify(lines));
+      }
+      try {
+        const resp = await fetch(WEB_APP_URL, { method: 'POST', body: params });
+        const result = await resp.json();
+        if (result.ok) {
+          document.getElementById('devis-message').style.color = '#22c55e';
+          document.getElementById('devis-message').textContent = '✅ Devis enregistré (ID: ' + (result.id_devis || '') + ')';
+          // Réinitialise le formulaire après succès
+          document.getElementById('form-devis').reset();
+          document.getElementById('lines-body').innerHTML = '';
+          calculateTotals();
+        } else {
+          throw new Error(result.error || "Une erreur est survenue lors de l'enregistrement.");
+        }
+      } catch (err) {
+        console.error(err);
+        document.getElementById('devis-message').style.color = '#ef4444';
+        document.getElementById('devis-message').textContent = 'Erreur : ' + err.message;
+      } finally {
+        saveBtn.disabled = false;
+      }
     }
 
-    document.getElementById('add-line').onclick = createLine;
-    document.getElementById('save-devis').onclick = saveDevis;
-
-    async function init() {
-      const dateInput = document.getElementById('date-devis');
-      dateInput.valueAsDate = new Date();
-      await fetchTarifs();
-      createLine();
-    }
-    init();
+    // Initialisation au chargement de la page
+    window.addEventListener('DOMContentLoaded', () => {
+      // Date du jour par défaut
+      const dateField = document.getElementById('date');
+      if (dateField) {
+        dateField.value = new Date().toISOString().split('T')[0];
+      }
+      // Charge les tâches et prépare les événements
+      fetchTasks();
+      document.getElementById('btn-add-line').addEventListener('click', addLine);
+      document.getElementById('form-devis').addEventListener('submit', saveDevis);
+    });
   </script>
 </body>
 </html>
