@@ -101,7 +101,8 @@ th, td {
     </nav>
   </header>
   <div class="private-root">
-    <div class="modal-new-client show" style="position: static; inset: auto; padding-top: 0; background: none;">
+    <div class="modal-new-client show" style="position: static; inset: auto; 
+padding-top: 0; background: none;">
       <div class="modal-panel">
         <h3>Nouveau devis</h3>
         <form id="form-devis" autocomplete="off">
@@ -138,6 +139,8 @@ th, td {
           </div>
           <div id="devis-message"></div>
           <div class="modal-actions">
+            
+            <button type="button" class="btn-secondary" id="btn-print">🖨️ Imprimer / Enregistrer en PDF</button>
             <button type="submit" class="btn-primary" id="btn-save-devis">Enregistrer le devis</button>
           </div>
         </form>
@@ -250,7 +253,9 @@ th, td {
           document.getElementById('form-devis').reset();
           document.getElementById('lines-body').innerHTML = '';
           calculateTotals();
-        } else throw new Error(result.error || "Erreur lors de l'enregistrement");
+        } else {
+          throw new Error(result.error || "Erreur lors de l'enregistrement");
+        }
       } catch (err) {
         document.getElementById('devis-message').style.color = '#ef4444';
         document.getElementById('devis-message').textContent = 'Erreur : ' + err.message;
@@ -259,81 +264,59 @@ th, td {
       }
     }
 
+    // Fonction pour sauvegarder et imprimer le devis
+    async function saveAndPrint(event) {
+      event.preventDefault();
+      const btn = document.getElementById('btn-print');
+      btn.disabled = true;
+      const client = document.getElementById('client').value.trim();
+      const date = document.getElementById('date').value;
+      const adresse = document.getElementById('adresse').value.trim();
+      const params = new URLSearchParams();
+      params.append('path', 'bo');
+      params.append('action', 'create_devis');
+      if (client) params.append('client', client);
+      if (date) params.append('date_devis', date);
+      params.append('montant_ht', document.getElementById('total-ht').textContent);
+      params.append('montant_ttc', document.getElementById('total-ttc').textContent);
+      if (adresse) params.append('commentaire', adresse);
+      const lines = [];
+      document.querySelectorAll('#lines-body tr').forEach(row => {
+        const task = row.querySelector('select[name="tache"]').value;
+        const qty = parseFloat(row.querySelector('input[name="qte"]').value) || 0;
+        const price = parseFloat(row.querySelector('input[name="prix"]').value) || 0;
+        if (task && qty && price) lines.push({ tache: task, qte: qty, prix: price });
+      });
+      if (lines.length > 0) {
+        params.append('lignes', JSON.stringify(lines));
+      }
+      try {
+        const resp = await fetch(WEB_APP_URL, { method: 'POST', body: params });
+        const result = await resp.json();
+        if (result.ok) {
+          document.getElementById('devis-message').style.color = '#22c55e';
+          document.getElementById('devis-message').textContent = '✅ Devis enregistré, prêt à l\'impression';
+          setTimeout(() => {
+            window.print();
+          }, 500);
+        } else {
+          throw new Error(result.error || "Erreur lors de l'enregistrement");
+        }
+      } catch (err) {
+        document.getElementById('devis-message').style.color = '#ef4444';
+        document.getElementById('devis-message').textContent = 'Erreur : ' + err.message;
+      } finally {
+        btn.disabled = false;
+      }
+    }
+
     window.addEventListener('DOMContentLoaded', () => {
       document.getElementById('date').value = new Date().toISOString().split('T')[0];
       fetchTasks();
       document.getElementById('btn-add-line').addEventListener('click', addLine);
       document.getElementById('form-devis').addEventListener('submit', saveDevis);
+      document.getElementById('btn-print').addEventListener('click', saveAndPrint);
     });
   </script>
-
-<script>
-const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwi9GX3vLf1L02F2zK-23fi8nQ8VDjYjEQ4UfXBs4jUHG5IOQdN3Z88k_MxaG7_VzAK/exec";
-let tasksList = [];
-
-async function fetchTasks() {
-  try {
-    const response = await fetch(`${WEB_APP_URL}?path=tarifs`);
-    const data = await response.json();
-    tasksList = data.tarifs || data;
-    if (!tasksList || !tasksList.length) throw new Error("Aucune tâche chargée");
-    addLine();
-  } catch (err) {
-    console.error("fetchTasks error:", err);
-  }
-}
-
-async function addLine() {
-  if (!tasksList.length) return;
-  const tbody = document.getElementById('lines-body');
-  const tr = document.createElement('tr');
-
-  const tdTask = document.createElement('td');
-  const select = document.createElement('select');
-  select.name = "tache";
-  const defaultOption = new Option("-- Choisir une tâche --", "");
-  select.appendChild(defaultOption);
-  const sample = tasksList[0];
-  const keys = Object.keys(sample);
-  let nameKey = keys.find(k => /tâche|tache|libellé|libelle|nom/i.test(k)) || keys[0];
-  let priceKey = keys.find(k => /prix|tarif|price/i.test(k)) || keys[1] || keys[0];
-  tasksList.forEach(task => {
-    const opt = new Option(task[nameKey] || "", task[nameKey] || "");
-    if (task[priceKey] !== undefined) opt.dataset.prix = task[priceKey];
-    select.appendChild(opt);
-  });
-  tdTask.appendChild(select);
-  tr.appendChild(tdTask);
-
-  const tdQty = document.createElement('td');
-  const inputQty = Object.assign(document.createElement('input'), {
-    name: "qte", type: "number", step: "1"
-  });
-  tdQty.appendChild(inputQty);
-  tr.appendChild(tdQty);
-
-  const tdPrice = document.createElement('td');
-  const inputPrice = Object.assign(document.createElement('input'), {
-    name: "prix", type: "number", step: "0.01"
-  });
-  tdPrice.appendChild(inputPrice);
-  tr.appendChild(tdPrice);
-  tbody.appendChild(tr);
-
-  inputQty.addEventListener('input', calculateTotals);
-  inputPrice.addEventListener('input', calculateTotals);
-  select.addEventListener('change', function () {
-    inputPrice.value = this.selectedOptions[0].dataset.prix || "";
-    calculateTotals();
-  });
-}
-
-window.addEventListener('DOMContentLoaded', () => {
-  document.getElementById('date').value = new Date().toISOString().split('T')[0];
-  fetchTasks();
-  document.getElementById('btn-add-line').addEventListener('click', addLine);
-  document.getElementById('form-devis').addEventListener('submit', saveDevis);
-});
-</script>
 </body>
 </html>
