@@ -856,7 +856,57 @@
       }
     }
 
-  </style>
+  
+/* ===== Barre latérale dynamique (vue compacte) ===== */
+body.sidebar-collapsed .dash-menu{
+  width:3.5rem;
+  min-width:3.5rem;
+  padding-inline:0.35rem;
+}
+body.sidebar-collapsed .dash-menu-header .label{
+  display:none;
+}
+body.sidebar-collapsed .dash-menu-header #mini-view-label{
+  font-size:0.7rem;
+  text-align:center;
+}
+body.sidebar-collapsed .dash-menu button span:first-child{
+  display:none;
+}
+body.sidebar-collapsed .dash-menu button .badge{
+  margin-left:0;
+  text-align:center;
+  min-width:auto;
+}
+body.sidebar-collapsed .dash-menu-footer span:first-child{
+  display:none;
+}
+body.sidebar-collapsed .dash-menu-footer span:last-child{
+  font-size:0.65rem;
+}
+
+.timeline-list{
+  display:flex;
+  flex-direction:column;
+  gap:0.35rem;
+  font-size:0.78rem;
+}
+.timeline-item{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:0.35rem 0.5rem;
+  border-radius:0.75rem;
+  background:radial-gradient(circle at 0 0,rgba(56,189,248,0.12),rgba(15,23,42,0.95));
+}
+.timeline-item span.label{
+  font-weight:500;
+  color:var(--text);
+}
+.timeline-item span.values{
+  color:var(--text-soft);
+}
+</style>
 </head>
 <body>
   <header class="pr-header">
@@ -1258,6 +1308,144 @@
               </div>
             </section>
 
+<!-- PANEL STATS AVANCÉES -->
+<section id="panel-stats" class="panel">
+  <div class="panel-header">
+    <div>
+      <h2>Statistiques avancées</h2>
+      <p>Analyse consolidée de ton activité : CA, taux de transformation, répartition mensuelle.</p>
+    </div>
+  </div>
+
+  <div class="kpi-grid" id="stats-kpi-grid">
+    <div class="kpi-card">
+      <div class="kpi-label">CA potentiel</div>
+      <div class="kpi-value" id="stats-ca-potentiel">0 €</div>
+      <div class="kpi-trend" id="stats-ca-potentiel-trend">Devis acceptés / signés</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">CA facturé</div>
+      <div class="kpi-value" id="stats-ca-facture">0 €</div>
+      <div class="kpi-trend" id="stats-ca-facture-trend">Factures émises</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">CA encaissé</div>
+      <div class="kpi-value" id="stats-ca-encaisse">0 €</div>
+      <div class="kpi-trend" id="stats-ca-encaisse-trend">Paiements reçus</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Taux de transformation</div>
+      <div class="kpi-value" id="stats-taux-transformation">0 %</div>
+      <div class="kpi-trend" id="stats-taux-transformation-trend">Devis acceptés / total</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <h3>Chronologie mensuelle</h3>
+      <span class="sub">Vue mensuelle des devis, factures et encaissements</span>
+    </div>
+    <div id="stats-timeline" class="timeline-list">
+      <div style="font-size:0.78rem;color:var(--text-soft);">
+        Chargement des statistiques mensuelles…
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PANEL PAIEMENTS / FACTURES -->
+<section id="panel-finance" class="panel">
+  <div class="panel-header">
+    <div>
+      <h2>Paiements & factures</h2>
+      <p>Suivi des factures, encaissements et relances clients.</p>
+    </div>
+    <div class="panel-toolbar">
+      <button type="button" class="btn btn-secondary" id="btn-new-facture">Nouvelle facture</button>
+      <button type="button" class="btn btn-secondary" id="btn-new-paiement">Nouvel encaissement</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <h3>Factures</h3>
+      <span class="sub" id="factures-count-label">0 facture</span>
+    </div>
+    <div class="table-wrapper">
+      <table id="factures-table">
+        <thead>
+          <tr>
+            <th>N° facture</th>
+            <th>Devis lié</th>
+            <th>Client</th>
+            <th>Date</th>
+            <th>Montant TTC</th>
+            <th>Statut</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td colspan="7">Chargement…</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <h3>Paiements</h3>
+      <span class="sub" id="paiements-count-label">0 paiement</span>
+    </div>
+    <div class="table-wrapper">
+      <table id="paiements-table">
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Facture</th>
+            <th>Client</th>
+            <th>Montant</th>
+            <th>Mode</th>
+            <th>Statut</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td colspan="7">Chargement…</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- PANEL NOTIFICATIONS -->
+<section id="panel-notifications" class="panel">
+  <div class="panel-header">
+    <div>
+      <h2>Notifications internes</h2>
+      <p>Notes rapides, rappels et alertes liées à tes projets.</p>
+    </div>
+    <div class="panel-toolbar">
+      <button type="button" class="btn btn-secondary" id="btn-new-notif">Nouvelle notification</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <h3>Flux des notifications</h3>
+      <span class="sub" id="notifs-count-label">0 notification</span>
+    </div>
+    <div id="notifications-list" class="pill-list">
+      <div style="font-size:0.78rem;color:var(--text-soft);">
+        Aucune notification pour l’instant.
+      </div>
+    </div>
+  </div>
+</section>
+
           </div> <!-- /panels -->
         </div> <!-- /inner -->
       </section>
@@ -1504,7 +1692,7 @@
     // =========================
     // 👉 Mets ici l’URL de TA WebApp (déploiement Apps Script)
     const WEB_APP_URL =
-  "https://script.google.com/macros/s/AKfycbyemfjgPUxJhhYPkGvf4WGtCogUJgDW1ZfmPdZ3KTvf0b-9QpjQAqUjYzCQKQW6MOsg/exec";
+  "https://script.google.com/macros/s/AKfycbxtvwcppEAVNSzH97w-RaTxiap-HgyJwS9flxoIuMqt1_Xo4FTVQRE9cyP2At0CvW4/exec";
     const PRIVATE_CODE = "fang"; // change-le si tu veux
 
     const loginSection    = document.getElementById('private-login');
@@ -2603,6 +2791,423 @@ if (btnNewDevis) {
         }
       });
     }
-  </script>
+  
+// =========================
+// BARRE LATÉRALE DYNAMIQUE
+// =========================
+(function(){
+  const mini = document.getElementById('mini-view-label');
+  if(mini){
+    mini.style.cursor = 'pointer';
+    mini.addEventListener('click', () => {
+      document.body.classList.toggle('sidebar-collapsed');
+      mini.textContent = document.body.classList.contains('sidebar-collapsed')
+        ? 'Vue compacte'
+        : 'Vue globale';
+    });
+  }
+})();
+
+// =========================
+// STATS AVANCÉES
+// =========================
+async function loadAdvancedStats(){
+  const j = await fetchJson(`${WEB_APP_URL}?path=bo&resource=stats`, {cache:'no-store'});
+  if(!j.ok || !j.data) return;
+
+  const k = j.data.kpi || {};
+  const caPotentiel  = document.getElementById("stats-ca-potentiel");
+  const caFacture    = document.getElementById("stats-ca-facture");
+  const caEncaisse   = document.getElementById("stats-ca-encaisse");
+  const tauxTransfo  = document.getElementById("stats-taux-transformation");
+  const badgeStats   = document.getElementById("badge-stats");
+
+  if(caPotentiel) caPotentiel.textContent = formatEuro(k.caPotentiel);
+  if(caFacture)   caFacture.textContent   = formatEuro(k.caFacture);
+  if(caEncaisse)  caEncaisse.textContent  = formatEuro(k.caEncaisse);
+  if(tauxTransfo) tauxTransfo.textContent = (k.tauxTransformation || 0).toFixed(1) + " %";
+  if(badgeStats)  badgeStats.textContent  = (k.caEncaisse || 0) > 0 ? "OK" : "KPI";
+
+  const tl = document.getElementById("stats-timeline");
+  if(tl && Array.isArray(j.data.months)){
+    tl.innerHTML = "";
+    j.data.months.forEach(m => {
+      const div = document.createElement("div");
+      div.className = "timeline-item";
+      const label = document.createElement("span");
+      label.className = "label";
+      label.textContent = m.mois || "";
+      const values = document.createElement("span");
+      values.className = "values";
+      values.textContent =
+        `Devis: ${formatEuro(m.devis || 0)} · Factures: ${formatEuro(m.factures || 0)} · Payé: ${formatEuro(m.paiements || 0)}`;
+      div.appendChild(label);
+      div.appendChild(values);
+      tl.appendChild(div);
+    });
+  }
+}
+
+function formatEuro(v){
+  const n = Number(v||0);
+  return n.toLocaleString("fr-FR",{style:"currency",currency:"EUR"});
+}
+
+// =========================
+// FINANCE : FACTURES & PAIEMENTS
+// =========================
+async function loadFinance(){
+  const [facturesRes, paiementsRes] = await Promise.all([
+    fetchJson(`${WEB_APP_URL}?path=bo&resource=factures`, {cache:'no-store'}),
+    fetchJson(`${WEB_APP_URL}?path=bo&resource=paiements`, {cache:'no-store'})
+  ]);
+
+  if(facturesRes.ok){
+    renderFacturesTable(facturesRes.data || []);
+  }
+  if(paiementsRes.ok){
+    renderPaiementsTable(paiementsRes.data || []);
+  }
+}
+
+function renderFacturesTable(rows){
+  const tbody = document.querySelector("#factures-table tbody");
+  const label = document.getElementById("factures-count-label");
+  const badge = document.getElementById("badge-factures");
+  if(!tbody) return;
+  tbody.innerHTML = "";
+
+  if(!rows.length){
+    const tr = document.createElement("tr");
+    const td = document.createElement("td");
+    td.colSpan = 7;
+    td.textContent = "Aucune facture enregistrée pour l’instant.";
+    tr.appendChild(td);
+    tbody.appendChild(tr);
+  }else{
+    rows.forEach(row => {
+      const tr = document.createElement("tr");
+      const tdId = document.createElement("td");
+      tdId.textContent = row.id_facture || "—";
+
+      const tdDevis = document.createElement("td");
+      tdDevis.textContent = row.id_devis || "—";
+
+      const tdClient = document.createElement("td");
+      tdClient.textContent = row.client || "—";
+
+      const tdDate = document.createElement("td");
+      tdDate.textContent = row.date_facture || "—";
+
+      const tdMontant = document.createElement("td");
+      tdMontant.textContent = row.montant_ttc ? formatEuro(row.montant_ttc) : "—";
+
+      const tdStatut = document.createElement("td");
+      tdStatut.textContent = row.statut || "—";
+
+      const tdAction = document.createElement("td");
+      const pdfBtn = document.createElement("button");
+      const markPaidBtn = document.createElement("button");
+
+      pdfBtn.textContent = "PDF";
+      pdfBtn.className = "btn btn-ghost";
+      pdfBtn.addEventListener("click", () => {
+        if(row.id_facture) exportFacturePdf(row.id_facture);
+      });
+
+      markPaidBtn.textContent = "Marquer réglée";
+      markPaidBtn.className = "btn btn-ghost";
+      markPaidBtn.addEventListener("click", () => {
+        if(row.id_facture){
+          updateFactureStatut(row.id_facture,"réglée");
+        }
+      });
+
+      tdAction.appendChild(pdfBtn);
+      tdAction.appendChild(markPaidBtn);
+
+      tr.appendChild(tdId);
+      tr.appendChild(tdDevis);
+      tr.appendChild(tdClient);
+      tr.appendChild(tdDate);
+      tr.appendChild(tdMontant);
+      tr.appendChild(tdStatut);
+      tr.appendChild(tdAction);
+      tbody.appendChild(tr);
+    });
+  }
+
+  if(label) label.textContent = rows.length + " facture" + (rows.length>1?"s":"");
+  if(badge) badge.textContent = rows.length;
+}
+
+function renderPaiementsTable(rows){
+  const tbody = document.querySelector("#paiements-table tbody");
+  const label = document.getElementById("paiements-count-label");
+  if(!tbody) return;
+  tbody.innerHTML = "";
+
+  if(!rows.length){
+    const tr = document.createElement("tr");
+    const td = document.createElement("td");
+    td.colSpan = 7;
+    td.textContent = "Aucun paiement enregistré pour l’instant.";
+    tr.appendChild(td);
+    tbody.appendChild(tr);
+  }else{
+    rows.forEach(row => {
+      const tr = document.createElement("tr");
+
+      const tdDate = document.createElement("td");
+      tdDate.textContent = row.date_paiement || "—";
+
+      const tdFacture = document.createElement("td");
+      tdFacture.textContent = row.id_facture || "—";
+
+      const tdClient = document.createElement("td");
+      tdClient.textContent = row.client || "—";
+
+      const tdMontant = document.createElement("td");
+      tdMontant.textContent = row.montant ? formatEuro(row.montant) : "—";
+
+      const tdMode = document.createElement("td");
+      tdMode.textContent = row.mode || "—";
+
+      const tdStatut = document.createElement("td");
+      tdStatut.textContent = row.statut || "—";
+
+      const tdAction = document.createElement("td");
+      const markBtn = document.createElement("button");
+      markBtn.textContent = "Marquer payé";
+      markBtn.className = "btn btn-ghost";
+      markBtn.addEventListener("click", () => {
+        if(row.id_paiement){
+          updatePaiementStatut(row.id_paiement,"payé");
+        }
+      });
+      tdAction.appendChild(markBtn);
+
+      tr.appendChild(tdDate);
+      tr.appendChild(tdFacture);
+      tr.appendChild(tdClient);
+      tr.appendChild(tdMontant);
+      tr.appendChild(tdMode);
+      tr.appendChild(tdStatut);
+      tr.appendChild(tdAction);
+      tbody.appendChild(tr);
+    });
+  }
+
+  if(label) label.textContent = rows.length + " paiement" + (rows.length>1?"s":"");
+}
+
+// Création rapide via boutons
+const btnNewFacture = document.getElementById("btn-new-facture");
+if(btnNewFacture){
+  btnNewFacture.addEventListener("click", async () => {
+    const idDevis = prompt("ID du devis à facturer (ex: DV-0001) :");
+    if(!idDevis) return;
+    const montant = prompt("Montant TTC de la facture :");
+    const payload = { id_devis:idDevis, montant_ttc:montant, statut:"émise" };
+    try{
+      const j = await fetchJson(`${WEB_APP_URL}?path=bo&action=create_facture`, {
+        method:"POST",
+        body:JSON.stringify(payload)
+      });
+      if(j.ok){
+        alert("Facture créée.");
+        loadFinance();
+      }else{
+        alert("Erreur création facture : " + (j.error||""));
+      }
+    }catch(e){
+      alert("Erreur réseau lors de la création de la facture.");
+    }
+  });
+}
+
+const btnNewPaiement = document.getElementById("btn-new-paiement");
+if(btnNewPaiement){
+  btnNewPaiement.addEventListener("click", async () => {
+    const idFacture = prompt("ID de la facture réglée :");
+    if(!idFacture) return;
+    const montant = prompt("Montant payé :");
+    const mode    = prompt("Mode de paiement (CB, virement, chèque...) :") || "";
+    const payload = { id_facture:idFacture, montant:montant, mode:mode, statut:"payé" };
+    try{
+      const j = await fetchJson(`${WEB_APP_URL}?path=bo&action=create_paiement`, {
+        method:"POST",
+        body:JSON.stringify(payload)
+      });
+      if(j.ok){
+        alert("Paiement enregistré.");
+        loadFinance();
+      }else{
+        alert("Erreur enregistrement paiement : " + (j.error||""));
+      }
+    }catch(e){
+      alert("Erreur réseau lors de l’enregistrement du paiement.");
+    }
+  });
+}
+
+async function updateFactureStatut(idFacture, statut){
+  const payload = { id_facture:idFacture, statut:statut };
+  const j = await fetchJson(`${WEB_APP_URL}?path=bo&action=update_facture`, {
+    method:"POST",
+    body:JSON.stringify(payload)
+  });
+  if(j.ok){
+    loadFinance();
+  }else{
+    alert("Erreur mise à jour facture : " + (j.error||""));
+  }
+}
+
+async function updatePaiementStatut(idPaiement, statut){
+  const payload = { id_paiement:idPaiement, statut:statut };
+  const j = await fetchJson(`${WEB_APP_URL}?path=bo&action=update_paiement`, {
+    method:"POST",
+    body:JSON.stringify(payload)
+  });
+  if(j.ok){
+    loadFinance();
+  }else{
+    alert("Erreur mise à jour paiement : " + (j.error||""));
+  }
+}
+
+// =========================
+// NOTIFICATIONS INTERNES
+// =========================
+async function loadNotifications(){
+  const j = await fetchJson(`${WEB_APP_URL}?path=bo&resource=notifications`, {cache:'no-store'});
+  if(!j.ok){
+    return;
+  }
+  renderNotifications(j.data || []);
+}
+
+function renderNotifications(rows){
+  const container = document.getElementById("notifications-list");
+  const label     = document.getElementById("notifs-count-label");
+  const badge     = document.getElementById("badge-notifs");
+  if(!container) return;
+  container.innerHTML = "";
+
+  if(!rows.length){
+    const div = document.createElement("div");
+    div.style.fontSize = "0.78rem";
+    div.style.color = "var(--text-soft)";
+    div.textContent = "Aucune notification pour l’instant.";
+    container.appendChild(div);
+  }else{
+    rows.forEach(row => {
+      const pill = document.createElement("button");
+      pill.className = "pill-item";
+      pill.type = "button";
+      const titre = row.titre || row.title || "Notification";
+      const niveau = (row.niveau || row.level || "info").toString().toLowerCase();
+      pill.innerHTML = `<span>${titre}</span><span class="pill-tag pill-${niveau}">${niveau}</span>`;
+      pill.addEventListener("click", () => {
+        if(row.id_notification){
+          markNotificationRead(row.id_notification);
+        }
+        alert((row.message || row.contenu || "").toString());
+      });
+      container.appendChild(pill);
+    });
+  }
+
+  const n = rows.length;
+  if(label) label.textContent = n + " notification" + (n>1?"s":"");
+  if(badge) badge.textContent = n;
+}
+
+const btnNewNotif = document.getElementById("btn-new-notif");
+if(btnNewNotif){
+  btnNewNotif.addEventListener("click", async () => {
+    const titre = prompt("Titre de la notification :");
+    if(!titre) return;
+    const message = prompt("Contenu / rappel :") || "";
+    const niveau  = prompt("Niveau (info, warning, urgent) :", "info") || "info";
+    const payload = { titre:titre, message:message, niveau:niveau };
+    try{
+      const j = await fetchJson(`${WEB_APP_URL}?path=bo&action=create_notification`, {
+        method:"POST",
+        body:JSON.stringify(payload)
+      });
+      if(j.ok){
+        loadNotifications();
+      }else{
+        alert("Erreur création notification : " + (j.error||""));
+      }
+    }catch(e){
+      alert("Erreur réseau lors de la création de la notification.");
+    }
+  });
+}
+
+async function markNotificationRead(idNotification){
+  const payload = { id_notification:idNotification, lu:true };
+  const j = await fetchJson(`${WEB_APP_URL}?path=bo&action=update_notification`, {
+    method:"POST",
+    body:JSON.stringify(payload)
+  });
+  if(j.ok){
+    loadNotifications();
+  }
+}
+
+// =========================
+// EXPORT PDF DEPUIS LE DASHBOARD
+// =========================
+async function exportDevisPdf(idDevis){
+  if(!idDevis) return;
+  try{
+    const j = await fetchJson(`${WEB_APP_URL}?path=bo&action=export_devis_pdf`, {
+      method:"POST",
+      body:JSON.stringify({ id_devis:idDevis })
+    });
+    if(j.ok && j.pdfUrl){
+      window.open(j.pdfUrl,"_blank");
+    }else{
+      alert("Impossible de générer le PDF : " + (j.error || "erreur inconnue"));
+    }
+  }catch(e){
+    alert("Erreur réseau lors de la génération du PDF.");
+  }
+}
+
+async function exportFacturePdf(idFacture){
+  if(!idFacture) return;
+  try{
+    const j = await fetchJson(`${WEB_APP_URL}?path=bo&action=export_facture_pdf`, {
+      method:"POST",
+      body:JSON.stringify({ id_facture:idFacture })
+    });
+    if(j.ok && j.pdfUrl){
+      window.open(j.pdfUrl,"_blank");
+    }else{
+      alert("Impossible de générer le PDF : " + (j.error || "erreur inconnue"));
+    }
+  }catch(e){
+    alert("Erreur réseau lors de la génération du PDF.");
+  }
+}
+
+function envoyerDevisParMail(row){
+  const mail = row.email || row.mail_client || "";
+  const id   = row.id_devis || "";
+  const subject = encodeURIComponent("Votre devis " + id + " – Papo Rénov");
+  const body    = encodeURIComponent("Bonjour,\n\nJe vous transmets votre devis " + id + ".\n\nCordialement,\nPapo Rénov");
+  if(mail){
+    window.location.href = `mailto:${mail}?subject=${subject}&body=${body}`;
+  }else{
+    alert("Aucune adresse e-mail n’est renseignée pour ce devis.");
+  }
+}
+
+</script>
 </body>
 </html>
