@@ -1113,11 +1113,12 @@
                         <th>Date</th>
                         <th>Montant</th>
                         <th>Statut</th>
+                        <th>Actions</th>
                       </tr>
                     </thead>
                     <tbody>
                       <tr>
-                        <td colspan="5">Chargement…</td>
+                        <td colspan="6">Chargement…</td>
                       </tr>
                     </tbody>
                   </table>
@@ -2003,73 +2004,43 @@
       inputDevisMonth.addEventListener('change', applyDevisFilters);
     }
 
-    // Modal "Nouveau devis"
-    const btnNewDevis       = document.getElementById('btn-new-devis');
-    const modalNewDevis     = document.getElementById('modal-new-devis');
-    const formNewDevis      = document.getElementById('form-new-devis');
-    const btnCancelNewDevis = document.getElementById('btn-cancel-new-devis');
-    const btnCloseNewDevis  = document.getElementById('btn-close-new-devis');
-    const newDevisError     = document.getElementById('new-devis-error');
+    // === Nouveau devis : création automatique + redirection ===
 
-    function openNewDevisModal(){
-      if(modalNewDevis) modalNewDevis.classList.add('active');
-      if(newDevisError) newDevisError.textContent = "";
-      if(formNewDevis) formNewDevis.reset();
-    }
-    function closeNewDevisModal(){
-      if(modalNewDevis) modalNewDevis.classList.remove('active');
-    }
+const btnNewDevis = document.getElementById("btn-new-devis");
 
-    if(btnNewDevis){
-      btnNewDevis.addEventListener('click', openNewDevisModal);
-    }
-    if(btnCancelNewDevis){
-      btnCancelNewDevis.addEventListener('click', closeNewDevisModal);
-    }
-    if(btnCloseNewDevis){
-      btnCloseNewDevis.addEventListener('click', closeNewDevisModal);
-    }
+btnNewDevis.addEventListener("click", async () => {
 
-    if(formNewDevis){
-      formNewDevis.addEventListener('submit', async (e)=>{
-        e.preventDefault();
-        newDevisError.textContent = "";
+    const params = new URLSearchParams();
+    params.append("path", "bo");
+    params.append("action", "create_devis");
+    params.append("client", "");
+    params.append("montant_ttc", "0");
+    params.append("statut", "brouillon");
+    params.append("commentaire", "");
 
-        const fd = new FormData(formNewDevis);
-        const client = (fd.get('client') || '').toString().trim();
-        if(!client){
-          newDevisError.textContent = "Merci d’indiquer au moins le nom du client.";
-          return;
-        }
-
-        try{
-          const params = new URLSearchParams();
-          params.append('path','bo');
-          params.append('action','create_devis');
-          for(const [k,v] of fd.entries()){
-            params.append(k, v.toString());
-          }
-
-          const resp = await fetch(WEB_APP_URL, {
-            method:'POST',
+    try {
+        const resp = await fetch(WEB_APP_URL, {
+            method: "POST",
             body: params
-          });
-          const json = await resp.json();
-          if(!json.ok){
-            console.log('create_devis error', json);
-            newDevisError.textContent = "Erreur lors de l’enregistrement.";
-            return;
-          }
+        });
 
-          closeNewDevisModal();
-          await loadDevisList();
-          await loadDashboardKpis();
-        }catch(err){
-          console.log('create_devis exception', err);
-          newDevisError.textContent = "Erreur réseau, impossible d’enregistrer.";
+        const json = await resp.json();
+        console.log("Retour création devis :", json);
+
+        if (json.ok && json.id_devis) {
+            // redirection vers la page d’édition
+            window.location.href =
+              `devis-edition.html?id=${encodeURIComponent(json.id_devis)}`;
+        } else {
+            alert("Erreur lors de la création du devis.");
         }
-      });
+
+    } catch(err){
+        console.error(err);
+        alert("Erreur réseau : impossible de créer le devis.");
     }
+
+});
 
     // =========================
     // CHANTIERS
