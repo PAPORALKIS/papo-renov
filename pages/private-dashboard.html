@@ -1504,8 +1504,7 @@
     // =========================
     // 👉 Mets ici l’URL de TA WebApp (déploiement Apps Script)
     const WEB_APP_URL =
-      "https://script.google.com/macros/s/TON_DEPLOIEMENT_WEBAPP/exec";
-
+  "https://script.google.com/macros/s/AKfycbyemfjgPUxJhhYPkGvf4WGtCogUJgDW1ZfmPdZ3KTvf0b-9QpjQAqUjYzCQKQW6MOsg/exec";
     const PRIVATE_CODE = "fang"; // change-le si tu veux
 
     const loginSection    = document.getElementById('private-login');
@@ -1898,7 +1897,9 @@
         }
       });
     }
-
+// Sélecteurs de filtres devis
+const selectDevisStatus = document.getElementById('filter-devis-status');
+const inputDevisMonth   = document.getElementById('filter-devis-month');
     /* ============================================================
    ========== PANEL DEVIS — JS COMPLET ET CORRIGÉ ============
    ============================================================ */
@@ -1910,7 +1911,44 @@ if (selectDevisStatus) {
 if (inputDevisMonth) {
   inputDevisMonth.addEventListener("change", applyDevisFilters);
 }
+// =========================
+// DEVIS – chargement & filtres
+// =========================
 
+async function loadDevisList(){
+  const j = await fetchJson(`${WEB_APP_URL}?path=bo&resource=devis`, {cache:'no-store'});
+  if(!j.ok){
+    console.log("Erreur loadDevisList", j.error);
+    return;
+  }
+  DEVIS_CACHE = Array.isArray(j.data) ? j.data : [];
+  applyDevisFilters();
+}
+
+function applyDevisFilters(){
+  let rows = DEVIS_CACHE.slice();
+  const statut = (selectDevisStatus?.value || '').toLowerCase();
+  const mois   = (inputDevisMonth?.value || '').trim();
+
+  if(statut){
+    rows = rows.filter(d => String(d.statut || '').toLowerCase() === statut);
+  }
+  if(mois){
+    rows = rows.filter(d=>{
+      if(!d.date_devis) return false;
+      try{
+        const dte = new Date(d.date_devis);
+        const y = dte.getFullYear();
+        const m = String(dte.getMonth()+1).padStart(2,'0');
+        return `${y}-${m}` === mois;
+      }catch(e){
+        return false;
+      }
+    });
+  }
+
+  renderDevisTable(rows);
+}
 // === Rendu du tableau des devis ===
 function renderDevisTable(rows) {
   const tbody = document.querySelector("#devis-table tbody");
