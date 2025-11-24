@@ -1075,56 +1075,58 @@
             </section>
 
             <!-- PANEL DEVIS -->
-            <section id="panel-devis" class="panel">
-              <div class="panel-header">
-                <div>
-                  <h2>Devis</h2>
-                  <p>Suivi des devis (brouillons, envoyés, acceptés, refusés). Source : onglet <code>devis</code>.</p>
-                </div>
-                <div class="panel-toolbar">
-                  <button class="btn btn-secondary" id="btn-new-devis">+ Nouveau devis</button>
-                </div>
-              </div>
+<section id="panel-devis" class="panel">
+  <div class="panel-header">
+    <div>
+      <h2>Devis</h2>
+      <p>Suivi des devis (brouillons, envoyés, acceptés, refusés). Source : onglet <code>devis</code>.</p>
+    </div>
+    <div class="panel-toolbar">
+      <button class="btn btn-secondary" id="btn-new-devis">+ Nouveau devis</button>
+    </div>
+  </div>
 
-              <div class="filters-row">
-                <label>Statut :</label>
-                <select id="filter-devis-status">
-                  <option value="">Tous</option>
-                  <option value="brouillon">Brouillon</option>
-                  <option value="envoye">Envoyé</option>
-                  <option value="accepte">Accepté</option>
-                  <option value="refuse">Refusé</option>
-                </select>
-                <label>Période :</label>
-                <input type="month" id="filter-devis-month">
-              </div>
+  <div class="filters-row">
+    <label>Statut :</label>
+    <select id="filter-devis-status">
+      <option value="">Tous</option>
+      <option value="brouillon">Brouillon</option>
+      <option value="envoye">Envoyé</option>
+      <option value="accepte">Accepté</option>
+      <option value="refuse">Refusé</option>
+    </select>
 
-              <div class="card">
-                <div class="card-header">
-                  <h3>Liste des devis</h3>
-                  <span class="sub" id="devis-count-label">0 devis</span>
-                </div>
-                <div class="table-wrapper">
-                  <table id="devis-table">
-                    <thead>
-                      <tr>
-                        <th>N°</th>
-                        <th>Client</th>
-                        <th>Date</th>
-                        <th>Montant</th>
-                        <th>Statut</th>
-                        <th>Actions</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td colspan="6">Chargement…</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            </section>
+    <label>Période :</label>
+    <input type="month" id="filter-devis-month">
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <h3>Liste des devis</h3>
+      <span class="sub" id="devis-count-label">0 devis</span>
+    </div>
+
+    <div class="table-wrapper">
+      <table id="devis-table">
+        <thead>
+          <tr>
+            <th>N°</th>
+            <th>Client</th>
+            <th>Date</th>
+            <th>Montant</th>
+            <th>Statut</th>
+            <th>Actions</th> <!-- AJOUTÉ -->
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td colspan="6">Chargement…</td> <!-- AJUSTÉ POUR 6 COLONNES -->
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
 
             <!-- PANEL CHANTIERS -->
             <section id="panel-chantiers" class="panel">
@@ -1897,119 +1899,80 @@
       });
     }
 
-    // =========================
-    // DEVIS
-    // =========================
-    async function loadDevisList(){
-      const j = await fetchJson(`${WEB_APP_URL}?path=bo&resource=devis`, {cache:'no-store'});
-      if(!j.ok){
-        console.log("Erreur loadDevisList", j.error);
-        return;
-      }
-      DEVIS_CACHE = Array.isArray(j.data) ? j.data : [];
-      renderDevisTable(DEVIS_CACHE);
-    }
+    /* ============================================================
+   ========== PANEL DEVIS — JS COMPLET ET CORRIGÉ ============
+   ============================================================ */
 
-    function renderDevisTable(rows){
-      const tbody = document.querySelector('#devis-table tbody');
-      const label = document.getElementById('devis-count-label');
-      if(!tbody) return;
-      tbody.innerHTML = '';
+// === Filtres ===
+if (selectDevisStatus) {
+  selectDevisStatus.addEventListener("change", applyDevisFilters);
+}
+if (inputDevisMonth) {
+  inputDevisMonth.addEventListener("change", applyDevisFilters);
+}
 
-      if(!rows || rows.length === 0){
-        const tr = document.createElement('tr');
-        const td = document.createElement('td');
-        td.colSpan = 5;
-        td.textContent = "Aucun devis trouvé.";
-        tr.appendChild(td);
-        tbody.appendChild(tr);
-        if(label) label.textContent = "0 devis";
-        return;
-      }
+// === Rendu du tableau des devis ===
+function renderDevisTable(rows) {
+  const tbody = document.querySelector("#devis-table tbody");
+  tbody.innerHTML = "";
 
-      if(label) label.textContent = rows.length + (rows.length>1 ? " devis" : " devis");
+  if (!rows.length) {
+    tbody.innerHTML = `<tr><td colspan="6">Aucun devis trouvé.</td></tr>`;
+    return;
+  }
 
-      rows.forEach(d=>{
-        const tr      = document.createElement('tr');
-        const num     = d.numero || d.id_devis || '—';
-        const client  = d.client || d.nom_client || '—';
-        const date    = d.date_devis ? formatDateFr(d.date_devis) : '—';
-        const montant = d.montant_ttc ? formatEuro(d.montant_ttc) : '—';
-        const statut  = (d.statut || '').toString().trim() || '—';
+  rows.forEach((row) => {
+    const tr = document.createElement("tr");
 
-        const tdNum = document.createElement('td');
-        tdNum.textContent = num;
+    const tdId = document.createElement("td");
+    tdId.textContent = row.id_devis || "—";
 
-        const tdCli = document.createElement('td');
-        tdCli.textContent = client;
+    const tdClient = document.createElement("td");
+    tdClient.textContent = row.client || "—";
 
-        const tdDate = document.createElement('td');
-        tdDate.textContent = date;
+    const tdDate = document.createElement("td");
+    tdDate.textContent = row.date_devis || "—";
 
-        const tdMontant = document.createElement('td');
-        tdMontant.textContent = montant;
+    const tdMontant = document.createElement("td");
+    tdMontant.textContent = row.montant_ttc ? row.montant_ttc + " €" : "—";
 
-        const tdStat = document.createElement('td');
-        const span = document.createElement('span');
-        span.className = 'badge-status ' + (
-          statut === 'accepte' ? 'termine' :
-          statut === 'envoye'  ? 'en-cours' :
-          statut === 'brouillon' ? 'attente' : 'attente'
-        );
-        span.textContent = statut || '—';
-        tdStat.appendChild(span);
+    const tdStatut = document.createElement("td");
+    tdStatut.textContent = row.statut || "—";
 
-        tr.appendChild(tdNum);
-        tr.appendChild(tdCli);
-        tr.appendChild(tdDate);
-        tr.appendChild(tdMontant);
-        tr.appendChild(tdStat);
+    // === Bouton "Éditer le devis" ===
+    const tdAction = document.createElement("td");
+    const editBtn = document.createElement("button");
 
-        tbody.appendChild(tr);
-      });
-    }
+    editBtn.textContent = "Éditer";
+    editBtn.className = "btn btn-secondary";
 
-    const selectDevisStatus = document.getElementById('filter-devis-status');
-    const inputDevisMonth   = document.getElementById('filter-devis-month');
+    editBtn.addEventListener("click", () => {
+      window.location.href =
+        `devis-edition.html?id=${encodeURIComponent(row.id_devis)}`;
+    });
 
-    function applyDevisFilters(){
-      let rows = DEVIS_CACHE.slice();
-      const statut = (selectDevisStatus?.value || '').toLowerCase();
-      const mois   = (inputDevisMonth?.value || '').trim(); // yyyy-mm
+    tdAction.appendChild(editBtn);
 
-      if(statut){
-        rows = rows.filter(d => String(d.statut || '').toLowerCase() === statut);
-      }
-      if(mois){
-        rows = rows.filter(d=>{
-          if(!d.date_devis) return false;
-          try{
-            const dte = new Date(d.date_devis);
-            const y = dte.getFullYear();
-            const m = String(dte.getMonth()+1).padStart(2,'0');
-            return `${y}-${m}` === mois;
-          }catch(e){
-            return false;
-          }
-        });
-      }
+    tr.appendChild(tdId);
+    tr.appendChild(tdClient);
+    tr.appendChild(tdDate);
+    tr.appendChild(tdMontant);
+    tr.appendChild(tdStatut);
+    tr.appendChild(tdAction);
 
-      renderDevisTable(rows);
-    }
+    tbody.appendChild(tr);
+  });
 
-    if(selectDevisStatus){
-      selectDevisStatus.addEventListener('change', applyDevisFilters);
-    }
-    if(inputDevisMonth){
-      inputDevisMonth.addEventListener('change', applyDevisFilters);
-    }
+  // compteur affiché en haut
+  document.getElementById("devis-count-label").textContent =
+    rows.length + " devis";
+}
 
-    // === Nouveau devis : création automatique + redirection ===
-
+// === Nouveau devis : création automatique + redirection ===
 const btnNewDevis = document.getElementById("btn-new-devis");
 
-btnNewDevis.addEventListener("click", async () => {
-
+if (btnNewDevis) {
+  btnNewDevis.addEventListener("click", async () => {
     const params = new URLSearchParams();
     params.append("path", "bo");
     params.append("action", "create_devis");
@@ -2019,29 +1982,27 @@ btnNewDevis.addEventListener("click", async () => {
     params.append("commentaire", "");
 
     try {
-        const resp = await fetch(WEB_APP_URL, {
-            method: "POST",
-            body: params
-        });
+      const resp = await fetch(WEB_APP_URL, {
+        method: "POST",
+        body: params
+      });
 
-        const json = await resp.json();
-        console.log("Retour création devis :", json);
+      const json = await resp.json();
+      console.log("Retour création devis :", json);
 
-        if (json.ok && json.id_devis) {
-            // redirection vers la page d’édition
-            window.location.href =
-              `devis-edition.html?id=${encodeURIComponent(json.id_devis)}`;
-        } else {
-            alert("Erreur lors de la création du devis.");
-        }
+      if (json.ok && json.id_devis) {
+        window.location.href =
+          `devis-edition.html?id=${encodeURIComponent(json.id_devis)}`;
+      } else {
+        alert("Erreur lors de la création du devis.");
+      }
 
-    } catch(err){
-        console.error(err);
-        alert("Erreur réseau : impossible de créer le devis.");
+    } catch (err) {
+      console.error(err);
+      alert("Erreur réseau : impossible de créer le devis.");
     }
-
-});
-
+  });
+}
     // =========================
     // CHANTIERS
     // =========================
