@@ -8,7 +8,7 @@
     :root {
       --bg: #050d1f;
       --bg-alt: #0b172b;
-      --card: #111f35;
+      --card: #101b32;
       --accent: #31b5ff;
       --accent-soft: rgba(49, 181, 255, 0.12);
       --text: #f5f8ff;
@@ -23,7 +23,7 @@
 
     body {
       margin: 0;
-      padding: 24px;
+      padding: 18px;
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
         Roboto, sans-serif;
       background: radial-gradient(circle at top left, #112b48 0, #050d1f 55%);
@@ -34,27 +34,29 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-bottom: 24px;
       gap: 16px;
+      margin-bottom: 18px;
     }
 
     header .left {
       display: flex;
       align-items: center;
       gap: 12px;
+      flex-wrap: wrap;
     }
 
     header img.logo {
-      width: 36px;
-      height: 36px;
+      width: 38px;
+      height: 38px;
       border-radius: 999px;
       background: #0b172b;
       padding: 6px;
+      object-fit: contain;
     }
 
     header h1 {
-      font-size: 1.3rem;
       margin: 0;
+      font-size: 1.25rem;
     }
 
     header .subtitle {
@@ -74,11 +76,11 @@
 
     .shell {
       display: grid;
-      grid-template-columns: 2.2fr 1.3fr;
-      gap: 20px;
+      grid-template-columns: 2.1fr 1.4fr;
+      gap: 18px;
     }
 
-    @media (max-width: 960px) {
+    @media (max-width: 900px) {
       .shell {
         grid-template-columns: 1fr;
       }
@@ -87,13 +89,14 @@
     .card {
       background: var(--card);
       border-radius: var(--radius);
-      padding: 16px 18px;
+      padding: 14px 16px;
       box-shadow: 0 18px 45px rgba(0, 0, 0, 0.35);
       border: 1px solid rgba(255, 255, 255, 0.04);
+      min-width: 0;
     }
 
     .card h2 {
-      margin: 0 0 6px;
+      margin: 0 0 4px;
       font-size: 1.05rem;
     }
 
@@ -103,11 +106,18 @@
       color: var(--text-soft);
     }
 
+    /* Bloc infos devis */
     .meta-grid {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 10px 16px;
-      margin-bottom: 10px;
+      margin-top: 8px;
+    }
+
+    @media (max-width: 700px) {
+      .meta-grid {
+        grid-template-columns: 1fr;
+      }
     }
 
     .meta-grid label {
@@ -122,7 +132,7 @@
       width: 100%;
       padding: 7px 9px;
       border-radius: 999px;
-      border: 1px solid #1f2b43;
+      border: 1px solid #1e2942;
       background: #050d1f;
       color: var(--text);
       font-size: 0.85rem;
@@ -131,7 +141,7 @@
 
     .meta-grid textarea {
       border-radius: 10px;
-      min-height: 60px;
+      min-height: 52px;
       resize: vertical;
     }
 
@@ -141,59 +151,72 @@
       box-shadow: 0 0 0 1px rgba(49, 181, 255, 0.4);
     }
 
-    .filters {
+    /* Tarifs - catégories */
+    .categories-list {
       display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-bottom: 10px;
+      flex-direction: column;
+      gap: 10px;
+      max-height: 560px;
+      overflow: auto;
     }
 
-    .filters button {
-      border-radius: 999px;
-      padding: 4px 10px;
-      border: 1px solid #283550;
-      background: #050d1f;
-      color: var(--text-soft);
-      font-size: 0.75rem;
+    .category-block {
+      background: #0a1428;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      overflow: hidden;
+    }
+
+    .category-header {
+      padding: 8px 10px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
       cursor: pointer;
     }
 
-    .filters button.active {
-      background: var(--accent-soft);
-      border-color: var(--accent);
-      color: var(--accent);
+    .category-header h3 {
+      margin: 0;
+      font-size: 0.95rem;
     }
 
-    .tarifs-list {
-      max-height: 520px;
-      overflow: auto;
-      padding-right: 6px;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
+    .category-header span.badge {
+      font-size: 0.75rem;
+      color: var(--text-soft);
+    }
+
+    .category-body {
+      padding: 6px 10px 8px;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
     }
 
     .tarif-item {
       display: flex;
-      justify-content: space-between;
       align-items: center;
+      justify-content: space-between;
       gap: 10px;
-      padding: 8px 10px;
+      padding: 6px 4px;
       border-radius: 10px;
-      background: rgba(9, 19, 39, 0.9);
-      border: 1px solid rgba(255, 255, 255, 0.03);
     }
 
-    .tarif-main {
+    .tarif-item:nth-child(2n) {
+      background: rgba(6, 15, 33, 0.9);
+    }
+
+    .tarif-info {
       flex: 1;
+      min-width: 0;
     }
 
-    .tarif-main .tache {
-      font-size: 0.9rem;
+    .tarif-title {
+      font-size: 0.86rem;
       margin-bottom: 2px;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
     }
 
-    .tarif-main .meta {
+    .tarif-meta {
       font-size: 0.75rem;
       color: var(--text-soft);
     }
@@ -206,7 +229,7 @@
     }
 
     .tarif-actions input {
-      width: 60px;
+      width: 64px;
       padding: 4px 6px;
       border-radius: 999px;
       border: 1px solid #283550;
@@ -234,6 +257,7 @@
       filter: brightness(1.06);
     }
 
+    /* Panier devis */
     .basket-table {
       width: 100%;
       border-collapse: collapse;
@@ -244,13 +268,13 @@
     .basket-table th,
     .basket-table td {
       padding: 5px 6px;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      text-align: left;
     }
 
     .basket-table th {
       font-weight: 500;
       color: var(--text-soft);
-      text-align: left;
     }
 
     .basket-table td.num {
@@ -270,9 +294,9 @@
     }
 
     .basket-footer {
-      margin-top: 10px;
+      margin-top: 8px;
       padding-top: 8px;
-      border-top: 1px dashed rgba(255, 255, 255, 0.12);
+      border-top: 1px dashed rgba(255, 255, 255, 0.15);
       font-size: 0.85rem;
     }
 
@@ -291,10 +315,11 @@
     }
 
     .actions-row {
-      margin-top: 14px;
+      margin-top: 12px;
       display: flex;
       justify-content: flex-end;
       gap: 10px;
+      flex-wrap: wrap;
     }
 
     .btn-ghost {
@@ -343,57 +368,58 @@
       <img src="../img/logo.png" alt="Papo Rénov" class="logo" />
       <div>
         <h1>Édition du devis <span id="devis-id-label"></span></h1>
-        <div class="subtitle">Ajoute les prestations depuis la grille tarifaire et génère le PDF.</div>
+        <div class="subtitle">
+          Sélectionne les prestations depuis la grille tarifaire et génère le PDF final.
+        </div>
       </div>
     </div>
   </header>
 
-  <div class="card" style="margin-bottom: 18px;">
-    <h2>Informations du devis</h2>
-    <p class="subtitle">Ces infos iront dans le Google Docs (client, adresse, objet).</p>
+  <section class="card" style="margin-bottom: 16px;">
+    <h2>Informations principales</h2>
+    <p class="subtitle">Ces informations seront reprises dans le document de devis.</p>
     <div class="meta-grid">
       <div>
         <label for="client">Client</label>
         <input id="client" type="text" placeholder="Nom / société" />
       </div>
       <div>
-        <label for="date-devis">Date</label>
+        <label for="date-devis">Date du devis</label>
         <input id="date-devis" type="date" />
       </div>
       <div>
-        <label for="adresse">Adresse du chantier / contexte</label>
-        <textarea id="adresse" placeholder="Adresse, étage, accès, etc."></textarea>
+        <label for="adresse">Adresse / Lieu du chantier</label>
+        <textarea id="adresse" placeholder="Adresse, étage, accès, ville..."></textarea>
       </div>
       <div>
-        <label for="objet">Objet / description</label>
-        <textarea id="objet" placeholder="Ex : Rénovation salle de bains complète..."></textarea>
+        <label for="objet">Objet / Description du projet</label>
+        <textarea id="objet" placeholder="Ex : Rénovation salle de bain, création dressing..."></textarea>
       </div>
     </div>
-  </div>
+  </section>
 
   <div class="shell">
+    <!-- Colonne gauche : tarifs -->
     <section class="card">
       <h2>Grille tarifaire</h2>
-      <p class="subtitle">Sélectionne les prestations à ajouter au devis.</p>
-
-      <div class="filters" id="filters"></div>
-
-      <div class="tarifs-list" id="tarifs-list">
+      <p class="subtitle">Prestations issues de ton fichier “Tarifs apps script DÉTAILS”.</p>
+      <div id="tarif-categories" class="categories-list">
         <p style="font-size:0.85rem;color:var(--text-soft);">Chargement des tarifs...</p>
       </div>
     </section>
 
+    <!-- Colonne droite : contenu devis -->
     <section class="card">
       <h2>Contenu du devis</h2>
-      <p class="subtitle">Lignes qui seront envoyées dans ton Google Docs.</p>
+      <p class="subtitle">Lignes qui seront injectées dans le Google Docs et le PDF.</p>
 
-      <table class="basket-table" id="basket-table">
+      <table class="basket-table">
         <thead>
           <tr>
             <th class="num">#</th>
             <th>Prestation</th>
             <th>Qté</th>
-            <th>Prix unitaire HT</th>
+            <th>PU HT</th>
             <th>Total HT</th>
             <th></th>
           </tr>
@@ -401,16 +427,16 @@
         <tbody id="basket-body">
           <tr>
             <td colspan="6" style="font-size:0.8rem;color:var(--text-soft);padding:8px 4px;">
-              Aucune ligne pour l’instant. Ajoute des prestations à gauche.
+              Aucune ligne pour l’instant. Ajoute des prestations depuis la colonne de gauche.
             </td>
           </tr>
         </tbody>
       </table>
 
       <div class="basket-footer">
-        <p><span class="label">Total HT</span><span class="value" id="total-ht">0.00 €</span></p>
-        <p><span class="label">TVA (20%)</span><span class="value" id="total-tva">0.00 €</span></p>
-        <p><span class="label">Total TTC</span><span class="value" id="total-ttc">0.00 €</span></p>
+        <p><span class="label">Total HT</span><span class="value" id="total-ht">0,00 €</span></p>
+        <p><span class="label">TVA (20%)</span><span class="value" id="total-tva">0,00 €</span></p>
+        <p><span class="label">Total TTC</span><span class="value" id="total-ttc">0,00 €</span></p>
       </div>
 
       <div class="actions-row">
@@ -423,17 +449,18 @@
   </div>
 
   <script>
-    const TARIFFS_URL =
+    // URLs des WebApps
+    const TARIFS_WEBAPP_URL =
       "https://script.google.com/macros/s/AKfycbww7_mLiUesnyQQHbQjwto1XsbtePXVW0UHU_sLYFLqCOFd0diTanXBWJVCqpePADzwow/exec";
-    const GENERATION_URL =
+    const GENERATION_WEBAPP_URL =
       "https://script.google.com/macros/s/AKfycbwi9GX3vLf1L02F2zK-23fi8nQ8VDjYjEQ4UfXBs4jUHG5IOQdN3Z88k_MxaG7_VzAK/exec";
 
-    let allTarifs = [];
-    let currentCategory = "TOUS";
     let basket = [];
+    let groupedTarifs = {};
 
     function formatEUR(v) {
-      return v.toFixed(2).replace(".", ",") + " €";
+      const n = Number(v) || 0;
+      return n.toFixed(2).replace(".", ",") + " €";
     }
 
     function getQueryParam(name) {
@@ -441,148 +468,149 @@
       return params.get(name) || "";
     }
 
-    /* -------- Chargement des tarifs -------- */
+    // ----------------- Chargement des tarifs -----------------
     async function loadTarifs() {
-      const list = document.getElementById("tarifs-list");
-      list.innerHTML =
+      const container = document.getElementById("tarif-categories");
+      container.innerHTML =
         '<p style="font-size:0.85rem;color:var(--text-soft);">Chargement des tarifs...</p>';
+      groupedTarifs = {};
 
       try {
-        const resp = await fetch(TARIFFS_URL + "?path=tarifs");
-        const data = await resp.json();
-        allTarifs = data.tarifs || data.rows || [];
-        buildFilters();
-        renderTarifs();
-      } catch (err) {
-        console.error(err);
-        list.innerHTML =
-          '<p style="color:#ff6b7a;font-size:0.85rem;">Erreur de chargement des tarifs.</p>';
-      }
-    }
-
-    function buildFilters() {
-      const filters = document.getElementById("filters");
-      filters.innerHTML = "";
-      const cats = Array.from(
-        new Set(allTarifs.map((t) => t.categorie || "Autres"))
-      ).sort();
-
-      const btnAll = document.createElement("button");
-      btnAll.textContent = "Tous";
-      btnAll.className = "active";
-      btnAll.addEventListener("click", () => {
-        currentCategory = "TOUS";
-        updateFilterButtons();
-        renderTarifs();
-      });
-      filters.appendChild(btnAll);
-
-      cats.forEach((cat) => {
-        const btn = document.createElement("button");
-        btn.textContent = cat;
-        btn.dataset.cat = cat;
-        btn.addEventListener("click", () => {
-          currentCategory = cat;
-          updateFilterButtons();
-          renderTarifs();
+        const r = await fetch(`${TARIFS_WEBAPP_URL}?path=tarifs`, {
+          cache: "no-store",
         });
-        filters.appendChild(btn);
-      });
-    }
-
-    function updateFilterButtons() {
-      document
-        .querySelectorAll(".filters button")
-        .forEach((btn) => btn.classList.remove("active"));
-
-      document
-        .querySelectorAll(".filters button")
-        .forEach((btn) => {
-          if (
-            (currentCategory === "TOUS" && !btn.dataset.cat) ||
-            btn.dataset.cat === currentCategory
-          ) {
-            btn.classList.add("active");
-          }
-        });
-    }
-
-    function renderTarifs() {
-      const list = document.getElementById("tarifs-list");
-      list.innerHTML = "";
-
-      let tarifs = allTarifs;
-      if (currentCategory !== "TOUS") {
-        tarifs = tarifs.filter((t) => t.categorie === currentCategory);
-      }
-
-      if (!tarifs.length) {
-        list.innerHTML =
-          '<p style="font-size:0.8rem;color:var(--text-soft);">Aucun tarif pour cette catégorie.</p>';
-        return;
-      }
-
-      tarifs.forEach((t) => {
-        const item = document.createElement("div");
-        item.className = "tarif-item";
-
-        const main = document.createElement("div");
-        main.className = "tarif-main";
-        const tache = document.createElement("div");
-        tache.className = "tache";
-        tache.textContent = t.tache || "(sans libellé)";
-
-        const meta = document.createElement("div");
-        meta.className = "meta";
-        const prix = Number(t["Prix particulier"] || t.prix_min || 0);
-        const unite = t.unite || t.unité || "";
-        meta.textContent =
-          (prix ? formatEUR(prix) : "Tarif à définir") +
-          (unite ? " • " + unite : "");
-
-        if (t.notes) {
-          meta.textContent += " • " + t.notes;
+        if (!r.ok) {
+          throw new Error("HTTP " + r.status);
         }
+        const j = await r.json();
+        const arr = Array.isArray(j) ? j : j.tarifs || [];
 
-        main.appendChild(tache);
-        main.appendChild(meta);
-
-        const actions = document.createElement("div");
-        actions.className = "tarif-actions";
-
-        const qtyInput = document.createElement("input");
-        qtyInput.type = "number";
-        qtyInput.min = "1";
-        qtyInput.step = "1";
-        qtyInput.value = "1";
-
-        const btnAdd = document.createElement("button");
-        btnAdd.className = "btn-pill btn-accent";
-        btnAdd.textContent = "+ Ajouter";
-
-        btnAdd.addEventListener("click", () => {
-          const qte = Number(qtyInput.value) || 1;
-          addToBasket({
+        arr.forEach((t) => {
+          const cat = (t.categorie || "Autres").toString();
+          if (!groupedTarifs[cat]) groupedTarifs[cat] = [];
+          groupedTarifs[cat].push({
             tache: t.tache || "",
-            prix_unitaire: prix,
-            quantite: qte,
+            prix:
+              typeof t["Prix particulier"] === "number"
+                ? t["Prix particulier"]
+                : t.prix_min
+                ? parseFloat(String(t.prix_min).replace(",", "."))
+                : 0,
+            unite: t.unite || t.unité || "",
+            notes: t.notes || "",
           });
         });
 
-        actions.appendChild(qtyInput);
-        actions.appendChild(btnAdd);
+        renderTarifCategories();
+      } catch (e) {
+        console.error("Erreur chargement tarifs", e);
+        container.innerHTML =
+          '<p style="font-size:0.85rem;color:#ff6b7a;">Erreur lors du chargement des tarifs.</p>';
+      }
+    }
 
-        item.appendChild(main);
-        item.appendChild(actions);
-        list.appendChild(item);
+    function renderTarifCategories() {
+      const container = document.getElementById("tarif-categories");
+      container.innerHTML = "";
+
+      const cats = Object.keys(groupedTarifs).sort();
+      if (!cats.length) {
+        container.innerHTML =
+          '<p style="font-size:0.85rem;color:var(--text-soft);">Aucun tarif disponible.</p>';
+        return;
+      }
+
+      cats.forEach((catName, index) => {
+        const catBlock = document.createElement("div");
+        catBlock.className = "category-block";
+
+        const header = document.createElement("div");
+        header.className = "category-header";
+        const h3 = document.createElement("h3");
+        h3.textContent = catName;
+        const badge = document.createElement("span");
+        badge.className = "badge";
+        badge.textContent = `${groupedTarifs[catName].length} postes`;
+        header.appendChild(h3);
+        header.appendChild(badge);
+
+        const body = document.createElement("div");
+        body.className = "category-body";
+        if (index !== 0) {
+          body.style.display = "none";
+        }
+
+        header.addEventListener("click", () => {
+          body.style.display = body.style.display === "none" ? "block" : "none";
+        });
+
+        groupedTarifs[catName].forEach((item) => {
+          const row = document.createElement("div");
+          row.className = "tarif-item";
+
+          const info = document.createElement("div");
+          info.className = "tarif-info";
+
+          const title = document.createElement("div");
+          title.className = "tarif-title";
+          title.textContent = item.tache || "(Sans libellé)";
+
+          const meta = document.createElement("div");
+          meta.className = "tarif-meta";
+          const prixLabel =
+            item.prix && item.prix > 0
+              ? formatEUR(item.prix)
+              : "Tarif à définir";
+          let metaText = prixLabel;
+          if (item.unite) metaText += " • " + item.unite;
+          if (item.notes) metaText += " • " + item.notes;
+          meta.textContent = metaText;
+
+          info.appendChild(title);
+          info.appendChild(meta);
+
+          const actions = document.createElement("div");
+          actions.className = "tarif-actions";
+
+          const qty = document.createElement("input");
+          qty.type = "number";
+          qty.min = "0";
+          qty.step = "0.5";
+          qty.value = "1";
+
+          const btnAdd = document.createElement("button");
+          btnAdd.className = "btn-pill btn-accent";
+          btnAdd.textContent = "+ Ajouter";
+
+          btnAdd.addEventListener("click", () => {
+            const q = Number(qty.value) || 1;
+            addToBasket({
+              tache: item.tache || "",
+              quantite: q,
+              prix_unitaire: Number(item.prix) || 0,
+            });
+          });
+
+          actions.appendChild(qty);
+          actions.appendChild(btnAdd);
+
+          row.appendChild(info);
+          row.appendChild(actions);
+
+          body.appendChild(row);
+        });
+
+        catBlock.appendChild(header);
+        catBlock.appendChild(body);
+        container.appendChild(catBlock);
       });
     }
 
-    /* -------- Panier / contenu du devis -------- */
-
+    // ----------------- Panier / Devis -----------------
     function addToBasket(line) {
+      const tbody = document.getElementById("basket-body");
       if (!basket.length) {
-        document.getElementById("basket-body").innerHTML = "";
+        tbody.innerHTML = "";
       }
       basket.push(line);
       renderBasket();
@@ -628,7 +656,8 @@
         tdPu.appendChild(puInput);
 
         const tdTotal = document.createElement("td");
-        const totalLigne = (line.quantite || 0) * (line.prix_unitaire || 0);
+        const totalLigne =
+          (line.quantite || 0) * (line.prix_unitaire || 0);
         tdTotal.textContent = formatEUR(totalLigne);
 
         const tdDel = document.createElement("td");
@@ -637,16 +666,16 @@
         btnDel.textContent = "✕";
         btnDel.style.background = "transparent";
         btnDel.style.color = "var(--text-soft)";
-        btnDel.onclick = () => {
+        btnDel.addEventListener("click", () => {
           basket.splice(idx, 1);
           if (!basket.length) {
             tbody.innerHTML =
-              '<tr><td colspan="6" style="font-size:0.8rem;color:var(--text-soft);padding:8px 4px;">Aucune ligne pour l’instant. Ajoute des prestations à gauche.</td></tr>';
+              '<tr><td colspan="6" style="font-size:0.8rem;color:var(--text-soft);padding:8px 4px;">Aucune ligne pour l’instant. Ajoute des prestations depuis la colonne de gauche.</td></tr>';
             updateTotals();
           } else {
             renderBasket();
           }
-        };
+        });
         tdDel.appendChild(btnDel);
 
         tr.appendChild(tdNum);
@@ -655,6 +684,7 @@
         tr.appendChild(tdPu);
         tr.appendChild(tdTotal);
         tr.appendChild(tdDel);
+
         tbody.appendChild(tr);
       });
 
@@ -674,8 +704,15 @@
       document.getElementById("total-ttc").textContent = formatEUR(ttc);
     }
 
-    /* -------- Envoi vers Apps Script pour générer le devis -------- */
+    function clearDevis() {
+      basket = [];
+      const tbody = document.getElementById("basket-body");
+      tbody.innerHTML =
+        '<tr><td colspan="6" style="font-size:0.8rem;color:var(--text-soft);padding:8px 4px;">Aucune ligne pour l’instant. Ajoute des prestations depuis la colonne de gauche.</td></tr>';
+      updateTotals();
+    }
 
+    // ----------------- Génération PDF -----------------
     async function generateDevis() {
       const msg = document.getElementById("message");
       msg.textContent = "";
@@ -687,22 +724,24 @@
         return;
       }
 
+      const idDevis = getQueryParam("id");
       const client = document.getElementById("client").value.trim();
       const adresse = document.getElementById("adresse").value.trim();
       const objet = document.getElementById("objet").value.trim();
       const dateDevis = document.getElementById("date-devis").value;
-      const idDevis = getQueryParam("id") || "";
 
-      const totalHTText = document
-        .getElementById("total-ht")
-        .textContent.replace(" €", "")
-        .replace(",", ".");
-      const totalTTCText = document
-        .getElementById("total-ttc")
-        .textContent.replace(" €", "")
-        .replace(",", ".");
-      const montant_ht = Number(totalHTText) || 0;
-      const montant_ttc = Number(totalTTCText) || 0;
+      const totalHTNum = Number(
+        document
+          .getElementById("total-ht")
+          .textContent.replace(" €", "")
+          .replace(",", ".")
+      );
+      const totalTTCNum = Number(
+        document
+          .getElementById("total-ttc")
+          .textContent.replace(" €", "")
+          .replace(",", ".")
+      );
 
       const lignes = basket.map((l, idx) => ({
         num: idx + 1,
@@ -713,70 +752,63 @@
       }));
 
       const params = new URLSearchParams();
-      params.append("path", "bo");
-      params.append("action", "create_devis");
       if (idDevis) params.append("id_devis", idDevis);
       if (client) params.append("client", client);
       if (adresse) params.append("adresse", adresse);
-      if (objet) params.append("commentaire", objet);
-      if (dateDevis) params.append("date_devis", dateDevis);
-      params.append("montant_ht", String(montant_ht));
-      params.append("montant_ttc", String(montant_ttc));
+      if (objet) params.append("objet", objet);
+      if (dateDevis) params.append("date", dateDevis);
+      params.append("montant_ht", String(totalHTNum || 0));
+      params.append("montant_ttc", String(totalTTCNum || 0));
       params.append("lignes", JSON.stringify(lignes));
 
       try {
         msg.textContent = "Génération du devis en cours…";
-        const resp = await fetch(GENERATION_URL, {
+        const resp = await fetch(GENERATION_WEBAPP_URL, {
           method: "POST",
           body: params,
         });
-        const json = await resp.json().catch(() => ({}));
+        const json = await resp.json().catch(() => null);
 
         if (json && json.ok) {
           msg.textContent =
-            "Devis généré. Tu peux le retrouver dans ton Drive / backoffice.";
+            "Devis généré. Tu peux le retrouver dans ton Drive / dossier devis.";
           msg.className = "success";
           if (json.pdfUrl) {
             window.open(json.pdfUrl, "_blank");
           }
         } else {
-          console.error(json);
+          console.error("Réponse API génération :", json);
           msg.textContent =
             "Erreur lors de la génération du devis (côté serveur).";
           msg.className = "error";
         }
-      } catch (err) {
-        console.error(err);
-        msg.textContent = "Erreur réseau, impossible d’appeler l’API.";
+      } catch (e) {
+        console.error("Erreur réseau génération", e);
+        msg.textContent =
+          "Erreur réseau, impossible d’appeler le service de génération.";
         msg.className = "error";
       }
     }
 
-    function clearDevis() {
-      basket = [];
-      renderBasket();
-      const tbody = document.getElementById("basket-body");
-      tbody.innerHTML =
-        '<tr><td colspan="6" style="font-size:0.8rem;color:var(--text-soft);padding:8px 4px;">Aucune ligne pour l’instant. Ajoute des prestations à gauche.</td></tr>';
-      updateTotals();
-    }
-
-    /* -------- Init -------- */
-
+    // ----------------- Init -----------------
     window.addEventListener("DOMContentLoaded", () => {
       const today = new Date().toISOString().split("T")[0];
-      document.getElementById("date-devis").value = today;
+      const dateInput = document.getElementById("date-devis");
+      if (dateInput && !dateInput.value) {
+        dateInput.value = today;
+      }
+
       const idDevis = getQueryParam("id");
       if (idDevis) {
         document.getElementById("devis-id-label").textContent = idDevis;
       }
 
       document
-        .getElementById("btn-generate")
-        .addEventListener("click", generateDevis);
-      document
         .getElementById("btn-clear")
         .addEventListener("click", clearDevis);
+      document
+        .getElementById("btn-generate")
+        .addEventListener("click", generateDevis);
 
       loadTarifs();
     });
