@@ -161,12 +161,13 @@
   </div>
 
   <script>
-    const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwi9GX3vLf1L02F2zK-23fi8nQ8VDjYjEQ4UfXBs4jUHG5IOQdN3Z88k_MxaG7_VzAK/exec";
+    const TARIFS_WEBAPP_URL = "https://script.google.com/macros/s/AKfycbww7_mLiUesnyQQHbQjwto1XsbtePXVW0UHU_sLYFLqCOFd0diTanXBWJVCqpePADzwow/exec";
+    const BACKOFFICE_WEBAPP_URL = "https://script.google.com/macros/s/AKfycbxtvwcppEAVNSzH97w-RaTxiap-HgyJwS9flxoIuMqt1_Xo4FTVQRE9cyP2At0CvW4/exec";
     let tasksList = [];
 
     async function fetchTasks() {
       try {
-        const response = await fetch(`${WEB_APP_URL}?path=tarifs`);
+        const response = await fetch(`${TARIFS_WEBAPP_URL}?path=tarifs`);
         const data = await response.json();
         tasksList = data.tarifs || data.rows || data || [];
         addLine();
@@ -271,7 +272,7 @@
       }
 
       try {
-        const resp = await fetch(WEB_APP_URL, { method: 'POST', body: params });
+        const resp = await fetch(BACKOFFICE_WEBAPP_URL, { method: 'POST', body: params });
         const result = await resp.json();
         if (result.ok) {
           document.getElementById('devis-message').style.color = '#22c55e';
@@ -320,7 +321,7 @@
       }
 
       try {
-        const resp = await fetch(WEB_APP_URL, { method: 'POST', body: params });
+        const resp = await fetch(BACKOFFICE_WEBAPP_URL, { method: 'POST', body: params });
         const result = await resp.json();
         if (result.ok) {
           window.print();
