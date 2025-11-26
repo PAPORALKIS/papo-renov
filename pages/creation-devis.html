@@ -14,155 +14,288 @@
     header.pr-header {
       background-color: #222;
       color: #fff;
-      padding: 20px;
-      margin-bottom: 30px;
+      padding: 10px 20px;
+      border-radius: 8px;
       display: flex;
+      align-items: center;
       justify-content: space-between;
-      align-items: center;
+      margin-bottom: 20px;
     }
-    header .brand {
+    header.pr-header .logo {
       display: flex;
       align-items: center;
+      gap: 10px;
     }
-    header .brand .logo {
-      height: 40px;
-      margin-right: 10px;
+    header.pr-header .logo span {
+      font-size: 1.4rem;
+      font-weight: 600;
+      letter-spacing: 1px;
     }
-    header nav a {
-      color: #fff;
+    header.pr-header nav a {
+      color: #bbb;
+      margin-left: 10px;
       text-decoration: none;
-      font-weight: normal;
+      font-size: 0.9rem;
     }
-    .modal-new-client {
-      max-width: 800px;
+    header.pr-header nav a:hover {
+      color: #fff;
+    }
+    main {
+      max-width: 1100px;
       margin: 0 auto;
-      background: #fff;
-      border-radius: 12px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
-      padding: 30px;
+      background-color: #ffffff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.08);
     }
-    .modal-grid {
-      display: flex;
-      gap: 20px;
+    h1 {
+      margin-top: 0;
+      margin-bottom: 10px;
+      font-size: 1.5rem;
     }
-    .modal-grid > div {
-      flex: 1;
+    .subtitle {
+      margin-top: 0;
+      margin-bottom: 20px;
+      color: #666;
+      font-size: 0.95rem;
+    }
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 15px;
+      margin-bottom: 20px;
     }
     label {
       display: block;
-      font-weight: bold;
-      margin-top: 10px;
+      font-size: 0.85rem;
+      margin-bottom: 5px;
+      color: #333;
     }
-    input[type="text"], input[type="date"], input[type="number"], textarea, select {
+    input[type="text"],
+    input[type="date"],
+    textarea,
+    select {
       width: 100%;
-      padding: 8px;
-      margin-top: 4px;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-      font-size: 14px;
       box-sizing: border-box;
+      padding: 8px 10px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      font-size: 0.9rem;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      background-color: #fafafa;
+    }
+    input[type="text"]:focus,
+    input[type="date"]:focus,
+    textarea:focus,
+    select:focus {
+      border-color: #0d6efd;
+      box-shadow: 0 0 0 2px rgba(13,110,253,0.2);
+      background-color: #fff;
     }
     textarea {
       resize: vertical;
+      min-height: 60px;
+    }
+    .lines-table-wrapper {
+      margin-top: 20px;
+      border-radius: 10px;
+      border: 1px solid #ddd;
+      overflow: hidden;
+      background-color: #fafafa;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.9rem;
+    }
+    thead {
+      background-color: #f0f0f0;
+    }
+    th, td {
+      padding: 8px;
+      border-bottom: 1px solid #ddd;
+      text-align: left;
+    }
+    th {
+      font-weight: 600;
+    }
+    tr:last-child td {
+      border-bottom: none;
+    }
+    .line-actions button {
+      margin-right: 4px;
+      padding: 4px 8px;
+      font-size: 0.75rem;
+      border-radius: 4px;
+      border: none;
+      cursor: pointer;
+    }
+    .btn-small-secondary {
+      background-color: #e5e7eb;
+      color: #111827;
+    }
+    .btn-small-secondary:hover {
+      background-color: #d1d5db;
+    }
+    .btn-small-danger {
+      background-color: #f87171;
+      color: #fff;
+    }
+    .btn-small-danger:hover {
+      background-color: #ef4444;
+    }
+    .totals {
+      margin-top: 12px;
+      text-align: right;
+      font-size: 0.9rem;
+    }
+    .totals p {
+      margin: 3px 0;
+    }
+    .totals span {
+      font-weight: 600;
+    }
+    .btn-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 20px;
     }
     button {
       cursor: pointer;
       padding: 10px 20px;
       border: none;
       border-radius: 6px;
-      font-size: 14px;
-      margin-top: 15px;
+      font-size: 0.9rem;
+      margin-top: 0;
     }
     button.btn-primary {
       background-color: #0d6efd;
       color: white;
     }
+    button.btn-primary:hover {
+      background-color: #0b5ed7;
+    }
     button.btn-secondary {
-      background-color: #f0f0f0;
+      background-color: #e5e7eb;
+      color: #111827;
     }
-    .modal-actions {
-      text-align: right;
-      margin-top: 20px;
-    }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 20px;
-    }
-    th, td {
-      padding: 8px;
-      border: 1px solid #ccc;
-      text-align: left;
+    button.btn-secondary:hover {
+      background-color: #d1d5db;
     }
     #devis-message {
       margin-top: 10px;
-      font-weight: bold;
+      font-size: 0.9rem;
+      min-height: 1em;
+    }
+    .task-select {
+      width: 100%;
+      font-size: 0.85rem;
+    }
+    .line-qte,
+    .line-price {
+      width: 80px;
+    }
+    .line-total {
+      width: 90px;
+      text-align: right;
+    }
+    @media (max-width: 768px) {
+      main {
+        padding: 15px;
+      }
+      header.pr-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 6px;
+      }
+      .btn-row {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .line-qte,
+      .line-price,
+      .line-total {
+        width: 100%;
+      }
     }
   </style>
 </head>
 <body>
   <header class="pr-header">
-    <div class="brand">
-      <img class="logo" src="../img/logo.png" alt="Logo Papo Rénov">
-      <h1>Espace privé – Papo Rénov</h1>
+    <div class="logo">
+      <span>PAPO RÉNOV</span>
     </div>
     <nav>
-      <a href="../index.html">← Retour au site</a>
+      <a href="index.html">Accueil</a>
+      <a href="private-dashboard.html">Dashboard</a>
     </nav>
   </header>
 
-  <div class="private-root">
-    <div class="modal-new-client show" style="position: static; inset: auto; padding-top: 0; background: none;">
-      <div class="modal-panel">
-        <h3>Nouveau devis</h3>
-        <form id="form-devis" autocomplete="off">
-          <div class="modal-grid">
-            <div>
-              <label for="client">Client</label>
-              <input id="client" name="client" type="text" placeholder="Nom du client / Entreprise" required>
-            </div>
-            <div>
-              <label for="date">Date</label>
-              <input id="date" name="date_devis" type="date">
-            </div>
-          </div>
-          <div>
-            <label for="adresse">Adresse / Contexte</label>
-            <textarea id="adresse" name="commentaire" placeholder="Adresse du projet, informations complémentaires…"></textarea>
-          </div>
+  <main>
+    <h1>Création de devis</h1>
+    <p class="subtitle">
+      Prépare un devis structuré avec les lignes tarifaires de ton catalogue.
+    </p>
 
-          <table id="lines-table">
-            <thead>
-              <tr>
-                <th>Tâche</th>
-                <th>Qté</th>
-                <th>Prix&nbsp;HT</th>
-              </tr>
-            </thead>
-            <tbody id="lines-body"></tbody>
-          </table>
-          <button type="button" class="btn-secondary" id="btn-add-line">+ Ajouter une ligne</button>
-
-          <div style="margin-top: 12px; text-align: right;">
-            <p>Total HT : <span id="total-ht">0.00</span> €</p>
-            <p>TVA (20%) : <span id="total-tva">0.00</span> €</p>
-            <p>Total TTC : <span id="total-ttc">0.00</span> €</p>
-          </div>
-
-          <div id="devis-message"></div>
-
-          <div class="modal-actions">
-            <button type="submit" class="btn-primary" id="btn-save-devis">Enregistrer le devis</button>
-            <button type="button" class="btn-secondary" id="btn-print-devis">Imprimer / Enregistrer en PDF</button>
-          </div>
-        </form>
+    <form id="form-devis">
+      <div class="form-grid">
+        <div>
+          <label for="client">Client</label>
+          <input type="text" id="client" name="client" placeholder="Nom du client">
+        </div>
+        <div>
+          <label for="date">Date du devis</label>
+          <input type="date" id="date" name="date">
+        </div>
+        <div>
+          <label for="adresse">Commentaires / Adresse chantier</label>
+          <textarea id="adresse" name="adresse" placeholder="Adresse ou remarques..."></textarea>
+        </div>
       </div>
-    </div>
-  </div>
+
+      <section class="lines-table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th style="width: 35%;">Tâche</th>
+              <th style="width: 15%;">Quantité</th>
+              <th style="width: 20%;">Prix unitaire (HT)</th>
+              <th style="width: 20%;">Total ligne (HT)</th>
+              <th style="width: 10%;">Actions</th>
+            </tr>
+          </thead>
+          <tbody id="lines-body"></tbody>
+        </table>
+      </section>
+
+      <button type="button" class="btn-secondary" id="btn-add-line">+ Ajouter une ligne</button>
+
+      <div class="totals">
+        <p>Total HT : <span id="total-ht">0.00</span> €</p>
+        <p>TVA (20%) : <span id="total-tva">0.00</span> €</p>
+        <p>Total TTC : <span id="total-ttc">0.00</span> €</p>
+      </div>
+
+      <div id="devis-message"></div>
+
+      <div class="btn-row">
+        <button type="submit" class="btn-primary" id="btn-save-devis">Enregistrer le devis</button>
+        <button type="button" class="btn-secondary" id="btn-print-devis" disabled>Enregistrer & Imprimer</button>
+      </div>
+    </form>
+  </main>
 
   <script>
-    const TARIFS_WEBAPP_URL = "https://script.google.com/macros/s/AKfycbww7_mLiUesnyQQHbQjwto1XsbtePXVW0UHU_sLYFLqCOFd0diTanXBWJVCqpePADzwow/exec";
-    const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyhI-NZZn3zy0oeH-ociTGMaG8IvLWatNuTXyjKuv6N0lxHcWR2R1jCC_DrLfDs2Xdg/exec";
+    // === URLs APPS SCRIPT OFFICIELLES ===
+    // PAPORENOV – Tarifs API
+    const TARIFS_WEBAPP_URL = "https://script.google.com/macros/s/AKfycbz9bHJB4QmH98EV2IrBEd-lyt5z74yN6uxiYQUBgXTuvr6oZQMCKWQ9AiiEzSzLvRz4fQ/exec";
+    // Backoffice complet (si besoin d’autres actions plus tard)
+    const BACKOFFICE_WEBAPP_URL = "https://script.google.com/macros/s/AKfycbxBW7E7Z3qCDG671cNOBRyk-PPnL3ke4NlovKTRtDTvQ_MzDtzxZHIOcSkfgFXCyAJ0XQ/exec";
+    // generation devis (création de la ligne dans l’onglet devis)
+    const GENERATION_DEVIS_URL = "https://script.google.com/macros/s/AKfycbwzdj-uPgc188v1uxnH7C8AdrgRv1r4fViWORnUpBeQidGpGTzG0-jQI2IrOTeVbK7J/exec";
+
     let tasksList = [];
 
     async function fetchTasks() {
@@ -172,74 +305,159 @@
         tasksList = data.tarifs || data.rows || data || [];
         addLine();
       } catch (err) {
-        console.error("Erreur chargement tâches :", err);
+        console.error("Erreur chargement tâches :", err);
       }
     }
 
+    function calculateTotals() {
+      const rows = document.querySelectorAll('#lines-body tr');
+      let totalHT = 0;
+      rows.forEach(row => {
+        const lineTotalCell = row.querySelector('.line-total');
+        const val = parseFloat(lineTotalCell.textContent.replace(',', '.')) || 0;
+        totalHT += val;
+      });
+      const tva = totalHT * 0.20;
+      const ttc = totalHT + tva;
+      document.getElementById('total-ht').textContent = totalHT.toFixed(2);
+      document.getElementById('total-tva').textContent = tva.toFixed(2);
+      document.getElementById('total-ttc').textContent = ttc.toFixed(2);
+      const btnPrint = document.getElementById('btn-print-devis');
+      btnPrint.disabled = totalHT <= 0;
+    }
+
     function addLine() {
-      if (!tasksList.length) return;
       const tbody = document.getElementById('lines-body');
       const tr = document.createElement('tr');
 
       const tdTask = document.createElement('td');
-      const select = document.createElement('select');
-      select.name = "tache";
-      const defaultOption = new Option("-- Choisir une tâche --", "");
-      select.appendChild(defaultOption);
+      const selectTask = document.createElement('select');
+      selectTask.className = 'task-select';
+      const defaultOpt = document.createElement('option');
+      defaultOpt.value = '';
+      defaultOpt.textContent = '-- Sélectionner une tâche --';
+      selectTask.appendChild(defaultOpt);
 
-      // Détermination des clés pour nom de tâche et prix
-      const sample = tasksList[0];
-      const keys = Object.keys(sample);
-      const nameKey = keys.find(k => /tâche|tache|libellé|libelle|nom/i.test(k)) || keys[0];
-      const priceKey = keys.find(k => /prix|tarif|price/i.test(k)) || keys[1] || keys[0];
-
-      tasksList.forEach(task => {
-        const opt = new Option(task[nameKey] || "", task[nameKey] || "");
-        if (task[priceKey] !== undefined) {
-          opt.dataset.prix = task[priceKey];
-        }
-        select.appendChild(opt);
+      tasksList.forEach(t => {
+        const opt = document.createElement('option');
+        opt.value = t.tache || '';
+        opt.textContent = `${t.categorie || ''} – ${t.tache || ''}`;
+        opt.dataset.prix = t.prix_min || 0;
+        selectTask.appendChild(opt);
       });
-      tdTask.appendChild(select);
-      tr.appendChild(tdTask);
+      tdTask.appendChild(selectTask);
 
-      const tdQty = document.createElement('td');
-      const inputQty = Object.assign(document.createElement('input'), {
-        name: "qte", type: "number", min: "0", value: "1"
-      });
-      tdQty.appendChild(inputQty);
-      tr.appendChild(tdQty);
+      const tdQte = document.createElement('td');
+      const inputQte = document.createElement('input');
+      inputQte.type = 'number';
+      inputQte.min = '0';
+      inputQte.step = '0.1';
+      inputQte.value = '1';
+      inputQte.className = 'line-qte';
+      tdQte.appendChild(inputQte);
 
       const tdPrice = document.createElement('td');
-      const inputPrice = Object.assign(document.createElement('input'), {
-        name: "prix", type: "number", step: "0.01"
-      });
+      const inputPrice = document.createElement('input');
+      inputPrice.type = 'number';
+      inputPrice.min = '0';
+      inputPrice.step = '0.01';
+      inputPrice.value = '0';
+      inputPrice.className = 'line-price';
       tdPrice.appendChild(inputPrice);
+
+      const tdTotal = document.createElement('td');
+      tdTotal.className = 'line-total';
+      tdTotal.textContent = '0.00';
+
+      const tdActions = document.createElement('td');
+      tdActions.className = 'line-actions';
+      const btnCopy = document.createElement('button');
+      btnCopy.type = 'button';
+      btnCopy.textContent = 'Copier';
+      btnCopy.className = 'btn-small-secondary';
+      const btnDelete = document.createElement('button');
+      btnDelete.type = 'button';
+      btnDelete.textContent = 'Suppr.';
+      btnDelete.className = 'btn-small-danger';
+
+      tdActions.appendChild(btnCopy);
+      tdActions.appendChild(btnDelete);
+
+      tr.appendChild(tdTask);
+      tr.appendChild(tdQte);
       tr.appendChild(tdPrice);
+      tr.appendChild(tdTotal);
+      tr.appendChild(tdActions);
 
       tbody.appendChild(tr);
 
-      // Événements de recalcul des totaux
-      inputQty.addEventListener('input', calculateTotals);
-      inputPrice.addEventListener('input', calculateTotals);
-      select.addEventListener('change', function () {
-        inputPrice.value = this.selectedOptions[0].dataset.prix || "";
+      function updateLineTotal() {
+        const qte = parseFloat(inputQte.value.replace(',', '.')) || 0;
+        const prix = parseFloat(inputPrice.value.replace(',', '.')) || 0;
+        const total = qte * prix;
+        tdTotal.textContent = total.toFixed(2);
+        calculateTotals();
+      }
+
+      selectTask.addEventListener('change', () => {
+        const selected = selectTask.options[selectTask.selectedIndex];
+        const prix = parseFloat(selected.dataset.prix || '0');
+        if (!isNaN(prix)) {
+          inputPrice.value = prix.toFixed(2);
+        }
+        updateLineTotal();
+      });
+
+      inputQte.addEventListener('input', updateLineTotal);
+      inputPrice.addEventListener('input', updateLineTotal);
+
+      btnCopy.addEventListener('click', () => {
+        const newLine = tr.cloneNode(true);
+        const newSelectTask = newLine.querySelector('.task-select');
+        const newInputQte = newLine.querySelector('.line-qte');
+        const newInputPrice = newLine.querySelector('.line-price');
+        const newTotal = newLine.querySelector('.line-total');
+        const btnCopy2 = newLine.querySelector('.btn-small-secondary');
+        const btnDelete2 = newLine.querySelector('.btn-small-danger');
+
+        function updateLineTotal2() {
+          const q2 = parseFloat(newInputQte.value.replace(',', '.')) || 0;
+          const p2 = parseFloat(newInputPrice.value.replace(',', '.')) || 0;
+          newTotal.textContent = (q2 * p2).toFixed(2);
+          calculateTotals();
+        }
+
+        newSelectTask.addEventListener('change', () => {
+          const s2 = newSelectTask.options[newSelectTask.selectedIndex];
+          const prix2 = parseFloat(s2.dataset.prix || '0');
+          if (!isNaN(prix2)) {
+            newInputPrice.value = prix2.toFixed(2);
+          }
+          updateLineTotal2();
+        });
+
+        newInputQte.addEventListener('input', updateLineTotal2);
+        newInputPrice.addEventListener('input', updateLineTotal2);
+
+        btnCopy2.addEventListener('click', () => {
+          tbody.appendChild(newLine.cloneNode(true));
+          calculateTotals();
+        });
+        btnDelete2.addEventListener('click', () => {
+          newLine.remove();
+          calculateTotals();
+        });
+
+        tbody.appendChild(newLine);
         calculateTotals();
       });
-    }
 
-    function calculateTotals() {
-      let totalHT = 0;
-      document.querySelectorAll('#lines-body tr').forEach(row => {
-        const qty = parseFloat(row.querySelector('input[name="qte"]').value) || 0;
-        const price = parseFloat(row.querySelector('input[name="prix"]').value) || 0;
-        totalHT += qty * price;
+      btnDelete.addEventListener('click', () => {
+        tr.remove();
+        calculateTotals();
       });
-      const totalTVA = totalHT * 0.20;
-      const totalTTC = totalHT + totalTVA;
-      document.getElementById('total-ht').textContent = totalHT.toFixed(2);
-      document.getElementById('total-tva').textContent = totalTVA.toFixed(2);
-      document.getElementById('total-ttc').textContent = totalTTC.toFixed(2);
+
+      calculateTotals();
     }
 
     async function saveDevis(event) {
@@ -249,6 +467,7 @@
       const client = document.getElementById('client').value.trim();
       const date = document.getElementById('date').value;
       const adresse = document.getElementById('adresse').value.trim();
+
       const params = new URLSearchParams();
       params.append('path', 'bo');
       params.append('action', 'create_devis');
@@ -258,21 +477,34 @@
       params.append('montant_ht', document.getElementById('total-ht').textContent);
       params.append('montant_ttc', document.getElementById('total-ttc').textContent);
 
+      const rows = document.querySelectorAll('#lines-body tr');
       const lines = [];
-      document.querySelectorAll('#lines-body tr').forEach(row => {
-        const task = row.querySelector('select[name="tache"]').value;
-        const qty = parseFloat(row.querySelector('input[name="qte"]').value) || 0;
-        const price = parseFloat(row.querySelector('input[name="prix"]').value) || 0;
-        if (task && qty && price) {
-          lines.push({ tache: task, qte: qty, prix: price });
-        }
+      rows.forEach(row => {
+        const selectTask = row.querySelector('.task-select');
+        const inputQte = row.querySelector('.line-qte');
+        const inputPrice = row.querySelector('.line-price');
+        const lineTotalCell = row.querySelector('.line-total');
+
+        if (!selectTask.value) return;
+
+        const task = selectTask.value;
+        const qty = parseFloat(inputQte.value.replace(',', '.')) || 0;
+        const price = parseFloat(inputPrice.value.replace(',', '.')) || 0;
+        const totalLine = parseFloat(lineTotalCell.textContent.replace(',', '.')) || (qty * price);
+
+        lines.push({
+          tache: task,
+          quantite: qty,
+          prix_unitaire: price,
+          total_ligne: totalLine
+        });
       });
       if (lines.length > 0) {
         params.append('lignes', JSON.stringify(lines));
       }
 
       try {
-        const resp = await fetch(BACKOFFICE_WEBAPP_URL, { method: 'POST', body: params });
+        const resp = await fetch(GENERATION_DEVIS_URL, { method: 'POST', body: params });
         const result = await resp.json();
         if (result.ok) {
           document.getElementById('devis-message').style.color = '#22c55e';
@@ -284,8 +516,8 @@
           throw new Error(result.error || "Erreur lors de l'enregistrement");
         }
       } catch (err) {
-        document.getElementById('devis-message').style.color = '#ef4444';
-        document.getElementById('devis-message').textContent = '❌ Erreur : ' + err.message;
+        document.getElementById('devis-message').style.color = '#dc2626';
+        document.getElementById('devis-message').textContent = '❌ ' + err.message;
       } finally {
         document.getElementById('btn-save-devis').disabled = false;
       }
@@ -298,6 +530,7 @@
       const client = document.getElementById('client').value.trim();
       const date = document.getElementById('date').value;
       const adresse = document.getElementById('adresse').value.trim();
+
       const params = new URLSearchParams();
       params.append('path', 'bo');
       params.append('action', 'create_devis');
@@ -307,21 +540,34 @@
       params.append('montant_ht', document.getElementById('total-ht').textContent);
       params.append('montant_ttc', document.getElementById('total-ttc').textContent);
 
+      const rows = document.querySelectorAll('#lines-body tr');
       const lines = [];
-      document.querySelectorAll('#lines-body tr').forEach(row => {
-        const task = row.querySelector('select[name="tache"]').value;
-        const qty = parseFloat(row.querySelector('input[name="qte"]').value) || 0;
-        const price = parseFloat(row.querySelector('input[name="prix"]').value) || 0;
-        if (task && qty && price) {
-          lines.push({ tache: task, qte: qty, prix: price });
-        }
+      rows.forEach(row => {
+        const selectTask = row.querySelector('.task-select');
+        const inputQte = row.querySelector('.line-qte');
+        const inputPrice = row.querySelector('.line-price');
+        const lineTotalCell = row.querySelector('.line-total');
+
+        if (!selectTask.value) return;
+
+        const task = selectTask.value;
+        const qty = parseFloat(inputQte.value.replace(',', '.')) || 0;
+        const price = parseFloat(inputPrice.value.replace(',', '.')) || 0;
+        const totalLine = parseFloat(lineTotalCell.textContent.replace(',', '.')) || (qty * price);
+
+        lines.push({
+          tache: task,
+          quantite: qty,
+          prix_unitaire: price,
+          total_ligne: totalLine
+        });
       });
       if (lines.length > 0) {
         params.append('lignes', JSON.stringify(lines));
       }
 
       try {
-        const resp = await fetch(BACKOFFICE_WEBAPP_URL, { method: 'POST', body: params });
+        const resp = await fetch(GENERATION_DEVIS_URL, { method: 'POST', body: params });
         const result = await resp.json();
         if (result.ok) {
           window.print();
@@ -334,8 +580,8 @@
           throw new Error(result.error || "Erreur lors de l'enregistrement");
         }
       } catch (err) {
-        document.getElementById('devis-message').style.color = '#ef4444';
-        document.getElementById('devis-message').textContent = '❌ Erreur : ' + err.message;
+        document.getElementById('devis-message').style.color = '#dc2626';
+        document.getElementById('devis-message').textContent = '❌ ' + err.message;
       } finally {
         document.getElementById('btn-print-devis').disabled = false;
       }
