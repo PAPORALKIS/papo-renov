@@ -451,9 +451,9 @@
   <script>
     // URLs des WebApps
     const TARIFS_WEBAPP_URL =
-      "https://script.google.com/macros/s/AKfycbww7_mLiUesnyQQHbQjwto1XsbtePXVW0UHU_sLYFLqCOFd0diTanXBWJVCqpePADzwow/exec";
+      "https://script.google.com/macros/s/AKfycbz9bHJB4QmH98EV2IrBEd-lyt5z74yN6uxiYQUBgXTuvr6oZQMCKWQ9AiiEzSzLvRz4fQ/exec";
     const WEB_APP_URL = 
-      "https://script.google.com/macros/s/AKfycbyhI-NZZn3zy0oeH-ociTGMaG8IvLWatNuTXyjKuv6N0lxHcWR2R1jCC_DrLfDs2Xdg/exec";
+      "https://script.google.com/macros/s/AKfycby_fBB20qGFsZvZnOQfKircrFpOV2A7qgLr7wYt5W8OcG8UojVwspobRUR68KrPI2pk/exec";
 
     let basket = [];
     let groupedTarifs = {};
@@ -763,7 +763,7 @@
 
       try {
         msg.textContent = "Génération du devis en cours…";
-        const resp = await fetch(GENERATION_WEBAPP_URL, {
+        const resp = await fetch(WEBAPP_URL, {
           method: "POST",
           body: params,
         });
