@@ -784,41 +784,111 @@
       try {
         msg.textContent = "Génération du devis en cours…";
 
-        const resp = await fetch(WEB_APP_URL, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            path: "bo",
-            action: "generate_pdf",
-            id_devis: idDevis
-          }),
-        });
+async function generateDevis() {
+  const msg = document.getElementById("message");
+  msg.textContent = "";
+  msg.className = "";
 
-        const json = await resp.json().catch(() => null);
+  if (!basket.length) {
+    msg.textContent = "Ajoute au moins une ligne au devis.";
+    msg.className = "error";
+    return;
+  }
 
-        if (json && json.ok) {
-          msg.textContent =
-            "Devis généré. Tu peux le retrouver dans ton Drive (dossier devis).";
-          msg.className = "success";
-          if (json.pdfUrl) {
-            window.open(json.pdfUrl, "_blank");
-          }
-        } else {
-          console.error("Réponse API génération :", json);
-          msg.textContent =
-            "Erreur lors de la génération du devis (côté serveur).";
-          msg.className = "error";
-        }
-      } catch (e) {
-        console.error("Erreur réseau génération", e);
-        msg.textContent =
-          "Erreur réseau, impossible d’appeler le service de génération.";
-        msg.className = "error";
-      }
+  const idDevis = getQueryParam("id") || "";
+  if (!idDevis) {
+    msg.textContent = "ID de devis manquant dans l’URL.";
+    msg.className = "error";
+    return;
+  }
+
+  const client = document.getElementById("client").value.trim();
+  const adresse = document.getElementById("adresse").value.trim();
+  const objet = document.getElementById("objet").value.trim();
+  const dateDevis = document.getElementById("date-devis").value;
+
+  const totalHTNum = Number(
+    document
+      .getElementById("total-ht")
+      .textContent.replace(" €", "")
+      .replace(",", ".")
+  );
+  const totalTTCNum = Number(
+    document
+      .getElementById("total-ttc")
+      .textContent.replace(" €", "")
+      .replace(",", ".")
+  );
+
+  // 1) UPDATE_DEVIS via formulaire (pas JSON)
+  try {
+    const paramsUpdate = new URLSearchParams();
+    paramsUpdate.append("path", "bo");
+    paramsUpdate.append("action", "update_devis");
+    paramsUpdate.append("id_devis", idDevis);
+    paramsUpdate.append("client", client);
+    paramsUpdate.append("adresse", adresse);
+    paramsUpdate.append("commentaires", objet);   // OBJET → commentaires
+    paramsUpdate.append("date_devis", dateDevis || "");
+    paramsUpdate.append("montant_ht", String(totalHTNum || 0));
+    paramsUpdate.append("montant_ttc", String(totalTTCNum || 0));
+
+    const respUpdate = await fetch(WEB_APP_URL, {
+      method: "POST",
+      body: paramsUpdate
+    });
+
+    const jsonUpdate = await respUpdate.json().catch(() => null);
+    if (!jsonUpdate || !jsonUpdate.ok) {
+      console.error("Erreur update_devis :", jsonUpdate);
+      msg.textContent = "Erreur lors de la mise à jour du devis.";
+      msg.className = "error";
+      return;
     }
+  } catch (e) {
+    console.error("Erreur réseau update_devis", e);
+    msg.textContent = "Erreur réseau lors de la mise à jour du devis.";
+    msg.className = "error";
+    return;
+  }
 
+  // 2) GENERATE_PDF via formulaire (pas JSON)
+  try {
+    msg.textContent = "Génération du devis en cours…";
+
+    const paramsPdf = new URLSearchParams();
+    paramsPdf.append("path", "bo");
+    paramsPdf.append("action", "generate_pdf");
+    paramsPdf.append("id_devis", idDevis);
+
+    const resp = await fetch(WEB_APP_URL, {
+      method: "POST",
+      body: paramsPdf
+    });
+
+    const json = await resp.json().catch(() => null);
+
+    if (json && json.ok) {
+      msg.textContent =
+        "Devis généré. Tu peux le retrouver dans ton Drive (dossier devis).";
+      msg.className = "success";
+      if (json.pdfUrl) {
+        window.open(json.pdfUrl, "_blank");
+      }
+    } else {
+      console.error("Réponse API génération :", json);
+      msg.textContent =
+        "Erreur lors de la génération du devis (côté serveur).";
+      msg.className = "error";
+    }
+  } catch (e) {
+    console.error("Erreur réseau génération", e);
+    msg.textContent =
+      "Erreur réseau, impossible d’appeler le service de génération.";
+    msg.className = "error";
+  }
+}
+        
     // ----------------- Init -----------------
     window.addEventListener("DOMContentLoaded", () => {
       const today = new Date().toISOString().split("T")[0];
