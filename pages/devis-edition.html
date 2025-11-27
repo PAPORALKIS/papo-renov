@@ -452,7 +452,7 @@
     // URLs des WebApps
     const TARIFS_WEBAPP_URL =
       "https://script.google.com/macros/s/AKfycbz9bHJB4QmH98EV2IrBEd-lyt5z74yN6uxiYQUBgXTuvr6oZQMCKWQ9AiiEzSzLvRz4fQ/exec";
-    const WEB_APP_URL = 
+    const WEB_APP_URL =
       "https://script.google.com/macros/s/AKfycby_fBB20qGFsZvZnOQfKircrFpOV2A7qgLr7wYt5W8OcG8UojVwspobRUR68KrPI2pk/exec";
 
     let basket = [];
@@ -724,7 +724,13 @@
         return;
       }
 
-      const idDevis = getQueryParam("id");
+      const idDevis = getQueryParam("id") || "";
+      if (!idDevis) {
+        msg.textContent = "ID de devis manquant dans l’URL.";
+        msg.className = "error";
+        return;
+      }
+
       const client = document.getElementById("client").value.trim();
       const adresse = document.getElementById("adresse").value.trim();
       const objet = document.getElementById("objet").value.trim();
@@ -751,27 +757,35 @@
         total_ligne: (l.quantite || 0) * (l.prix_unitaire || 0),
       }));
 
-      const params = new URLSearchParams();
-      if (idDevis) params.append("id_devis", idDevis);
-      if (client) params.append("client", client);
-      if (adresse) params.append("adresse", adresse);
-      if (objet) params.append("objet", objet);
-      if (dateDevis) params.append("date", dateDevis);
-      params.append("montant_ht", String(totalHTNum || 0));
-      params.append("montant_ttc", String(totalTTCNum || 0));
-      params.append("lignes", JSON.stringify(lignes));
+      const payload = {
+        path: "bo",
+        action: "generate_pdf",
+        id_devis: idDevis,
+        client,
+        adresse,
+        objet,
+        date: dateDevis,
+        montant_ht: totalHTNum || 0,
+        montant_ttc: totalTTCNum || 0,
+        lignes,
+      };
 
       try {
         msg.textContent = "Génération du devis en cours…";
-        const resp = await fetch(WEBAPP_URL, {
+
+        const resp = await fetch(WEB_APP_URL, {
           method: "POST",
-          body: params,
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(payload),
         });
+
         const json = await resp.json().catch(() => null);
 
         if (json && json.ok) {
           msg.textContent =
-            "Devis généré. Tu peux le retrouver dans ton Drive / dossier devis.";
+            "Devis généré. Tu peux le retrouver dans ton Drive (dossier devis).";
           msg.className = "success";
           if (json.pdfUrl) {
             window.open(json.pdfUrl, "_blank");
