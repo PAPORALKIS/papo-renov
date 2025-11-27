@@ -291,12 +291,16 @@
     // === URLs APPS SCRIPT OFFICIELLES ===
     // PAPORENOV – Tarifs API
     const TARIFS_WEBAPP_URL = "https://script.google.com/macros/s/AKfycbz9bHJB4QmH98EV2IrBEd-lyt5z74yN6uxiYQUBgXTuvr6oZQMCKWQ9AiiEzSzLvRz4fQ/exec";
-    // Backoffice complet (si besoin d’autres actions plus tard)
+    // Backoffice V2 (PDF, dashboard, etc.)
     const BACKOFFICE_URL = "https://script.google.com/macros/s/AKfycby_fBB20qGFsZvZnOQfKircrFpOV2A7qgLr7wYt5W8OcG8UojVwspobRUR68KrPI2pk/exec";
+    // API génération de devis (écriture dans l’onglet devis)
     const GENERATION_DEVIS_URL = "https://script.google.com/macros/s/AKfycbwzdj-uPgc188v1uxnH7C8AdrgRv1r4fViWORnUpBeQidGpGTzG0-jQI2IrOTeVbK7J/exec";
 
     let tasksList = [];
 
+    // -----------------------------
+    //  Chargement des tâches
+    // -----------------------------
     async function fetchTasks() {
       try {
         const response = await fetch(`${TARIFS_WEBAPP_URL}?path=tarifs`);
@@ -308,6 +312,9 @@
       }
     }
 
+    // -----------------------------
+    //  Totaux
+    // -----------------------------
     function calculateTotals() {
       const rows = document.querySelectorAll('#lines-body tr');
       let totalHT = 0;
@@ -321,10 +328,14 @@
       document.getElementById('total-ht').textContent = totalHT.toFixed(2);
       document.getElementById('total-tva').textContent = tva.toFixed(2);
       document.getElementById('total-ttc').textContent = ttc.toFixed(2);
+
       const btnPrint = document.getElementById('btn-print-devis');
       btnPrint.disabled = totalHT <= 0;
     }
 
+    // -----------------------------
+    //  Ajout de ligne
+    // -----------------------------
     function addLine() {
       const tbody = document.getElementById('lines-body');
       const tr = document.createElement('tr');
@@ -459,10 +470,10 @@
       calculateTotals();
     }
 
-    async function saveDevis(event) {
-      event.preventDefault();
-      document.getElementById('btn-save-devis').disabled = true;
-
+    // -----------------------------
+    //  Construction du payload devis
+    // -----------------------------
+    function buildDevisParams() {
       const client = document.getElementById('client').value.trim();
       const date = document.getElementById('date').value;
       const adresse = document.getElementById('adresse').value.trim();
@@ -498,19 +509,37 @@
           total_ligne: totalLine
         });
       });
+
       if (lines.length > 0) {
         params.append('lignes', JSON.stringify(lines));
       }
+
+      return params;
+    }
+
+    function resetFormAfterSave(message) {
+      document.getElementById('devis-message').style.color = '#22c55e';
+      document.getElementById('devis-message').textContent = message;
+      document.getElementById('form-devis').reset();
+      document.getElementById('lines-body').innerHTML = '';
+      calculateTotals();
+      document.getElementById('date').value = new Date().toISOString().split('T')[0];
+    }
+
+    // -----------------------------
+    //  Enregistrer le devis
+    // -----------------------------
+    async function saveDevis(event) {
+      event.preventDefault();
+      document.getElementById('btn-save-devis').disabled = true;
+
+      const params = buildDevisParams();
 
       try {
         const resp = await fetch(GENERATION_DEVIS_URL, { method: 'POST', body: params });
         const result = await resp.json();
         if (result.ok) {
-          document.getElementById('devis-message').style.color = '#22c55e';
-          document.getElementById('devis-message').textContent = '✅ Devis enregistré';
-          document.getElementById('form-devis').reset();
-          document.getElementById('lines-body').innerHTML = '';
-          calculateTotals();
+          resetFormAfterSave('✅ Devis enregistré');
         } else {
           throw new Error(result.error || "Erreur lors de l'enregistrement");
         }
@@ -522,62 +551,47 @@
       }
     }
 
+    // -----------------------------
+    //  Enregistrer + Générer PDF
+    // -----------------------------
     async function printDevis(event) {
       event.preventDefault();
       document.getElementById('btn-print-devis').disabled = true;
 
-      const client = document.getElementById('client').value.trim();
-      const date = document.getElementById('date').value;
-      const adresse = document.getElementById('adresse').value.trim();
-
-      const params = new URLSearchParams();
-      params.append('path', 'bo');
-      params.append('action', 'create_devis');
-      if (client) params.append('client', client);
-      if (date) params.append('date_devis', date);
-      if (adresse) params.append('commentaire', adresse);
-      params.append('montant_ht', document.getElementById('total-ht').textContent);
-      params.append('montant_ttc', document.getElementById('total-ttc').textContent);
-
-      const rows = document.querySelectorAll('#lines-body tr');
-      const lines = [];
-      rows.forEach(row => {
-        const selectTask = row.querySelector('.task-select');
-        const inputQte = row.querySelector('.line-qte');
-        const inputPrice = row.querySelector('.line-price');
-        const lineTotalCell = row.querySelector('.line-total');
-
-        if (!selectTask.value) return;
-
-        const task = selectTask.value;
-        const qty = parseFloat(inputQte.value.replace(',', '.')) || 0;
-        const price = parseFloat(inputPrice.value.replace(',', '.')) || 0;
-        const totalLine = parseFloat(lineTotalCell.textContent.replace(',', '.')) || (qty * price);
-
-        lines.push({
-          tache: task,
-          quantite: qty,
-          prix_unitaire: price,
-          total_ligne: totalLine
-        });
-      });
-      if (lines.length > 0) {
-        params.append('lignes', JSON.stringify(lines));
-      }
+      const params = buildDevisParams();
 
       try {
+        // 1) Création / enregistrement du devis
         const resp = await fetch(GENERATION_DEVIS_URL, { method: 'POST', body: params });
         const result = await resp.json();
-        if (result.ok) {
-          window.print();
-          document.getElementById('devis-message').style.color = '#22c55e';
-          document.getElementById('devis-message').textContent = '✅ Devis enregistré et imprimé';
-          document.getElementById('form-devis').reset();
-          document.getElementById('lines-body').innerHTML = '';
-          calculateTotals();
-        } else {
-          throw new Error(result.error || "Erreur lors de l'enregistrement");
+
+        if (!result.ok || !result.id_devis) {
+          throw new Error(result.error || "Impossible de créer le devis pour le PDF");
         }
+
+        const idDevis = result.id_devis;
+
+        // 2) Génération du PDF via BACKOFFICE_PROD_V2
+        const pdfResp = await fetch(BACKOFFICE_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            path: 'bo',
+            action: 'generate_pdf',
+            id_devis: idDevis
+          })
+        });
+
+        const pdfResult = await pdfResp.json();
+        if (!pdfResult.ok || !pdfResult.pdfUrl) {
+          throw new Error(pdfResult.error || "Erreur lors de la génération du PDF");
+        }
+
+        // 3) Ouverture du PDF dans un nouvel onglet
+        window.open(pdfResult.pdfUrl, '_blank');
+
+        resetFormAfterSave('✅ Devis enregistré et PDF généré');
+
       } catch (err) {
         document.getElementById('devis-message').style.color = '#dc2626';
         document.getElementById('devis-message').textContent = '❌ ' + err.message;
@@ -586,6 +600,9 @@
       }
     }
 
+    // -----------------------------
+    //  Init
+    // -----------------------------
     window.addEventListener('DOMContentLoaded', () => {
       document.getElementById('date').value = new Date().toISOString().split('T')[0];
       fetchTasks();
