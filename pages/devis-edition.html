@@ -712,11 +712,12 @@
       updateTotals();
     }
 
-// ======================================================
+    // ======================================================
 //                 GENERATION DU DEVIS
 // ======================================================
 async function generateDevis() {
-  const msg = document.getElementById("message"); // 👈 même id que dans le HTML
+  // ⚠️ IMPORTANT : ce div existe bien dans ton HTML : <div id="message"></div>
+  const msg = document.getElementById("message");
   msg.textContent = "Préparation du devis…";
   msg.className = "";
 
@@ -732,11 +733,12 @@ async function generateDevis() {
   // ------------------------------
   const client = document.getElementById("client").value.trim();
   const adresse = document.getElementById("adresse").value.trim();
-  const description = document.getElementById("objet").value.trim(); // 👈 id corrigé
+  // ⚠️ Ton textarea s’appelle "objet", pas "description"
+  const description = document.getElementById("objet").value.trim();
   const dateDevis = document.getElementById("date-devis").value.trim();
 
   // ------------------------------
-  // Calcul des montants HT / TTC à partir du panier
+  // Calcul des montants HT / TTC à partir du panier "basket"
   // ------------------------------
   let totalHT = 0;
   basket.forEach((l) => {
@@ -814,6 +816,7 @@ async function generateDevis() {
     msg.className = "error";
   }
 }
+    
     // ----------------- Init -----------------
     window.addEventListener("DOMContentLoaded", () => {
       const today = new Date().toISOString().split("T")[0];
