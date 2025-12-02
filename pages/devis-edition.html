@@ -712,107 +712,109 @@
       updateTotals();
     }
 
+// ======================================================
+//                 GENERATION DU DEVIS
+// ======================================================
 async function generateDevis() {
-  const msg = document.getElementById("message");
-  msg.textContent = "";
+  const msg = document.getElementById("msg-status");
+  msg.textContent = "Préparation du devis…";
   msg.className = "";
 
-  if (!basket.length) {
-    msg.textContent = "Ajoute au moins une ligne au devis.";
-    msg.className = "error";
-    return;
-  }
-
-  const idDevis = getQueryParam("id") || "";
+  const idDevis = document.getElementById("devis-id-label").textContent.trim();
   if (!idDevis) {
-    msg.textContent = "ID de devis manquant dans l’URL.";
+    msg.textContent = "ID devis introuvable.";
     msg.className = "error";
     return;
   }
 
+  // ------------------------------
+  // Récupération des champs du formulaire
+  // ------------------------------
   const client = document.getElementById("client").value.trim();
   const adresse = document.getElementById("adresse").value.trim();
-  const objet = document.getElementById("objet").value.trim();
-  const dateDevis = document.getElementById("date-devis").value;
+  const description = document.getElementById("description").value.trim();
+  const dateDevis = document.getElementById("date-devis").value.trim();
 
-  const totalHTNum = Number(
-    document
-      .getElementById("total-ht")
-      .textContent.replace(" €", "")
-      .replace(",", ".")
-  );
-  const totalTTCNum = Number(
-    document
-      .getElementById("total-ttc")
-      .textContent.replace(" €", "")
-      .replace(",", ".")
-  );
+  // ------------------------------
+  // Calcul des montants HT / TTC
+  // ------------------------------
+  let totalHT = 0;
+  let totalTTC = 0;
 
-  // 1) UPDATE_DEVIS via formulaire (pas JSON)
+  document.querySelectorAll(".panier-ligne").forEach((ligne) => {
+    const prix = parseFloat(ligne.dataset.prix || "0");
+    const ttc = parseFloat(ligne.dataset.ttc || "0");
+    totalHT += prix;
+    totalTTC += ttc;
+  });
+
+  // ------------------------------
+  // 1) UPDATE DU DEVIS DANS SHEETS
+  // ------------------------------
+  const paramsUpdate = new URLSearchParams();
+  paramsUpdate.append("path", "bo");
+  paramsUpdate.append("action", "update_devis");
+  paramsUpdate.append("id_devis", idDevis);
+  paramsUpdate.append("client", client);
+  paramsUpdate.append("adresse", adresse);
+  paramsUpdate.append("commentaires", description);
+  paramsUpdate.append("date_devis", dateDevis);
+  paramsUpdate.append("montant_ht", String(totalHT));
+  paramsUpdate.append("montant_ttc", String(totalTTC));
+
   try {
-    const paramsUpdate = new URLSearchParams();
-    paramsUpdate.append("path", "bo");
-    paramsUpdate.append("action", "update_devis");
-    paramsUpdate.append("id_devis", idDevis);
-    paramsUpdate.append("client", client);
-    paramsUpdate.append("adresse", adresse);
-    paramsUpdate.append("commentaires", objet);   // OBJET → commentaires
-    paramsUpdate.append("date_devis", dateDevis || "");
-    paramsUpdate.append("montant_ht", String(totalHTNum || 0));
-    paramsUpdate.append("montant_ttc", String(totalTTCNum || 0));
-
-    const respUpdate = await fetch(WEB_APP_URL, {
+    const updateResp = await fetch(WEB_APP_URL, {
       method: "POST",
       body: paramsUpdate
     });
 
-    const jsonUpdate = await respUpdate.json().catch(() => null);
-    if (!jsonUpdate || !jsonUpdate.ok) {
-      console.error("Erreur update_devis :", jsonUpdate);
+    const updateJson = await updateResp.json().catch(() => null);
+    if (!updateJson || !updateJson.ok) {
+      console.error("Erreur update devis", updateJson);
       msg.textContent = "Erreur lors de la mise à jour du devis.";
       msg.className = "error";
       return;
     }
   } catch (e) {
-    console.error("Erreur réseau update_devis", e);
-    msg.textContent = "Erreur réseau lors de la mise à jour du devis.";
+    console.error("Erreur réseau update", e);
+    msg.textContent = "Erreur réseau lors de la mise à jour.";
     msg.className = "error";
     return;
   }
 
-  // 2) GENERATE_PDF via formulaire (pas JSON)
+  // ------------------------------
+  // 2) GENERATE_PDF
+  // ------------------------------
+  msg.textContent = "Génération du PDF…";
+
+  const paramsPdf = new URLSearchParams();
+  paramsPdf.append("path", "bo");
+  paramsPdf.append("action", "generate_pdf");
+  paramsPdf.append("id_devis", idDevis);
+
   try {
-    msg.textContent = "Génération du devis en cours…";
-
-    const paramsPdf = new URLSearchParams();
-    paramsPdf.append("path", "bo");
-    paramsPdf.append("action", "generate_pdf");
-    paramsPdf.append("id_devis", idDevis);
-
-    const resp = await fetch(WEB_APP_URL, {
+    const pdfResp = await fetch(WEB_APP_URL, {
       method: "POST",
       body: paramsPdf
     });
 
-    const json = await resp.json().catch(() => null);
+    const pdfJson = await pdfResp.json().catch(() => null);
 
-    if (json && json.ok) {
-      msg.textContent =
-        "Devis généré. Tu peux le retrouver dans ton Drive (dossier devis).";
+    if (pdfJson && pdfJson.ok) {
+      msg.textContent = "Devis généré avec succès 🎉";
       msg.className = "success";
-      if (json.pdfUrl) {
-        window.open(json.pdfUrl, "_blank");
+
+      if (pdfJson.pdfUrl) {
+        window.open(pdfJson.pdfUrl, "_blank");
       }
     } else {
-      console.error("Réponse API génération :", json);
-      msg.textContent =
-        "Erreur lors de la génération du devis (côté serveur).";
+      console.error("Erreur génération PDF", pdfJson);
+      msg.textContent = "Erreur lors de la génération du PDF.";
       msg.className = "error";
     }
   } catch (e) {
-    console.error("Erreur réseau génération", e);
-    msg.textContent =
-      "Erreur réseau, impossible d’appeler le service de génération.";
+    console.error("Erreur réseau PDF", e);
+    msg.textContent = "Erreur réseau lors de la génération du PDF.";
     msg.className = "error";
   }
 }
