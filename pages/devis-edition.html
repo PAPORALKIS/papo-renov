@@ -716,7 +716,7 @@
 //                 GENERATION DU DEVIS
 // ======================================================
 async function generateDevis() {
-  const msg = document.getElementById("msg-status");
+  const msg = document.getElementById("message"); // 👈 même id que dans le HTML
   msg.textContent = "Préparation du devis…";
   msg.className = "";
 
@@ -732,21 +732,17 @@ async function generateDevis() {
   // ------------------------------
   const client = document.getElementById("client").value.trim();
   const adresse = document.getElementById("adresse").value.trim();
-  const description = document.getElementById("description").value.trim();
+  const description = document.getElementById("objet").value.trim(); // 👈 id corrigé
   const dateDevis = document.getElementById("date-devis").value.trim();
 
   // ------------------------------
-  // Calcul des montants HT / TTC
+  // Calcul des montants HT / TTC à partir du panier
   // ------------------------------
   let totalHT = 0;
-  let totalTTC = 0;
-
-  document.querySelectorAll(".panier-ligne").forEach((ligne) => {
-    const prix = parseFloat(ligne.dataset.prix || "0");
-    const ttc = parseFloat(ligne.dataset.ttc || "0");
-    totalHT += prix;
-    totalTTC += ttc;
+  basket.forEach((l) => {
+    totalHT += (l.quantite || 0) * (l.prix_unitaire || 0);
   });
+  const totalTTC = totalHT * 1.2; // TVA 20%
 
   // ------------------------------
   // 1) UPDATE DU DEVIS DANS SHEETS
@@ -765,7 +761,7 @@ async function generateDevis() {
   try {
     const updateResp = await fetch(WEB_APP_URL, {
       method: "POST",
-      body: paramsUpdate
+      body: paramsUpdate,
     });
 
     const updateJson = await updateResp.json().catch(() => null);
@@ -795,7 +791,7 @@ async function generateDevis() {
   try {
     const pdfResp = await fetch(WEB_APP_URL, {
       method: "POST",
-      body: paramsPdf
+      body: paramsPdf,
     });
 
     const pdfJson = await pdfResp.json().catch(() => null);
@@ -818,7 +814,6 @@ async function generateDevis() {
     msg.className = "error";
   }
 }
-        
     // ----------------- Init -----------------
     window.addEventListener("DOMContentLoaded", () => {
       const today = new Date().toISOString().split("T")[0];
