@@ -572,15 +572,25 @@
         const idDevis = result.id_devis;
 
         // 2) Génération du PDF via BACKOFFICE_PROD_V2
-        const pdfResp = await fetch(BACKOFFICE_URL, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            path: 'bo',
-            action: 'generate_pdf',
-            id_devis: idDevis
-          })
-        });
+const pdfParams = new URLSearchParams();
+pdfParams.append('path', 'bo');
+pdfParams.append('action', 'generate_pdf');
+pdfParams.append('id_devis', idDevis);
+
+const pdfResp = await fetch(BACKOFFICE_URL, {
+  method: 'POST',
+  body: pdfParams
+});
+
+const pdfResult = await pdfResp.json();
+if (!pdfResult.ok || !pdfResult.pdfUrl) {
+  throw new Error(pdfResult.error || "Erreur lors de la génération du PDF");
+}
+
+// 3) Ouverture du PDF dans un nouvel onglet
+window.open(pdfResult.pdfUrl, '_blank');
+
+resetFormAfterSave('✅ Devis enregistré et PDF généré');
 
         const pdfResult = await pdfResp.json();
         if (!pdfResult.ok || !pdfResult.pdfUrl) {
