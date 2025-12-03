@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -294,9 +296,7 @@
     // Backoffice V2 (PDF, dashboard, etc.)
     const BACKOFFICE_URL = "https://script.google.com/macros/s/AKfycby_fBB20qGFsZvZnOQfKircrFpOV2A7qgLr7wYt5W8OcG8UojVwspobRUR68KrPI2pk/exec";
     // API génération de devis (écriture dans l’onglet devis)
-    const GENERATION_DEVIS_URL = "https://script.google.com/macros/s/AKfycbwzdj-uPgc188v1uxnH7C8AdrgRv1r4fViWORnUpBeQidGpGTzG0-jQI2IrOTeVbK7J/exec";
-
-    let tasksList = [];
+        let tasksList = [];
 
     // -----------------------------
     //  Chargement des tâches
@@ -483,7 +483,7 @@
       params.append('action', 'create_devis');
       if (client) params.append('client', client);
       if (date) params.append('date_devis', date);
-      if (adresse) params.append('commentaire', adresse);
+      if (adresse) params.append('commentaires', adresse);
       params.append('montant_ht', document.getElementById('total-ht').textContent);
       params.append('montant_ttc', document.getElementById('total-ttc').textContent);
 
@@ -536,7 +536,7 @@
       const params = buildDevisParams();
 
       try {
-        const resp = await fetch(GENERATION_DEVIS_URL, { method: 'POST', body: params });
+        const resp = await fetch(BACKOFFICE_URL, { method: 'POST', body: params });
         const result = await resp.json();
         if (result.ok) {
           resetFormAfterSave('✅ Devis enregistré');
@@ -562,7 +562,7 @@
 
       try {
         // 1) Création / enregistrement du devis
-        const resp = await fetch(GENERATION_DEVIS_URL, { method: 'POST', body: params });
+        const resp = await fetch(BACKOFFICE_URL, { method: 'POST', body: params });
         const result = await resp.json();
 
         if (!result.ok || !result.id_devis) {
