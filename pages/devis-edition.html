@@ -257,7 +257,7 @@
       filter: brightness(1.06);
     }
 
-    /* Panier devis */
+    /* Panier / tableau devis */
     .basket-table {
       width: 100%;
       border-collapse: collapse;
@@ -359,6 +359,53 @@
     #message.success {
       color: #35d487;
     }
+
+    /* Modal ajout ligne */
+    .modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0,0,0,0.55);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 999;
+    }
+
+    .modal.hidden {
+      display: none;
+    }
+
+    .modal-content {
+      background: var(--card);
+      padding: 20px;
+      border-radius: var(--radius);
+      width: 320px;
+      box-shadow: 0 15px 40px rgba(0,0,0,0.45);
+    }
+
+    .modal-content h3 {
+      margin: 0 0 12px;
+    }
+
+    .modal-content label {
+      font-size: 0.8rem;
+      color: var(--text-soft);
+      display: block;
+      margin-top: 8px;
+    }
+
+    .modal-content input {
+      width: 100%;
+      margin-top: 4px;
+      padding: 7px 9px;
+      border-radius: 999px;
+      border: 1px solid #1e2942;
+      background: #050d1f;
+      color: var(--text);
+    }
   </style>
 </head>
 <body>
@@ -411,7 +458,11 @@
     <!-- Colonne droite : contenu devis -->
     <section class="card">
       <h2>Contenu du devis</h2>
-      <p class="subtitle">Lignes qui seront injectées dans le Google Docs et le PDF.</p>
+      <p class="subtitle">Lignes enregistrées dans le devis (persistantes via Apps Script).</p>
+
+      <div class="actions-row" style="margin-bottom:10px;">
+        <button type="button" class="btn-main" id="btn-add-line">+ Ajouter une ligne</button>
+      </div>
 
       <table class="basket-table">
         <thead>
@@ -424,10 +475,10 @@
             <th></th>
           </tr>
         </thead>
-        <tbody id="basket-body">
+        <tbody id="lines-body">
           <tr>
             <td colspan="6" style="font-size:0.8rem;color:var(--text-soft);padding:8px 4px;">
-              Aucune ligne pour l’instant. Ajoute des prestations depuis la colonne de gauche.
+              Chargement des lignes...
             </td>
           </tr>
         </tbody>
@@ -440,24 +491,45 @@
       </div>
 
       <div class="actions-row">
-        <button type="button" class="btn-ghost" id="btn-clear">Vider le devis</button>
         <button type="button" class="btn-main" id="btn-generate">Générer le devis PDF</button>
       </div>
 
       <div id="message"></div>
     </section>
+
+    <!-- ===== MODAL AJOUT LIGNE ===== -->
+    <div id="line-modal" class="modal hidden">
+      <div class="modal-content">
+        <h3>Ajouter une ligne</h3>
+
+        <label>Prestation</label>
+        <input id="modal-tache" type="text" placeholder="Description du poste" />
+
+        <label>Quantité</label>
+        <input id="modal-qty" type="number" step="0.5" value="1" />
+
+        <label>Prix unitaire HT</label>
+        <input id="modal-pu" type="number" step="0.01" value="0" />
+
+        <div class="modal-actions">
+          <button id="modal-cancel" class="btn-ghost">Annuler</button>
+          <button id="modal-save" class="btn-main">Ajouter</button>
+        </div>
+      </div>
+    </div>
   </div>
 
   <script>
-    
-    // URLs des WebApps
+    // =============================
+    //   CONFIG URLs
+    // =============================
     const TARIFS_WEBAPP_URL =
-  "https://script.google.com/macros/s/AKfycbz9bHJB4QmH98EV2IrBEd-lyt5z74yN6uxiYQUBgXTuvr6oZQMCKWQ9AiiEzSzLvRz4fQ/exec";
-const WEB_APP_URL =
-  "https://script.google.com/macros/s/AKfycby_fBB20qGFsZvZnOQfKircrFpOV2A7qgLr7wYt5W8OcG8UojVwspobRUR68KrPI2pk/exec";
-   
-    let basket = [];
+      "https://script.google.com/macros/s/AKfycbz9bHJB4QmH98EV2IrBEd-lyt5z74yN6uxiYQUBgXTuvr6oZQMCKWQ9AiiEzSzLvRz4fQ/exec";
+    const WEB_APP_URL =
+      "https://script.google.com/macros/s/AKfycby_fBB20qGFsZvZnOQfKircrFpOV2A7qgLr7wYt5W8OcG8UojVwspobRUR68KrPI2pk/exec";
+
     let groupedTarifs = {};
+    let devisLines = []; // lignes persistantes côté Apps Script
 
     function formatEUR(v) {
       const n = Number(v) || 0;
@@ -469,7 +541,9 @@ const WEB_APP_URL =
       return params.get(name) || "";
     }
 
-    // ----------------- Chargement des tarifs -----------------
+    // =============================
+    //   CHARGEMENT DES TARIFS
+    // =============================
     async function loadTarifs() {
       const container = document.getElementById("tarif-categories");
       container.innerHTML =
@@ -585,11 +659,7 @@ const WEB_APP_URL =
 
           btnAdd.addEventListener("click", () => {
             const q = Number(qty.value) || 1;
-            addToBasket({
-              tache: item.tache || "",
-              quantite: q,
-              prix_unitaire: Number(item.prix) || 0,
-            });
+            addTarifLine(item, q);
           });
 
           actions.appendChild(qty);
@@ -607,84 +677,95 @@ const WEB_APP_URL =
       });
     }
 
-    // ----------------- Panier / Devis -----------------
-    function addToBasket(line) {
-      const tbody = document.getElementById("basket-body");
-      if (!basket.length) {
-        tbody.innerHTML = "";
+    async function addTarifLine(item, quantite) {
+      const idDevis = document.getElementById("devis-id-label").textContent.trim();
+      if (!idDevis) {
+        alert("ID du devis introuvable.");
+        return;
       }
-      basket.push(line);
-      renderBasket();
+
+      const body = new URLSearchParams();
+      body.append("path", "addLine");
+      body.append("id_devis", idDevis);
+      body.append("tache", item.tache || "");
+      body.append("quantite", quantite);
+      body.append("pu", item.prix || 0);
+
+      try {
+        await fetch(WEB_APP_URL, { method: "POST", body });
+        await loadLines();
+      } catch (e) {
+        console.error("Erreur addTarifLine:", e);
+      }
     }
 
-    function renderBasket() {
-      const tbody = document.getElementById("basket-body");
+    // =============================
+    //   LIGNES DU DEVIS (PERSISTANTES)
+    // =============================
+    async function loadLines() {
+      const idDevis = document.getElementById("devis-id-label").textContent.trim();
+      const tbody = document.getElementById("lines-body");
+
+      tbody.innerHTML = `
+        <tr>
+          <td colspan="6" style="font-size:0.8rem;color:var(--text-soft);padding:8px;">
+            Chargement des lignes...
+          </td>
+        </tr>
+      `;
+
+      if (!idDevis) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="6" style="color:#ff6b7a;">ID devis manquant.</td>
+          </tr>
+        `;
+        return;
+      }
+
+      try {
+        const r = await fetch(\`\${WEB_APP_URL}?path=getLines&id_devis=\${encodeURIComponent(idDevis)}\`);
+        const j = await r.json();
+        devisLines = j.lines || [];
+        renderLines();
+      } catch (e) {
+        console.error("Erreur loadLines:", e);
+        tbody.innerHTML = `
+          <tr><td colspan="6" style="color:#ff6b7a;">Erreur de chargement</td></tr>
+        `;
+      }
+    }
+
+    function renderLines() {
+      const tbody = document.getElementById("lines-body");
       tbody.innerHTML = "";
 
-      basket.forEach((line, idx) => {
+      if (!devisLines.length) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="6" style="font-size:0.8rem;color:var(--text-soft);padding:8px;">
+              Aucune ligne pour l’instant.
+            </td>
+          </tr>
+        `;
+        updateTotals();
+        return;
+      }
+
+      devisLines.forEach((line, idx) => {
         const tr = document.createElement("tr");
 
-        const tdNum = document.createElement("td");
-        tdNum.className = "num";
-        tdNum.textContent = idx + 1;
-
-        const tdLib = document.createElement("td");
-        tdLib.textContent = line.tache;
-
-        const tdQty = document.createElement("td");
-        const qtyInput = document.createElement("input");
-        qtyInput.type = "number";
-        qtyInput.min = "0";
-        qtyInput.step = "0.5";
-        qtyInput.value = line.quantite;
-        qtyInput.addEventListener("input", () => {
-          line.quantite = Number(qtyInput.value) || 0;
-          updateTotals();
-          renderBasket();
-        });
-        tdQty.appendChild(qtyInput);
-
-        const tdPu = document.createElement("td");
-        const puInput = document.createElement("input");
-        puInput.type = "number";
-        puInput.step = "0.01";
-        puInput.value = line.prix_unitaire;
-        puInput.addEventListener("input", () => {
-          line.prix_unitaire = Number(puInput.value) || 0;
-          updateTotals();
-          renderBasket();
-        });
-        tdPu.appendChild(puInput);
-
-        const tdTotal = document.createElement("td");
-        const totalLigne =
-          (line.quantite || 0) * (line.prix_unitaire || 0);
-        tdTotal.textContent = formatEUR(totalLigne);
-
-        const tdDel = document.createElement("td");
-        const btnDel = document.createElement("button");
-        btnDel.className = "btn-pill";
-        btnDel.textContent = "✕";
-        btnDel.style.background = "transparent";
-        btnDel.style.color = "var(--text-soft)";
-        btnDel.addEventListener("click", () => {
-          basket.splice(idx, 1);
-          if (!basket.length) {
-            tbody.innerHTML =
-              '<tr><td colspan="6" style="font-size:0.8rem;color:var(--text-soft);padding:8px 4px;">Aucune ligne pour l’instant. Ajoute des prestations depuis la colonne de gauche.</td></tr>';
-            updateTotals();
-          } else {
-            renderBasket();
-          }
-        });
-        tdDel.appendChild(btnDel);
-
-        tr.appendChild(tdNum);
-        tr.appendChild(tdLib);
-        tr.appendChild(tdQty);
-        tr.appendChild(tdPu);
-        tr.appendChild(tdTotal);
-        tr.appendChild(tdDel);
+        tr.innerHTML = `
+          <td class="num">\${idx + 1}</td>
+          <td>\${line.tache}</td>
+          <td>\${line.quantite}</td>
+          <td>\${formatEUR(line.pu)}</td>
+          <td>\${formatEUR((line.quantite || 0) * (line.pu || 0))}</td>
+          <td>
+            <button class="btn-pill" style="background:transparent;color:var(--text-soft);" 
+                    onclick="deleteLine('\${line.id_ligne}')">✕</button>
+          </td>
+        `;
 
         tbody.appendChild(tr);
       });
@@ -694,9 +775,11 @@ const WEB_APP_URL =
 
     function updateTotals() {
       let totalHT = 0;
-      basket.forEach((l) => {
-        totalHT += (l.quantite || 0) * (l.prix_unitaire || 0);
+
+      devisLines.forEach((l) => {
+        totalHT += (l.quantite || 0) * (l.pu || 0);
       });
+
       const tva = totalHT * 0.2;
       const ttc = totalHT + tva;
 
@@ -705,120 +788,154 @@ const WEB_APP_URL =
       document.getElementById("total-ttc").textContent = formatEUR(ttc);
     }
 
-    function clearDevis() {
-      basket = [];
-      const tbody = document.getElementById("basket-body");
-      tbody.innerHTML =
-        '<tr><td colspan="6" style="font-size:0.8rem;color:var(--text-soft);padding:8px 4px;">Aucune ligne pour l’instant. Ajoute des prestations depuis la colonne de gauche.</td></tr>';
-      updateTotals();
+    function openModal() {
+      document.getElementById("line-modal").classList.remove("hidden");
     }
 
-    // ======================================================
-//                 GENERATION DU DEVIS
-// ======================================================
-async function generateDevis() {
-  // ⚠️ IMPORTANT : ce div existe bien dans ton HTML : <div id="message"></div>
-  const msg = document.getElementById("message");
-  msg.textContent = "Préparation du devis…";
-  msg.className = "";
-
-  const idDevis = document.getElementById("devis-id-label").textContent.trim();
-  if (!idDevis) {
-    msg.textContent = "ID devis introuvable.";
-    msg.className = "error";
-    return;
-  }
-
-  // ------------------------------
-  // Récupération des champs du formulaire
-  // ------------------------------
-  const client = document.getElementById("client").value.trim();
-  const adresse = document.getElementById("adresse").value.trim();
-  // ⚠️ Ton textarea s’appelle "objet", pas "description"
-  const description = document.getElementById("objet").value.trim();
-  const dateDevis = document.getElementById("date-devis").value.trim();
-
-  // ------------------------------
-  // Calcul des montants HT / TTC à partir du panier "basket"
-  // ------------------------------
-  let totalHT = 0;
-  basket.forEach((l) => {
-    totalHT += (l.quantite || 0) * (l.prix_unitaire || 0);
-  });
-  const totalTTC = totalHT * 1.2; // TVA 20%
-
-  // ------------------------------
-  // 1) UPDATE DU DEVIS DANS SHEETS
-  // ------------------------------
-  const paramsUpdate = new URLSearchParams();
-  paramsUpdate.append("path", "bo");
-  paramsUpdate.append("action", "update_devis");
-  paramsUpdate.append("id_devis", idDevis);
-  paramsUpdate.append("client", client);
-  paramsUpdate.append("adresse", adresse);
-  paramsUpdate.append("commentaires", description);
-  paramsUpdate.append("date_devis", dateDevis);
-  paramsUpdate.append("montant_ht", String(totalHT));
-  paramsUpdate.append("montant_ttc", String(totalTTC));
-
-  try {
-    const updateResp = await fetch(WEB_APP_URL, {
-      method: "POST",
-      body: paramsUpdate,
-    });
-
-    const updateJson = await updateResp.json().catch(() => null);
-    if (!updateJson || !updateJson.ok) {
-      console.error("Erreur update devis", updateJson);
-      msg.textContent = "Erreur lors de la mise à jour du devis.";
-      msg.className = "error";
-      return;
+    function closeModal() {
+      document.getElementById("line-modal").classList.add("hidden");
     }
-  } catch (e) {
-    console.error("Erreur réseau update", e);
-    msg.textContent = "Erreur réseau lors de la mise à jour.";
-    msg.className = "error";
-    return;
-  }
 
-  // ------------------------------
-  // 2) GENERATE_PDF
-  // ------------------------------
-  msg.textContent = "Génération du PDF…";
+    async function saveLine() {
+      const idDevis = document.getElementById("devis-id-label").textContent.trim();
+      const tache = document.getElementById("modal-tache").value.trim();
+      const qty = Number(document.getElementById("modal-qty").value);
+      const pu = Number(document.getElementById("modal-pu").value);
 
-  const paramsPdf = new URLSearchParams();
-  paramsPdf.append("path", "bo");
-  paramsPdf.append("action", "generate_pdf");
-  paramsPdf.append("id_devis", idDevis);
-
-  try {
-    const pdfResp = await fetch(WEB_APP_URL, {
-      method: "POST",
-      body: paramsPdf,
-    });
-
-    const pdfJson = await pdfResp.json().catch(() => null);
-
-    if (pdfJson && pdfJson.ok) {
-      msg.textContent = "Devis généré avec succès 🎉";
-      msg.className = "success";
-
-      if (pdfJson.pdfUrl) {
-        window.open(pdfJson.pdfUrl, "_blank");
+      if (!tache) {
+        alert("La prestation est obligatoire.");
+        return;
       }
-    } else {
-      console.error("Erreur génération PDF", pdfJson);
-      msg.textContent = "Erreur lors de la génération du PDF.";
-      msg.className = "error";
+
+      const body = new URLSearchParams();
+      body.append("path", "addLine");
+      body.append("id_devis", idDevis);
+      body.append("tache", tache);
+      body.append("quantite", isNaN(qty) ? 0 : qty);
+      body.append("pu", isNaN(pu) ? 0 : pu);
+
+      try {
+        await fetch(WEB_APP_URL, { method: "POST", body });
+        closeModal();
+        document.getElementById("modal-tache").value = "";
+        document.getElementById("modal-qty").value = "1";
+        document.getElementById("modal-pu").value = "0";
+        await loadLines();
+      } catch (e) {
+        console.error("Erreur saveLine:", e);
+      }
     }
-  } catch (e) {
-    console.error("Erreur réseau PDF", e);
-    msg.textContent = "Erreur réseau lors de la génération du PDF.";
-    msg.className = "error";
-  }
-}
-    
-    // ----------------- Init -----------------
+
+    async function deleteLine(idLigne) {
+      const idDevis = document.getElementById("devis-id-label").textContent.trim();
+
+      const body = new URLSearchParams();
+      body.append("path", "deleteLine");
+      body.append("id_devis", idDevis);
+      body.append("id_ligne", idLigne);
+
+      try {
+        await fetch(WEB_APP_URL, { method: "POST", body });
+        await loadLines();
+      } catch (e) {
+        console.error("Erreur deleteLine:", e);
+      }
+    }
+
+    // =============================
+    //   GENERATION DU DEVIS (PDF)
+    // =============================
+    async function generateDevis() {
+      const msg = document.getElementById("message");
+      msg.textContent = "Préparation du devis…";
+      msg.className = "";
+
+      const idDevis = document.getElementById("devis-id-label").textContent.trim();
+      if (!idDevis) {
+        msg.textContent = "ID devis introuvable.";
+        msg.className = "error";
+        return;
+      }
+
+      const client = document.getElementById("client").value.trim();
+      const adresse = document.getElementById("adresse").value.trim();
+      const description = document.getElementById("objet").value.trim();
+      const dateDevis = document.getElementById("date-devis").value.trim();
+
+      let totalHT = 0;
+      devisLines.forEach((l) => {
+        totalHT += (l.quantite || 0) * (l.pu || 0);
+      });
+      const totalTTC = totalHT * 1.2;
+
+      const paramsUpdate = new URLSearchParams();
+      paramsUpdate.append("path", "bo");
+      paramsUpdate.append("action", "update_devis");
+      paramsUpdate.append("id_devis", idDevis);
+      paramsUpdate.append("client", client);
+      paramsUpdate.append("adresse", adresse);
+      paramsUpdate.append("commentaires", description);
+      paramsUpdate.append("date_devis", dateDevis);
+      paramsUpdate.append("montant_ht", String(totalHT));
+      paramsUpdate.append("montant_ttc", String(totalTTC));
+
+      try {
+        const updateResp = await fetch(WEB_APP_URL, {
+          method: "POST",
+          body: paramsUpdate,
+        });
+
+        const updateJson = await updateResp.json().catch(() => null);
+        if (!updateJson || !updateJson.ok) {
+          console.error("Erreur update devis", updateJson);
+          msg.textContent = "Erreur lors de la mise à jour du devis.";
+          msg.className = "error";
+          return;
+        }
+      } catch (e) {
+        console.error("Erreur réseau update", e);
+        msg.textContent = "Erreur réseau lors de la mise à jour.";
+        msg.className = "error";
+        return;
+      }
+
+      msg.textContent = "Génération du PDF…";
+
+      const paramsPdf = new URLSearchParams();
+      paramsPdf.append("path", "bo");
+      paramsPdf.append("action", "generate_pdf");
+      paramsPdf.append("id_devis", idDevis);
+
+      try {
+        const pdfResp = await fetch(WEB_APP_URL, {
+          method: "POST",
+          body: paramsPdf,
+        });
+
+        const pdfJson = await pdfResp.json().catch(() => null);
+
+        if (pdfJson && pdfJson.ok) {
+          msg.textContent = "Devis généré avec succès 🎉";
+          msg.className = "success";
+
+          if (pdfJson.pdfUrl) {
+            window.open(pdfJson.pdfUrl, "_blank");
+          }
+        } else {
+          console.error("Erreur génération PDF", pdfJson);
+          msg.textContent = "Erreur lors de la génération du PDF.";
+          msg.className = "error";
+        }
+      } catch (e) {
+        console.error("Erreur réseau PDF", e);
+        msg.textContent = "Erreur réseau lors de la génération du PDF.";
+        msg.className = "error";
+      }
+    }
+
+    // =============================
+    //   INIT
+    // =============================
     window.addEventListener("DOMContentLoaded", () => {
       const today = new Date().toISOString().split("T")[0];
       const dateInput = document.getElementById("date-devis");
@@ -832,12 +949,20 @@ async function generateDevis() {
       }
 
       document
-        .getElementById("btn-clear")
-        .addEventListener("click", clearDevis);
-      document
         .getElementById("btn-generate")
         .addEventListener("click", generateDevis);
 
+      document
+        .getElementById("btn-add-line")
+        .addEventListener("click", openModal);
+      document
+        .getElementById("modal-cancel")
+        .addEventListener("click", closeModal);
+      document
+        .getElementById("modal-save")
+        .addEventListener("click", saveLine);
+
+      loadLines();
       loadTarifs();
     });
   </script>
