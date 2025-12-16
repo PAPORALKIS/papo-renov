@@ -1725,6 +1725,7 @@ body.sidebar-collapsed .dash-menu-footer span:last-child{
       if(mini) mini.textContent = "Vue globale";
 
       if(typeof loadDashboardKpis === "function") loadDashboardKpis();
+      if(typeof loadSiteStatsKpis === "function") loadSiteStatsKpis(); // ✅ AJOUTE ÇA
       if(typeof loadClientsList === "function")   loadClientsList();
       if(typeof loadDevisList === "function")     loadDevisList();
       if(typeof loadChantiersList === "function") loadChantiersList();
@@ -1755,13 +1756,14 @@ body.sidebar-collapsed .dash-menu-footer span:last-child{
 
         await Promise.all([
           loadDashboardKpis(),
+          loadSiteStatsKpis(), // ✅ AJOUTE ÇA
           loadClientsList(),
           loadDevisList(),
           loadChantiersList(),
           loadDocsList(),
-          loadNotesList(),
+           loadNotesList(),
           loadPartenairesList()
-        ]);
+]);
       });
     }
 
@@ -1818,7 +1820,8 @@ body.sidebar-collapsed .dash-menu-footer span:last-child{
     // =========================
     // DASHBOARD KPIs
     // =========================
-    async function loadDashboardKpis(){
+    
+       async function loadDashboardKpis(){
       const j = await fetchJson(`${WEB_APP_URL}?path=bo&resource=dashboard`, {cache:'no-store'});
       if(!j.ok || !j.data || !j.data.kpi) return;
       const k = j.data.kpi;
@@ -1856,7 +1859,9 @@ body.sidebar-collapsed .dash-menu-footer span:last-child{
       if(j.data.notesHtml && notesEl){
         notesEl.innerHTML = j.data.notesHtml;
       }
-    }async function loadSiteStatsKpis(){
+    }
+    
+      async function loadSiteStatsKpis(){
   const j = await fetchJson(`${WEB_APP_URL}?path=bo&resource=site_stats`, {cache:'no-store'});
   if(!j.ok || !j.data) return;
 
@@ -1870,6 +1875,7 @@ body.sidebar-collapsed .dash-menu-footer span:last-child{
     // =========================
     // CLIENTS
     // =========================
+    
     async function loadClientsList(){
       const j = await fetchJson(`${WEB_APP_URL}?path=bo&resource=clients`, {cache:'no-store'});
       if(!j.ok) return;
@@ -2245,6 +2251,7 @@ if (btnNewDevis) {
     // =========================
     // CHANTIERS
     // =========================
+    
     async function loadChantiersList(){
       const j = await fetchJson(`${WEB_APP_URL}?path=bo&resource=chantiers`, {cache:'no-store'});
       if(!j.ok){
@@ -2468,6 +2475,7 @@ if (btnNewDevis) {
     // =========================
     // DOCUMENTS
     // =========================
+    
     async function loadDocsList(){
       const j = await fetchJson(`${WEB_APP_URL}?path=bo&resource=documents`, {cache:'no-store'});
       if(!j.ok) return;
@@ -2599,6 +2607,7 @@ if (btnNewDevis) {
     // =========================
     // NOTES
     // =========================
+    
     async function loadNotesList(){
       const j = await fetchJson(`${WEB_APP_URL}?path=bo&resource=notes`, {cache:'no-store'});
       if(!j.ok) return;
@@ -2726,6 +2735,7 @@ if (btnNewDevis) {
     // =========================
     // PARTENAIRES
     // =========================
+    
     async function loadPartenairesList(){
       const j = await fetchJson(`${WEB_APP_URL}?path=bo&resource=partenaires`, {cache:'no-store'});
       if(!j.ok) return;
@@ -2827,6 +2837,7 @@ if (btnNewDevis) {
 // =========================
 // STATS AVANCÉES
 // =========================
+    
 async function loadAdvancedStats(){
   const j = await fetchJson(`${WEB_APP_URL}?path=bo&resource=stats`, {cache:'no-store'});
   if(!j.ok || !j.data) return;
@@ -2872,6 +2883,7 @@ function formatEuro(v){
 // =========================
 // FINANCE : FACTURES & PAIEMENTS
 // =========================
+    
 async function loadFinance(){
   const [facturesRes, paiementsRes] = await Promise.all([
     fetchJson(`${WEB_APP_URL}?path=bo&resource=factures`, {cache:'no-store'}),
