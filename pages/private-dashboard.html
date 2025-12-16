@@ -1037,6 +1037,10 @@ body.sidebar-collapsed .dash-menu-footer span:last-child{
                   <div class="kpi-value" id="kpi-demandes-site">0</div>
                   <div class="kpi-trend" id="kpi-demandes-trend">Entrées</div>
                 </div>
+                <div class="kpi-card">
+                  <div class="kpi-label">Pages vues (7j)</div>
+                  <div class="kpi-value" id="kpi-site-pageviews-7j">0</div>
+                </div>
               </div>
 
               <div class="split">
@@ -1852,7 +1856,16 @@ body.sidebar-collapsed .dash-menu-footer span:last-child{
       if(j.data.notesHtml && notesEl){
         notesEl.innerHTML = j.data.notesHtml;
       }
-    }
+    }async function loadSiteStatsKpis(){
+  const j = await fetchJson(`${WEB_APP_URL}?path=bo&resource=site_stats`, {cache:'no-store'});
+  if(!j.ok || !j.data) return;
+
+  const elPv7 = document.getElementById('kpi-site-pageviews-7j');
+  const elS7  = document.getElementById('kpi-site-sessions-7j');
+
+  if(elPv7) elPv7.textContent = (j.data.pageviews && j.data.pageviews.d7) ? j.data.pageviews.d7 : 0;
+  if(elS7)  elS7.textContent  = (j.data.sessions && j.data.sessions.d7) ? j.data.sessions.d7 : 0;
+}
 
     // =========================
     // CLIENTS
@@ -2444,6 +2457,7 @@ if (btnNewDevis) {
           closeNewChantierModal();
           await loadChantiersList();
           await loadDashboardKpis();
+          await loadSiteStatsKpis();
         }catch(err){
           console.log('create_chantier exception', err);
           newChantierError.textContent = "Erreur réseau, impossible d’enregistrer.";
@@ -2574,6 +2588,7 @@ if (btnNewDevis) {
           closeNewDocModal();
           await loadDocsList();
           await loadDashboardKpis();
+          await loadSiteStatsKpis();
         }catch(err){
           console.log('create_document exception', err);
           newDocError.textContent = "Erreur réseau, impossible d’enregistrer.";
@@ -2700,6 +2715,7 @@ if (btnNewDevis) {
           closeNewNoteModal();
           await loadNotesList();
           await loadDashboardKpis();
+          await loadSiteStatsKpis();
         } catch (err) {
           console.log('create_note exception', err);
           newNoteError.textContent = "Erreur réseau, impossible d’enregistrer.";
