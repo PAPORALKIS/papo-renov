@@ -80,5 +80,37 @@ function checkCode() {
 }
 </script>
 
+  <script>
+  // === Tracking léger PAPO RENOV ===
+  // IMPORTANT : colle ici la même URL que WEB_APP_URL du dashboard
+  const TRACK_WEBAPP_URL = "COLLE_ICI_TON_URL_WEBAPP";
+
+  function pr_getSessionId(){
+    const k = "pr_sid";
+    let v = localStorage.getItem(k);
+    if(!v){
+      v = "sid_" + Date.now().toString(36) + "_" + Math.random().toString(36).slice(2,10);
+      localStorage.setItem(k, v);
+    }
+    return v;
+  }
+
+  function pr_track(type){
+    try{
+      const params = new URLSearchParams();
+      params.append("path", "track");
+      params.append("action", "event");
+      params.append("type", type);
+      params.append("path", location.pathname);
+      params.append("referrer", document.referrer || "");
+      params.append("session_id", pr_getSessionId());
+      params.append("ua", navigator.userAgent || "");
+      fetch(TRACK_WEBAPP_URL, { method:"POST", body: params });
+    }catch(e){}
+  }
+
+  pr_track("pageview");
+</script>
+
 </body>
 </html>
