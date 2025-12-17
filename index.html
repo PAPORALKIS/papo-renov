@@ -83,7 +83,7 @@ function checkCode() {
 <script>
   // === Tracking léger PAPO RENOV ===
   // IMPORTANT : colle ici la même URL que WEB_APP_URL du dashboard
-  const TRACK_WEBAPP_URL = "https://script.google.com/macros/s/AKfycbyhI-NZZn3zy0oeH-ociTGMaG8IvLWatNuTXyjKuv6N0lxHcWR2R1jCC_DrLfDs2Xdg/exec";
+  const TRACK_WEBAPP_URL = "https://script.google.com/macros/s/AKfycby_fBB20qGFsZvZnOQfKircrFpOV2A7qgLr7wYt5W8OcG8UojVwspobRUR68KrPI2pk/exec";
 
   function pr_getSessionId(){
     const k = "pr_sid";
@@ -96,21 +96,21 @@ function checkCode() {
   }
 
   function pr_track(type){
-    try{
-      const params = new URLSearchParams();
-      params.append("path", "track");
-      params.append("action", "event");
-      params.append("type", type);
+  try{
+    const url =
+      TRACK_WEBAPP_URL +
+      '?path=track' +
+      '&type=' + encodeURIComponent(type) +
+      '&page_path=' + encodeURIComponent(location.pathname) +
+      '&referrer=' + encodeURIComponent(document.referrer || '') +
+      '&session_id=' + encodeURIComponent(pr_getSessionId()) +
+      '&ua=' + encodeURIComponent(navigator.userAgent || '');
 
-      // ✅ IMPORTANT : on ne s'appelle plus "path" ici
-      params.append("page_path", location.pathname);
-      params.append("referrer", document.referrer || "");
-      params.append("session_id", pr_getSessionId());
-      params.append("ua", navigator.userAgent || "");
-
-      fetch(TRACK_WEBAPP_URL, { method:"POST", body: params });
-    }catch(e){}
-  }
+    // ✅ Beacon GET : pas de CORS / pas de blocage POST
+    const img = new Image();
+    img.src = url;
+  }catch(e){}
+}
 
   pr_track("pageview");
 </script>  
