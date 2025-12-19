@@ -160,6 +160,19 @@
       overflow: auto;
     }
 
+    /* ✅ scrollbar plus visible */
+.categories-list::-webkit-scrollbar {
+  width: 10px;
+}
+.categories-list::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,0.18);
+  border-radius: 999px;
+}
+.categories-list::-webkit-scrollbar-thumb:hover {
+  background: rgba(49, 181, 255, 0.35);
+}
+
+
     .category-block {
       background: #0a1428;
       border-radius: 12px;
@@ -203,18 +216,40 @@
       background: rgba(6, 15, 33, 0.9);
     }
 
+    /* ✅ Grille tarifaire : lisibilité + hover + air */
+.tarif-item {
+  padding: 10px 10px;                /* plus d’air */
+  border: 1px solid rgba(255,255,255,0.05);
+  background: rgba(255,255,255,0.03);
+}
+
+.tarif-item:hover {
+  background: rgba(49, 181, 255, 0.10);
+  border-color: rgba(49, 181, 255, 0.22);
+}
+
+.tarif-meta {
+  font-size: 0.78rem;                /* un poil plus grand */
+  color: rgba(245,248,255,0.72);     /* contraste plus net */
+  line-height: 1.25;
+}
+
+
     .tarif-info {
       flex: 1;
       min-width: 0;
     }
 
-    .tarif-title {
-      font-size: 0.86rem;
-      margin-bottom: 2px;
-      white-space: nowrap;
-      text-overflow: ellipsis;
-      overflow: hidden;
-    }
+.tarif-title {
+  font-size: 0.90rem;
+  margin-bottom: 3px;
+  font-weight: 700;
+  white-space: normal;     /* ✅ autorise le retour à la ligne */
+  overflow: visible;       /* ✅ plus de découpe */
+  text-overflow: unset;    /* ✅ plus de "..." */
+  line-height: 1.25;
+}
+
 
     .tarif-meta {
       font-size: 0.75rem;
