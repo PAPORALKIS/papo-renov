@@ -3,19 +3,147 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Papo Rénov - Accueil</title>
+  <title>Papo Rénov' — Rénovation intérieure à Meyreuil (13)</title>
+  <meta name="description" content="Papo Rénov' réalise vos travaux de rénovation intérieure à Meyreuil et dans les Bouches-du-Rhône : cuisine, salle de bains, peinture, électricité, plomberie, sols. Devis gratuit sous 24h.">
   <link rel="stylesheet" href="style.css">
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+<style>
+:root{
+  --primary-color:#007bff;
+  --dark-blue-logo:#0a1f44;
+  --accent-orange:#ffc107;
+  --price-accent:#28a745;
+  --card-background:#ffffff;
+  --background-light:#f4f7f9;
+  --border-light:#e9ecef;
+  --radius-card:18px;
+  --radius-btn:10px;
+  --radius-hero:24px;
+  --brand-gradient:linear-gradient(135deg,var(--dark-blue-logo),var(--primary-color));
+}
+
+/* ===== Section titres, cohérents avec tarifs.html ===== */
+.section{ width:min(1300px,94%); margin:70px auto; }
+.section-title{
+  text-align:center; font-size:2rem; font-weight:800; color:var(--dark-blue-logo);
+  margin-bottom:8px;
+}
+.section-title i{ color:var(--primary-color); margin-right:10px; }
+.section-title::after{
+  content:''; display:block; width:70px; height:4px; background:var(--accent-orange);
+  margin:16px auto 0; border-radius:2px;
+}
+.section-subtitle{
+  text-align:center; color:#6c757d; max-width:640px; margin:0 auto 44px; font-size:1.02rem;
+}
+
+/* ===== Services ===== */
+.services-grid{
+  display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:22px;
+}
+.service-card{
+  background:var(--card-background); border-radius:var(--radius-card);
+  border:1px solid var(--border-light); padding:26px 22px; text-align:center;
+  text-decoration:none; color:inherit; transition:.25s ease;
+  box-shadow:0 10px 24px rgba(10,31,68,.06);
+}
+.service-card:hover{
+  transform:translateY(-6px); box-shadow:0 20px 40px rgba(10,31,68,.16);
+  border-color:rgba(0,123,255,.3);
+}
+.service-card .icon{
+  width:56px; height:56px; margin:0 auto 16px; border-radius:50%;
+  background:var(--brand-gradient); color:#fff; display:flex; align-items:center; justify-content:center;
+  font-size:1.3rem;
+}
+.service-card h3{ margin:0 0 6px; font-size:1.05rem; color:var(--dark-blue-logo); }
+.service-card p{ margin:0; font-size:.88rem; color:#6c757d; line-height:1.4; }
+.services-more{ text-align:center; margin-top:34px; }
+
+/* ===== Galerie ===== */
+.gallery-grid{
+  display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); gap:16px;
+}
+.gallery-grid a{
+  display:block; border-radius:var(--radius-card); overflow:hidden; position:relative;
+  aspect-ratio:4/3; box-shadow:0 10px 24px rgba(10,31,68,.10);
+}
+.gallery-grid img{ width:100%; height:100%; object-fit:cover; display:block; transition:transform .4s ease; }
+.gallery-grid a:hover img{ transform:scale(1.08); }
+
+/* ===== Confiance / bandeau chiffres honnêtes ===== */
+.trust-band{
+  background:var(--brand-gradient); border-radius:var(--radius-hero);
+  padding:44px 30px; display:flex; flex-wrap:wrap; gap:24px; justify-content:space-around;
+  text-align:center; color:#fff;
+}
+.trust-item{ flex:1 1 180px; }
+.trust-item i{ font-size:1.6rem; color:var(--accent-orange); margin-bottom:10px; display:block; }
+.trust-item strong{ display:block; font-size:1.05rem; }
+.trust-item span{ font-size:.85rem; color:#ffffffcc; }
+
+/* ===== Avis ===== */
+.reviews-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:22px; }
+.review-card{
+  background:var(--card-background); border-radius:var(--radius-card);
+  border:1px solid var(--border-light); padding:24px; box-shadow:0 10px 24px rgba(10,31,68,.06);
+}
+.review-card .stars{ color:var(--accent-orange); margin-bottom:10px; }
+.review-card p{ font-style:italic; color:var(--secondary-color, #212529); margin:0 0 12px; line-height:1.5; }
+.review-card small{ color:#6c757d; }
+
+/* ===== CTA final ===== */
+.cta-band{
+  background:var(--card-background); border:1px solid var(--border-light);
+  border-radius:var(--radius-hero); padding:44px 30px; text-align:center;
+  box-shadow:0 10px 30px rgba(10,31,68,.08);
+}
+.cta-band h2{ color:var(--dark-blue-logo); font-size:1.6rem; margin:0 0 10px; }
+.cta-band p{ color:#6c757d; margin:0 0 26px; }
+.cta-actions{ display:flex; gap:14px; flex-wrap:wrap; justify-content:center; }
+.btn-primary, .btn-secondary{
+  display:inline-flex; align-items:center; gap:10px; padding:14px 26px;
+  border-radius:var(--radius-btn); font-weight:700; text-decoration:none; transition:.25s;
+}
+.btn-primary{ background:var(--primary-color); color:#fff; }
+.btn-primary:hover{ background:var(--dark-blue-logo); }
+.btn-secondary{ background:var(--background-light); color:var(--dark-blue-logo); border:1px solid var(--border-light); }
+.btn-secondary:hover{ border-color:var(--primary-color); color:var(--primary-color); }
+
+/* ===== Footer enrichi ===== */
+.site-footer{
+  background:var(--dark-blue-logo); color:#e9ecef; padding:50px 20px 20px; margin-top:70px;
+}
+.site-footer .cols{
+  width:min(1300px,94%); margin:0 auto; display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:30px; padding-bottom:26px;
+}
+.site-footer h4{ color:#fff; font-size:.95rem; margin:0 0 12px; text-transform:uppercase; letter-spacing:.05em; }
+.site-footer p, .site-footer a{ color:#c9d3e0; font-size:.9rem; line-height:1.7; text-decoration:none; }
+.site-footer a:hover{ color:var(--accent-orange); }
+.site-footer .bottom{
+  border-top:1px solid rgba(255,255,255,.12); padding-top:18px; text-align:center;
+  font-size:.8rem; color:#8fa0bd; width:min(1300px,94%); margin:0 auto;
+}
+
+@media (max-width:768px){
+  .section{ margin:50px auto; }
+  .section-title{ font-size:1.6rem; }
+  .trust-band{ padding:30px 18px; }
+}
+</style>
 </head>
 <body>
  <header>
   <div class="logo">
-    <img src="img/logo.png" id="secretAccess"  alt="Logo Papo Rénov">
+    <img src="img/logo.png" id="secretAccess" alt="Logo Papo Rénov">
   </div>
   <nav>
     <ul>
-      <li><a href="index.html">Accueil</a></li>
+      <li><a href="index.html" class="active">Accueil</a></li>
       <li><a href="pages/devis.html">Demande de devis</a></li>
       <li><a href="pages/realisations.html">Mes réalisations</a></li>
       <li><a href="pages/tarifs.html">Tarifs</a></li>
@@ -27,7 +155,6 @@
   </nav>
 </header>
 
-
   <section class="hero" style="background-image: url('img/illustration.png');">
     <div class="overlay">
       <h1>Bienvenue chez <span class="highlight">Papo Rénov</span></h1>
@@ -36,49 +163,150 @@
     </div>
   </section>
 
-  <footer>
-    <p>&copy; 2025 Paporalkis - Tous droits réservés</p>
-  </footer>
-  <div id="authModal" style="
-    display:none;
-    position:fixed;
-    inset:0;
-    background:rgba(0,0,0,0.6);
-    backdrop-filter:blur(4px);
-    align-items:center;
-    justify-content:center;
-    z-index:9999;">
-    
-    <div style="
-        background:#fff;
-        padding:20px;
-        border-radius:10px;
-        text-align:center;
-        width:280px;">
-        
-        <h3>Accès Admin</h3>
-        <input type="password" id="adminCode" placeholder="Code secret"
-               style="width:100%; padding:10px; margin-top:10px;">
-        <button onclick="checkCode()" 
-                style="margin-top:15px; padding:10px 20px;">
-            Valider
-        </button>
+  <!-- ===== SERVICES ===== -->
+  <section class="section">
+    <h2 class="section-title"><i class="fa-solid fa-screwdriver-wrench"></i>Nos prestations</h2>
+    <p class="section-subtitle">De la petite retouche à la rénovation complète, un seul interlocuteur pour piloter vos travaux.</p>
+    <div class="services-grid">
+      <a class="service-card" href="pages/tarifs.html">
+        <div class="icon"><i class="fa-solid fa-kitchen-set"></i></div>
+        <h3>Cuisine</h3>
+        <p>Pose, agencement sur-mesure</p>
+      </a>
+      <a class="service-card" href="pages/tarifs.html">
+        <div class="icon"><i class="fa-solid fa-shower"></i></div>
+        <h3>Salle de bains</h3>
+        <p>Rénovation complète ou partielle</p>
+      </a>
+      <a class="service-card" href="pages/tarifs.html">
+        <div class="icon"><i class="fa-solid fa-fill-drip"></i></div>
+        <h3>Peinture</h3>
+        <p>Murs, plafonds, finitions soignées</p>
+      </a>
+      <a class="service-card" href="pages/tarifs.html">
+        <div class="icon"><i class="fa-solid fa-paint-roller"></i></div>
+        <h3>Sols & revêtements</h3>
+        <p>Carrelage, parquet, PVC, stratifié</p>
+      </a>
+      <a class="service-card" href="pages/tarifs.html">
+        <div class="icon"><i class="fa-solid fa-bolt"></i></div>
+        <h3>Électricité</h3>
+        <p>Mise aux normes, installation</p>
+      </a>
+      <a class="service-card" href="pages/tarifs.html">
+        <div class="icon"><i class="fa-solid fa-bath"></i></div>
+        <h3>Plomberie</h3>
+        <p>Sanitaires, raccordements</p>
+      </a>
     </div>
-</div>
-<script>
-document.getElementById("secretAccess").addEventListener("click", () => {
-    document.getElementById("authModal").style.display = "flex";
-});
+    <p class="services-more"><a href="pages/tarifs.html" class="btn-secondary"><i class="fa-solid fa-list-check"></i> Voir tous les tarifs</a></p>
+  </section>
 
-function checkCode() {
-    const code = document.getElementById("adminCode").value.trim();
-    if (code === "fang") {
-        window.location.href = "pages/private-dashboard.html";
-    } else {
-        alert("Code incorrect");
-    }
-}
-</script>
+  <!-- ===== GALERIE ===== -->
+  <section class="section">
+    <h2 class="section-title"><i class="fa-solid fa-images"></i>Nos dernières réalisations</h2>
+    <p class="section-subtitle">Un aperçu de chantiers récents — la galerie complète est à quelques clics.</p>
+    <div class="gallery-grid">
+      <a href="pages/realisations.html"><img src="img/CUIMARS2.jpg" alt="Cuisine rénovée par Papo Rénov" loading="lazy"></a>
+      <a href="pages/realisations.html"><img src="img/SDB3.jpg" alt="Salle de bains rénovée par Papo Rénov" loading="lazy"></a>
+      <a href="pages/realisations.html"><img src="img/renoperier2.jpg" alt="Rénovation intérieure Papo Rénov" loading="lazy"></a>
+      <a href="pages/realisations.html"><img src="img/DRESSMARS2.jpg" alt="Dressing sur-mesure Papo Rénov" loading="lazy"></a>
+    </div>
+    <p class="services-more"><a href="pages/realisations.html" class="btn-secondary"><i class="fa-solid fa-arrow-right"></i> Voir toutes les réalisations</a></p>
+  </section>
+
+  <!-- ===== BANDEAU DE CONFIANCE ===== -->
+  <section class="section">
+    <div class="trust-band">
+      <div class="trust-item">
+        <i class="fa-solid fa-file-invoice-dollar"></i>
+        <strong>Devis gratuit</strong>
+        <span>Réponse sous 24h, sans engagement</span>
+      </div>
+      <div class="trust-item">
+        <i class="fa-solid fa-location-dot"></i>
+        <strong>Basé à Meyreuil (13)</strong>
+        <span>Interventions dans les Bouches-du-Rhône</span>
+      </div>
+      <div class="trust-item">
+        <i class="fa-solid fa-user-check"></i>
+        <strong>Un seul interlocuteur</strong>
+        <span>Du premier échange à la remise des clés</span>
+      </div>
+      <div class="trust-item">
+        <i class="fa-solid fa-id-card"></i>
+        <strong>Entreprise déclarée</strong>
+        <span>SIRET 804 288 371 00037</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== AVIS ===== -->
+  <section class="section">
+    <h2 class="section-title"><i class="fa-solid fa-star"></i>Ils nous font confiance</h2>
+    <div class="reviews-grid">
+      <div class="review-card">
+        <div class="stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+        <p>« Travail impeccable et rapide. Je recommande vivement ! »</p>
+        <small><strong>Sophie M.</strong> — juin 2025</small>
+      </div>
+      <div class="review-card">
+        <div class="stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+        <p>« J'ai fait appel à Papo Rénov pour l'agencement de mes placards sur-mesure. Travail soigné, personne rigoureuse et sérieuse. »</p>
+        <small><strong>Laura B.</strong> — juin 2025</small>
+      </div>
+    </div>
+    <p class="services-more"><a href="pages/avis.html" class="btn-secondary"><i class="fa-solid fa-comment-dots"></i> Voir tous les avis</a></p>
+  </section>
+
+  <!-- ===== CTA FINAL ===== -->
+  <section class="section">
+    <div class="cta-band">
+      <h2>Un projet de rénovation en tête ?</h2>
+      <p>Décrivez-nous votre besoin, recevez un devis gratuit sous 24h.</p>
+      <div class="cta-actions">
+        <a href="pages/devis.html" class="btn-primary"><i class="fa-solid fa-file-lines"></i> Demander un devis</a>
+        <a href="tel:0671702999" class="btn-secondary"><i class="fa-solid fa-phone"></i> 06 71 70 29 99</a>
+      </div>
+    </div>
+  </section>
+
+  <footer class="site-footer">
+    <div class="cols">
+      <div>
+        <h4>Papo Rénov'</h4>
+        <p>Rénovation intérieure<br>Cuisines • Salles de bain • Agencements</p>
+      </div>
+      <div>
+        <h4>Contact</h4>
+        <p>
+          <i class="fa-solid fa-phone"></i> <a href="tel:0671702999">06 71 70 29 99</a><br>
+          <i class="fa-solid fa-envelope"></i> <a href="mailto:kpaporalkis.pro@gmail.com">kpaporalkis.pro@gmail.com</a><br>
+          <i class="fa-solid fa-location-dot"></i> Meyreuil (13590)
+        </p>
+      </div>
+      <div>
+        <h4>Navigation</h4>
+        <p>
+          <a href="pages/tarifs.html">Tarifs</a><br>
+          <a href="pages/realisations.html">Réalisations</a><br>
+          <a href="pages/avis.html">Avis clients</a><br>
+          <a href="pages/contact.html">Contact</a>
+        </p>
+      </div>
+      <div>
+        <h4>Informations légales</h4>
+        <p>
+          Entreprise individuelle<br>
+          SIRET 804 288 371 00037 — APE 4332A<br>
+          <a href="pages/mentions-legales.html">Mentions légales</a><br>
+          <a href="pages/politique-confidentialite.html">Confidentialité</a> ·
+          <a href="pages/cgv.html">CGV</a>
+        </p>
+      </div>
+    </div>
+    <p class="bottom">&copy; 2025 Papo Rénov' — Tous droits réservés</p>
+  </footer>
 
 <script>
   // === Tracking léger PAPO RENOV ===
@@ -113,7 +341,16 @@ function checkCode() {
 }
 
   pr_track("pageview");
-</script>  
+</script>
+
+<script>
+  // Accès admin : redirige vers la page de connexion dédiée au lieu de dupliquer
+  // le code secret ici (l'ancienne version affichait le code "fang" en clair
+  // dans le JavaScript de CETTE page publique, en plus de celui d'acces-admin.html).
+  document.getElementById("secretAccess").addEventListener("click", () => {
+    window.location.href = "pages/acces-admin.html";
+  });
+</script>
 
 </body>
 </html>
